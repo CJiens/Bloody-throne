@@ -1,0 +1,15 @@
+[gd_scene load_steps=5 format=3 uid="uid://bwgm4jklnf3im"]
+
+[ext_resource type="Script" uid="uid://cvrrj37a2fajc" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://d4kba7vsxnje5" path="res://OtherPlayer.tscn" id="2_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://dftgxtk6badua" path="res://enemy.tscn" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://dpqg0t3ve8om3" path="res://Network.tscn" id="4_1bvp3"]
+
+[node name="Node" type="Node"]
+script = ExtResource("1_ig7tw")
+
+[node name="Enemies" parent="." instance=ExtResource("2_h2yge")]
+
+[node name="OtherPlayers" parent="." instance=ExtResource("2_0xm2m")]
+
+[node name="Network" parent="." instance=ExtResource("4_1bvp3")]
