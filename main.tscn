@@ -104,8 +104,3 @@ texture = ExtResource("5_lquwl")
 position = Vector2(475.36057, -914.64484)
 scale = Vector2(0.48710376, 1.5378163)
 texture = ExtResource("5_lquwl")
-
-[node name="Icon2" type="Sprite2D" parent="Icon/Icon"]
-position = Vector2(422.76688, -171.443)
-scale = Vector2(1.1878788, 6.4305058)
-texture = ExtResource("5_lquwl")

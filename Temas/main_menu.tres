@@ -1,0 +1,13 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://bc0ftxndqriis"]
+
+[ext_resource type="FontFile" uid="uid://d17g8dgvdr558" path="res://CinzelDecorative-Bold.ttf" id="1_qcqu0"]
+
+[resource]
+default_font = ExtResource("1_qcqu0")
+default_font_size = 120
+Label/colors/font_color = Color(0.8509804, 0.7607843, 0.47843137, 1)
+Label/colors/font_outline_color = Color(0.22745098, 0.16470589, 0.078431375, 1)
+Label/colors/font_shadow_color = Color(0, 0, 0, 0.5019608)
+Label/constants/outline_size = 4
+Label/constants/shadow_offset_x = 2
+Label/constants/shadow_offset_y = 3
