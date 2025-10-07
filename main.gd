@@ -12,7 +12,7 @@ extends Node2D
 @onready var chat_ui = $CanvasLayer/ChatUI
 @onready var login_button: Button = $CanvasLayer/LoginUI/Button_login
 @onready var username_input: LineEdit = $CanvasLayer/LoginUI/LineEdit_username
-@onready var password_input: LineEdit = $CanvasLayer/LoginUI/LineEdit_password 
+@onready var password_input: LineEdit = $CanvasLayer/LoginUI/LineEdit_password
 @onready var chat_input: LineEdit = $CanvasLayer/ChatUI/LineEdit_chatInput
 @onready var chat_send: Button = $CanvasLayer/ChatUI/Button_send
 @onready var chat_log: TextEdit = $CanvasLayer/ChatUI/TextEdit_chatLog
@@ -154,7 +154,7 @@ func _handle_movement(delta: float, player: CharacterBody2D):
 		velocity = move_dir * speed
 
 	player.velocity = velocity
-	player.move_and_slide()  # ⚙️ física de Godot
+	player.move_and_slide() # ⚙️ física de Godot
 
 	# Enviar posición al servidor (solo del jugador local)
 	if network.connected:
@@ -198,7 +198,6 @@ func _attack_near_target(mouse_pos: Vector2):
 		if other.position.distance_to(mouse_pos) < 30:
 			network.attack("player", player_id, 10)
 			return
-
 # -------------------------------
 # --- SPAWN JUGADOR
 # -------------------------------
@@ -209,37 +208,54 @@ func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100):
 	player_container.add_child(instance)
 	players[id] = instance
 
-	# Nombre
+	# Nombre del jugador
 	var name_label = instance.get_node_or_null("nombre")
 	if name_label:
 		name_label.text = username
 
-	# Cámara
+	# Cámara para jugador local
 	if id == network.player_id:
 		var cam = instance.get_node_or_null("Camera2D")
 		if cam:
 			cam.make_current()
 
-	# HP
+	# Barra de vida y texto del valor
 	var bar = instance.get_node_or_null("ProgressBar")
 	if bar:
 		bar.max_value = 100
 		bar.value = hp
-		bar.queue_redraw()
+		bar.show()
 
-	# Sprite
+		# Intentamos buscar un Label hijo del ProgressBar llamado "HPLabel"
+		var hp_label = bar.get_node_or_null("HPLabel")
+		if not hp_label:
+			# Si no existe, lo creamos dinámicamente
+			hp_label = Label.new()
+			hp_label.name = "HPLabel"
+			hp_label.autowrap_mode = TextServer.AUTOWRAP_OFF
+			hp_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			hp_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			hp_label.anchor_left = 0.0
+			hp_label.anchor_top = 0.0
+			hp_label.anchor_right = 1.0
+			hp_label.anchor_bottom = 1.0
+			hp_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			hp_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+			bar.add_child(hp_label)
+		hp_label.text = str(hp) + " / 100"
+
+	# Sprite animado
 	var sprite = instance.get_node_or_null("AnimatedSprite2D")
 	if sprite:
 		sprite.animation = "Idle"
 		sprite.play()
 
-	# Collider
+	# Collider de cuerpo
 	var collider = instance.get_node_or_null("CollisionShape2D")
 	if collider:
 		collider.disabled = false
 		if collider.shape == null:
 			collider.shape = RectangleShape2D.new()
-
 		collider.position = Vector2(-3, 27)
 		collider.scale = Vector2(2, 3.5)
 		collider.shape.extents = Vector2(10, 10)
@@ -250,8 +266,9 @@ func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100):
 	if instance is CharacterBody2D:
 		instance.collision_layer = 1
 		instance.collision_mask = 5
-		
+
 	print("[SPAWN] Jugador", username, "spawned at", pos)
+
 
 # -------------------------------
 # --- ENEMIGOS / HP / UI
@@ -263,6 +280,7 @@ func _spawn_enemy(id: int, _enemy_type: String, pos: Vector2):
 	enemy_container.add_child(instance)
 	enemies[id] = instance
 
+
 func update_player_hp(id: int, hp_value: int):
 	var player = players.get(id, null)
 	if not player:
@@ -270,11 +288,22 @@ func update_player_hp(id: int, hp_value: int):
 
 	var bar = player.get_node_or_null("ProgressBar")
 	if bar:
-		bar.value = clamp(hp_value, 0, 100)
-		bar.queue_redraw()
-		if id == network.player_id and bar.value <= 0:
+		var new_value = clamp(hp_value, 0, 100)
+		
+		# Animar suavemente el cambio de HP
+		var tween = get_tree().create_tween()
+		tween.tween_property(bar, "value", new_value, 0.3).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+		# Actualizar el texto del HPLabel
+		var hp_label = bar.get_node_or_null("HPLabel")
+		if hp_label:
+			hp_label.text = str(new_value) + " / 100"
+
+		# Si el jugador local muere, cerrar el juego
+		if id == network.player_id and new_value <= 0:
 			print("[GAME OVER] Jugador muerto. Cerrando juego...")
 			get_tree().quit()
+
 
 func _update_player_hp(player: Node2D, hp_value: int, id: int):
 	update_player_hp(id, hp_value)
