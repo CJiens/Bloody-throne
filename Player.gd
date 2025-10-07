@@ -57,4 +57,4 @@ func take_damage(amount: int):
 	hp -= amount
 	print("HP restante:", hp)
 	if hp <= 0:
-		queue_free()
+		get_tree().quit()

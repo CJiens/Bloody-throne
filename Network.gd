@@ -3,8 +3,8 @@ extends Node
 # -------------------------------
 # --- CONFIGURACIÓN DEL SERVIDOR
 # -------------------------------
-@export var websocket_url := "ws://10.8.91.86:3000"  # URL WebSocket
-@export var api_url := "http://10.8.91.86:3000/api"  # URL base API REST
+@export var websocket_url := "ws://localhost:3000"  # URL WebSocket
+@export var api_url := "http://localhost:3000/api"  # URL base API REST
 
 # -------------------------------
 # --- VARIABLES DE RED

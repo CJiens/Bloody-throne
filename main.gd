@@ -12,7 +12,7 @@ extends Node2D
 @onready var chat_ui = $CanvasLayer/ChatUI
 @onready var login_button: Button = $CanvasLayer/LoginUI/Button_login
 @onready var username_input: LineEdit = $CanvasLayer/LoginUI/LineEdit_username
-@onready var password_input: LineEdit = $CanvasLayer/LoginUI/LineEdit_password
+@onready var password_input: LineEdit = $CanvasLayer/LoginUI/LineEdit_password 
 @onready var chat_input: LineEdit = $CanvasLayer/ChatUI/LineEdit_chatInput
 @onready var chat_send: Button = $CanvasLayer/ChatUI/Button_send
 @onready var chat_log: TextEdit = $CanvasLayer/ChatUI/TextEdit_chatLog
@@ -66,7 +66,7 @@ func _process(delta):
 	if not network.connected or network.player_id == -1:
 		return
 
-	# --- Actualizar jugadores ---
+	# ⚙️ ACTUALIZAR OTROS JUGADORES (pero no el local)
 	for key in network.players.keys():
 		var id = int(key)
 		var data = network.players[key]
@@ -74,21 +74,16 @@ func _process(delta):
 		if id in players:
 			var player_node = players[id]
 
-			# Actualizar posición solo si no es el jugador local
 			if id != network.player_id:
+				# ⚙️ Solo actualiza a los demás jugadores
 				player_node.position = Vector2(data.x, data.y)
 				player_node.update_animation(Vector2.ZERO, false, false)
-
-			# Actualizar nombre y HP
-			var name_label = player_node.get_node_or_null("nombre")
-			if name_label:
-				name_label.text = data.username
 
 			_update_player_hp(player_node, data.hp, id)
 		else:
 			_spawn_player(id, data.username, Vector2(data.x, data.y), data.hp)
 
-	# --- Actualizar enemigos ---
+	# Enemigos
 	for key in network.enemies.keys():
 		var id = int(key)
 		var data = network.enemies[key]
@@ -97,7 +92,7 @@ func _process(delta):
 		else:
 			_spawn_enemy(id, data.type, Vector2(data.x, data.y))
 
-	# --- Limpiar desconectados ---
+	# Limpiar desconectados
 	for id in players.keys():
 		if not network.players.has(str(id)):
 			players[id].queue_free()
@@ -108,23 +103,23 @@ func _process(delta):
 			enemies[id].queue_free()
 			enemies.erase(id)
 
-	# --- Movimiento local y roll ---
+	# ⚙️ MOVIMIENTO LOCAL CON FÍSICA
 	var player = players.get(network.player_id, null)
-	if player:
+	if player and player is CharacterBody2D:
 		_handle_movement(delta, player)
 
 		var my_data = network.players.get(str(network.player_id), null)
 		if my_data:
 			_update_player_hp(player, my_data.hp, network.player_id)
 
-	# --- Ataque continuo ---
+	# Ataque continuo
 	if attack_held:
 		attack_timer -= delta
 		if attack_timer <= 0:
 			attack_timer = attack_cooldown
 			_attack_near_target(get_global_mouse_position())
 
-	# --- Roll timers ---
+	# Roll timers
 	if is_rolling:
 		roll_timer -= delta
 		if roll_timer <= 0:
@@ -135,9 +130,9 @@ func _process(delta):
 		roll_cooldown_timer -= delta
 
 # -------------------------------
-# --- MOVIMIENTO
+# --- MOVIMIENTO (ahora con colisiones)
 # -------------------------------
-func _handle_movement(delta: float, player):
+func _handle_movement(delta: float, player: CharacterBody2D):
 	move_dir = Vector2.ZERO
 	if Input.is_action_pressed("move_right"):
 		move_dir.x += 1
@@ -151,13 +146,20 @@ func _handle_movement(delta: float, player):
 	if move_dir != Vector2.ZERO:
 		move_dir = move_dir.normalized()
 
-	# Movimiento
+	# ⚙️ Movimiento con colisiones reales
+	var velocity = Vector2.ZERO
 	if is_rolling:
-		player.position += move_dir * roll_speed * delta
+		velocity = move_dir * roll_speed
 	else:
-		player.position += move_dir * speed * delta
+		velocity = move_dir * speed
 
-	network.move_player(player.position.x, player.position.y)
+	player.velocity = velocity
+	player.move_and_slide()  # ⚙️ física de Godot
+
+	# Enviar posición al servidor (solo del jugador local)
+	if network.connected:
+		network.move_player(player.position.x, player.position.y)
+
 	player.update_animation(move_dir, attack_held, is_rolling)
 
 # -------------------------------
@@ -175,7 +177,6 @@ func _unhandled_input(event):
 		else:
 			attack_held = false
 
-	# --- Roll ---
 	if event.is_action_pressed("roll") and not is_rolling and roll_cooldown_timer <= 0:
 		is_rolling = true
 		roll_timer = roll_duration
@@ -199,7 +200,7 @@ func _attack_near_target(mouse_pos: Vector2):
 			return
 
 # -------------------------------
-# --- SPAWN
+# --- SPAWN JUGADOR
 # -------------------------------
 func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100):
 	var instance: Player = PlayerScene.instantiate()
@@ -208,25 +209,53 @@ func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100):
 	player_container.add_child(instance)
 	players[id] = instance
 
+	# Nombre
 	var name_label = instance.get_node_or_null("nombre")
 	if name_label:
 		name_label.text = username
 
+	# Cámara
 	if id == network.player_id:
 		var cam = instance.get_node_or_null("Camera2D")
 		if cam:
 			cam.make_current()
 
+	# HP
 	var bar = instance.get_node_or_null("ProgressBar")
 	if bar:
 		bar.max_value = 100
 		bar.value = hp
+		bar.queue_redraw()
 
+	# Sprite
 	var sprite = instance.get_node_or_null("AnimatedSprite2D")
 	if sprite:
 		sprite.animation = "Idle"
 		sprite.play()
 
+	# Collider
+	var collider = instance.get_node_or_null("CollisionShape2D")
+	if collider:
+		collider.disabled = false
+		if collider.shape == null:
+			collider.shape = RectangleShape2D.new()
+
+		collider.position = Vector2(-3, 27)
+		collider.scale = Vector2(2, 3.5)
+		collider.shape.extents = Vector2(10, 10)
+		print("[SPAWN] ✅ CollisionShape2D configurado en pos", collider.position, "y escala", collider.scale)
+	else:
+		print("[SPAWN] ❌ No se encontró CollisionShape2D en el Player")
+
+	if instance is CharacterBody2D:
+		instance.collision_layer = 1
+		instance.collision_mask = 5
+		
+	print("[SPAWN] Jugador", username, "spawned at", pos)
+
+# -------------------------------
+# --- ENEMIGOS / HP / UI
+# -------------------------------
 func _spawn_enemy(id: int, _enemy_type: String, pos: Vector2):
 	var instance = EnemyScene.instantiate()
 	instance.position = pos
@@ -234,24 +263,26 @@ func _spawn_enemy(id: int, _enemy_type: String, pos: Vector2):
 	enemy_container.add_child(instance)
 	enemies[id] = instance
 
-# -------------------------------
-# --- HP
-# -------------------------------
-func _update_player_hp(player: Node2D, hp_value: int, id: int):
+func update_player_hp(id: int, hp_value: int):
+	var player = players.get(id, null)
+	if not player:
+		return
+
 	var bar = player.get_node_or_null("ProgressBar")
 	if bar:
-		bar.max_value = 100
 		bar.value = clamp(hp_value, 0, 100)
 		bar.queue_redraw()
-		# ✅ Log para verificar actualización
-		if id == network.player_id:
-			print("[HP UPDATE] Jugador local HP:", bar.value)
-		else:
-			print("[HP UPDATE] Jugador", id, "HP:", bar.value)
+		if id == network.player_id and bar.value <= 0:
+			print("[GAME OVER] Jugador muerto. Cerrando juego...")
+			get_tree().quit()
 
-# -------------------------------
-# --- UI
-# -------------------------------
+func _update_player_hp(player: Node2D, hp_value: int, id: int):
+	update_player_hp(id, hp_value)
+	if id == network.player_id:
+		print("[HP UPDATE] Jugador local HP:", hp_value)
+	else:
+		print("[HP UPDATE] Jugador", id, "HP:", hp_value)
+
 func _on_login_pressed():
 	var username = username_input.text.strip_edges()
 	var password = password_input.text.strip_edges()

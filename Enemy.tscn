@@ -9,6 +9,4 @@ script = ExtResource("1_7k104")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_s7bn3")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]

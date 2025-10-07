@@ -1,0 +1,19 @@
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://87b6sym881sc"]
+
+[sub_resource type="SystemFont" id="SystemFont_lquwl"]
+font_names = PackedStringArray("Georgia")
+
+[sub_resource type="FontVariation" id="FontVariation_7mycd"]
+base_font = SubResource("SystemFont_lquwl")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_272bh"]
+bg_color = Color(0.13682574, 0.13682574, 0.13682568, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[resource]
+LineEdit/font_sizes/font_size = 16
+LineEdit/fonts/font = SubResource("FontVariation_7mycd")
+LineEdit/styles/normal = SubResource("StyleBoxFlat_272bh")

@@ -1066,6 +1066,9 @@
 [ext_resource type="Texture2D" uid="uid://bwqd7v2f84uf2" path="res://Sprites/warr/run/run_SW/0020.png" id="941_iqoa0"]
 [ext_resource type="Texture2D" uid="uid://ckgdy3c21mma1" path="res://Sprites/warr/run/run_W/0020.png" id="961_yq104"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_erspt"]
+size = Vector2(20, 19.581665)
+
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_3wrom"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_rft0p"]
@@ -6838,12 +6841,17 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_kpjcp"]
-size = Vector2(20, 20.646076)
-
 [node name="Node2D" type="CharacterBody2D"]
+collision_mask = 16
 script = ExtResource("1_xhfnw")
 metadata/_edit_horizontal_guides_ = [-149.0]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+process_physics_priority = 1
+z_index = -1
+position = Vector2(-3, 27)
+scale = Vector2(1.9605154, 3.455177)
+shape = SubResource("RectangleShape2D_erspt")
 
 [node name="nombre" type="Label" parent="."]
 offset_left = -19.0
@@ -6853,6 +6861,7 @@ offset_bottom = 4.999998
 scale = Vector2(0.6424348, 0.3489383)
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(1.766, 3.165)
@@ -6860,14 +6869,7 @@ sprite_frames = SubResource("SpriteFrames_yq104")
 animation = &"attack_W"
 speed_scale = 6.8
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 32)
-scale = Vector2(1.4955657, -2.7615395)
-shape = SubResource("RectangleShape2D_kpjcp")
-
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-
-[node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
 offset_left = -3.0
@@ -6875,3 +6877,10 @@ offset_top = -9.0
 offset_right = 1.0
 offset_bottom = 18.0
 scale = Vector2(2.339758, 0.51242036)
+metadata/_edit_use_anchors_ = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+limit_left = -500
+limit_top = -500
+limit_right = 500
+limit_bottom = 500
