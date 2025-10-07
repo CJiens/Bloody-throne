@@ -16,7 +16,10 @@ extends Node2D
 @onready var chat_input: LineEdit = $CanvasLayer/ChatUI/LineEdit_chatInput
 @onready var chat_send: Button = $CanvasLayer/ChatUI/Button_send
 @onready var chat_log: TextEdit = $CanvasLayer/ChatUI/TextEdit_chatLog
-
+@onready var vbox_container_2: VBoxContainer = $CanvasLayer/Pantalla_Inicial/VBoxContainer2
+@onready var button: Button = $CanvasLayer/Pantalla_Inicial/VBoxContainer/Button
+@onready var vbox_container: VBoxContainer = $CanvasLayer/Pantalla_Inicial/VBoxContainer
+@onready var video_stream_player: VideoStreamPlayer = $CanvasLayer/Pantalla_Inicial/VideoStreamPlayer
 # Prefabs
 @export var PlayerScene: PackedScene
 @export var EnemyScene: PackedScene
@@ -52,6 +55,7 @@ func _ready():
 	login_button.pressed.connect(_on_login_pressed)
 	chat_send.pressed.connect(_on_chat_send_pressed)
 	chat_ui.visible = false
+	vbox_container_2.visible = false
 
 	if not network.is_connected("login_successful", self._on_login_successful):
 		network.connect("login_successful", self._on_login_successful)
@@ -154,7 +158,7 @@ func _handle_movement(delta: float, player: CharacterBody2D):
 		velocity = move_dir * speed
 
 	player.velocity = velocity
-	player.move_and_slide()  # ⚙️ física de Godot
+	player.move_and_slide() # ⚙️ física de Godot
 
 	# Enviar posición al servidor (solo del jugador local)
 	if network.connected:
@@ -291,6 +295,17 @@ func _on_login_pressed():
 		network.login_user(username, password)
 
 func _on_chat_send_pressed():
+	vbox_container_2.visible = false
+
+	# Cargar el video correctamente (load devuelve un VideoStream)
+	video_stream_player.stream = load("res://Presentacion-del-Juego-Por-Frame Formato Godot.ogv")
+
+	video_stream_player.play()
+
+	await video_stream_player.finished
+
+	print("🎬 Video terminado, entrando al mundo...")
+	get_tree().change_scene_to_file("res://scenes/Mundo.tscn")
 	var text = chat_input.text.strip_edges()
 	if text != "":
 		network.send_chat(text)
@@ -300,3 +315,13 @@ func _on_login_successful():
 	login_ui.visible = false
 	chat_ui.visible = true
 	chat_log.clear()
+
+
+func _on_button_pressed() -> void:
+	vbox_container.visible = false
+	vbox_container_2.visible = true
+
+
+
+func _on_button_4_pressed() -> void:
+	get_tree().quit()
