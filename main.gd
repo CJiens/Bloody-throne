@@ -10,9 +10,9 @@ extends Node2D
 # UI
 @onready var login_ui = $CanvasLayer/LoginUI
 @onready var chat_ui = $CanvasLayer/ChatUI
-@onready var login_button: Button = $CanvasLayer/LoginUI/Button_login
-@onready var username_input: LineEdit = $CanvasLayer/LoginUI/LineEdit_username
-@onready var password_input: LineEdit = $CanvasLayer/LoginUI/LineEdit_password 
+@onready var login_button: Button = $"CanvasLayer/Pantalla Inicial/VBoxContainer2/Button_login"
+@onready var username_input: LineEdit = $"CanvasLayer/Pantalla Inicial/VBoxContainer2/LineEdit_username"
+@onready var password_input: LineEdit = $"CanvasLayer/Pantalla Inicial/VBoxContainer2/LineEdit_password"
 @onready var chat_input: LineEdit = $CanvasLayer/ChatUI/LineEdit_chatInput
 @onready var chat_send: Button = $CanvasLayer/ChatUI/Button_send
 @onready var chat_log: TextEdit = $CanvasLayer/ChatUI/TextEdit_chatLog
