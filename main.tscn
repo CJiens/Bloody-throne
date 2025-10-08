@@ -131,16 +131,25 @@ stream = ExtResource("10_4c57u")
 autoplay = true
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
-layout_mode = 0
-offset_left = 167.5841
-offset_top = 345.28082
-offset_right = 395.5841
-offset_bottom = 502.28082
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -891.9999
+offset_top = -120.0
+offset_right = -527.5209
+offset_bottom = 142.16357
+grow_horizontal = 0
+grow_vertical = 2
 scale = Vector2(1.989141, 1.2119122)
+theme_override_constants/separation = 40
 
 [node name="server_ip" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer3"]
 layout_mode = 2
 theme = ExtResource("9_kek77")
+placeholder_text = "Ip"
 
 [node name="Button_ip" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer3"]
 layout_mode = 2
