@@ -31,7 +31,9 @@ func update_animation(dir: Vector2, attacking: bool = false, rolling: bool = fal
 		sprite.play()
 
 func _get_direction_animation(angle: float, type: String) -> String:
+	var sprite = get_node_or_null("AnimatedSprite2D")
 	if angle >= -PI / 8 and angle < PI / 8:
+		sprite.scale.x = 1
 		return type + "_E"
 	elif angle >= PI / 8 and angle < 3 * PI / 8:
 		return type + "_SE"
@@ -40,6 +42,7 @@ func _get_direction_animation(angle: float, type: String) -> String:
 	elif angle >= 5 * PI / 8 and angle < 7 * PI / 8:
 		return type + "_SW"
 	elif angle >= 7 * PI / 8 or angle < -7 * PI / 8:
+		sprite.scale.x = -1
 		return type + "_W"
 	elif angle >= -7 * PI / 8 and angle < -5 * PI / 8:
 		return type + "_NW"
