@@ -25,6 +25,7 @@ extends Node2D
 @onready var vbox_container_3: VBoxContainer = $CanvasLayer/Pantalla_Inicial/VBoxContainer3
 @onready var server_ip: LineEdit = $CanvasLayer/Pantalla_Inicial/VBoxContainer3/server_ip
 @onready var button_ip: Button = $CanvasLayer/Pantalla_Inicial/VBoxContainer3/Button_ip
+
 # Prefabs
 @export var PlayerScene: PackedScene
 @export var EnemyScene: PackedScene
@@ -40,9 +41,12 @@ var move_dir := Vector2.ZERO
 var speed := 200.0
 
 # Ataque
-var attack_held := false
-var attack_cooldown := 0.5
-var attack_timer := 0.0
+var attack_range: float = 40.0
+var attack_cone_angle: float = deg_to_rad(45.0)
+var attack_damage: int = 10
+var attack_cooldown: float = 0.2
+var attack_timer: float = 0.0
+var can_attack: bool = true
 
 # Roll
 var is_rolling := false
@@ -66,7 +70,6 @@ func _ready():
 	vbox_container_3.visible = false
 
 	button_ip.pressed.connect(_on_button_ip_pressed)
-	button.pressed.connect(_on_button_pressed)
 
 	if not network.is_connected("login_successful", self._on_login_successful):
 		network.connect("login_successful", self._on_login_successful)
@@ -78,6 +81,7 @@ func _ready():
 # --- PROCESO PRINCIPAL
 # -------------------------------
 func _process(delta):
+	
 	if not network.connected or network.player_id == -1:
 		return
 
@@ -123,12 +127,11 @@ func _process(delta):
 		if my_data:
 			_update_player_hp(player, my_data.hp, network.player_id)
 
-	# --- Ataque ---
-	if attack_held:
+	# --- Cooldown de ataque ---
+	if not can_attack:
 		attack_timer -= delta
 		if attack_timer <= 0:
-			attack_timer = attack_cooldown
-			_attack_near_target(get_global_mouse_position())
+			can_attack = true
 
 	# --- Rodar ---
 	if is_rolling:
@@ -169,7 +172,7 @@ func _handle_movement(_delta: float, player: CharacterBody2D):
 	if network.connected:
 		network.move_player(player.position.x, player.position.y)
 
-	player.update_animation(move_dir, attack_held, is_rolling)
+	player.update_animation(move_dir, false, is_rolling)
 
 # -------------------------------
 # --- INPUT
@@ -180,11 +183,8 @@ func _unhandled_input(event):
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
-			attack_held = true
-			attack_timer = 0
-			_attack_near_target(get_global_mouse_position())
-		else:
-			attack_held = false
+			if can_attack:
+				_attack_near_target(get_global_mouse_position())
 
 	if event.is_action_pressed("roll") and not is_rolling and roll_cooldown_timer <= 0:
 		is_rolling = true
@@ -194,9 +194,11 @@ func _unhandled_input(event):
 # --- ATAQUE CON COOLDOWN Y RANGO
 # -------------------------------
 func _attack_near_target(mouse_pos: Vector2) -> void:
-	var attack_range: float = 40.0
-	var cone_angle: float = deg_to_rad(45.0)
-	var damage: int = 10
+	if not can_attack:
+		return
+
+	can_attack = false
+	attack_timer = attack_cooldown
 
 	var player = players.get(network.player_id, null)
 	if player == null:
@@ -214,8 +216,8 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 		if dist <= attack_range:
 			var dir_to_enemy: Vector2 = to_enemy.normalized()
 			var angle: float = player_facing.angle_to(dir_to_enemy)
-			if abs(angle) <= cone_angle:
-				network.attack("enemy", enemy_id, damage)
+			if abs(angle) <= attack_cone_angle:
+				network.attack("enemy", enemy_id, attack_damage)
 				hit_something = true
 				break
 
@@ -229,8 +231,8 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 			if dist_p <= attack_range:
 				var dir_to_player: Vector2 = to_player.normalized()
 				var angle_p: float = player_facing.angle_to(dir_to_player)
-				if abs(angle_p) <= cone_angle:
-					network.attack("player", player_id, damage)
+				if abs(angle_p) <= attack_cone_angle:
+					network.attack("player", player_id, attack_damage)
 					break
 
 # -------------------------------
@@ -330,8 +332,6 @@ func _on_button_3_pressed() -> void:
 # -------------------------------
 # --- CONEXIÓN POR IP
 # -------------------------------
-
-
 func _on_button_ip_pressed() -> void:
 	var ip = server_ip.text.strip_edges()
 	if ip == "":

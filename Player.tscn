@@ -1,4 +1,4 @@
-[gd_scene load_steps=512 format=3 uid="uid://xsdjfolg3h1m"]
+[gd_scene load_steps=514 format=3 uid="uid://xsdjfolg3h1m"]
 
 [ext_resource type="Script" uid="uid://cet0c5gh0dp4l" path="res://Player.gd" id="1_xhfnw"]
 [ext_resource type="Texture2D" uid="uid://cvthwvdgad0xw" path="res://Sprites/war1/Character (1)/Character/Dead/00.png" id="2_ictha"]
@@ -29,6 +29,14 @@
 [ext_resource type="Texture2D" uid="uid://c7r18jf6s05ac" path="res://Sprites/war1/Character (1)/Character/Run/50.png" id="916_kh1s0"]
 [ext_resource type="Texture2D" uid="uid://uuqbdusiclid" path="res://Sprites/war1/Character (1)/Character/Run/60.png" id="917_td5hy"]
 [ext_resource type="Texture2D" uid="uid://b84hobc1w6rki" path="res://Sprites/war1/Character (1)/Character/Run/70.png" id="918_erspt"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jgrc"]
+bg_color = Color(0.6745098, 0, 0.2, 1)
+
+[sub_resource type="Theme" id="Theme_7wy67"]
+ProgressBar/constants/outline_size = 1
+ProgressBar/font_sizes/font_size = 5
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_1jgrc")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_erspt"]
 size = Vector2(20, 19.581665)
@@ -1098,7 +1106,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"attack_N",
-"speed": 20.0
+"speed": 1.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -3230,6 +3238,16 @@ collision_mask = 16
 script = ExtResource("1_xhfnw")
 metadata/_edit_horizontal_guides_ = [-149.0]
 
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -31.864014
+offset_top = 29.274813
+offset_right = -27.864014
+offset_bottom = 56.27487
+scale = Vector2(18.099564, 0.2727806)
+theme = SubResource("Theme_7wy67")
+value = 50.0
+show_percentage = false
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 process_physics_priority = 1
 z_index = -1
@@ -3238,10 +3256,10 @@ scale = Vector2(-1.7401745, 2.3508554)
 shape = SubResource("RectangleShape2D_erspt")
 
 [node name="nombre" type="Label" parent="."]
-offset_left = -67.01619
-offset_top = 100.20184
-offset_right = -9.01619
-offset_bottom = 123.20184
+offset_left = -64.86813
+offset_top = -83.00815
+offset_right = -6.8681335
+offset_bottom = -60.00815
 scale = Vector2(2.425373, 1.0404111)
 text = "player4"
 horizontal_alignment = 1
@@ -3250,20 +3268,11 @@ metadata/_edit_use_anchors_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_yq104")
-animation = &"Die"
-frame = 7
-frame_progress = 1.0
+animation = &"run_NE"
+frame_progress = 0.45344272
 speed_scale = 6.8
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-
-[node name="ProgressBar" type="ProgressBar" parent="."]
-offset_left = -2.5670733
-offset_top = -118.43576
-offset_right = 1.4329276
-offset_bottom = -91.43576
-scale = Vector2(2.674009, 0.79709834)
-metadata/_edit_use_anchors_ = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 limit_left = -500

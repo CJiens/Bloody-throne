@@ -8,10 +8,9 @@ var id: int
 var hp: int = 100
 var max_hp: int = 200
 var animation_state: String = "Idle"
-var is_local_player: bool = false
+
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
-
 
 # -------------------------------
 # --- ANIMACIONES
@@ -37,12 +36,14 @@ func update_animation(dir: Vector2, attacking: bool = false, rolling: bool = fal
 
 	if sprite.animation != anim_name:
 		sprite.animation = anim_name
+		
 		sprite.play()
 
 		# Si es el jugador local, sincronizamos el estado de animación con el servidor
-		if is_local_player:
-			animation_state = anim_name
-			Network.send_player_state(anim_name)
+
+		print(anim_name, " playergd")
+		animation_state = anim_name
+		Network.send_player_state(anim_name)
 
 func _get_direction_animation(angle: float, type: String) -> String:
 	if angle >= -PI / 8 and angle < PI / 8:
@@ -83,8 +84,8 @@ func play_death_animation():
 		return
 
 	sprite.play("Die")
-	if is_local_player:
-		Network.send_player_state("Die")
+	
+	Network.send_player_state("Die")
 
 	# Esperar a que termine la animación antes de salir
 	await sprite.animation_finished

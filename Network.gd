@@ -122,7 +122,7 @@ func _receive_messages():
 			"player_dead":
 				if data.id in players:
 					players[data.id].hp = 0
-
+# sistema de gestion de tareas enfocado en el desarrollo de videojuegos
 			"player_state_update":
 				if data.id in players:
 					players[data.id].animation_state = data.state
@@ -169,7 +169,7 @@ func move_player(x: float, y: float):
 		socket.send_text(JSON.stringify({
 			"type": "move",
 			"x": x,
-			"y": y
+			"y": y,
 		}))
 
 func attack(target_type: String, target_id: int, damage: int = 10):
@@ -189,11 +189,17 @@ func send_chat(text: String):
 		}))
 
 func send_player_state(state: String):
+	print(state, " network")
 	if connected:
+		print(JSON.stringify({
+			"type": "player_state",
+			"state": state
+		}))
 		socket.send_text(JSON.stringify({
 			"type": "player_state",
 			"state": state
 		}))
+		
 
 # -------------------------------
 # --- LOGIN API
