@@ -189,14 +189,26 @@ func _unhandled_input(event):
 # -------------------------------
 # --- ATAQUE AUTOMÁTICO
 # -------------------------------
+# -------------------------------
+# --- ATAQUE AUTOMÁTICO CON COOLDOWN Y RANGO CONFIGURABLE
+# -------------------------------
 func _attack_near_target(mouse_pos: Vector2) -> void:
-	var attack_range: float = 10.0        # distancia máxima del ataque
-	var cone_angle: float = deg_to_rad(45) # ángulo del cono (45° a cada lado)
-	
-	var player_pos: Vector2 = global_position
-	var player_facing: Vector2 = (mouse_pos - player_pos).normalized()  # dirección hacia donde apunta el ratón
+	# ⚙️ Variables ajustables
+	var attack_range: float = 40.0            # distancia máxima del ataque
+	var cone_angle: float = deg_to_rad(45.0)   # ángulo del cono (45° a cada lado)
+	var damage: int = 10                       # daño base del ataque
 
-	# Buscar enemigos dentro del cono frontal
+	# 📍 Obtener jugador local
+	var player = players.get(network.player_id, null)
+	if player == null:
+		return
+
+	var player_pos: Vector2 = player.global_position
+	var player_facing: Vector2 = (mouse_pos - player_pos).normalized()
+
+	var hit_something := false
+
+	# 🧟‍♂️ Buscar enemigos dentro del cono
 	for enemy_id in enemies.keys():
 		var enemy = enemies[enemy_id]
 		var to_enemy: Vector2 = enemy.position - player_pos
@@ -206,27 +218,28 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 			var dir_to_enemy: Vector2 = to_enemy.normalized()
 			var angle: float = player_facing.angle_to(dir_to_enemy)
 
-			# Si está dentro del cono (en frente del jugador)
 			if abs(angle) <= cone_angle:
-				network.attack("enemy", enemy_id, 10)
-				return  # solo golpea al primero encontrado
+				network.attack("enemy", enemy_id, damage)
+				hit_something = true
+				break  # Quita esto si quieres golpear a varios
 
-	# Si no golpeó enemigo, buscar jugadores (PvP)
-	for player_id in players.keys():
-		if player_id == network.player_id:
-			continue
-		var other = players[player_id]
-		var to_player: Vector2 = other.position - player_pos
-		var dist_p: float = to_player.length()
+	# 🧍‍♂️ Buscar otros jugadores (PvP)
+	if not hit_something:
+		for player_id in players.keys():
+			if player_id == network.player_id:
+				continue
 
-		if dist_p <= attack_range:
-			var dir_to_player: Vector2 = to_player.normalized()
-			var angle_p: float = player_facing.angle_to(dir_to_player)
+			var other = players[player_id]
+			var to_player: Vector2 = other.position - player_pos
+			var dist_p: float = to_player.length()
 
-			if abs(angle_p) <= cone_angle:
-				network.attack("player", player_id, 10)
-				return
+			if dist_p <= attack_range:
+				var dir_to_player: Vector2 = to_player.normalized()
+				var angle_p: float = player_facing.angle_to(dir_to_player)
 
+				if abs(angle_p) <= cone_angle:
+					network.attack("player", player_id, damage)
+					break
 
 # -------------------------------
 # --- SPAWN / HP
