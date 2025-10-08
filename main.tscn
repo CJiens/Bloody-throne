@@ -130,6 +130,22 @@ text = "eMPEZAR"
 stream = ExtResource("10_4c57u")
 autoplay = true
 
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
+layout_mode = 0
+offset_left = 167.5841
+offset_top = 345.28082
+offset_right = 395.5841
+offset_bottom = 502.28082
+scale = Vector2(1.989141, 1.2119122)
+
+[node name="server_ip" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("9_kek77")
+
+[node name="Button_ip" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer3"]
+layout_mode = 2
+text = "ACEPTAR"
+
 [node name="ChatUI" type="Control" parent="CanvasLayer"]
 visible = false
 layout_mode = 3
@@ -168,5 +184,6 @@ scale = Vector2(2.5078459, 1.6702986)
 text = "ar"
 
 [connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button3" to="." method="_on_button_3_pressed"]
 [connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button4" to="." method="_on_button_4_pressed"]
 [connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer2/Button_login" to="." method="_on_button_login_pressed"]

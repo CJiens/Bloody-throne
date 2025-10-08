@@ -1,21 +1,24 @@
 extends Node
 
 # -------------------------------
-# --- CONFIGURACIÓN DEL SERVIDOR
+# --- VARIABLES CONFIGURACIÓN
 # -------------------------------
-@export var websocket_url := "ws://10.8.91.86:3000"  # URL WebSocket
-@export var api_url := "http://10.8.91.86:3000/api"  # URL base API REST
+@export var websocket_url_base := "ws://"
+@export var api_url_base := "http://"
+
+var websocket_url := ""
+var api_url := ""
 
 # -------------------------------
 # --- VARIABLES DE RED
 # -------------------------------
 var socket: WebSocketPeer = WebSocketPeer.new()
-var player_id: int = -1  # ID del jugador logueado
+var player_id: int = -1
 var connected := false
-var token: String = ""  # JWT obtenido tras login
-var players := {}  # id:int -> {x, y, username, hp}
-var enemies := {}  # id:int -> {x, y, type, hp}
-var ws_ready := false  # WS abierto y listo
+var token: String = ""
+var players := {}
+var enemies := {}
+var ws_ready := false
 
 # -------------------------------
 # --- SEÑALES
@@ -23,15 +26,19 @@ var ws_ready := false  # WS abierto y listo
 signal login_successful
 
 # -------------------------------
-# --- INICIO
+# --- FUNCIÓN DE INICIO CON IP
 # -------------------------------
-func _ready():
-	print("Iniciando conexión WS a %s..." % websocket_url)
+func connect_with_ip(ip: String):
+	websocket_url = "%s%s:3000" % [websocket_url_base, ip]
+	api_url = "%s%s:3000/api" % [api_url_base, ip]
+
+	print("Intentando conectar con:", websocket_url)
+
 	var err = socket.connect_to_url(websocket_url)
 	if err == OK:
 		set_process(true)
 	else:
-		push_error("No se pudo iniciar conexión WS")
+		push_error("❌ No se pudo iniciar conexión WS a " + websocket_url)
 		set_process(false)
 
 # -------------------------------
@@ -47,18 +54,18 @@ func _process(_delta):
 		WebSocketPeer.STATE_OPEN:
 			if not ws_ready:
 				ws_ready = true
-				print("WS: Conexión abierta ✅")
+				print("✅ WS Conexión abierta:", websocket_url)
 				if token != "":
-					auth(token)  # Enviar token al abrir WS
+					auth(token)
 			_receive_messages()
 		WebSocketPeer.STATE_CLOSING:
-			print("WS: Cerrando conexión...")
+			print("🔸 WS cerrando conexión...")
 		WebSocketPeer.STATE_CLOSED:
-			print("WS: Cerrada")
+			print("🔴 WS cerrada")
 			set_process(false)
 
 # -------------------------------
-# --- RECEPCIÓN DE MENSAJES WS
+# --- RECEPCIÓN DE MENSAJES
 # -------------------------------
 func _receive_messages():
 	while socket.get_available_packet_count() > 0:
@@ -67,12 +74,8 @@ func _receive_messages():
 			continue
 
 		var text = packet.get_string_from_utf8()
-		print("[WS RECEIVED]", text)
-
 		var json = JSON.new()
-		var err = json.parse(text)
-		if err != OK:
-			print("Error parseando JSON:", json.get_error_message())
+		if json.parse(text) != OK:
 			continue
 		var data = json.get_data()
 
@@ -81,39 +84,53 @@ func _receive_messages():
 				player_id = data.player.id
 				connected = true
 				enemies = data.enemies
-				print("Autenticado como:", data.player.username)
+				print("✅ Autenticado como:", data.player.username)
+
 			"auth_error":
-				print("Error de autenticación:", data.error)
+				print("❌ Error de autenticación:", data.error)
+
 			"join":
 				players[data.player.id] = {
 					"x": data.player.x,
 					"y": data.player.y,
 					"username": data.player.username,
-					"hp": data.player.hp if data.player.has("hp") else 100
+					"hp": data.player.hp,
+					"animation_state": data.player.get("animation_state", "Idle")
 				}
-				print("Jugador se unió:", data.player.username)
+				print("👤 Jugador se unió:", data.player.username)
+
 			"leave":
 				players.erase(data.id)
-				print("Jugador salió:", data.id)
+				print("🚪 Jugador salió:", data.id)
+
 			"player_moved":
 				if data.player.id in players:
 					players[data.player.id].x = data.player.x
 					players[data.player.id].y = data.player.y
+
 			"enemy_hit":
 				if data.id in enemies:
 					enemies[data.id].hp = data.hp
+
 			"enemy_dead":
 				enemies.erase(data.id)
+
 			"player_hit":
 				if data.id in players:
 					players[data.id].hp = data.hp
+
 			"player_dead":
 				if data.id in players:
 					players[data.id].hp = 0
+
+			"player_state_update":
+				if data.id in players:
+					players[data.id].animation_state = data.state
+
 			"chat":
 				print("[CHAT]", data.from, ":", data.text)
+
 			"state":
-				# Sobrescribir todos los players/enemies
 				players.clear()
 				for pid in data.players.keys():
 					var p = data.players[pid]
@@ -121,7 +138,8 @@ func _receive_messages():
 						"x": p.x,
 						"y": p.y,
 						"username": p.username,
-						"hp": p.hp if p.has("hp") else 100
+						"hp": p.get("hp", 100),
+						"animation_state": p.get("animation_state", "Idle")
 					}
 				enemies.clear()
 				for eid in data.enemies.keys():
@@ -130,13 +148,11 @@ func _receive_messages():
 						"x": e.x,
 						"y": e.y,
 						"type": e.type,
-						"hp": e.hp if e.has("hp") else 100
+						"hp": e.get("hp", 100)
 					}
-			_:
-				print("Mensaje WS desconocido:", data)
 
 # -------------------------------
-# --- ENVÍO DE MENSAJES WS
+# --- ENVÍO DE MENSAJES
 # -------------------------------
 func auth(token_str: String):
 	token = token_str
@@ -172,14 +188,20 @@ func send_chat(text: String):
 			"text": text
 		}))
 
+func send_player_state(state: String):
+	if connected:
+		socket.send_text(JSON.stringify({
+			"type": "player_state",
+			"state": state
+		}))
+
 # -------------------------------
-# --- LOGIN CON PARÁMETROS
+# --- LOGIN API
 # -------------------------------
 func login_user(username: String, password: String) -> void:
 	var http := HTTPRequest.new()
 	add_child(http)
 	http.request_completed.connect(_on_request_completed)
-	
 	var err = http.request(
 		api_url + "/login",
 		["Content-Type: application/json"],
@@ -192,21 +214,14 @@ func login_user(username: String, password: String) -> void:
 	if err != OK:
 		print("❌ Error al enviar petición HTTP:", err)
 
-# -------------------------------
-# --- CALLBACK RESPUESTA HTTP
-# -------------------------------
 func _on_request_completed(result: int, response_code: int, headers: Array, body: PackedByteArray) -> void:
 	var json = JSON.new()
-	var err = json.parse(body.get_string_from_utf8())
-	if err != OK:
-		print("Error parseando JSON HTTP:", json.get_error_message())
+	if json.parse(body.get_string_from_utf8()) != OK:
 		return
-
 	var data = json.get_data()
-
 	if data.ok:
 		print("✅ Login exitoso:", data.user.username)
-		auth(data.token)  # Enviamos token al WebSocket
+		auth(data.token)
 		emit_signal("login_successful")
 	else:
 		print("❌ Error en login:", data.error)

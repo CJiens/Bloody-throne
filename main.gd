@@ -22,11 +22,16 @@ extends Node2D
 @onready var video_stream_player: VideoStreamPlayer = $CanvasLayer/Pantalla_Inicial/VideoStreamPlayer
 @onready var label: Label = $CanvasLayer/Pantalla_Inicial/Label
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
+@onready var vbox_container_3: VBoxContainer = $CanvasLayer/Pantalla_Inicial/VBoxContainer3
+@onready var server_ip: LineEdit = $CanvasLayer/Pantalla_Inicial/VBoxContainer3/server_ip
+@onready var button_ip: Button = $CanvasLayer/Pantalla_Inicial/VBoxContainer3/Button_ip
 # Prefabs
 @export var PlayerScene: PackedScene
 @export var EnemyScene: PackedScene
 
-# Diccionarios locales
+# -------------------------------
+# --- VARIABLES DE JUEGO
+# -------------------------------
 var players := {} # id:int -> Player
 var enemies := {} # id:int -> Node2D
 
@@ -58,16 +63,13 @@ func _ready():
 	chat_send.pressed.connect(_on_chat_send_pressed)
 	chat_ui.visible = false
 	vbox_container_2.visible = false
+	vbox_container_3.visible = false
+
+	button_ip.pressed.connect(_on_button_ip_pressed)
+	button.pressed.connect(_on_button_pressed)
 
 	if not network.is_connected("login_successful", self._on_login_successful):
 		network.connect("login_successful", self._on_login_successful)
-
-	# 🎬 Video inicial en loop (pantalla de inicio)
-	# video_stream_player.stream = load("res://Video-Login-Loop.ogv")
-	# video_stream_player.autoplay = true
-	# video_stream_player.loop = true
-	# video_stream_player.visible = true
-	# video_stream_player.z_index = 0
 
 	set_process(true)
 	set_process_input(true)
@@ -79,6 +81,7 @@ func _process(delta):
 	if not network.connected or network.player_id == -1:
 		return
 
+	# --- Actualizar jugadores ---
 	for key in network.players.keys():
 		var id = int(key)
 		var data = network.players[key]
@@ -92,6 +95,7 @@ func _process(delta):
 		else:
 			_spawn_player(id, data.username, Vector2(data.x, data.y), data.hp)
 
+	# --- Actualizar enemigos ---
 	for key in network.enemies.keys():
 		var id = int(key)
 		var data = network.enemies[key]
@@ -100,6 +104,7 @@ func _process(delta):
 		else:
 			_spawn_enemy(id, data.type, Vector2(data.x, data.y))
 
+	# --- Eliminar desconectados ---
 	for id in players.keys():
 		if not network.players.has(str(id)):
 			players[id].queue_free()
@@ -110,20 +115,22 @@ func _process(delta):
 			enemies[id].queue_free()
 			enemies.erase(id)
 
+	# --- Actualizar jugador local ---
 	var player = players.get(network.player_id, null)
 	if player and player is CharacterBody2D:
 		_handle_movement(delta, player)
-
 		var my_data = network.players.get(str(network.player_id), null)
 		if my_data:
 			_update_player_hp(player, my_data.hp, network.player_id)
 
+	# --- Ataque ---
 	if attack_held:
 		attack_timer -= delta
 		if attack_timer <= 0:
 			attack_timer = attack_cooldown
 			_attack_near_target(get_global_mouse_position())
 
+	# --- Rodar ---
 	if is_rolling:
 		roll_timer -= delta
 		if roll_timer <= 0:
@@ -136,7 +143,7 @@ func _process(delta):
 # -------------------------------
 # --- MOVIMIENTO
 # -------------------------------
-func _handle_movement(delta: float, player: CharacterBody2D):
+func _handle_movement(_delta: float, player: CharacterBody2D):
 	move_dir = Vector2.ZERO
 	if Input.is_action_pressed("move_right"):
 		move_dir.x += 1
@@ -184,31 +191,21 @@ func _unhandled_input(event):
 		roll_timer = roll_duration
 
 # -------------------------------
-# --- ATAQUE
-# -------------------------------
-# -------------------------------
-# --- ATAQUE AUTOMÁTICO
-# -------------------------------
-# -------------------------------
-# --- ATAQUE AUTOMÁTICO CON COOLDOWN Y RANGO CONFIGURABLE
+# --- ATAQUE CON COOLDOWN Y RANGO
 # -------------------------------
 func _attack_near_target(mouse_pos: Vector2) -> void:
-	# ⚙️ Variables ajustables
-	var attack_range: float = 40.0            # distancia máxima del ataque
-	var cone_angle: float = deg_to_rad(45.0)   # ángulo del cono (45° a cada lado)
-	var damage: int = 10                       # daño base del ataque
+	var attack_range: float = 40.0
+	var cone_angle: float = deg_to_rad(45.0)
+	var damage: int = 10
 
-	# 📍 Obtener jugador local
 	var player = players.get(network.player_id, null)
 	if player == null:
 		return
 
 	var player_pos: Vector2 = player.global_position
 	var player_facing: Vector2 = (mouse_pos - player_pos).normalized()
-
 	var hit_something := false
 
-	# 🧟‍♂️ Buscar enemigos dentro del cono
 	for enemy_id in enemies.keys():
 		var enemy = enemies[enemy_id]
 		var to_enemy: Vector2 = enemy.position - player_pos
@@ -217,26 +214,21 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 		if dist <= attack_range:
 			var dir_to_enemy: Vector2 = to_enemy.normalized()
 			var angle: float = player_facing.angle_to(dir_to_enemy)
-
 			if abs(angle) <= cone_angle:
 				network.attack("enemy", enemy_id, damage)
 				hit_something = true
-				break  # Quita esto si quieres golpear a varios
+				break
 
-	# 🧍‍♂️ Buscar otros jugadores (PvP)
 	if not hit_something:
 		for player_id in players.keys():
 			if player_id == network.player_id:
 				continue
-
 			var other = players[player_id]
 			var to_player: Vector2 = other.position - player_pos
 			var dist_p: float = to_player.length()
-
 			if dist_p <= attack_range:
 				var dir_to_player: Vector2 = to_player.normalized()
 				var angle_p: float = player_facing.angle_to(dir_to_player)
-
 				if abs(angle_p) <= cone_angle:
 					network.attack("player", player_id, damage)
 					break
@@ -276,7 +268,6 @@ func update_player_hp(id: int, hp_value: int):
 	var player = players.get(id, null)
 	if not player:
 		return
-
 	var bar = player.get_node_or_null("ProgressBar")
 	if bar:
 		bar.value = clamp(hp_value, 0, 100)
@@ -293,20 +284,14 @@ func _update_player_hp(player: Node2D, hp_value: int, id: int):
 func _on_login_pressed():
 	var username = username_input.text.strip_edges()
 	var password = password_input.text.strip_edges()
-
 	if username != "" and password != "":
 		current_username = username
 		network.login_user(username, password)
 
-# -------------------------------
-# --- LOGIN EXITOSO (VIDEO)
-# -------------------------------
 func _on_login_successful():
 	print("✅ Login exitoso, iniciando video de introducción...")
-
 	vbox_container.visible = false
 	vbox_container_2.visible = false
-
 	video_stream_player.stop()
 	video_stream_player.stream = load("res://Segunda-Parte-video-por-frame.ogv")
 	video_stream_player.loop = false
@@ -314,13 +299,11 @@ func _on_login_successful():
 	video_stream_player.visible = true
 	label.visible = false
 	video_stream_player.play()
-
 	await video_stream_player.finished
 	video_stream_player.visible = false
 	canvas_layer.visible = false
 	canvas_layer.process_mode = Node.PROCESS_MODE_DISABLED
 
-	
 # -------------------------------
 # --- CHAT
 # -------------------------------
@@ -339,3 +322,22 @@ func _on_button_pressed() -> void:
 
 func _on_button_4_pressed() -> void:
 	get_tree().quit()
+
+func _on_button_3_pressed() -> void:
+	vbox_container.visible = false
+	vbox_container_3.visible = true
+
+# -------------------------------
+# --- CONEXIÓN POR IP
+# -------------------------------
+
+
+func _on_button_ip_pressed() -> void:
+	var ip = server_ip.text.strip_edges()
+	if ip == "":
+		print("⚠️ Debes ingresar una IP antes de conectar.")
+		return
+	print("🌐 Intentando conectar a:", ip)
+	network.connect_with_ip(ip)
+	vbox_container.visible = true
+	vbox_container_3.visible = false
