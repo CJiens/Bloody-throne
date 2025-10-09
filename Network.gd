@@ -129,9 +129,8 @@ func _receive_messages():
 
 				if players.has(player_id):
 					players[player_id].animation_state = data.state
-					print(players[player_id].animation_state, "          ", "WEB SOCKET DE NETWORK")
+					print(players[player_id].animation_state, "WEB SOCKET DE NETWORK")
 				else:
-					print(players)
 					print("⚠️ ID no encontrado en players:", player_id, " keys:", players.keys())
 
 

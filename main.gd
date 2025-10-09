@@ -6,7 +6,6 @@ extends Node2D
 @onready var player_container = $PlayerContainer
 @onready var enemy_container = $EnemyContainer
 
-
 # UI
 @onready var login_ui = $CanvasLayer/Pantalla_Inicial
 @onready var chat_ui = $CanvasLayer/ChatUI
@@ -59,6 +58,9 @@ var roll_cooldown_timer := 0.0
 # UI
 var current_username: String = ""
 
+# Estado de animación actual
+var current_animation: String = "Idle"
+
 # -------------------------------
 # --- INICIO
 # -------------------------------
@@ -81,11 +83,10 @@ func _ready():
 # --- PROCESO PRINCIPAL
 # -------------------------------
 func _process(delta):
-	
 	if not Network.connected or Network.player_id == -1:
 		return
 
-	# --- Actualizar jugadores ---
+	# --- Actualizar jugadores desde Network ---
 	for key in Network.players.keys():
 		var id = int(key)
 		var data = Network.players[key]
@@ -94,7 +95,17 @@ func _process(delta):
 			var player_node = players[id]
 			if id != Network.player_id:
 				player_node.position = Vector2(data.x, data.y)
-				player_node.update_animation(Vector2.ZERO, false, false)
+
+				# 🔥 ANIMACIONES SIN ERRORES 🔥
+				if player_node.has_node("AnimatedSprite2D"):
+					var anim_sprite: AnimatedSprite2D = player_node.get_node("AnimatedSprite2D")
+					if data.has("animation_state"):
+						var anim_name: String = data.animation_state
+						if anim_sprite.sprite_frames and anim_sprite.sprite_frames.has_animation(anim_name):
+							if anim_sprite.animation != anim_name:
+								anim_sprite.play(anim_name)
+						else:
+							print("⚠️ Animación inexistente: ", anim_name, " en jugador ", id)
 			_update_player_hp(player_node, data.hp, id)
 		else:
 			_spawn_player(id, data.username, Vector2(data.x, data.y), data.hp)
@@ -144,9 +155,10 @@ func _process(delta):
 		roll_cooldown_timer -= delta
 
 # -------------------------------
-# --- MOVIMIENTO
+# --- MOVIMIENTO Y ANIMACIÓN (LOCAL)
 # -------------------------------
 func _handle_movement(_delta: float, player: CharacterBody2D):
+	# Restauré las entradas de movimiento que faltaban (solo aquí)
 	move_dir = Vector2.ZERO
 	if Input.is_action_pressed("move_right"):
 		move_dir.x += 1
@@ -172,7 +184,25 @@ func _handle_movement(_delta: float, player: CharacterBody2D):
 	if Network.connected:
 		Network.move_player(player.position.x, player.position.y)
 
-	player.update_animation(move_dir, false, is_rolling)
+	# Mantengo la actualización de animación local como estaba originalmente:
+	# Si tu Player.tscn tiene un método `update_animation(move_dir, ..., is_rolling)` lo llamamos (preservando tu lógica de direcciones/frames).
+	if player.has_method("update_animation"):
+		player.update_animation(move_dir, false, is_rolling)
+	# Si no existe ese método, aplico un fallback seguro usando AnimatedSprite2D:
+	elif player.has_node("AnimatedSprite2D"):
+		var sprite: AnimatedSprite2D = player.get_node("AnimatedSprite2D")
+		var new_state := "Idle"
+		if is_rolling:
+			new_state = "Roll"
+		elif move_dir != Vector2.ZERO:
+			new_state = "Walk"
+		else:
+			new_state = "Idle"
+
+		# Verificar existencia para evitar errores (si el nombre no existe, no tocar)
+		if sprite.sprite_frames and sprite.sprite_frames.has_animation(new_state):
+			if sprite.animation != new_state:
+				sprite.play(new_state)
 
 # -------------------------------
 # --- INPUT
@@ -191,7 +221,7 @@ func _unhandled_input(event):
 		roll_timer = roll_duration
 
 # -------------------------------
-# --- ATAQUE CON COOLDOWN Y RANGO
+# --- ATAQUE
 # -------------------------------
 func _attack_near_target(mouse_pos: Vector2) -> void:
 	if not can_attack:
@@ -203,6 +233,10 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 	var player = players.get(Network.player_id, null)
 	if player == null:
 		return
+
+	var sprite: AnimatedSprite2D = player.get_node("AnimatedSprite2D")
+	sprite.play("Attack")
+	Network.send_player_state("Attack")
 
 	var player_pos: Vector2 = player.global_position
 	var player_facing: Vector2 = (mouse_pos - player_pos).normalized()
@@ -236,7 +270,7 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 					break
 
 # -------------------------------
-# --- SPAWN / HP
+# --- SPAWN Y HP
 # -------------------------------
 func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100):
 	var instance: Player = PlayerScene.instantiate()

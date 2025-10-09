@@ -27,10 +27,9 @@ func update_animation(dir: Vector2, attacking: bool = false, rolling: bool = fal
 
 	if sprite.animation != anim_name:
 		sprite.animation = anim_name
-		sprite.play()
 		animation_state = anim_name
-		print(anim_name, "playergd")
 		Network.send_player_state(anim_name)
+		sprite.play()
 
 func _get_direction_animation(angle: float, type: String) -> String:
 	if angle >= -PI / 8 and angle < PI / 8:
