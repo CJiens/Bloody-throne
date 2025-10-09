@@ -1,5 +1,5 @@
 extends Node
-
+#10.8.91.86
 # -------------------------------
 # --- VARIABLES CONFIGURACIÓN
 # -------------------------------
@@ -83,6 +83,7 @@ func _receive_messages():
 			"auth_ok":
 				player_id = data.player.id
 				connected = true
+				print(connected)
 				enemies = data.enemies
 				print("✅ Autenticado como:", data.player.username)
 
@@ -124,8 +125,14 @@ func _receive_messages():
 					players[data.id].hp = 0
 # sistema de gestion de tareas enfocado en el desarrollo de videojuegos
 			"player_state_update":
-				if data.id in players:
-					players[data.id].animation_state = data.state
+				var player_id = str(int(data.id))
+
+				if players.has(player_id):
+					players[player_id].animation_state = data.state
+					print(players[player_id].animation_state, "WEB SOCKET DE NETWORK")
+				else:
+					print("⚠️ ID no encontrado en players:", player_id, " keys:", players.keys())
+
 
 			"chat":
 				print("[CHAT]", data.from, ":", data.text)
@@ -190,7 +197,9 @@ func send_chat(text: String):
 
 func send_player_state(state: String):
 	print(state, " network")
+	print(connected)
 	if connected:
+		print("conected")
 		print(JSON.stringify({
 			"type": "player_state",
 			"state": state
