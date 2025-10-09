@@ -81,19 +81,19 @@ alignment = 1
 
 [node name="Button" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer"]
 layout_mode = 2
-text = "Iniciar Sesión"
+text = "Sign In"
 
 [node name="Button2" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer"]
 layout_mode = 2
-text = "Crear Cuenta"
+text = "Sign Up"
 
 [node name="Button3" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer"]
 layout_mode = 2
-text = "Opciones"
+text = "Settings"
 
 [node name="Button4" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer"]
 layout_mode = 2
-text = "Salir"
+text = "Exit"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
 visible = false
@@ -115,22 +115,59 @@ alignment = 1
 
 [node name="LineEdit_username" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer2"]
 layout_mode = 2
-placeholder_text = "Usuario"
+placeholder_text = "Email or Username"
 
 [node name="LineEdit_password" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer2"]
 layout_mode = 2
-placeholder_text = "Contraseña"
+placeholder_text = "Password"
 secret = true
 
 [node name="Button_login" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer2"]
 layout_mode = 2
-text = "eMPEZAR"
+text = "Join NOw"
+
+[node name="Crear Cuenta" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.73
+anchor_top = 0.55700004
+anchor_right = 0.73
+anchor_bottom = 0.55700004
+offset_left = -362.6001
+offset_top = -142.56006
+offset_right = 361.3999
+offset_bottom = 289.43994
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("9_kek77")
+theme_override_constants/separation = 80
+alignment = 1
+
+[node name="LineEdit_username" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/Crear Cuenta"]
+layout_mode = 2
+placeholder_text = "user name"
+
+[node name="LineEdit_email" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/Crear Cuenta"]
+layout_mode = 2
+placeholder_text = "Email"
+secret = true
+
+[node name="LineEdit_password2" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/Crear Cuenta"]
+layout_mode = 2
+placeholder_text = "password"
+secret = true
+
+[node name="Button_login" type="Button" parent="CanvasLayer/Pantalla_Inicial/Crear Cuenta"]
+layout_mode = 2
+text = "Crear"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CanvasLayer/Pantalla_Inicial"]
 stream = ExtResource("10_4c57u")
 autoplay = true
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
+visible = false
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -196,3 +233,4 @@ text = "ar"
 [connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button3" to="." method="_on_button_3_pressed"]
 [connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button4" to="." method="_on_button_4_pressed"]
 [connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer2/Button_login" to="." method="_on_button_login_pressed"]
+[connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/Crear Cuenta/Button_login" to="." method="_on_button_login_pressed"]
