@@ -5,7 +5,7 @@ extends Node2D
 # -------------------------------
 @onready var player_container = $PlayerContainer
 @onready var enemy_container = $EnemyContainer
-@onready var network = $Network
+
 
 # UI
 @onready var login_ui = $CanvasLayer/Pantalla_Inicial
@@ -71,8 +71,8 @@ func _ready():
 
 	button_ip.pressed.connect(_on_button_ip_pressed)
 
-	if not network.is_connected("login_successful", self._on_login_successful):
-		network.connect("login_successful", self._on_login_successful)
+	if not Network.is_connected("login_successful", self._on_login_successful):
+		Network.connect("login_successful", self._on_login_successful)
 
 	set_process(true)
 	set_process_input(true)
@@ -82,17 +82,17 @@ func _ready():
 # -------------------------------
 func _process(delta):
 	
-	if not network.connected or network.player_id == -1:
+	if not Network.connected or Network.player_id == -1:
 		return
 
 	# --- Actualizar jugadores ---
-	for key in network.players.keys():
+	for key in Network.players.keys():
 		var id = int(key)
-		var data = network.players[key]
+		var data = Network.players[key]
 
 		if id in players:
 			var player_node = players[id]
-			if id != network.player_id:
+			if id != Network.player_id:
 				player_node.position = Vector2(data.x, data.y)
 				player_node.update_animation(Vector2.ZERO, false, false)
 			_update_player_hp(player_node, data.hp, id)
@@ -100,9 +100,9 @@ func _process(delta):
 			_spawn_player(id, data.username, Vector2(data.x, data.y), data.hp)
 
 	# --- Actualizar enemigos ---
-	for key in network.enemies.keys():
+	for key in Network.enemies.keys():
 		var id = int(key)
-		var data = network.enemies[key]
+		var data = Network.enemies[key]
 		if id in enemies:
 			enemies[id].position = Vector2(data.x, data.y)
 		else:
@@ -110,22 +110,22 @@ func _process(delta):
 
 	# --- Eliminar desconectados ---
 	for id in players.keys():
-		if not network.players.has(str(id)):
+		if not Network.players.has(str(id)):
 			players[id].queue_free()
 			players.erase(id)
 
 	for id in enemies.keys():
-		if not network.enemies.has(str(id)):
+		if not Network.enemies.has(str(id)):
 			enemies[id].queue_free()
 			enemies.erase(id)
 
 	# --- Actualizar jugador local ---
-	var player = players.get(network.player_id, null)
+	var player = players.get(Network.player_id, null)
 	if player and player is CharacterBody2D:
 		_handle_movement(delta, player)
-		var my_data = network.players.get(str(network.player_id), null)
+		var my_data = Network.players.get(str(Network.player_id), null)
 		if my_data:
-			_update_player_hp(player, my_data.hp, network.player_id)
+			_update_player_hp(player, my_data.hp, Network.player_id)
 
 	# --- Cooldown de ataque ---
 	if not can_attack:
@@ -169,8 +169,8 @@ func _handle_movement(_delta: float, player: CharacterBody2D):
 	player.velocity = velocity
 	player.move_and_slide()
 
-	if network.connected:
-		network.move_player(player.position.x, player.position.y)
+	if Network.connected:
+		Network.move_player(player.position.x, player.position.y)
 
 	player.update_animation(move_dir, false, is_rolling)
 
@@ -178,7 +178,7 @@ func _handle_movement(_delta: float, player: CharacterBody2D):
 # --- INPUT
 # -------------------------------
 func _unhandled_input(event):
-	if not network.connected or network.player_id == -1:
+	if not Network.connected or Network.player_id == -1:
 		return
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -200,7 +200,7 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 	can_attack = false
 	attack_timer = attack_cooldown
 
-	var player = players.get(network.player_id, null)
+	var player = players.get(Network.player_id, null)
 	if player == null:
 		return
 
@@ -217,13 +217,13 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 			var dir_to_enemy: Vector2 = to_enemy.normalized()
 			var angle: float = player_facing.angle_to(dir_to_enemy)
 			if abs(angle) <= attack_cone_angle:
-				network.attack("enemy", enemy_id, attack_damage)
+				Network.attack("enemy", enemy_id, attack_damage)
 				hit_something = true
 				break
 
 	if not hit_something:
 		for player_id in players.keys():
-			if player_id == network.player_id:
+			if player_id == Network.player_id:
 				continue
 			var other = players[player_id]
 			var to_player: Vector2 = other.position - player_pos
@@ -232,7 +232,7 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 				var dir_to_player: Vector2 = to_player.normalized()
 				var angle_p: float = player_facing.angle_to(dir_to_player)
 				if abs(angle_p) <= attack_cone_angle:
-					network.attack("player", player_id, attack_damage)
+					Network.attack("player", player_id, attack_damage)
 					break
 
 # -------------------------------
@@ -249,7 +249,7 @@ func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100):
 	if name_label:
 		name_label.text = username
 
-	if id == network.player_id:
+	if id == Network.player_id:
 		var cam = instance.get_node_or_null("Camera2D")
 		if cam:
 			cam.make_current()
@@ -273,7 +273,7 @@ func update_player_hp(id: int, hp_value: int):
 	var bar = player.get_node_or_null("ProgressBar")
 	if bar:
 		bar.value = clamp(hp_value, 0, 100)
-		if id == network.player_id and bar.value <= 0:
+		if id == Network.player_id and bar.value <= 0:
 			print("[GAME OVER] Jugador muerto.")
 			get_tree().quit()
 
@@ -288,7 +288,7 @@ func _on_login_pressed():
 	var password = password_input.text.strip_edges()
 	if username != "" and password != "":
 		current_username = username
-		network.login_user(username, password)
+		Network.login_user(username, password)
 
 func _on_login_successful():
 	print("✅ Login exitoso, iniciando video de introducción...")
@@ -312,7 +312,7 @@ func _on_login_successful():
 func _on_chat_send_pressed():
 	var text = chat_input.text.strip_edges()
 	if text != "":
-		network.send_chat(text)
+		Network.send_chat(text)
 		chat_input.text = ""
 
 # -------------------------------
@@ -338,6 +338,6 @@ func _on_button_ip_pressed() -> void:
 		print("⚠️ Debes ingresar una IP antes de conectar.")
 		return
 	print("🌐 Intentando conectar a:", ip)
-	network.connect_with_ip(ip)
+	Network.connect_with_ip(ip)
 	vbox_container.visible = true
 	vbox_container_3.visible = false
