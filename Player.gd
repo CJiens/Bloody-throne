@@ -8,6 +8,11 @@ var animation_state: String = "Idle"
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
+func _process(delta: float) -> void:
+	if Input.is_action_just_pressed("mouse_left"):
+		_play_attack_animation()
+		
+
 func update_animation(dir: Vector2, attacking: bool = false, rolling: bool = false):
 	if not sprite:
 		return
@@ -31,6 +36,7 @@ func update_animation(dir: Vector2, attacking: bool = false, rolling: bool = fal
 		Network.send_player_state(anim_name)
 		sprite.play()
 
+
 func _get_direction_animation(angle: float, type: String) -> String:
 	if angle >= -PI / 8 and angle < PI / 8:
 		sprite.scale.x = 1
@@ -53,6 +59,19 @@ func _get_direction_animation(angle: float, type: String) -> String:
 
 	return "Idle"
 
+
+func _play_attack_animation() -> void:
+	if not sprite:
+		return
+	var vec = get_global_mouse_position() - global_position
+	var anim_name = _get_direction_animation(vec.angle(), "attack")
+
+	sprite.animation = anim_name
+	animation_state = anim_name
+	sprite.play()
+	Network.send_player_state(anim_name)
+
+
 func take_damage(amount: int):
 	hp -= amount
 	print("HP restante:", hp)
@@ -60,6 +79,7 @@ func take_damage(amount: int):
 	if hp <= 0:
 		hp = 0
 		play_death_animation()
+
 
 func play_death_animation() -> void:
 	if not sprite:

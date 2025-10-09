@@ -234,9 +234,9 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 	if player == null:
 		return
 
-	var sprite: AnimatedSprite2D = player.get_node("AnimatedSprite2D")
-	sprite.play("Attack")
-	Network.send_player_state("Attack")
+	# var sprite: AnimatedSprite2D = player.get_node("AnimatedSprite2D")
+	# sprite.play("Attack")
+	# Network.send_player_state("Attack")
 
 	var player_pos: Vector2 = player.global_position
 	var player_facing: Vector2 = (mouse_pos - player_pos).normalized()
