@@ -1,0 +1,237 @@
+[gd_scene load_steps=10 format=3 uid="uid://bwgm4jklnf3im"]
+
+[ext_resource type="Script" uid="uid://cvrrj37a2fajc" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://xsdjfolg3h1m" path="res://Player.tscn" id="2_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://dftgxtk6badua" path="res://Enemy.tscn" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://dpqg0t3ve8om3" path="res://Network.tscn" id="2_lquwl"]
+[ext_resource type="VideoStream" uid="uid://kyfhj0q8a5v2" path="res://Presentacion-del-Juego-Por-Frame Formato Godot.ogv" id="6_272bh"]
+[ext_resource type="Theme" uid="uid://qkkblp6cijnh" path="res://Temas/Botones segunda parte.tres" id="6_kek77"]
+[ext_resource type="Theme" uid="uid://bc0ftxndqriis" path="res://Temas/main_menu.tres" id="7_5vw27"]
+[ext_resource type="Theme" uid="uid://p6lafxv8viug" path="res://Temas/Input.tres" id="9_kek77"]
+[ext_resource type="AudioStream" uid="uid://kv8nhocsergj" path="res://Musica/Bloody-Throne-Preferida.ogg" id="10_4c57u"]
+
+[node name="Node" type="Node2D"]
+script = ExtResource("1_ig7tw")
+PlayerScene = ExtResource("2_1bvp3")
+EnemyScene = ExtResource("2_h2yge")
+
+[node name="EnemyContainer" type="Node2D" parent="."]
+
+[node name="Network" parent="." instance=ExtResource("2_lquwl")]
+
+[node name="HTTPRequest" type="HTTPRequest" parent="Network"]
+
+[node name="PlayerContainer" type="Node2D" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Pantalla_Inicial" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.0027344, 1.0235808)
+theme = ExtResource("6_kek77")
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="CanvasLayer/Pantalla_Inicial"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("6_272bh")
+autoplay = true
+expand = true
+loop = true
+
+[node name="Label" type="Label" parent="CanvasLayer/Pantalla_Inicial"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.726
+anchor_top = 0.177
+anchor_right = 0.726
+anchor_bottom = 0.177
+offset_left = -389.92004
+offset_top = -152.16
+offset_right = 370.07996
+offset_bottom = 192.84
+grow_horizontal = 0
+theme = ExtResource("7_5vw27")
+theme_override_font_sizes/font_size = 170
+text = "Bloody
+Throne"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.72
+anchor_top = 0.60700005
+anchor_right = 0.72
+anchor_bottom = 0.60700005
+offset_left = -349.40002
+offset_top = -230.56006
+offset_right = 359.59998
+offset_bottom = 289.43994
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 70
+alignment = 1
+
+[node name="Button" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer"]
+layout_mode = 2
+text = "Sign In"
+
+[node name="Button2" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer"]
+layout_mode = 2
+text = "Sign Up"
+
+[node name="Button3" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer"]
+layout_mode = 2
+text = "Settings"
+
+[node name="Button4" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer"]
+layout_mode = 2
+text = "Exit"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.73
+anchor_top = 0.55700004
+anchor_right = 0.73
+anchor_bottom = 0.55700004
+offset_left = -362.6001
+offset_top = -142.56006
+offset_right = 361.3999
+offset_bottom = 289.43994
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("9_kek77")
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="LineEdit_username" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer2"]
+layout_mode = 2
+placeholder_text = "Email or Username"
+
+[node name="LineEdit_password" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer2"]
+layout_mode = 2
+placeholder_text = "Password"
+secret = true
+
+[node name="Button_login" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer2"]
+layout_mode = 2
+text = "Join NOw"
+
+[node name="Crear Cuenta" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.73
+anchor_top = 0.55700004
+anchor_right = 0.73
+anchor_bottom = 0.55700004
+offset_left = -362.6001
+offset_top = -142.56006
+offset_right = 361.3999
+offset_bottom = 289.43994
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("9_kek77")
+theme_override_constants/separation = 80
+alignment = 1
+
+[node name="LineEdit_username" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/Crear Cuenta"]
+layout_mode = 2
+placeholder_text = "user name"
+
+[node name="LineEdit_email" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/Crear Cuenta"]
+layout_mode = 2
+placeholder_text = "Email"
+secret = true
+
+[node name="LineEdit_password2" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/Crear Cuenta"]
+layout_mode = 2
+placeholder_text = "password"
+secret = true
+
+[node name="Button_login" type="Button" parent="CanvasLayer/Pantalla_Inicial/Crear Cuenta"]
+layout_mode = 2
+text = "Crear"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CanvasLayer/Pantalla_Inicial"]
+stream = ExtResource("10_4c57u")
+autoplay = true
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
+visible = false
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -891.9999
+offset_top = -120.0
+offset_right = -527.5209
+offset_bottom = 142.16357
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(1.989141, 1.2119122)
+theme_override_constants/separation = 40
+
+[node name="server_ip" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("9_kek77")
+placeholder_text = "Ip"
+
+[node name="Button_ip" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer3"]
+layout_mode = 2
+text = "ACEPTAR"
+
+[node name="ChatUI" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = -8059.0
+offset_top = -1976.0
+offset_right = -8019.0
+offset_bottom = -1936.0
+scale = Vector2(18.75415, 9.214189)
+
+[node name="LineEdit_chatInput" type="LineEdit" parent="CanvasLayer/ChatUI"]
+layout_mode = 0
+offset_left = 3.49712
+offset_top = 22.310633
+offset_right = 72.059616
+offset_bottom = 53.31063
+scale = Vector2(0.27586475, 0.16550095)
+
+[node name="Button_send" type="Button" parent="CanvasLayer/ChatUI"]
+layout_mode = 0
+offset_left = 28.314676
+offset_top = 21.60062
+offset_right = 81.314674
+offset_bottom = 52.60062
+scale = Vector2(0.17301124, 0.14012018)
+text = "send"
+
+[node name="TextEdit_chatLog" type="TextEdit" parent="CanvasLayer/ChatUI"]
+light_mask = 0
+layout_mode = 0
+offset_left = 0.7998229
+offset_top = -13.023401
+offset_right = 8.799823
+offset_bottom = -5.0234013
+scale = Vector2(2.5078459, 1.6702986)
+text = "ar"
+
+[connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button3" to="." method="_on_button_3_pressed"]
+[connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button4" to="." method="_on_button_4_pressed"]
+[connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer2/Button_login" to="." method="_on_button_login_pressed"]
+[connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/Crear Cuenta/Button_login" to="." method="_on_button_login_pressed"]

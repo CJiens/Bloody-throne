@@ -53,6 +53,9 @@ func _ready():
 # -------------------------------
 # --- PROCESO PRINCIPAL
 # -------------------------------
+# -------------------------------
+# --- PROCESO PRINCIPAL
+# -------------------------------
 func _process(_delta):
 	if not Network.connected or Network.player_id == -1:
 		return
@@ -64,7 +67,9 @@ func _process(_delta):
 
 		if id in players:
 			var player_node = players[id]
+
 			if id != Network.player_id:
+				# ⚙️ Solo actualiza a los demás jugadores
 				player_node.position = Vector2(data.x, data.y)
 
 				# Actualizar animación de otros jugadores
@@ -72,6 +77,9 @@ func _process(_delta):
 					var anim_name: String = data.animation_state
 					if player_node.has_method("set_remote_animation"):
 						player_node.set_remote_animation(anim_name)
+
+			# Actualizar HP de todos los jugadores
+			_update_player_hp(player_node, data.hp, id)
 		else:
 			_spawn_player(id, data.username, Vector2(data.x, data.y), data.hp)
 
@@ -94,13 +102,6 @@ func _process(_delta):
 		if not Network.enemies.has(str(id)):
 			enemies[id].queue_free()
 			enemies.erase(id)
-
-	# --- Actualizar HP del jugador local ---
-	var player = players.get(Network.player_id, null)
-	if player and player is CharacterBody2D:
-		var my_data = Network.players.get(str(Network.player_id), null)
-		if my_data:
-			_update_player_hp(player, my_data.hp, Network.player_id)
 
 # -------------------------------
 # --- INPUT
@@ -202,10 +203,16 @@ func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100):
 		var cam = instance.get_node_or_null("Camera2D")
 		if cam:
 			cam.make_current()
+	
+	var bar = instance.get_node_or_null("ProgressBar")
+	if bar:
+		bar.max_value = 100
+		bar.value = hp
+		bar.queue_redraw()
 
-	# Actualizar HP
-	if instance.has_method("update_hp"):
-		instance.update_hp(hp)
+	# # Actualizar HP
+	# if instance.has_method("update_hp"):
+	# 	instance.update_hp(hp)
 
 func _spawn_enemy(id: int, _enemy_type: String, pos: Vector2):
 	var instance = EnemyScene.instantiate()
@@ -218,11 +225,21 @@ func update_player_hp(id: int, hp_value: int):
 	var player = players.get(id, null)
 	if not player:
 		return
-	if player.has_method("update_hp"):
-		player.update_hp(hp_value)
+
+	var bar = player.get_node_or_null("ProgressBar")
+	if bar:
+		bar.value = clamp(hp_value, 0, 100)
+		bar.queue_redraw()
+		if id == Network.player_id and bar.value <= 0:
+			print("[GAME OVER] Jugador muerto. Cerrando juego...")
+			get_tree().quit()
 
 func _update_player_hp(player: Node2D, hp_value: int, id: int):
 	update_player_hp(id, hp_value)
+	if id == Network.player_id:
+		print("[HP UPDATE] Jugador local HP:", hp_value)
+	else:
+		print("[HP UPDATE] Jugador", id, "HP:", hp_value)
 
 # -------------------------------
 # --- LOGIN

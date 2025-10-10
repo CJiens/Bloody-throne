@@ -31,8 +31,7 @@ var roll_cooldown_timer := 0.0
 
 # Nodos
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var hp_bar = $ProgressBar
-
+@onready var hp_bar: ProgressBar = $ProgressBar
 # -------------------------------
 # --- MÉTODOS DE ACCESO
 # -------------------------------
