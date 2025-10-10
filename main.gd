@@ -49,10 +49,6 @@ func _ready():
 
 	if not Network.is_connected("login_successful", self._on_login_successful):
 		Network.connect("login_successful", self._on_login_successful)
-
-# -------------------------------
-# --- PROCESO PRINCIPAL
-# -------------------------------
 # -------------------------------
 # --- PROCESO PRINCIPAL
 # -------------------------------
