@@ -21,8 +21,6 @@ Network="*res://Network.gd"
 
 [display]
 
-window/size/viewport_height=830
-window/size/mode=3
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 

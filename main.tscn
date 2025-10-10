@@ -146,6 +146,7 @@ _data = {
 }
 
 [node name="Node" type="Node2D"]
+texture_filter = 3
 script = ExtResource("1_ig7tw")
 PlayerScene = ExtResource("2_1bvp3")
 EnemyScene = ExtResource("2_h2yge")
@@ -161,6 +162,7 @@ EnemyScene = ExtResource("2_h2yge")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="Pantalla_Inicial" type="Control" parent="CanvasLayer"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -328,8 +330,7 @@ placeholder_text = "Ip"
 layout_mode = 2
 text = "ACEPTAR"
 
-[node name="HBoxContainer" type="Control" parent="CanvasLayer"]
-visible = false
+[node name="contrl" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -337,8 +338,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Titulo_Intro" type="AnimationPlayer" parent="CanvasLayer/HBoxContainer"]
-active = false
+[node name="Titulo_Intro" type="AnimationPlayer" parent="CanvasLayer/contrl"]
 root_node = NodePath("../Background")
 libraries = {
 &"": SubResource("AnimationLibrary_q3kjg")
@@ -347,7 +347,8 @@ autoplay = "Titulo_intro"
 playback_auto_capture_duration = 1.0
 playback_auto_capture_ease_type = 2
 
-[node name="FogOverlay" type="ColorRect" parent="CanvasLayer/HBoxContainer"]
+[node name="FogOverlay" type="ColorRect" parent="CanvasLayer/contrl"]
+visible = false
 modulate = Color(0, 0, 0, 1)
 self_modulate = Color(1, 1, 1, 0.19607843)
 layout_mode = 0
@@ -359,7 +360,7 @@ grow_horizontal = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 
-[node name="Background" type="TextureRect" parent="CanvasLayer/HBoxContainer"]
+[node name="Background" type="TextureRect" parent="CanvasLayer/contrl"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -370,141 +371,151 @@ mouse_filter = 2
 texture = ExtResource("10_vivmo")
 stretch_mode = 6
 
-[node name="Label" type="Label" parent="CanvasLayer/HBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/contrl"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -249.29834
-offset_top = -1.5734019
-offset_right = 512.70166
-offset_bottom = 201.4266
+anchors_preset = -1
+anchor_left = 0.52500004
+anchor_top = 0.156
+anchor_right = 0.52500004
+anchor_bottom = 0.156
+offset_left = -383.00006
+offset_top = -106.48001
+offset_right = 758.99994
+offset_bottom = 198.51999
 grow_horizontal = 2
 scale = Vector2(0.6712779, 0.69790155)
 size_flags_horizontal = 4
 size_flags_vertical = 0
 theme = ExtResource("7_5vw27")
-theme_override_font_sizes/font_size = 100
+theme_override_font_sizes/font_size = 140
 text = "Choose Your
   Champions"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/HBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/contrl"]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = -1
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 0.578
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -452.69696
-offset_top = -133.22447
-offset_right = 3655.3032
-offset_bottom = 1467.7755
+anchor_bottom = 0.578
+offset_left = -816.0
+offset_top = -291.24002
+offset_right = 3955.0
+offset_bottom = 1402.76
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.21792142, 0.2034388)
+scale = Vector2(0.33795115, 0.31549162)
 size_flags_horizontal = 6
 size_flags_vertical = 6
+theme_override_constants/separation = 225
 alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/HBoxContainer3"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/contrl/HBoxContainer3"]
 layout_mode = 2
 
-[node name="ArqueraEstatuilla" type="TextureRect" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer"]
+[node name="ArqueraEstatuilla" type="TextureRect" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 texture = ExtResource("12_yaehf")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 80
 theme_override_constants/margin_right = 80
 
-[node name="Select3" type="Button" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer/MarginContainer"]
+[node name="Select3" type="Button" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer/MarginContainer"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_vertical = 4
 theme = ExtResource("6_kek77")
-theme_override_font_sizes/font_size = 60
+theme_override_font_sizes/font_size = 80
 text = "Select"
 
-[node name="AspectRatioContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/HBoxContainer3"]
+[node name="AspectRatioContainer" type="VBoxContainer" parent="CanvasLayer/contrl/HBoxContainer3"]
 layout_mode = 2
 
-[node name="Caballero" type="TextureRect" parent="CanvasLayer/HBoxContainer/HBoxContainer3/AspectRatioContainer"]
+[node name="Caballero" type="TextureRect" parent="CanvasLayer/contrl/HBoxContainer3/AspectRatioContainer"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 texture = ExtResource("14_cegan")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/HBoxContainer3/AspectRatioContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/contrl/HBoxContainer3/AspectRatioContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 80
 theme_override_constants/margin_right = 80
 
-[node name="Select" type="Button" parent="CanvasLayer/HBoxContainer/HBoxContainer3/AspectRatioContainer/MarginContainer"]
+[node name="Select" type="Button" parent="CanvasLayer/contrl/HBoxContainer3/AspectRatioContainer/MarginContainer"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_vertical = 8
 theme = ExtResource("6_kek77")
-theme_override_font_sizes/font_size = 60
+theme_override_font_sizes/font_size = 80
 text = "Select"
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/HBoxContainer3"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/contrl/HBoxContainer3"]
 layout_mode = 2
 
-[node name="Assasin" type="TextureRect" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer2"]
+[node name="Assasin" type="TextureRect" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer2"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 texture = ExtResource("13_074og")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer2"]
 layout_mode = 2
 theme_override_constants/margin_left = 80
 theme_override_constants/margin_right = 80
 
-[node name="Select4" type="Button" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer2/MarginContainer"]
+[node name="Select4" type="Button" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer2/MarginContainer"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_vertical = 4
 theme = ExtResource("6_kek77")
-theme_override_font_sizes/font_size = 60
+theme_override_font_sizes/font_size = 80
 text = "Select"
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/HBoxContainer3"]
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/contrl/HBoxContainer3"]
 layout_mode = 2
 
-[node name="MagoV1" type="TextureRect" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer3"]
+[node name="MagoV1" type="TextureRect" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer3"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 texture = ExtResource("11_2cqfq")
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer3"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer3"]
 layout_mode = 2
 theme_override_constants/margin_left = 80
 theme_override_constants/margin_right = 80
 
-[node name="Select2" type="Button" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer3/MarginContainer"]
+[node name="Select2" type="Button" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer3/MarginContainer"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_vertical = 4
 theme = ExtResource("6_kek77")
-theme_override_font_sizes/font_size = 60
+theme_override_font_sizes/font_size = 80
 text = "Select"
 
-[node name="Ready" type="Button" parent="CanvasLayer/HBoxContainer"]
+[node name="Ready" type="Button" parent="CanvasLayer/contrl"]
 modulate = Color(1, 1, 1, 0)
-layout_mode = 0
-offset_left = 931.63293
-offset_top = 548.2296
-offset_right = 1134.6329
-offset_bottom = 609.2296
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.91200006
+anchor_top = 0.92600006
+anchor_right = 0.91200006
+anchor_bottom = 0.92600006
+offset_left = -139.04016
+offset_top = -37.08008
+offset_right = 137.95984
+offset_bottom = 36.91992
+grow_horizontal = 0
+grow_vertical = 0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("6_kek77")
-theme_override_font_sizes/font_size = 21
+theme_override_font_sizes/font_size = 30
 text = "1/4 connected"
 
-[node name="Ready2" type="Button" parent="CanvasLayer/HBoxContainer"]
+[node name="Ready2" type="Button" parent="CanvasLayer/contrl"]
 visible = false
 layout_mode = 1
 anchors_preset = 3
@@ -521,6 +532,11 @@ grow_vertical = 0
 theme = ExtResource("6_kek77")
 theme_override_font_sizes/font_size = 21
 text = "Ready"
+
+[node name="Button" type="Button" parent="CanvasLayer/contrl"]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
 
 [node name="ChatUI" type="Control" parent="CanvasLayer"]
 visible = false
