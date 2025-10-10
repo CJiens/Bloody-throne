@@ -187,10 +187,6 @@ theme_override_font_sizes/font_size = 100
 text = "Choose Your
   Champions"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
-offset_right = 40.0
-offset_bottom = 40.0
-
 [node name="MagoV1" type="Sprite2D" parent="CanvasLayer"]
 modulate = Color(1, 1, 1, 0)
 position = Vector2(1533, 600)

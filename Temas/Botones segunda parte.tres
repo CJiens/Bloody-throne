@@ -70,7 +70,9 @@ shadow_size = 4
 
 [resource]
 Button/colors/font_color = Color(0.18431373, 0.18431373, 0.18431373, 1)
+Button/colors/font_focus_color = Color(0.18431373, 0.18431373, 0.18431373, 1)
 Button/colors/font_hover_color = Color(0.14117648, 0.14117648, 0.14117648, 1)
+Button/colors/font_hover_pressed_color = Color(0.18431373, 0.18431373, 0.18431373, 1)
 Button/colors/font_outline_color = Color(0.8627451, 0.8117647, 0.68235296, 1)
 Button/colors/font_pressed_color = Color(0.101960786, 0.101960786, 0.101960786, 1)
 Button/constants/outline_size = 1
