@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bwgm4jklnf3im"]
+[gd_scene load_steps=18 format=3 uid="uid://bwgm4jklnf3im"]
 
 [ext_resource type="Script" uid="uid://cvrrj37a2fajc" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://xsdjfolg3h1m" path="res://Player.tscn" id="2_1bvp3"]
@@ -9,6 +9,141 @@
 [ext_resource type="Theme" uid="uid://bc0ftxndqriis" path="res://Temas/main_menu.tres" id="7_5vw27"]
 [ext_resource type="Theme" uid="uid://p6lafxv8viug" path="res://Temas/Input.tres" id="9_kek77"]
 [ext_resource type="AudioStream" uid="uid://kv8nhocsergj" path="res://Musica/Bloody-Throne-Preferida.ogg" id="10_4c57u"]
+[ext_resource type="Texture2D" uid="uid://btmllehlbkcto" path="res://Ui_Select_player/Fondo Select.png" id="10_vivmo"]
+[ext_resource type="Texture2D" uid="uid://cer36pbgh04wi" path="res://Ui_Select_player/Mago v1.png" id="11_2cqfq"]
+[ext_resource type="Texture2D" uid="uid://bqxj4uxb4mjr3" path="res://Ui_Select_player/Arquera estatuilla.png" id="12_yaehf"]
+[ext_resource type="Texture2D" uid="uid://bhud7o53i8fnl" path="res://Ui_Select_player/Assasin.png" id="13_074og"]
+[ext_resource type="Texture2D" uid="uid://ddpmbl6lnlqco" path="res://Ui_Select_player/Caballero.png" id="14_cegan"]
+[ext_resource type="Animation" uid="uid://cggh7b3rqmfak" path="res://Titulo_intro.res" id="15_82xsv"]
+
+[sub_resource type="Animation" id="Animation_q3kjg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../HBoxContainer3/VBoxContainer2/Assasin:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../HBoxContainer3/VBoxContainer/ArqueraEstatuilla:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../HBoxContainer3/AspectRatioContainer/Caballero:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../HBoxContainer3/VBoxContainer3/MagoV1:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../HBoxContainer3/AspectRatioContainer/MarginContainer/Select:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../HBoxContainer3/VBoxContainer3/MarginContainer/Select2:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../HBoxContainer3/VBoxContainer/MarginContainer/Select3:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("../HBoxContainer3/VBoxContainer2/MarginContainer/Select4:modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("../Ready:modulate")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q3kjg"]
+_data = {
+&"RESET": SubResource("Animation_q3kjg"),
+&"Titulo_intro": ExtResource("15_82xsv")
+}
 
 [node name="Node" type="Node2D"]
 script = ExtResource("1_ig7tw")
@@ -49,16 +184,15 @@ loop = true
 
 [node name="Label" type="Label" parent="CanvasLayer/Pantalla_Inicial"]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.726
-anchor_top = 0.177
-anchor_right = 0.726
-anchor_bottom = 0.177
-offset_left = -389.92004
-offset_top = -152.16
-offset_right = 370.07996
-offset_bottom = 192.84
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -623.1846
+offset_top = 10.471057
+offset_right = 136.81543
+offset_bottom = 355.47107
 grow_horizontal = 0
+scale = Vector2(0.7893457, 0.5696862)
 theme = ExtResource("7_5vw27")
 theme_override_font_sizes/font_size = 170
 text = "Bloody
@@ -66,17 +200,18 @@ Throne"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.72
-anchor_top = 0.60700005
-anchor_right = 0.72
-anchor_bottom = 0.60700005
-offset_left = -349.40002
-offset_top = -230.56006
-offset_right = 359.59998
-offset_bottom = 289.43994
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -542.256
+offset_top = -381.7824
+offset_right = 166.7439
+offset_bottom = 138.21759
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.68567234, 0.65072227)
 theme_override_constants/separation = 70
 alignment = 1
 
@@ -192,6 +327,200 @@ placeholder_text = "Ip"
 [node name="Button_ip" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer3"]
 layout_mode = 2
 text = "ACEPTAR"
+
+[node name="HBoxContainer" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Titulo_Intro" type="AnimationPlayer" parent="CanvasLayer/HBoxContainer"]
+active = false
+root_node = NodePath("../Background")
+libraries = {
+&"": SubResource("AnimationLibrary_q3kjg")
+}
+autoplay = "Titulo_intro"
+playback_auto_capture_duration = 1.0
+playback_auto_capture_ease_type = 2
+
+[node name="FogOverlay" type="ColorRect" parent="CanvasLayer/HBoxContainer"]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(1, 1, 1, 0.19607843)
+layout_mode = 0
+offset_left = 149.68555
+offset_top = -928.55334
+offset_right = 149.68555
+offset_bottom = -928.55334
+grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="Background" type="TextureRect" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("10_vivmo")
+stretch_mode = 6
+
+[node name="Label" type="Label" parent="CanvasLayer/HBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -249.29834
+offset_top = -1.5734019
+offset_right = 512.70166
+offset_bottom = 201.4266
+grow_horizontal = 2
+scale = Vector2(0.6712779, 0.69790155)
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme = ExtResource("7_5vw27")
+theme_override_font_sizes/font_size = 100
+text = "Choose Your
+  Champions"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -452.69696
+offset_top = -133.22447
+offset_right = 3655.3032
+offset_bottom = 1467.7755
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.21792142, 0.2034388)
+size_flags_horizontal = 6
+size_flags_vertical = 6
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/HBoxContainer3"]
+layout_mode = 2
+
+[node name="ArqueraEstatuilla" type="TextureRect" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = ExtResource("12_yaehf")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_right = 80
+
+[node name="Select3" type="Button" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer/MarginContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("6_kek77")
+theme_override_font_sizes/font_size = 60
+text = "Select"
+
+[node name="AspectRatioContainer" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/HBoxContainer3"]
+layout_mode = 2
+
+[node name="Caballero" type="TextureRect" parent="CanvasLayer/HBoxContainer/HBoxContainer3/AspectRatioContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = ExtResource("14_cegan")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/HBoxContainer3/AspectRatioContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_right = 80
+
+[node name="Select" type="Button" parent="CanvasLayer/HBoxContainer/HBoxContainer3/AspectRatioContainer/MarginContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 8
+theme = ExtResource("6_kek77")
+theme_override_font_sizes/font_size = 60
+text = "Select"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/HBoxContainer3"]
+layout_mode = 2
+
+[node name="Assasin" type="TextureRect" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer2"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = ExtResource("13_074og")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_right = 80
+
+[node name="Select4" type="Button" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer2/MarginContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("6_kek77")
+theme_override_font_sizes/font_size = 60
+text = "Select"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/HBoxContainer/HBoxContainer3"]
+layout_mode = 2
+
+[node name="MagoV1" type="TextureRect" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer3"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = ExtResource("11_2cqfq")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer3"]
+layout_mode = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_right = 80
+
+[node name="Select2" type="Button" parent="CanvasLayer/HBoxContainer/HBoxContainer3/VBoxContainer3/MarginContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("6_kek77")
+theme_override_font_sizes/font_size = 60
+text = "Select"
+
+[node name="Ready" type="Button" parent="CanvasLayer/HBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 931.63293
+offset_top = 548.2296
+offset_right = 1134.6329
+offset_bottom = 609.2296
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("6_kek77")
+theme_override_font_sizes/font_size = 21
+text = "1/4 connected"
+
+[node name="Ready2" type="Button" parent="CanvasLayer/HBoxContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -128.23108
+offset_top = -98.61304
+offset_right = -25.23108
+offset_bottom = -37.613037
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("6_kek77")
+theme_override_font_sizes/font_size = 21
+text = "Ready"
 
 [node name="ChatUI" type="Control" parent="CanvasLayer"]
 visible = false

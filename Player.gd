@@ -158,7 +158,6 @@ func _get_direction_animation(angle: float, type: String) -> String:
 		return "Idle"
 		
 	if angle >= -PI / 8 and angle < PI / 8:
-		sprite.scale.x = 1
 		return type + "_E"
 	elif angle >= PI / 8 and angle < 3 * PI / 8:
 		return type + "_SE"
@@ -167,7 +166,6 @@ func _get_direction_animation(angle: float, type: String) -> String:
 	elif angle >= 5 * PI / 8 and angle < 7 * PI / 8:
 		return type + "_SW"
 	elif angle >= 7 * PI / 8 or angle < -7 * PI / 8:
-		sprite.scale.x = -1
 		return type + "_W"
 	elif angle >= -7 * PI / 8 and angle < -5 * PI / 8:
 		return type + "_NW"
