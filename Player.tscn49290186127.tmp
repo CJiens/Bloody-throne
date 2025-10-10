@@ -1077,7 +1077,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"attack_E",
-"speed": 1.0
+"speed": 20.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -1135,7 +1135,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"attack_NE",
-"speed": 1.0
+"speed": 20.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -1164,7 +1164,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"attack_NW",
-"speed": 1.0
+"speed": 20.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -1193,7 +1193,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"attack_S",
-"speed": 1.0
+"speed": 20.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -1222,7 +1222,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"attack_SE",
-"speed": 1.0
+"speed": 20.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -1251,7 +1251,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"attack_SW",
-"speed": 1.0
+"speed": 20.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -1280,7 +1280,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"attack_W",
-"speed": 1.0
+"speed": 20.0
 }, {
 "frames": [],
 "loop": true,
@@ -3084,7 +3084,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"run_NE",
-"speed": 1.0
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -3268,7 +3268,8 @@ metadata/_edit_use_anchors_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_yq104")
-animation = &"attack_W"
+animation = &"run_NE"
+frame_progress = 0.45344272
 speed_scale = 6.8
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]

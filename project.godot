@@ -21,8 +21,8 @@ Network="*res://Network.gd"
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
+window/size/viewport_width=565
+window/size/viewport_height=830
 
 [input]
 

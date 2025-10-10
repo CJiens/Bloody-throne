@@ -1,5 +1,5 @@
 extends Node
-#10.8.91.86
+
 # -------------------------------
 # --- VARIABLES CONFIGURACIÓN
 # -------------------------------
@@ -123,7 +123,7 @@ func _receive_messages():
 			"player_dead":
 				if data.id in players:
 					players[data.id].hp = 0
-# sistema de gestion de tareas enfocado en el desarrollo de videojuegos
+
 			"player_state_update":
 				var player_id = str(int(data.id))
 
@@ -132,7 +132,6 @@ func _receive_messages():
 					print(players[player_id].animation_state, "WEB SOCKET DE NETWORK")
 				else:
 					print("⚠️ ID no encontrado en players:", player_id, " keys:", players.keys())
-
 
 			"chat":
 				print("[CHAT]", data.from, ":", data.text)
@@ -208,7 +207,6 @@ func send_player_state(state: String):
 			"type": "player_state",
 			"state": state
 		}))
-		
 
 # -------------------------------
 # --- LOGIN API

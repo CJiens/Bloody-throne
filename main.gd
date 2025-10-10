@@ -32,34 +32,8 @@ extends Node2D
 # -------------------------------
 # --- VARIABLES DE JUEGO
 # -------------------------------
-var players := {} # id:int -> Player
+var players := {} # id:int -> Node2D
 var enemies := {} # id:int -> Node2D
-
-# Movimiento
-var move_dir := Vector2.ZERO
-var speed := 200.0
-
-# Ataque
-var attack_range: float = 40.0
-var attack_cone_angle: float = deg_to_rad(45.0)
-var attack_damage: int = 10
-var attack_cooldown: float = 0.2
-var attack_timer: float = 0.0
-var can_attack: bool = true
-
-# Roll
-var is_rolling := false
-var roll_speed := 450.0
-var roll_duration := 0.35
-var roll_cooldown := 1.0
-var roll_timer := 0.0
-var roll_cooldown_timer := 0.0
-
-# UI
-var current_username: String = ""
-
-# Estado de animación actual
-var current_animation: String = "Idle"
 
 # -------------------------------
 # --- INICIO
@@ -76,13 +50,10 @@ func _ready():
 	if not Network.is_connected("login_successful", self._on_login_successful):
 		Network.connect("login_successful", self._on_login_successful)
 
-	set_process(true)
-	set_process_input(true)
-
 # -------------------------------
 # --- PROCESO PRINCIPAL
 # -------------------------------
-func _process(delta):
+func _process(_delta):
 	if not Network.connected or Network.player_id == -1:
 		return
 
@@ -96,17 +67,11 @@ func _process(delta):
 			if id != Network.player_id:
 				player_node.position = Vector2(data.x, data.y)
 
-				# 🔥 ANIMACIONES SIN ERRORES 🔥
-				if player_node.has_node("AnimatedSprite2D"):
-					var anim_sprite: AnimatedSprite2D = player_node.get_node("AnimatedSprite2D")
-					if data.has("animation_state"):
-						var anim_name: String = data.animation_state
-						if anim_sprite.sprite_frames and anim_sprite.sprite_frames.has_animation(anim_name):
-							if anim_sprite.animation != anim_name:
-								anim_sprite.play(anim_name)
-						else:
-							print("⚠️ Animación inexistente: ", anim_name, " en jugador ", id)
-			_update_player_hp(player_node, data.hp, id)
+				# Actualizar animación de otros jugadores
+				if data.has("animation_state"):
+					var anim_name: String = data.animation_state
+					if player_node.has_method("set_remote_animation"):
+						player_node.set_remote_animation(anim_name)
 		else:
 			_spawn_player(id, data.username, Vector2(data.x, data.y), data.hp)
 
@@ -130,79 +95,12 @@ func _process(delta):
 			enemies[id].queue_free()
 			enemies.erase(id)
 
-	# --- Actualizar jugador local ---
+	# --- Actualizar HP del jugador local ---
 	var player = players.get(Network.player_id, null)
 	if player and player is CharacterBody2D:
-		_handle_movement(delta, player)
 		var my_data = Network.players.get(str(Network.player_id), null)
 		if my_data:
 			_update_player_hp(player, my_data.hp, Network.player_id)
-
-	# --- Cooldown de ataque ---
-	if not can_attack:
-		attack_timer -= delta
-		if attack_timer <= 0:
-			can_attack = true
-
-	# --- Rodar ---
-	if is_rolling:
-		roll_timer -= delta
-		if roll_timer <= 0:
-			is_rolling = false
-			roll_cooldown_timer = roll_cooldown
-
-	if roll_cooldown_timer > 0:
-		roll_cooldown_timer -= delta
-
-# -------------------------------
-# --- MOVIMIENTO Y ANIMACIÓN (LOCAL)
-# -------------------------------
-func _handle_movement(_delta: float, player: CharacterBody2D):
-	# Restauré las entradas de movimiento que faltaban (solo aquí)
-	move_dir = Vector2.ZERO
-	if Input.is_action_pressed("move_right"):
-		move_dir.x += 1
-	if Input.is_action_pressed("move_left"):
-		move_dir.x -= 1
-	if Input.is_action_pressed("move_down"):
-		move_dir.y += 1
-	if Input.is_action_pressed("move_up"):
-		move_dir.y -= 1
-
-	if move_dir != Vector2.ZERO:
-		move_dir = move_dir.normalized()
-
-	var velocity = Vector2.ZERO
-	if is_rolling:
-		velocity = move_dir * roll_speed
-	else:
-		velocity = move_dir * speed
-
-	player.velocity = velocity
-	player.move_and_slide()
-
-	if Network.connected:
-		Network.move_player(player.position.x, player.position.y)
-
-	# Mantengo la actualización de animación local como estaba originalmente:
-	# Si tu Player.tscn tiene un método `update_animation(move_dir, ..., is_rolling)` lo llamamos (preservando tu lógica de direcciones/frames).
-	if player.has_method("update_animation"):
-		player.update_animation(move_dir, false, is_rolling)
-	# Si no existe ese método, aplico un fallback seguro usando AnimatedSprite2D:
-	elif player.has_node("AnimatedSprite2D"):
-		var sprite: AnimatedSprite2D = player.get_node("AnimatedSprite2D")
-		var new_state := "Idle"
-		if is_rolling:
-			new_state = "Roll"
-		elif move_dir != Vector2.ZERO:
-			new_state = "Walk"
-		else:
-			new_state = "Idle"
-
-		# Verificar existencia para evitar errores (si el nombre no existe, no tocar)
-		if sprite.sprite_frames and sprite.sprite_frames.has_animation(new_state):
-			if sprite.animation != new_state:
-				sprite.play(new_state)
 
 # -------------------------------
 # --- INPUT
@@ -213,35 +111,45 @@ func _unhandled_input(event):
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
-			if can_attack:
+			var player = players.get(Network.player_id, null)
+			if player and player.has_method("can_attack") and player.can_attack():
 				_attack_near_target(get_global_mouse_position())
 
-	if event.is_action_pressed("roll") and not is_rolling and roll_cooldown_timer <= 0:
-		is_rolling = true
-		roll_timer = roll_duration
+	if event.is_action_pressed("roll"):
+		var player = players.get(Network.player_id, null)
+		if player and player.has_method("try_roll"):
+			player.try_roll()
 
 # -------------------------------
 # --- ATAQUE
 # -------------------------------
 func _attack_near_target(mouse_pos: Vector2) -> void:
-	if not can_attack:
-		return
-
-	can_attack = false
-	attack_timer = attack_cooldown
-
 	var player = players.get(Network.player_id, null)
 	if player == null:
 		return
-
-	# var sprite: AnimatedSprite2D = player.get_node("AnimatedSprite2D")
-	# sprite.play("Attack")
-	# Network.send_player_state("Attack")
 
 	var player_pos: Vector2 = player.global_position
 	var player_facing: Vector2 = (mouse_pos - player_pos).normalized()
 	var hit_something := false
 
+	# Ejecutar ataque del jugador
+	if player.has_method("execute_attack"):
+		player.execute_attack(mouse_pos)
+
+	# Obtener propiedades de ataque del jugador
+	var attack_range = 40.0
+	var attack_cone_angle = deg_to_rad(45.0)
+	var attack_damage = 10
+	
+	# Si el jugador tiene estas propiedades, usarlas
+	if "attack_range" in player:
+		attack_range = player.attack_range
+	if "attack_cone_angle" in player:
+		attack_cone_angle = player.attack_cone_angle
+	if "attack_damage" in player:
+		attack_damage = player.attack_damage
+
+	# Detección de golpes
 	for enemy_id in enemies.keys():
 		var enemy = enemies[enemy_id]
 		var to_enemy: Vector2 = enemy.position - player_pos
@@ -273,9 +181,16 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 # --- SPAWN Y HP
 # -------------------------------
 func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100):
-	var instance: Player = PlayerScene.instantiate()
+	var instance = PlayerScene.instantiate()
 	instance.position = pos
 	instance.name = str(id)
+	
+	# Asignar propiedades usando métodos
+	if instance.has_method("set_player_id"):
+		instance.set_player_id(id)
+	elif "id" in instance:
+		instance.id = id
+	
 	player_container.add_child(instance)
 	players[id] = instance
 
@@ -288,10 +203,9 @@ func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100):
 		if cam:
 			cam.make_current()
 
-	var bar = instance.get_node_or_null("ProgressBar")
-	if bar:
-		bar.max_value = 100
-		bar.value = hp
+	# Actualizar HP
+	if instance.has_method("update_hp"):
+		instance.update_hp(hp)
 
 func _spawn_enemy(id: int, _enemy_type: String, pos: Vector2):
 	var instance = EnemyScene.instantiate()
@@ -304,12 +218,8 @@ func update_player_hp(id: int, hp_value: int):
 	var player = players.get(id, null)
 	if not player:
 		return
-	var bar = player.get_node_or_null("ProgressBar")
-	if bar:
-		bar.value = clamp(hp_value, 0, 100)
-		if id == Network.player_id and bar.value <= 0:
-			print("[GAME OVER] Jugador muerto.")
-			get_tree().quit()
+	if player.has_method("update_hp"):
+		player.update_hp(hp_value)
 
 func _update_player_hp(player: Node2D, hp_value: int, id: int):
 	update_player_hp(id, hp_value)
@@ -321,7 +231,6 @@ func _on_login_pressed():
 	var username = username_input.text.strip_edges()
 	var password = password_input.text.strip_edges()
 	if username != "" and password != "":
-		current_username = username
 		Network.login_user(username, password)
 
 func _on_login_successful():
