@@ -193,25 +193,25 @@ offset_bottom = 40.0
 
 [node name="MagoV1" type="Sprite2D" parent="CanvasLayer"]
 modulate = Color(1, 1, 1, 0)
-position = Vector2(1464.072, 624.959)
+position = Vector2(1533, 600)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("7_3guq4")
 
 [node name="ArqueraEstatuilla" type="Sprite2D" parent="CanvasLayer"]
 modulate = Color(1, 1, 1, 0)
-position = Vector2(774.072, 624.959)
+position = Vector2(774.072, 600)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("3_t31ay")
 
 [node name="Assasin" type="Sprite2D" parent="CanvasLayer"]
 modulate = Color(1, 1, 1, 0)
-position = Vector2(421.072, 624.959)
+position = Vector2(398, 600)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("4_rcud8")
 
 [node name="Caballero" type="Sprite2D" parent="CanvasLayer"]
 modulate = Color(1, 1, 1, 0)
-position = Vector2(1133.072, 624.959)
+position = Vector2(1152, 600)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("5_12al7")
 
@@ -227,14 +227,14 @@ playback_auto_capture_ease_type = 2
 [node name="Select" type="Button" parent="CanvasLayer"]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = -1
-anchor_left = 0.21800001
-anchor_top = 0.8
-anchor_right = 0.21800001
-anchor_bottom = 0.8
-offset_left = -104.56003
-offset_top = -41.0
-offset_right = 118.43997
-offset_bottom = 20.0
+anchor_left = 0.208
+anchor_top = 0.79
+anchor_right = 0.208
+anchor_bottom = 0.79
+offset_left = -111.360016
+offset_top = -30.200012
+offset_right = 111.639984
+offset_bottom = 30.799988
 grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("8_rcud8")
@@ -244,14 +244,14 @@ text = "Select"
 [node name="Select2" type="Button" parent="CanvasLayer"]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = -1
-anchor_left = 0.21800001
-anchor_top = 0.8
-anchor_right = 0.21800001
-anchor_bottom = 0.8
-offset_left = 244.43997
-offset_top = -38.0
-offset_right = 467.43997
-offset_bottom = 23.0
+anchor_left = 0.40300003
+anchor_top = 0.79300004
+anchor_right = 0.40300003
+anchor_bottom = 0.79300004
+offset_left = -110.76007
+offset_top = -30.440063
+offset_right = 112.23993
+offset_bottom = 30.559937
 grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("8_rcud8")
@@ -261,14 +261,14 @@ text = "Select"
 [node name="Select3" type="Button" parent="CanvasLayer"]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = -1
-anchor_left = 0.21800001
-anchor_top = 0.8
-anchor_right = 0.21800001
-anchor_bottom = 0.8
-offset_left = 603.43994
-offset_top = -38.0
-offset_right = 826.43994
-offset_bottom = 23.0
+anchor_left = 0.6
+anchor_top = 0.79200006
+anchor_right = 0.6
+anchor_bottom = 0.79200006
+offset_left = -112.0
+offset_top = -30.360046
+offset_right = 111.0
+offset_bottom = 30.639954
 grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("8_rcud8")
@@ -278,14 +278,14 @@ text = "Select"
 [node name="Select4" type="Button" parent="CanvasLayer"]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = -1
-anchor_left = 0.21800001
-anchor_top = 0.8
-anchor_right = 0.21800001
-anchor_bottom = 0.8
-offset_left = 936.43994
-offset_top = -34.0
-offset_right = 1159.44
-offset_bottom = 27.0
+anchor_left = 0.79800004
+anchor_top = 0.79800004
+anchor_right = 0.79800004
+anchor_bottom = 0.79800004
+offset_left = -111.160034
+offset_top = -30.840027
+offset_right = 111.839966
+offset_bottom = 30.159973
 grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("8_rcud8")
@@ -295,14 +295,14 @@ text = "Select"
 [node name="Ready" type="Button" parent="CanvasLayer"]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = -1
-anchor_left = 0.21800001
-anchor_top = 0.8
-anchor_right = 0.21800001
-anchor_bottom = 0.8
-offset_left = 1242.44
-offset_top = 106.0
-offset_right = 1465.44
-offset_bottom = 167.0
+anchor_left = 0.92800003
+anchor_top = 0.92600006
+anchor_right = 0.92800003
+anchor_bottom = 0.92600006
+offset_left = -100.76001
+offset_top = -30.080078
+offset_right = 102.23999
+offset_bottom = 30.919922
 grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("8_rcud8")
