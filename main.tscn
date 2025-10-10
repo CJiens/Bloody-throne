@@ -32,6 +32,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+scale = Vector2(1.0027344, 1.0235808)
 theme = ExtResource("6_kek77")
 
 [node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="CanvasLayer/Pantalla_Inicial"]

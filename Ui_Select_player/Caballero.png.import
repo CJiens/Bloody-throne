@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://be6asmgrggs8w"
-path="res://.godot/imported/ChatGPT Image 6 oct 2025, 01_29_17.png-72b511e8c60f6842b9a97b7f662ff397.ctex"
+uid="uid://ddpmbl6lnlqco"
+path="res://.godot/imported/Caballero.png-7002be7e6e695fdf234d7e3a5f0567b1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ChatGPT Image 6 oct 2025, 01_29_17.png"
-dest_files=["res://.godot/imported/ChatGPT Image 6 oct 2025, 01_29_17.png-72b511e8c60f6842b9a97b7f662ff397.ctex"]
+source_file="res://Ui_Select_player/Caballero.png"
+dest_files=["res://.godot/imported/Caballero.png-7002be7e6e695fdf234d7e3a5f0567b1.ctex"]
 
 [params]
 

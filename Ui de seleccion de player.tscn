@@ -1,0 +1,326 @@
+[gd_scene load_steps=12 format=3 uid="uid://cv1koh10jtrx7"]
+
+[ext_resource type="Texture2D" uid="uid://btmllehlbkcto" path="res://Ui_Select_player/Fondo Select.png" id="1_lhy2g"]
+[ext_resource type="Theme" uid="uid://bc0ftxndqriis" path="res://Temas/main_menu.tres" id="2_kmw8c"]
+[ext_resource type="Animation" uid="uid://cggh7b3rqmfak" path="res://Titulo_intro.res" id="3_q3kjg"]
+[ext_resource type="Texture2D" uid="uid://bqxj4uxb4mjr3" path="res://Ui_Select_player/Arquera estatuilla.png" id="3_t31ay"]
+[ext_resource type="Texture2D" uid="uid://bhud7o53i8fnl" path="res://Ui_Select_player/Assasin.png" id="4_rcud8"]
+[ext_resource type="Texture2D" uid="uid://ddpmbl6lnlqco" path="res://Ui_Select_player/Caballero.png" id="5_12al7"]
+[ext_resource type="Texture2D" uid="uid://cer36pbgh04wi" path="res://Ui_Select_player/Mago v1.png" id="7_3guq4"]
+[ext_resource type="Theme" uid="uid://qkkblp6cijnh" path="res://Temas/Botones segunda parte.tres" id="8_rcud8"]
+
+[sub_resource type="GDScript" id="GDScript_kmw8c"]
+
+[sub_resource type="Animation" id="Animation_q3kjg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../Assasin:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../ArqueraEstatuilla:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../Caballero:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../MagoV1:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../Select:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../Select2:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../Select3:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("../Select4:modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("../Ready:modulate")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q3kjg"]
+_data = {
+&"RESET": SubResource("Animation_q3kjg"),
+&"Titulo_intro": ExtResource("3_q3kjg")
+}
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = SubResource("GDScript_kmw8c")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Background" type="TextureRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_lhy2g")
+stretch_mode = 6
+
+[node name="FogOverlay" type="ColorRect" parent="CanvasLayer"]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(1, 1, 1, 0.19607843)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.18
+anchor_right = 0.5
+anchor_bottom = 0.18
+offset_left = -392.0
+offset_top = -104.40001
+offset_right = 370.0
+offset_bottom = 98.59999
+grow_horizontal = 2
+theme = ExtResource("2_kmw8c")
+theme_override_font_sizes/font_size = 100
+text = "Choose Your
+  Champions"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MagoV1" type="Sprite2D" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(1464.072, 624.959)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_3guq4")
+
+[node name="ArqueraEstatuilla" type="Sprite2D" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(774.072, 624.959)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("3_t31ay")
+
+[node name="Assasin" type="Sprite2D" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(421.072, 624.959)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("4_rcud8")
+
+[node name="Caballero" type="Sprite2D" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(1133.072, 624.959)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("5_12al7")
+
+[node name="Titulo_Intro" type="AnimationPlayer" parent="CanvasLayer"]
+root_node = NodePath("../Background")
+libraries = {
+&"": SubResource("AnimationLibrary_q3kjg")
+}
+autoplay = "Titulo_intro"
+playback_auto_capture_duration = 1.0
+playback_auto_capture_ease_type = 2
+
+[node name="Select" type="Button" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = -1
+anchor_left = 0.21800001
+anchor_top = 0.8
+anchor_right = 0.21800001
+anchor_bottom = 0.8
+offset_left = -104.56003
+offset_top = -41.0
+offset_right = 118.43997
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("8_rcud8")
+theme_override_font_sizes/font_size = 21
+text = "Select"
+
+[node name="Select2" type="Button" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = -1
+anchor_left = 0.21800001
+anchor_top = 0.8
+anchor_right = 0.21800001
+anchor_bottom = 0.8
+offset_left = 244.43997
+offset_top = -38.0
+offset_right = 467.43997
+offset_bottom = 23.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("8_rcud8")
+theme_override_font_sizes/font_size = 21
+text = "Select"
+
+[node name="Select3" type="Button" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = -1
+anchor_left = 0.21800001
+anchor_top = 0.8
+anchor_right = 0.21800001
+anchor_bottom = 0.8
+offset_left = 603.43994
+offset_top = -38.0
+offset_right = 826.43994
+offset_bottom = 23.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("8_rcud8")
+theme_override_font_sizes/font_size = 21
+text = "Select"
+
+[node name="Select4" type="Button" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = -1
+anchor_left = 0.21800001
+anchor_top = 0.8
+anchor_right = 0.21800001
+anchor_bottom = 0.8
+offset_left = 936.43994
+offset_top = -34.0
+offset_right = 1159.44
+offset_bottom = 27.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("8_rcud8")
+theme_override_font_sizes/font_size = 21
+text = "Select"
+
+[node name="Ready" type="Button" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = -1
+anchor_left = 0.21800001
+anchor_top = 0.8
+anchor_right = 0.21800001
+anchor_bottom = 0.8
+offset_left = 1242.44
+offset_top = 106.0
+offset_right = 1465.44
+offset_bottom = 167.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("8_rcud8")
+theme_override_font_sizes/font_size = 21
+text = "1/4 connected"
+
+[node name="Ready2" type="Button" parent="CanvasLayer"]
+anchors_preset = -1
+anchor_left = 0.21800001
+anchor_top = 0.8
+anchor_right = 0.21800001
+anchor_bottom = 0.8
+offset_left = 1225.44
+offset_top = 244.0
+offset_right = 1448.44
+offset_bottom = 305.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("8_rcud8")
+theme_override_font_sizes/font_size = 21
+text = "Ready"
