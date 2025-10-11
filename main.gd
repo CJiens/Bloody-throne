@@ -24,7 +24,7 @@ extends Node2D
 @onready var vbox_container_3: VBoxContainer = $CanvasLayer/Pantalla_Inicial/VBoxContainer3
 @onready var server_ip: LineEdit = $CanvasLayer/Pantalla_Inicial/VBoxContainer3/server_ip
 @onready var button_ip: Button = $CanvasLayer/Pantalla_Inicial/VBoxContainer3/Button_ip
-
+@onready var contrl: Control = $CanvasLayer/contrl
 # Prefabs
 @export var PlayerScene: PackedScene
 @export var EnemyScene: PackedScene
@@ -176,10 +176,16 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 
 # -------------------------------
 # --- SPAWN Y HP
-# -------------------------------
-func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100):
+# -------------------------------10.8.91.86
+func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100, ):
 	var instance = PlayerScene.instantiate()
-	instance.position = pos
+	
+	# Generar posición aleatoria dentro de la pantalla
+	var screen_size = get_viewport().get_visible_rect().size
+	var random_x = randf_range(100, screen_size.x - 100) # Margen de 100 píxeles
+	var random_y = randf_range(100, screen_size.y - 100)
+	
+	instance.position = Vector2(random_x, random_y)
 	instance.name = str(id)
 	
 	# Asignar propiedades usando métodos
@@ -243,8 +249,9 @@ func _update_player_hp(player: Node2D, hp_value: int, id: int):
 func _on_login_pressed():
 	var username = username_input.text.strip_edges()
 	var password = password_input.text.strip_edges()
-	if username != "" and password != "":
-		Network.login_user(username, password)
+	contrl.visible = true
+	# if username != "" and password != "":
+	# 	Network.login_user(username, password)
 
 func _on_login_successful():
 	print("✅ Login exitoso, iniciando video de introducción...")

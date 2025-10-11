@@ -45,6 +45,7 @@ func connect_with_ip(ip: String):
 # --- CICLO PRINCIPAL
 # -------------------------------
 func _process(_delta):
+	print(players)
 	socket.poll()
 	var state = socket.get_ready_state()
 
@@ -83,7 +84,6 @@ func _receive_messages():
 			"auth_ok":
 				player_id = data.player.id
 				connected = true
-				print(connected)
 				enemies = data.enemies
 				print("✅ Autenticado como:", data.player.username)
 
@@ -145,7 +145,8 @@ func _receive_messages():
 						"y": p.y,
 						"username": p.username,
 						"hp": p.get("hp", 100),
-						"animation_state": p.get("animation_state", "Idle")
+						"animation_state": p.get("animation_state", "Idle"),
+						"classe": p.get("classe", "")
 					}
 				enemies.clear()
 				for eid in data.enemies.keys():

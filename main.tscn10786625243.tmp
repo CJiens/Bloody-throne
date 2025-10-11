@@ -1,0 +1,582 @@
+[gd_scene load_steps=18 format=3 uid="uid://bwgm4jklnf3im"]
+
+[ext_resource type="Script" uid="uid://cvrrj37a2fajc" path="res://main.gd" id="1_ig7tw"]
+[ext_resource type="PackedScene" uid="uid://xsdjfolg3h1m" path="res://Player.tscn" id="2_1bvp3"]
+[ext_resource type="PackedScene" uid="uid://dftgxtk6badua" path="res://Enemy.tscn" id="2_h2yge"]
+[ext_resource type="PackedScene" uid="uid://dpqg0t3ve8om3" path="res://Network.tscn" id="2_lquwl"]
+[ext_resource type="VideoStream" uid="uid://kyfhj0q8a5v2" path="res://Presentacion-del-Juego-Por-Frame Formato Godot.ogv" id="6_272bh"]
+[ext_resource type="Theme" uid="uid://qkkblp6cijnh" path="res://Temas/Botones segunda parte.tres" id="6_kek77"]
+[ext_resource type="Theme" uid="uid://bc0ftxndqriis" path="res://Temas/main_menu.tres" id="7_5vw27"]
+[ext_resource type="Theme" uid="uid://p6lafxv8viug" path="res://Temas/Input.tres" id="9_kek77"]
+[ext_resource type="AudioStream" uid="uid://kv8nhocsergj" path="res://Musica/Bloody-Throne-Preferida.ogg" id="10_4c57u"]
+[ext_resource type="Texture2D" uid="uid://btmllehlbkcto" path="res://Ui_Select_player/Fondo Select.png" id="10_vivmo"]
+[ext_resource type="Texture2D" uid="uid://cer36pbgh04wi" path="res://Ui_Select_player/Mago v1.png" id="11_2cqfq"]
+[ext_resource type="Texture2D" uid="uid://bqxj4uxb4mjr3" path="res://Ui_Select_player/Arquera estatuilla.png" id="12_yaehf"]
+[ext_resource type="Texture2D" uid="uid://bhud7o53i8fnl" path="res://Ui_Select_player/Assasin.png" id="13_074og"]
+[ext_resource type="Texture2D" uid="uid://ddpmbl6lnlqco" path="res://Ui_Select_player/Caballero.png" id="14_cegan"]
+[ext_resource type="Animation" uid="uid://cggh7b3rqmfak" path="res://Titulo_intro.res" id="15_82xsv"]
+
+[sub_resource type="Animation" id="Animation_q3kjg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../HBoxContainer3/VBoxContainer2/Assasin:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../HBoxContainer3/VBoxContainer/ArqueraEstatuilla:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../HBoxContainer3/AspectRatioContainer/Caballero:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../HBoxContainer3/VBoxContainer3/MagoV1:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../HBoxContainer3/AspectRatioContainer/MarginContainer/Select:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../HBoxContainer3/VBoxContainer3/MarginContainer/Select2:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../HBoxContainer3/VBoxContainer/MarginContainer/Select3:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("../HBoxContainer3/VBoxContainer2/MarginContainer/Select4:modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("../Ready:modulate")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q3kjg"]
+_data = {
+&"RESET": SubResource("Animation_q3kjg"),
+&"Titulo_intro": ExtResource("15_82xsv")
+}
+
+[node name="Node" type="Node2D"]
+texture_filter = 3
+script = ExtResource("1_ig7tw")
+PlayerScene = ExtResource("2_1bvp3")
+EnemyScene = ExtResource("2_h2yge")
+
+[node name="EnemyContainer" type="Node2D" parent="."]
+
+[node name="Network" parent="." instance=ExtResource("2_lquwl")]
+
+[node name="HTTPRequest" type="HTTPRequest" parent="Network"]
+
+[node name="PlayerContainer" type="Node2D" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Pantalla_Inicial" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.0027344, 1.0235808)
+theme = ExtResource("6_kek77")
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="CanvasLayer/Pantalla_Inicial"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("6_272bh")
+autoplay = true
+expand = true
+loop = true
+
+[node name="Label" type="Label" parent="CanvasLayer/Pantalla_Inicial"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -623.1846
+offset_top = 10.471057
+offset_right = 136.81543
+offset_bottom = 355.47107
+grow_horizontal = 0
+scale = Vector2(0.7893457, 0.5696862)
+theme = ExtResource("7_5vw27")
+theme_override_font_sizes/font_size = 170
+text = "Bloody
+Throne"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -542.256
+offset_top = -381.7824
+offset_right = 166.7439
+offset_bottom = 138.21759
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.68567234, 0.65072227)
+theme_override_constants/separation = 70
+alignment = 1
+
+[node name="Button" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer"]
+layout_mode = 2
+text = "Sign In"
+
+[node name="Button2" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer"]
+layout_mode = 2
+text = "Sign Up"
+
+[node name="Button3" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer"]
+layout_mode = 2
+text = "Settings"
+
+[node name="Button4" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer"]
+layout_mode = 2
+text = "Exit"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.73
+anchor_top = 0.55700004
+anchor_right = 0.73
+anchor_bottom = 0.55700004
+offset_left = -362.6001
+offset_top = -142.56006
+offset_right = 361.3999
+offset_bottom = 289.43994
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("9_kek77")
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="LineEdit_username" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer2"]
+layout_mode = 2
+placeholder_text = "Email or Username"
+
+[node name="LineEdit_password" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer2"]
+layout_mode = 2
+placeholder_text = "Password"
+secret = true
+
+[node name="Button_login" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer2"]
+layout_mode = 2
+text = "Join NOw"
+
+[node name="Crear Cuenta" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.73
+anchor_top = 0.55700004
+anchor_right = 0.73
+anchor_bottom = 0.55700004
+offset_left = -362.6001
+offset_top = -142.56006
+offset_right = 361.3999
+offset_bottom = 289.43994
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("9_kek77")
+theme_override_constants/separation = 80
+alignment = 1
+
+[node name="LineEdit_username" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/Crear Cuenta"]
+layout_mode = 2
+placeholder_text = "user name"
+
+[node name="LineEdit_email" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/Crear Cuenta"]
+layout_mode = 2
+placeholder_text = "Email"
+secret = true
+
+[node name="LineEdit_password2" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/Crear Cuenta"]
+layout_mode = 2
+placeholder_text = "password"
+secret = true
+
+[node name="Button_login" type="Button" parent="CanvasLayer/Pantalla_Inicial/Crear Cuenta"]
+layout_mode = 2
+text = "Crear"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CanvasLayer/Pantalla_Inicial"]
+stream = ExtResource("10_4c57u")
+autoplay = true
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
+visible = false
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -891.9999
+offset_top = -120.0
+offset_right = -527.5209
+offset_bottom = 142.16357
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(1.989141, 1.2119122)
+theme_override_constants/separation = 40
+
+[node name="server_ip" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("9_kek77")
+placeholder_text = "Ip"
+
+[node name="Button_ip" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer3"]
+layout_mode = 2
+text = "ACEPTAR"
+
+[node name="contrl" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Titulo_Intro" type="AnimationPlayer" parent="CanvasLayer/contrl"]
+root_node = NodePath("../Background")
+libraries = {
+&"": SubResource("AnimationLibrary_q3kjg")
+}
+autoplay = "Titulo_intro"
+playback_auto_capture_duration = 1.0
+playback_auto_capture_ease_type = 2
+
+[node name="FogOverlay" type="ColorRect" parent="CanvasLayer/contrl"]
+visible = false
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(1, 1, 1, 0.19607843)
+layout_mode = 0
+offset_left = 149.68555
+offset_top = -928.55334
+offset_right = 149.68555
+offset_bottom = -928.55334
+grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="Background" type="TextureRect" parent="CanvasLayer/contrl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("10_vivmo")
+stretch_mode = 6
+
+[node name="Label" type="Label" parent="CanvasLayer/contrl"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.52500004
+anchor_top = 0.156
+anchor_right = 0.52500004
+anchor_bottom = 0.156
+offset_left = -383.00006
+offset_top = -106.48001
+offset_right = 758.99994
+offset_bottom = 198.51999
+grow_horizontal = 2
+scale = Vector2(0.6712779, 0.69790155)
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme = ExtResource("7_5vw27")
+theme_override_font_sizes/font_size = 140
+text = "Choose Your
+  Champions"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/contrl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.578
+anchor_right = 0.5
+anchor_bottom = 0.578
+offset_left = -816.0
+offset_top = -291.24002
+offset_right = 3955.0
+offset_bottom = 1402.76
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.33795115, 0.31549162)
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme_override_constants/separation = 225
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/contrl/HBoxContainer3"]
+layout_mode = 2
+
+[node name="ArqueraEstatuilla" type="TextureRect" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = ExtResource("12_yaehf")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_right = 80
+
+[node name="Select3" type="Button" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer/MarginContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("6_kek77")
+theme_override_font_sizes/font_size = 80
+text = "Select"
+
+[node name="AspectRatioContainer" type="VBoxContainer" parent="CanvasLayer/contrl/HBoxContainer3"]
+layout_mode = 2
+
+[node name="Caballero" type="TextureRect" parent="CanvasLayer/contrl/HBoxContainer3/AspectRatioContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = ExtResource("14_cegan")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/contrl/HBoxContainer3/AspectRatioContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_right = 80
+
+[node name="Select" type="Button" parent="CanvasLayer/contrl/HBoxContainer3/AspectRatioContainer/MarginContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 8
+theme = ExtResource("6_kek77")
+theme_override_font_sizes/font_size = 80
+text = "Select"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/contrl/HBoxContainer3"]
+layout_mode = 2
+
+[node name="Assasin" type="TextureRect" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer2"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = ExtResource("13_074og")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_right = 80
+
+[node name="Select4" type="Button" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer2/MarginContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("6_kek77")
+theme_override_font_sizes/font_size = 80
+text = "Select"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/contrl/HBoxContainer3"]
+layout_mode = 2
+
+[node name="MagoV1" type="TextureRect" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer3"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = ExtResource("11_2cqfq")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer3"]
+layout_mode = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_right = 80
+
+[node name="Select2" type="Button" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer3/MarginContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("6_kek77")
+theme_override_font_sizes/font_size = 80
+text = "Select"
+
+[node name="Ready" type="Button" parent="CanvasLayer/contrl"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.91200006
+anchor_top = 0.92600006
+anchor_right = 0.91200006
+anchor_bottom = 0.92600006
+offset_left = -139.04016
+offset_top = -37.08008
+offset_right = 137.95984
+offset_bottom = 36.91992
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("6_kek77")
+theme_override_font_sizes/font_size = 30
+text = "1/4 connected"
+
+[node name="Ready2" type="Button" parent="CanvasLayer/contrl"]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -128.23108
+offset_top = -98.61304
+offset_right = -25.23108
+offset_bottom = -37.613037
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("6_kek77")
+theme_override_font_sizes/font_size = 21
+text = "Ready"
+
+[node name="Button" type="Button" parent="CanvasLayer/contrl"]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="ChatUI" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = -8059.0
+offset_top = -1976.0
+offset_right = -8019.0
+offset_bottom = -1936.0
+scale = Vector2(18.75415, 9.214189)
+
+[node name="LineEdit_chatInput" type="LineEdit" parent="CanvasLayer/ChatUI"]
+layout_mode = 0
+offset_left = 3.49712
+offset_top = 22.310633
+offset_right = 72.059616
+offset_bottom = 53.31063
+scale = Vector2(0.27586475, 0.16550095)
+
+[node name="Button_send" type="Button" parent="CanvasLayer/ChatUI"]
+layout_mode = 0
+offset_left = 28.314676
+offset_top = 21.60062
+offset_right = 81.314674
+offset_bottom = 52.60062
+scale = Vector2(0.17301124, 0.14012018)
+text = "send"
+
+[node name="TextEdit_chatLog" type="TextEdit" parent="CanvasLayer/ChatUI"]
+light_mask = 0
+layout_mode = 0
+offset_left = 0.7998229
+offset_top = -13.023401
+offset_right = 8.799823
+offset_bottom = -5.0234013
+scale = Vector2(2.5078459, 1.6702986)
+text = "ar"
+
+[connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button3" to="." method="_on_button_3_pressed"]
+[connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button4" to="." method="_on_button_4_pressed"]
+[connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer2/Button_login" to="." method="_on_button_login_pressed"]
+[connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/Crear Cuenta/Button_login" to="." method="_on_button_login_pressed"]
