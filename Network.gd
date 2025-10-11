@@ -18,12 +18,16 @@ var connected := false
 var token: String = ""
 var players := {}
 var enemies := {}
+var projectiles := {}
 var ws_ready := false
 
 # -------------------------------
 # --- SEÑALES
 # -------------------------------
 signal login_successful
+signal projectile_created(projectile_data)
+signal projectile_removed(projectile_id)
+signal projectile_moved(projectile_data)
 
 # -------------------------------
 # --- FUNCIÓN DE INICIO CON IP
@@ -32,7 +36,7 @@ func connect_with_ip(ip: String):
 	websocket_url = "%s%s:3000" % [websocket_url_base, ip]
 	api_url = "%s%s:3000/api" % [api_url_base, ip]
 
-	print("Intentando conectar con:", websocket_url)
+	print("🌐 Intentando conectar con:", websocket_url)
 
 	var err = socket.connect_to_url(websocket_url)
 	if err == OK:
@@ -45,7 +49,6 @@ func connect_with_ip(ip: String):
 # --- CICLO PRINCIPAL
 # -------------------------------
 func _process(_delta):
-	print(players)
 	socket.poll()
 	var state = socket.get_ready_state()
 
@@ -80,12 +83,14 @@ func _receive_messages():
 			continue
 		var data = json.get_data()
 
+		print("📥 MENSAJE RECIBIDO - Tipo:", data.type)
+
 		match data.type:
 			"auth_ok":
 				player_id = data.player.id
 				connected = true
 				enemies = data.enemies
-				print("✅ Autenticado como:", data.player.username)
+				print("✅ Autenticado como:", data.player.username, " ID:", player_id)
 
 			"auth_error":
 				print("❌ Error de autenticación:", data.error)
@@ -98,7 +103,7 @@ func _receive_messages():
 					"hp": data.player.hp,
 					"animation_state": data.player.get("animation_state", "Idle")
 				}
-				print("👤 Jugador se unió:", data.player.username)
+				print("👤 Jugador se unió:", data.player.username, " ID:", data.player.id)
 
 			"leave":
 				players.erase(data.id)
@@ -112,26 +117,27 @@ func _receive_messages():
 			"enemy_hit":
 				if data.id in enemies:
 					enemies[data.id].hp = data.hp
+					print("💥 Enemigo golpeado - ID:", data.id, " HP:", data.hp)
 
 			"enemy_dead":
 				enemies.erase(data.id)
+				print("💀 Enemigo muerto - ID:", data.id)
 
 			"player_hit":
 				if data.id in players:
 					players[data.id].hp = data.hp
+					print("💥 Jugador golpeado - ID:", data.id, " HP:", data.hp)
 
 			"player_dead":
 				if data.id in players:
 					players[data.id].hp = 0
+					print("💀 Jugador muerto - ID:", data.id)
 
 			"player_state_update":
-				var player_id = str(int(data.id))
-
-				if players.has(player_id):
-					players[player_id].animation_state = data.state
-					print(players[player_id].animation_state, "WEB SOCKET DE NETWORK")
-				else:
-					print("⚠️ ID no encontrado en players:", player_id, " keys:", players.keys())
+				var player_id_str = str(int(data.id))
+				if players.has(player_id_str):
+					players[player_id_str].animation_state = data.state
+					print("🎭 Estado jugador actualizado - ID:", data.id, " Estado:", data.state)
 
 			"chat":
 				print("[CHAT]", data.from, ":", data.text)
@@ -157,6 +163,46 @@ func _receive_messages():
 						"type": e.type,
 						"hp": e.get("hp", 100)
 					}
+				# Actualizar proyectiles
+				projectiles.clear()
+				if data.has("projectiles"):
+					for pid in data.projectiles.keys():
+						var proj = data.projectiles[pid]
+						projectiles[pid] = {
+							"x": proj.x,
+							"y": proj.y,
+							"direction_x": proj.direction_x,
+							"direction_y": proj.direction_y,
+							"damage": proj.damage,
+							"owner_id": proj.owner_id,
+							"speed": proj.speed
+						}
+					print("📊 Estado - Proyectiles:", projectiles.size())
+
+			"projectile_created":
+				projectiles[data.id] = {
+					"x": data.x,
+					"y": data.y,
+					"direction_x": data.direction_x,
+					"direction_y": data.direction_y,
+					"damage": data.damage,
+					"owner_id": data.owner_id,
+					"speed": data.speed
+				}
+				emit_signal("projectile_created", projectiles[data.id])
+				print("🎯 PROYECTIL CREADO EN RED - ID:", data.id, " Owner:", data.owner_id, " Pos:", data.x, ",", data.y)
+				
+			"projectile_moved":
+				if data.id in projectiles:
+					projectiles[data.id].x = data.x
+					projectiles[data.id].y = data.y
+					emit_signal("projectile_moved", projectiles[data.id])
+					print("🔄 Proyectil movido - ID:", data.id, " Pos:", data.x, ",", data.y)
+				
+			"projectile_removed":
+				projectiles.erase(data.id)
+				emit_signal("projectile_removed", data.id)
+				print("🗑️ Proyectil removido - ID:", data.id)
 
 # -------------------------------
 # --- ENVÍO DE MENSAJES
@@ -164,12 +210,11 @@ func _receive_messages():
 func auth(token_str: String):
 	token = token_str
 	if ws_ready:
+		print("🔐 Enviando autenticación...")
 		socket.send_text(JSON.stringify({
 			"type": "auth",
 			"token": token
 		}))
-	else:
-		print("WS aún no listo, auth pendiente...")
 
 func move_player(x: float, y: float):
 	if connected:
@@ -181,6 +226,7 @@ func move_player(x: float, y: float):
 
 func attack(target_type: String, target_id: int, damage: int = 10):
 	if connected:
+		print("💥 ENVIANDO ATAQUE - Target:", target_type, target_id, " Damage:", damage)
 		socket.send_text(JSON.stringify({
 			"type": "attack",
 			"targetType": target_type,
@@ -196,17 +242,41 @@ func send_chat(text: String):
 		}))
 
 func send_player_state(state: String):
-	print(state, " network")
-	print(connected)
 	if connected:
-		print("conected")
-		print(JSON.stringify({
-			"type": "player_state",
-			"state": state
-		}))
 		socket.send_text(JSON.stringify({
 			"type": "player_state",
 			"state": state
+		}))
+
+func create_projectile(x: float, y: float, direction: Vector2, damage: int, owner_id: int, speed: float = 400.0):
+	if connected:
+		print("🚀 ENVIANDO PROYECTIL - Owner:", owner_id, " Pos:", x, ",", y, " Dir:", direction)
+		socket.send_text(JSON.stringify({
+			"type": "create_projectile",
+			"x": x,
+			"y": y,
+			"direction_x": direction.x,
+			"direction_y": direction.y,
+			"damage": damage,
+			"owner_id": owner_id,
+			"speed": speed
+		}))
+
+func remove_projectile(projectile_id: int):
+	if connected:
+		print("🗑️ Enviando remoción proyectil - ID:", projectile_id)
+		socket.send_text(JSON.stringify({
+			"type": "remove_projectile",
+			"id": projectile_id
+		}))
+
+func update_projectile_position(projectile_id: int, x: float, y: float):
+	if connected:
+		socket.send_text(JSON.stringify({
+			"type": "update_projectile_position",
+			"id": projectile_id,
+			"x": x,
+			"y": y
 		}))
 
 # -------------------------------
@@ -216,6 +286,7 @@ func login_user(username: String, password: String) -> void:
 	var http := HTTPRequest.new()
 	add_child(http)
 	http.request_completed.connect(_on_request_completed)
+	print("🔐 Iniciando login...")
 	var err = http.request(
 		api_url + "/login",
 		["Content-Type: application/json"],

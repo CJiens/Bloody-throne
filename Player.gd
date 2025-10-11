@@ -32,6 +32,8 @@ var roll_cooldown_timer := 0.0
 # Nodos
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hp_bar: ProgressBar = $ProgressBar
+@onready var hit_area: Area2D = $HitArea
+
 # -------------------------------
 # --- MÉTODOS DE ACCESO
 # -------------------------------
@@ -48,6 +50,16 @@ func _ready():
 	if hp_bar:
 		hp_bar.max_value = max_hp
 		hp_bar.value = hp
+
+	# DEBUG: Conectar señal de área entrante
+	if hit_area:
+		if not hit_area.area_entered.is_connected(_on_area_entered):
+			hit_area.area_entered.connect(_on_area_entered)
+		print("✅ HitArea conectado - Jugador:", id)
+	else:
+		print("❌ No se encontró HitArea - Jugador:", id)
+	
+	print("👤 JUGADOR LISTO - ID:", id)
 
 func _process(delta):
 	_handle_cooldowns(delta)
@@ -89,7 +101,7 @@ func execute_attack(mouse_pos: Vector2):
 	if not can_attack_var:
 		return
 
-	print("🎯 ATAQUE EJECUTADO")  # DEBUG
+	print("🎯 ATAQUE EJECUTADO - Jugador:", id)  # DEBUG
 	
 	can_attack_var = false
 	attack_timer = attack_cooldown
@@ -118,6 +130,7 @@ func try_roll():
 	if not is_rolling and roll_cooldown_timer <= 0:
 		is_rolling = true
 		roll_timer = roll_duration
+		print("🎯 ROLL EJECUTADO - Jugador:", id)
 
 # -------------------------------
 # --- ANIMACIONES (SIMPLIFICADO)
@@ -184,10 +197,13 @@ func update_hp(new_hp: int):
 	if hp_bar:
 		hp_bar.value = hp
 	
+	print("❤️  ACTUALIZANDO HP - Jugador:", id, " HP:", hp)
+	
 	if hp <= 0:
 		play_death_animation()
 
 func take_damage(amount: int):
+	print("💥 JUGADOR RECIBIÓ DAÑO - ID:", id, " Cantidad:", amount, " HP Antes:", hp)
 	update_hp(hp - amount)
 
 func play_death_animation():
@@ -195,6 +211,7 @@ func play_death_animation():
 		get_tree().quit()
 		return
 
+	print("💀 JUGADOR MUERTO - ID:", id)
 	sprite.play("Die")
 	if id == Network.player_id:
 		Network.send_player_state("Die")
@@ -211,7 +228,7 @@ func _handle_cooldowns(delta):
 		attack_timer -= delta
 		if attack_timer <= 0:
 			can_attack_var = true
-			print("✅ Ataque listo de nuevo")  # DEBUG
+			print("✅ Ataque listo de nuevo - Jugador:", id)  # DEBUG
 
 	# Roll activo
 	if is_rolling:
@@ -223,3 +240,23 @@ func _handle_cooldowns(delta):
 	# Cooldown de roll
 	if roll_cooldown_timer > 0:
 		roll_cooldown_timer -= delta
+
+# -------------------------------
+# --- DEBUG DE COLISIONES
+# -------------------------------
+func _on_area_entered(area):
+	print("🔄 JUGADOR ", id, " DETECTÓ ÁREA:", area.name, " Tipo:", area.get_class())
+	
+	if area is Projectile:
+		var projectile = area as Projectile
+		print("💥 PROYECTIL COLISIONÓ CON JUGADOR ", id)
+		print("   - Proyectil Owner:", projectile.projectile_owner_id)
+		print("   - Proyectil Remote:", projectile.is_remote)
+		print("   - Proyectil ID:", projectile.projectile_id)
+		print("   - Proyectil Damage:", projectile.projectile_damage)
+		
+		# Verificar si el proyectil es del mismo jugador
+		if projectile.projectile_owner_id == id:
+			print("   🚫 AUTO-DAÑO - No se aplica daño")
+		else:
+			print("   💥 DAÑO APLICABLE - Target diferente al owner")
