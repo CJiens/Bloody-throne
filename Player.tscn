@@ -3260,13 +3260,9 @@ metadata/_edit_use_anchors_ = true
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(4, -21)
 sprite_frames = SubResource("SpriteFrames_yq104")
-animation = &"Idle"
+animation = &"run_SW"
 speed_scale = 6.8
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-limit_left = -500
-limit_top = -500
-limit_right = 500
-limit_bottom = 500
