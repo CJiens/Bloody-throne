@@ -1,4 +1,4 @@
-[gd_scene load_steps=597 format=3 uid="uid://xsdjfolg3h1m"]
+[gd_scene load_steps=765 format=3 uid="uid://xsdjfolg3h1m"]
 
 [ext_resource type="Script" uid="uid://cet0c5gh0dp4l" path="res://Player.gd" id="1_xhfnw"]
 [ext_resource type="Texture2D" uid="uid://cvthwvdgad0xw" path="res://Sprites/war1/Character (1)/Character/Dead/00.png" id="2_ictha"]
