@@ -32,8 +32,21 @@ var roll_timer := 0.0
 var roll_cooldown_timer := 0.0
 
 # Nodos
-@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hp_bar: ProgressBar = $ProgressBar
+@onready var hitbox_area: Area2D = $HitboxArea
+@onready var hitbox_collision: CollisionShape2D = $HitboxArea/CollisionShape2D
+
+# AnimatedSprites por clase
+@onready var warrior_sprite: AnimatedSprite2D = $WarriorSprite
+@onready var mage_sprite: AnimatedSprite2D = $MageSprite
+@onready var archer_sprite: AnimatedSprite2D = $ArcherSprite
+@onready var rogue_sprite: AnimatedSprite2D = $RogueSprite
+
+# Sprite activo actualmente
+var current_sprite: AnimatedSprite2D
+
+# Proyectil por clase
+var projectile_scene: PackedScene
 
 # Configuraciones por clase
 var class_configs := {
@@ -43,7 +56,9 @@ var class_configs := {
 		"attack_damage": 15,
 		"attack_range": 50,
 		"is_ranged": false,
-		"attack_cooldown": 0.6
+		"attack_cooldown": 0.6,
+		"sprite": null,
+		"projectile": preload("res://projectiles/WarriorProjectile.tscn")
 	},
 	"mage": {
 		"hp": 80,
@@ -51,7 +66,9 @@ var class_configs := {
 		"attack_damage": 12,
 		"attack_range": 300,
 		"is_ranged": true,
-		"attack_cooldown": 0.8
+		"attack_cooldown": 0.8,
+		"sprite": null,
+		"projectile": preload("res://projectiles/MageProjectile.tscn")
 	},
 	"archer": {
 		"hp": 100,
@@ -59,7 +76,9 @@ var class_configs := {
 		"attack_damage": 10,
 		"attack_range": 250,
 		"is_ranged": true,
-		"attack_cooldown": 0.5
+		"attack_cooldown": 0.5,
+		"sprite": null,
+		"projectile": preload("res://projectiles/ArcherProjectile.tscn")
 	},
 	"rogue": {
 		"hp": 90,
@@ -67,7 +86,9 @@ var class_configs := {
 		"attack_damage": 12,
 		"attack_range": 45,
 		"is_ranged": false,
-		"attack_cooldown": 0.4
+		"attack_cooldown": 0.4,
+		"sprite": null,
+		"projectile": preload("res://projectiles/RogueProjectile.tscn")
 	}
 }
 
@@ -97,12 +118,53 @@ func _apply_class_config():
 	attack_range = config.attack_range
 	is_ranged = config.is_ranged
 	attack_cooldown = config.attack_cooldown
+	projectile_scene = config.projectile
+	
+	# Configurar el sprite activo
+	_setup_class_sprite()
 	
 	if hp_bar:
 		hp_bar.max_value = max_hp
 		hp_bar.value = hp
 	
 	print("🎯 CLASE CONFIGURADA - ", classe, " Rango:", attack_range, " Ranged:", is_ranged)
+
+# -------------------------------
+# --- CONFIGURACIÓN DE SPRITES POR CLASE
+# -------------------------------
+func _setup_class_sprite():
+	# Ocultar todos los sprites primero
+	# warrior_sprite.visible = false
+	# mage_sprite.visible = false
+	# archer_sprite.visible = false
+	# rogue_sprite.visible = false
+	
+	# Configurar el sprite activo según la clase
+	match classe:
+		"warrior":
+			current_sprite = warrior_sprite
+			class_configs["warrior"].sprite = warrior_sprite
+		"mage":
+			current_sprite = mage_sprite
+			class_configs["mage"].sprite = mage_sprite
+		"archer":
+			current_sprite = archer_sprite
+			class_configs["archer"].sprite = archer_sprite
+		"rogue":
+			current_sprite = rogue_sprite
+			class_configs["rogue"].sprite = rogue_sprite
+		_:
+			current_sprite = warrior_sprite
+			class_configs["warrior"].sprite = warrior_sprite
+	
+	# Mostrar el sprite activo
+	if current_sprite:
+		current_sprite.visible = true
+		print("👤 SPRITE ACTIVADO - Clase:", classe, " Sprite:", current_sprite.name)
+
+# Obtener la escena del proyectil de la clase
+func get_projectile_scene() -> PackedScene:
+	return projectile_scene
 
 # -------------------------------
 # --- PROCESO DEL JUGADOR
@@ -112,21 +174,40 @@ func _ready():
 		hp_bar.max_value = max_hp
 		hp_bar.value = hp
 	
-	# ✅ REACTIVAR COLISIONES LOCALES PARA PAREDES
-	set_collision_layer_value(1, true)   # Estamos en layer de players
-	set_collision_mask_value(1, false)   # NO detectar otros jugadores
-	set_collision_mask_value(2, false)   # NO detectar enemigos
-	set_collision_mask_value(3, false)   # NO detectar proyectiles
-	set_collision_mask_value(4, true)    # ✅ SÍ detectar paredes (TileMap)
-	set_collision_mask_value(5, false)   # NO detectar environment
+	# ✅ CONFIGURACIÓN DE COLISIONES MEJORADA
 	
-	# ✅ Reactivar CollisionShape2D para colisiones locales
+	# Colisiones de movimiento (solo paredes)
+	set_collision_layer_value(1, true)   # Layer de players
+	set_collision_mask_value(1, false)   # NO otros jugadores
+	set_collision_mask_value(2, false)   # NO enemigos
+	set_collision_mask_value(3, false)   # NO proyectiles
+	set_collision_mask_value(4, true)    # ✅ SÍ paredes (TileMap)
+	set_collision_mask_value(5, false)   # NO environment
+	
+	# Reactivar CollisionShape2D para movimiento
 	var collision_shape = $CollisionShape2D
 	if collision_shape:
 		collision_shape.disabled = false
 	
+	# ✅ CONFIGURAR HITBOX PARA PROYECTILES
+	if hitbox_area:
+		# Hitbox en layer diferente para proyectiles
+		hitbox_area.set_collision_layer_value(6, true)  # Layer de hitbox de jugadores
+		hitbox_area.set_collision_mask_value(3, true)   # ✅ SÍ detectar proyectiles
+		hitbox_area.set_collision_mask_value(1, false)  # NO jugadores
+		hitbox_area.set_collision_mask_value(2, false)  # NO enemigos
+		hitbox_area.set_collision_mask_value(4, false)  # NO paredes
+		hitbox_area.set_collision_mask_value(5, false)  # NO environment
+		
+		# Conectar señal de área entrante
+		if not hitbox_area.area_entered.is_connected(_on_hitbox_area_entered):
+			hitbox_area.area_entered.connect(_on_hitbox_area_entered)
+		
+		if hitbox_collision:
+			hitbox_collision.disabled = false
+	
 	_apply_class_config()
-	print("👤 JUGADOR LISTO - ID:", id, " Clase:", classe, " Colisiones: ACTIVADAS (paredes locales)")
+	print("👤 JUGADOR LISTO - ID:", id, " Clase:", classe, " Hitbox: ACTIVADO")
 
 func _process(delta):
 	_handle_cooldowns(delta)
@@ -197,15 +278,15 @@ func execute_attack(mouse_pos: Vector2):
 	var anim_name = _get_direction_animation(attack_dir.angle(), "attack")
 	
 	# Reproducir animación de ataque
-	if sprite and sprite.sprite_frames and sprite.sprite_frames.has_animation(anim_name):
+	if current_sprite and current_sprite.sprite_frames and current_sprite.sprite_frames.has_animation(anim_name):
 		print("🎬 Reproduciendo animación: ", anim_name)
-		sprite.animation = anim_name
+		current_sprite.animation = anim_name
 		animation_state = anim_name
 		if id == Network.player_id:
 			Network.send_player_state(anim_name)
-		sprite.play()
+		current_sprite.play()
 	else:
-		print("❌ Animación no encontrada: ", anim_name)
+		print("❌ Animación no encontrada: ", anim_name, " en sprite:", current_sprite.name)
 
 func can_attack() -> bool:
 	return can_attack_var
@@ -220,17 +301,17 @@ func try_roll():
 		print("🎯 ROLL EJECUTADO - Jugador:", id)
 
 # -------------------------------
-# --- ANIMACIONES
+# --- ANIMACIONES (FORMATO: accion_direccion)
 # -------------------------------
 func update_animation(dir: Vector2, attacking: bool = false, rolling: bool = false):
-	if not sprite:
+	if not current_sprite:
 		return
 
 	# Si está en cooldown de ataque, no cambiar animación
 	if not can_attack_var:
 		return
 
-	var anim_name := "Idle"
+	var anim_name := "Idle"  # Formato simple: Idle, run_N, attack_SW, etc.
 
 	if rolling:
 		var vec = dir
@@ -240,41 +321,49 @@ func update_animation(dir: Vector2, attacking: bool = false, rolling: bool = fal
 	elif dir != Vector2.ZERO:
 		anim_name = _get_direction_animation(dir.angle(), "run")
 
-	if sprite.animation != anim_name:
-		sprite.animation = anim_name
+	if current_sprite.animation != anim_name:
+		current_sprite.animation = anim_name
 		animation_state = anim_name
 		if id == Network.player_id:
 			Network.send_player_state(anim_name)
-		sprite.play()
+		current_sprite.play()
 
 func set_remote_animation(anim_name: String):
-	if sprite and sprite.sprite_frames and sprite.sprite_frames.has_animation(anim_name):
-		if sprite.animation != anim_name:
-			sprite.animation = anim_name
-			sprite.play()
+	if current_sprite and current_sprite.sprite_frames and current_sprite.sprite_frames.has_animation(anim_name):
+		if current_sprite.animation != anim_name:
+			current_sprite.animation = anim_name
+			current_sprite.play()
 
-func _get_direction_animation(angle: float, type: String) -> String:
-	if not sprite:
+func _get_direction_animation(angle: float, action: String) -> String:
+	if not current_sprite:
 		return "Idle"
-		
+	
+	# Determinar la dirección basada en el ángulo
+	var direction := ""
+	
 	if angle >= -PI / 8 and angle < PI / 8:
-		return type + "_E"
+		direction = "E"  # Este
 	elif angle >= PI / 8 and angle < 3 * PI / 8:
-		return type + "_SE"
+		direction = "SE" # Sureste
 	elif angle >= 3 * PI / 8 and angle < 5 * PI / 8:
-		return type + "_S"
+		direction = "S"  # Sur
 	elif angle >= 5 * PI / 8 and angle < 7 * PI / 8:
-		return type + "_SW"
+		direction = "SW" # Suroeste
 	elif angle >= 7 * PI / 8 or angle < -7 * PI / 8:
-		return type + "_W"
+		direction = "W"  # Oeste
 	elif angle >= -7 * PI / 8 and angle < -5 * PI / 8:
-		return type + "_NW"
+		direction = "NW" # Noroeste
 	elif angle >= -5 * PI / 8 and angle < -3 * PI / 8:
-		return type + "_N"
+		direction = "N"  # Norte
 	elif angle >= -3 * PI / 8 and angle < -PI / 8:
-		return type + "_NE"
-
-	return "Idle"
+		direction = "NE" # Noreste
+	
+	# Formato: accion_direccion (sin prefijo de clase)
+	# Ejemplos: attack_N, run_SW, roll_E, Idle
+	if direction == "":
+		return action
+	else:
+		return action + "_" + direction
 
 # -------------------------------
 # --- SISTEMA DE VIDA
@@ -294,15 +383,19 @@ func take_damage(amount: int):
 	update_hp(hp - amount)
 
 func play_death_animation():
-	if not sprite:
+	if not current_sprite:
 		get_tree().quit()
 		return
 
 	print("💀 JUGADOR MUERTO - ID:", id)
-	sprite.play("Die")
+	if current_sprite.sprite_frames and current_sprite.sprite_frames.has_animation("Die"):
+		current_sprite.play("Die")
+	else:
+		current_sprite.play("Idle")  # Fallback
+	
 	if id == Network.player_id:
 		Network.send_player_state("Die")
-	await sprite.animation_finished
+	await current_sprite.animation_finished
 	if id == Network.player_id:
 		get_tree().quit()
 
@@ -329,20 +422,26 @@ func _handle_cooldowns(delta):
 		roll_cooldown_timer -= delta
 
 # -------------------------------
-# --- DEBUG DE COLISIONES (SOLO VISUAL)
+# --- COLISIONES CON PROYECTILES (MANEJADAS LOCALMENTE)
 # -------------------------------
-func _on_area_entered(area):
-	# Esto es solo para feedback visual, el servidor maneja las colisiones reales
-	print("👀 COLISIÓN VISUAL - Jugador:", id, " con:", area.name)
-	
+func _on_hitbox_area_entered(area):
 	if area is Projectile:
 		var projectile = area as Projectile
-		print("   - Proyectil Owner:", projectile.projectile_owner_id)
-		print("   - Proyectil Remote:", projectile.is_remote)
+		print("🎯 PROYECTIL GOLPEÓ JUGADOR - Proyectil:", projectile.projectile_id, " Jugador:", id)
 		
-		# Solo para efectos visuales, el servidor ya manejó el daño
-		if projectile.projectile_owner_id != id:
-			# Efecto visual de golpe (opcional)
-			modulate = Color.RED
-			await get_tree().create_timer(0.1).timeout
-			modulate = Color.WHITE
+		# Verificar que no sea auto-daño
+		if projectile.projectile_owner_id == id:
+			print("🚫 AUTO-DAÑO IGNORADO")
+			return
+		
+		# Notificar al servidor del golpe
+		Network.projectile_hit_player(projectile.projectile_id, id, projectile.projectile_damage)
+		
+		# Efecto visual local
+		_create_hit_effect()
+
+func _create_hit_effect():
+	# Efecto visual de golpe
+	modulate = Color.RED
+	await get_tree().create_timer(0.1).timeout
+	modulate = Color.WHITE

@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://xsdjfolg3h1m" path="res://Player.tscn" id="2_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://dftgxtk6badua" path="res://Enemy.tscn" id="2_h2yge"]
 [ext_resource type="PackedScene" uid="uid://dpqg0t3ve8om3" path="res://Network.tscn" id="2_lquwl"]
-[ext_resource type="PackedScene" uid="uid://m5llmhoblgp6" path="res://MageProjectile.tscn" id="4_2cqfq"]
+[ext_resource type="PackedScene" uid="uid://m5llmhoblgp6" path="res://projectiles/MageProjectile.tscn" id="4_2cqfq"]
 [ext_resource type="PackedScene" uid="uid://ibpop0yh2jl3" path="res://Nivel1.tscn" id="5_074og"]
 [ext_resource type="VideoStream" uid="uid://kyfhj0q8a5v2" path="res://Presentacion-del-Juego-Por-Frame Formato Godot.ogv" id="6_272bh"]
 [ext_resource type="Theme" uid="uid://qkkblp6cijnh" path="res://Temas/Botones segunda parte.tres" id="6_kek77"]

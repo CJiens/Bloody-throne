@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://cvwbhhx2wu21w"]
+
+[ext_resource type="Script" uid="uid://ddrg3l27hewcs" path="res://projectiles/projectile.gd" id="1_avsmy"]
+[ext_resource type="Texture2D" uid="uid://n4nvtbl86sbm" path="res://Sprites/Arquera/flecha/Flecha.png" id="1_m5u6l"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3bbdk"]
+size = Vector2(3.3430328, 20)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3bbdk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_m5u6l")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Area2D" type="Area2D"]
+script = ExtResource("1_avsmy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(15, 1)
+scale = Vector2(1.5891215, 0.20813483)
+shape = SubResource("RectangleShape2D_3bbdk")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.07, 0.07)
+sprite_frames = SubResource("SpriteFrames_3bbdk")

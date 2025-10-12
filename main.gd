@@ -9,6 +9,7 @@ extends Node2D
 # UI
 @onready var login_ui = $CanvasLayer/Pantalla_Inicial
 @onready var chat_ui = $CanvasLayer/ChatUI
+@onready var class_selection_ui = $CanvasLayer/ClassSelection
 @onready var login_button: Button = $"CanvasLayer/Pantalla_Inicial/VBoxContainer2/Button_login"
 @onready var username_input: LineEdit = $"CanvasLayer/Pantalla_Inicial/VBoxContainer2/LineEdit_username"
 @onready var password_input: LineEdit = $"CanvasLayer/Pantalla_Inicial/VBoxContainer2/LineEdit_password"
@@ -26,10 +27,24 @@ extends Node2D
 @onready var button_ip: Button = $CanvasLayer/Pantalla_Inicial/VBoxContainer3/Button_ip
 @onready var contrl: Control = $CanvasLayer/contrl
 
+# Botones de clase
+@onready var warrior_button: Button = $CanvasLayer/ClassSelection/WarriorButton
+@onready var mage_button: Button = $CanvasLayer/ClassSelection/MageButton
+@onready var archer_button: Button = $CanvasLayer/ClassSelection/ArcherButton
+@onready var rogue_button: Button = $CanvasLayer/ClassSelection/RogueButton
+
 # Prefabs
 @export var PlayerScene: PackedScene
 @export var EnemyScene: PackedScene
-@export var ProjectileScene: PackedScene
+@export var ProjectileScene: PackedScene # Proyectil por defecto
+
+# Proyectiles por clase (como respaldo)
+var class_projectiles := {
+	"warrior": preload("res://projectiles/WarriorProjectile.tscn"),
+	"mage": preload("res://projectiles/MageProjectile.tscn"),
+	"archer": preload("res://projectiles/ArcherProjectile.tscn"),
+	"rogue": preload("res://projectiles/RogueProjectile.tscn")
+}
 
 # -------------------------------
 # --- VARIABLES DE JUEGO
@@ -47,8 +62,15 @@ func _ready():
 	chat_ui.visible = false
 	vbox_container_2.visible = false
 	vbox_container_3.visible = false
+	class_selection_ui.visible = false
 
 	button_ip.pressed.connect(_on_button_ip_pressed)
+	
+	# Conectar botones de clase
+	warrior_button.pressed.connect(_on_warrior_selected)
+	mage_button.pressed.connect(_on_mage_selected)
+	archer_button.pressed.connect(_on_archer_selected)
+	rogue_button.pressed.connect(_on_rogue_selected)
 
 	if not Network.is_connected("login_successful", self._on_login_successful):
 		Network.connect("login_successful", self._on_login_successful)
@@ -71,7 +93,7 @@ func _process(_delta):
 		return
 
 	# Debug de estado
-	if Engine.get_frames_drawn() % 180 == 0:  # Cada 3 segundos aproximadamente
+	if Engine.get_frames_drawn() % 180 == 0: # Cada 3 segundos aproximadamente
 		print("📊 ESTADO - Jugadores:", players.size(), " Enemigos:", enemies.size(), " Proyectiles:", projectiles.size())
 
 	# --- Actualizar jugadores desde Network ---
@@ -91,31 +113,22 @@ func _process(_delta):
 					var anim_name: String = data.animation_state
 					if player_node.has_method("set_remote_animation"):
 						player_node.set_remote_animation(anim_name)
-			else:
-				# ✅ JUGADOR LOCAL: Sincronizar posición corregida del servidor
-				var server_pos = Vector2(data.x, data.y)
-				var current_pos = player_node.position
-				
-				# Solo actualizar si hay una diferencia significativa (evitar micro-correcciones)
-				if current_pos.distance_to(server_pos) > 10.0:
-					print("🔄 Sincronizando posición local - Servidor:", server_pos, " Local:", current_pos, " Distancia:", current_pos.distance_to(server_pos))
-					player_node.position = server_pos
 
 			# Actualizar HP de todos los jugadores
 			_update_player_hp(player_node, data.hp, id)
 		else:
 			print("👤 SPAWNEANDO JUGADOR - ID:", id, " Username:", data.username)
-			_spawn_player(id, data.username, Vector2(data.x, data.y), data.hp)
+			_spawn_player(id, data.username, Vector2(data.x, data.y), data.hp, data.get("classe", "warrior"))
 
-	# # --- Actualizar enemigos ---
-	# for key in Network.enemies.keys():
-	# 	var id = int(key)
-	# 	var data = Network.enemies[key]
-	# 	if id in enemies:
-	# 		enemies[id].position = Vector2(data.x, data.y)
-	# 	else:
-	# 		print("👹 SPAWNEANDO ENEMIGO - ID:", id, " Tipo:", data.type)
-	# 		_spawn_enemy(id, data.type, Vector2(data.x, data.y))
+	# --- Actualizar enemigos ---
+	for key in Network.enemies.keys():
+		var id = int(key)
+		var data = Network.enemies[key]
+		if id in enemies:
+			enemies[id].position = Vector2(data.x, data.y)
+		else:
+			print("👹 SPAWNEANDO ENEMIGO - ID:", id, " Tipo:", data.type)
+			_spawn_enemy(id, data.type, Vector2(data.x, data.y))
 
 	# --- Actualizar proyectiles ---
 	for key in Network.projectiles.keys():
@@ -123,7 +136,7 @@ func _process(_delta):
 		var data = Network.projectiles[key]
 		if id not in projectiles:
 			# Crear nuevo proyectil
-			print("🎯 SPAWNEANDO PROYECTIL DESDE RED - ID:", id, " Owner:", data.owner_id)
+			print("🎯 SPAWNEANDO PROYECTIL DESDE RED - ID:", id, " Owner:", data.owner_id, " Clase:", data.get("classe", "warrior"))
 			_spawn_projectile(id, data)
 
 	# Los proyectiles remotos se mueven por sí mismos en su _process
@@ -286,7 +299,7 @@ func _attack_ranged_target(mouse_pos: Vector2) -> void:
 		print("❌ ATAQUE DISTANCIA FALLIDO - Jugador local no encontrado")
 		return
 
-	print("🎯 INICIANDO ATAQUE A DISTANCIA - Jugador ID:", Network.player_id)
+	print("🎯 INICIANDO ATAQUE A DISTANCIA - Jugador ID:", Network.player_id, " Clase:", player.classe)
 	
 	var player_pos: Vector2 = player.global_position
 	var player_facing: Vector2 = (mouse_pos - player_pos).normalized()
@@ -311,22 +324,23 @@ func _create_projectile(player: Node2D, direction: Vector2, damage: int):
 		push_error("❌ Error: player no está en el árbol de escena")
 		return
 	
-	print("🚀 CREANDO PROYECTIL - Player:", Network.player_id, " Pos:", player.global_position, " Dir:", direction)
+	print("🚀 CREANDO PROYECTIL - Player:", Network.player_id, " Clase:", player.classe, " Pos:", player.global_position, " Dir:", direction)
 	
 	# Enviar creación del proyectil al servidor
 	Network.create_projectile(
-		player.global_position.x, 
-		player.global_position.y, 
-		direction, 
-		damage, 
+		player.global_position.x,
+		player.global_position.y,
+		direction,
+		damage,
 		Network.player_id,
-		400.0  # velocidad
+		400.0, # velocidad
+		player.classe # Enviar la clase para que el servidor sepa qué proyectil crear
 	)
 
 # -------------------------------
 # --- SPAWN Y HP
 # -------------------------------
-func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100):
+func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100, classe: String = "warrior"):
 	var instance = PlayerScene.instantiate()
 	
 	# Generar posición aleatoria dentro de la pantalla
@@ -343,6 +357,10 @@ func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100):
 	elif "id" in instance:
 		instance.id = id
 	
+	# Asignar clase
+	if instance.has_method("set_classe"):
+		instance.set_classe(classe)
+	
 	player_container.add_child(instance)
 	players[id] = instance
 
@@ -354,7 +372,7 @@ func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100):
 		var cam = instance.get_node_or_null("Camera2D")
 		if cam:
 			cam.make_current()
-		print("🎯 JUGADOR LOCAL CREADO - ID:", id, " Pos:", instance.position)
+		print("🎯 JUGADOR LOCAL CREADO - ID:", id, " Pos:", instance.position, " Clase:", classe)
 	
 	var bar = instance.get_node_or_null("ProgressBar")
 	if bar:
@@ -362,19 +380,28 @@ func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100):
 		bar.value = hp
 		bar.queue_redraw()
 
-# func _spawn_enemy(id: int, _enemy_type: String, pos: Vector2):
-# 	var instance = EnemyScene.instantiate()
-# 	instance.position = pos
-# 	instance.name = str(id)
-# 	enemy_container.add_child(instance)
-# 	enemies[id] = instance
+func _spawn_enemy(id: int, _enemy_type: String, pos: Vector2):
+	var instance = EnemyScene.instantiate()
+	instance.position = pos
+	instance.name = str(id)
+	enemy_container.add_child(instance)
+	enemies[id] = instance
 
 func _spawn_projectile(id: int, data: Dictionary):
-	if ProjectileScene == null:
-		push_error("❌ ProjectileScene no asignada")
+	var projectile_scene: PackedScene
+	
+	# Determinar qué proyectil instanciar basado en la clase
+	var classe = data.get("classe", "warrior")
+	if class_projectiles.has(classe):
+		projectile_scene = class_projectiles[classe]
+	else:
+		projectile_scene = ProjectileScene # Fallback
+
+	if projectile_scene == null:
+		push_error("❌ ProjectileScene no asignada para clase:", classe)
 		return
 	
-	var projectile = ProjectileScene.instantiate()
+	var projectile = projectile_scene.instantiate()
 	if projectile == null:
 		push_error("❌ Error al instanciar proyectil")
 		return
@@ -382,16 +409,15 @@ func _spawn_projectile(id: int, data: Dictionary):
 	projectile.name = str(id)
 	projectile.position = Vector2(data.x, data.y)
 	
-	# DETERMINAR SI ES LOCAL O REMOTO MEJORADO
 	var is_local_projectile = (data.owner_id == Network.player_id)
 	var direction = Vector2(data.direction_x, data.direction_y)
 	
-	print("🎯 CONFIGURANDO PROYECTIL - ID:", id, " Owner:", data.owner_id, " LocalPlayer:", Network.player_id, " IsLocal:", is_local_projectile, " Dir:", direction)
+	print("🎯 CONFIGURANDO PROYECTIL - ID:", id, " Clase:", classe, " Owner:", data.owner_id, " IsLocal:", is_local_projectile)
 	
 	if projectile.has_method("initialize"):
 		projectile.initialize(id, direction, data.damage, data.owner_id, not is_local_projectile)
 	else:
-		# Si no tiene método initialize, configurar propiedades directamente
+		# Configuración estándar
 		projectile.set("projectile_id", id)
 		projectile.set("projectile_direction", direction.normalized())
 		projectile.set("projectile_damage", data.damage)
@@ -402,7 +428,7 @@ func _spawn_projectile(id: int, data: Dictionary):
 	add_child(projectile)
 	projectiles[id] = projectile
 	
-	print("✅ PROYECTIL CREADO - ID:", id, " Owner:", data.owner_id, " Remote:", not is_local_projectile, " Speed:", projectile.get("projectile_speed"))
+	print("✅ PROYECTIL CREADO - ID:", id, " Tipo:", classe, " Remote:", not is_local_projectile)
 
 func update_player_hp(id: int, hp_value: int):
 	var player = players.get(id, null)
@@ -438,7 +464,7 @@ func _on_projectile_removed(projectile_id):
 	destroy_projectile(projectile_id)
 
 # -------------------------------
-# --- LOGIN
+# --- LOGIN Y SELECCIÓN DE CLASE
 # -------------------------------
 func _on_login_pressed():
 	var username = username_input.text.strip_edges()
@@ -448,9 +474,36 @@ func _on_login_pressed():
 		Network.login_user(username, password)
 
 func _on_login_successful():
-	print("✅ Login exitoso, iniciando video de introducción...")
+	print("✅ Login exitoso, mostrando selección de clase...")
 	vbox_container.visible = false
 	vbox_container_2.visible = false
+	class_selection_ui.visible = true
+	canvas_layer.visible = false
+# -------------------------------
+# --- SELECCIÓN DE CLASE
+# -------------------------------
+func _on_warrior_selected():
+	print("🛡️ Guerrero seleccionado")
+	Network.choose_class("warrior")
+	_enter_game()
+
+func _on_mage_selected():
+	print("🔮 Mago seleccionado")
+	Network.choose_class("mage")
+	_enter_game()
+
+func _on_archer_selected():
+	print("🏹 Arquero seleccionado")
+	Network.choose_class("archer")
+	_enter_game()
+
+func _on_rogue_selected():
+	print("⚔️ Pícaro seleccionado")
+	Network.choose_class("rogue")
+	_enter_game()
+
+func _enter_game():
+	class_selection_ui.visible = false
 	video_stream_player.stop()
 	video_stream_player.stream = load("res://Segunda-Parte-video-por-frame.ogv")
 	video_stream_player.loop = false
@@ -462,6 +515,7 @@ func _on_login_successful():
 	video_stream_player.visible = false
 	canvas_layer.visible = false
 	canvas_layer.process_mode = Node.PROCESS_MODE_DISABLED
+	chat_ui.visible = true
 
 # -------------------------------
 # --- CHAT

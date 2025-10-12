@@ -101,9 +101,10 @@ func _receive_messages():
 					"y": data.player.y,
 					"username": data.player.username,
 					"hp": data.player.hp,
-					"animation_state": data.player.get("animation_state", "Idle")
+					"animation_state": data.player.get("animation_state", "Idle"),
+					"classe": data.player.get("classe", "warrior")
 				}
-				print("👤 Jugador se unió:", data.player.username, " ID:", data.player.id)
+				print("👤 Jugador se unió:", data.player.username, " ID:", data.player.id, " Clase:", data.player.get("classe", "warrior"))
 
 			"leave":
 				players.erase(data.id)
@@ -152,7 +153,7 @@ func _receive_messages():
 						"username": p.username,
 						"hp": p.get("hp", 100),
 						"animation_state": p.get("animation_state", "Idle"),
-						"classe": p.get("classe", "")
+						"classe": p.get("classe", "warrior")
 					}
 				enemies.clear()
 				for eid in data.enemies.keys():
@@ -175,7 +176,8 @@ func _receive_messages():
 							"direction_y": proj.direction_y,
 							"damage": proj.damage,
 							"owner_id": proj.owner_id,
-							"speed": proj.speed
+							"speed": proj.speed,
+							"classe": proj.get("classe", "warrior")
 						}
 					print("📊 Estado - Proyectiles:", projectiles.size())
 
@@ -187,10 +189,11 @@ func _receive_messages():
 					"direction_y": data.direction_y,
 					"damage": data.damage,
 					"owner_id": data.owner_id,
-					"speed": data.speed
+					"speed": data.speed,
+					"classe": data.get("classe", "warrior")
 				}
 				emit_signal("projectile_created", projectiles[data.id])
-				print("🎯 PROYECTIL CREADO EN RED - ID:", data.id, " Owner:", data.owner_id, " Pos:", data.x, ",", data.y)
+				print("🎯 PROYECTIL CREADO EN RED - ID:", data.id, " Owner:", data.owner_id, " Clase:", data.get("classe", "warrior"), " Pos:", data.x, ",", data.y)
 				
 			"projectile_moved":
 				if data.id in projectiles:
@@ -248,9 +251,10 @@ func send_player_state(state: String):
 			"state": state
 		}))
 
-func create_projectile(x: float, y: float, direction: Vector2, damage: int, owner_id: int, speed: float = 400.0):
+# MODIFICADO: Agregar parámetro de clase al crear proyectil
+func create_projectile(x: float, y: float, direction: Vector2, damage: int, owner_id: int, speed: float = 400.0, classe: String = "warrior"):
 	if connected:
-		print("🚀 ENVIANDO PROYECTIL - Owner:", owner_id, " Pos:", x, ",", y, " Dir:", direction)
+		print("🚀 ENVIANDO PROYECTIL - Owner:", owner_id, " Clase:", classe, " Pos:", x, ",", y, " Dir:", direction)
 		socket.send_text(JSON.stringify({
 			"type": "create_projectile",
 			"x": x,
@@ -259,7 +263,8 @@ func create_projectile(x: float, y: float, direction: Vector2, damage: int, owne
 			"direction_y": direction.y,
 			"damage": damage,
 			"owner_id": owner_id,
-			"speed": speed
+			"speed": speed,
+			"classe": classe  # Nueva información
 		}))
 
 func remove_projectile(projectile_id: int):
@@ -277,6 +282,27 @@ func update_projectile_position(projectile_id: int, x: float, y: float):
 			"id": projectile_id,
 			"x": x,
 			"y": y
+		}))
+
+# -------------------------------
+# --- NUEVAS FUNCIONES PARA COLISIONES LOCALES
+# -------------------------------
+func projectile_hit_player(projectile_id: int, player_id: int, damage: int):
+	if connected:
+		print("💥 ENVIANDO COLISIÓN PROYECTIL-JUGADOR - Proyectil:", projectile_id, " Jugador:", player_id, " Daño:", damage)
+		socket.send_text(JSON.stringify({
+			"type": "projectile_hit",
+			"projectile_id": projectile_id,
+			"player_id": player_id,
+			"damage": damage
+		}))
+
+func choose_class(classe: String):
+	if connected:
+		print("🎯 ENVIANDO ELECCIÓN DE CLASE - Clase:", classe)
+		socket.send_text(JSON.stringify({
+			"type": "choose_class",
+			"classe": classe
 		}))
 
 # -------------------------------
