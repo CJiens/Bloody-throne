@@ -112,29 +112,21 @@ func _ready():
 		hp_bar.max_value = max_hp
 		hp_bar.value = hp
 	
-	# DESACTIVAR COLISIONES LOCALES COMPLETAMENTE - El servidor maneja las colisiones
-	set_collision_layer_value(1, true)  # Estamos en layer de players
-	set_collision_mask_value(1, false)  # NO detectar otros jugadores
-	set_collision_mask_value(2, false)  # NO detectar enemigos
-	set_collision_mask_value(3, false)  # NO detectar proyectiles
-	set_collision_mask_value(4, false)  # NO detectar paredes
-	set_collision_mask_value(5, false)  # NO detectar environment
+	# ✅ REACTIVAR COLISIONES LOCALES PARA PAREDES
+	set_collision_layer_value(1, true)   # Estamos en layer de players
+	set_collision_mask_value(1, false)   # NO detectar otros jugadores
+	set_collision_mask_value(2, false)   # NO detectar enemigos
+	set_collision_mask_value(3, false)   # NO detectar proyectiles
+	set_collision_mask_value(4, true)    # ✅ SÍ detectar paredes (TileMap)
+	set_collision_mask_value(5, false)   # NO detectar environment
 	
-	# Desactivar CollisionShape2D
+	# ✅ Reactivar CollisionShape2D para colisiones locales
 	var collision_shape = $CollisionShape2D
 	if collision_shape:
-		collision_shape.disabled = true
-	
-	# Desactivar Area2D si existe
-	var area = $Area2D if has_node("Area2D") else null
-	if area:
-		area.set_collision_layer_value(1, false)
-		area.set_collision_mask_value(1, false)
-		area.monitoring = false
-		area.monitorable = false
+		collision_shape.disabled = false
 	
 	_apply_class_config()
-	print("👤 JUGADOR LISTO - ID:", id, " Clase:", classe, " Colisiones: DESACTIVADAS")
+	print("👤 JUGADOR LISTO - ID:", id, " Clase:", classe, " Colisiones: ACTIVADAS (paredes locales)")
 
 func _process(delta):
 	_handle_cooldowns(delta)
@@ -144,7 +136,7 @@ func _physics_process(delta):
 		_handle_local_movement(delta)
 
 # -------------------------------
-# --- MOVIMIENTO LOCAL (SIN COLISIONES LOCALES)
+# --- MOVIMIENTO LOCAL (CON COLISIONES LOCALES)
 # -------------------------------
 func _handle_local_movement(delta: float):
 	if is_rolling:
@@ -168,13 +160,23 @@ func _handle_local_movement(delta: float):
 		else:
 			velocity = Vector2.ZERO
 
-	# MOVIMIENTO SIN COLISIONES LOCALES - El servidor corrige si hay colisión
+	# ✅ MOVIMIENTO CON COLISIONES LOCALES ACTIVADAS
+	var last_position = position
 	set_velocity(velocity)
 	set_up_direction(Vector2.UP)
 	move_and_slide()
 
-	# Solo enviar posición al servidor si es el jugador local
-	if Network.connected and id == Network.player_id:
+	# ✅ Detectar colisiones después del movimiento
+	if position == last_position and velocity != Vector2.ZERO:
+		# El jugador no se movió a pesar de tener velocidad -> colisión con pared
+		print("🧱 COLISIÓN LOCAL CON PARED - Jugador:", id)
+		# Efecto visual opcional
+		modulate = Color(1, 0.5, 0.5)  # Rojo claro
+		await get_tree().create_timer(0.1).timeout
+		modulate = Color.WHITE
+
+	# Solo enviar posición al servidor si es el jugador local Y si se movió realmente
+	if Network.connected and id == Network.player_id and velocity != Vector2.ZERO:
 		Network.move_player(position.x, position.y)
 
 	update_animation(move_dir, false, is_rolling)

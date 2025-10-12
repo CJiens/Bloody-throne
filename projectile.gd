@@ -24,16 +24,16 @@ func _ready():
 		
 		# Configurar layers y masks para proyectiles locales
 		set_collision_layer_value(3, true)   # projectiles layer
-		set_collision_mask_value(1, true)    # detectar players
-		set_collision_mask_value(4, true)    # detectar walls
-		set_collision_mask_value(2, false)   # NO detectar enemigos
+		set_collision_mask_value(1, false)   # NO detectar players (el servidor maneja)
+		set_collision_mask_value(4, true)    # ✅ SÍ detectar walls
+		set_collision_mask_value(2, false)   # NO detectar enemigos (el servidor maneja)
 		set_collision_mask_value(3, false)   # NO detectar otros proyectiles
 		set_collision_mask_value(5, false)   # NO detectar environment
 		
 		if collision_shape:
 			collision_shape.disabled = false
 			
-		print("🔧 PROYECTIL LOCAL LISTO - Colisiones ACTIVADAS")
+		print("🔧 PROYECTIL LOCAL LISTO - Colisiones ACTIVADAS (solo paredes)")
 	else:
 		# Proyectiles remotos: desactivar TODAS las colisiones
 		set_collision_layer_value(3, false)  # NO estar en layer de projectiles
@@ -47,12 +47,6 @@ func _ready():
 			collision_shape.disabled = true
 			
 		print("🔧 PROYECTIL REMOTO LISTO - Colisiones DESACTIVADAS")
-	
-	print("   - ID:", projectile_id, " Owner:", projectile_owner_id)
-	print("   - Posición:", position)
-	print("   - Dirección:", projectile_direction)
-	print("   - Velocidad:", projectile_speed)
-	print("   - Daño:", projectile_damage)
 
 func _process(delta):
 	if has_hit:

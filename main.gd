@@ -73,7 +73,6 @@ func _process(_delta):
 	# Debug de estado
 	if Engine.get_frames_drawn() % 180 == 0:  # Cada 3 segundos aproximadamente
 		print("📊 ESTADO - Jugadores:", players.size(), " Enemigos:", enemies.size(), " Proyectiles:", projectiles.size())
-		print(players)
 
 	# --- Actualizar jugadores desde Network ---
 	for key in Network.players.keys():
@@ -82,11 +81,10 @@ func _process(_delta):
 
 		if id in players:
 			var player_node = players[id]
-			var target_pos = Vector2(data.x, data.y)
 
 			if id != Network.player_id:
 				# ⚙️ Solo actualiza a los demás jugadores
-				player_node.position = target_pos
+				player_node.position = Vector2(data.x, data.y)
 
 				# Actualizar animación de otros jugadores
 				if data.has("animation_state"):
@@ -94,19 +92,14 @@ func _process(_delta):
 					if player_node.has_method("set_remote_animation"):
 						player_node.set_remote_animation(anim_name)
 			else:
-				# ✅ Jugador local: interpolación suave para correcciones del servidor
+				# ✅ JUGADOR LOCAL: Sincronizar posición corregida del servidor
+				var server_pos = Vector2(data.x, data.y)
 				var current_pos = player_node.position
-				var distance = current_pos.distance_to(target_pos)
 				
-				# Solo corregir si hay una diferencia significativa
-				if distance > 10.0:
-					# Interpolación lineal suave
-					var correction_speed = 10.0  # Ajusta este valor para mayor/menor suavidad
-					var new_pos = current_pos.lerp(target_pos, correction_speed * _delta)
-					player_node.position = new_pos
-					
-					if Engine.get_frames_drawn() % 60 == 0:  # Debug cada segundo aprox
-						print("🔄 Corrección posición - Distancia:", distance, " Nueva:", new_pos)
+				# Solo actualizar si hay una diferencia significativa (evitar micro-correcciones)
+				if current_pos.distance_to(server_pos) > 10.0:
+					print("🔄 Sincronizando posición local - Servidor:", server_pos, " Local:", current_pos, " Distancia:", current_pos.distance_to(server_pos))
+					player_node.position = server_pos
 
 			# Actualizar HP de todos los jugadores
 			_update_player_hp(player_node, data.hp, id)
