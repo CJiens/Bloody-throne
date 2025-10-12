@@ -73,6 +73,7 @@ func _process(_delta):
 	# Debug de estado
 	if Engine.get_frames_drawn() % 180 == 0:  # Cada 3 segundos aproximadamente
 		print("📊 ESTADO - Jugadores:", players.size(), " Enemigos:", enemies.size(), " Proyectiles:", projectiles.size())
+		print(players)
 
 	# --- Actualizar jugadores desde Network ---
 	for key in Network.players.keys():
@@ -81,16 +82,31 @@ func _process(_delta):
 
 		if id in players:
 			var player_node = players[id]
+			var target_pos = Vector2(data.x, data.y)
 
 			if id != Network.player_id:
 				# ⚙️ Solo actualiza a los demás jugadores
-				player_node.position = Vector2(data.x, data.y)
+				player_node.position = target_pos
 
 				# Actualizar animación de otros jugadores
 				if data.has("animation_state"):
 					var anim_name: String = data.animation_state
 					if player_node.has_method("set_remote_animation"):
 						player_node.set_remote_animation(anim_name)
+			else:
+				# ✅ Jugador local: interpolación suave para correcciones del servidor
+				var current_pos = player_node.position
+				var distance = current_pos.distance_to(target_pos)
+				
+				# Solo corregir si hay una diferencia significativa
+				if distance > 10.0:
+					# Interpolación lineal suave
+					var correction_speed = 10.0  # Ajusta este valor para mayor/menor suavidad
+					var new_pos = current_pos.lerp(target_pos, correction_speed * _delta)
+					player_node.position = new_pos
+					
+					if Engine.get_frames_drawn() % 60 == 0:  # Debug cada segundo aprox
+						print("🔄 Corrección posición - Distancia:", distance, " Nueva:", new_pos)
 
 			# Actualizar HP de todos los jugadores
 			_update_player_hp(player_node, data.hp, id)
@@ -159,9 +175,21 @@ func _cleanup_removed_entities():
 	
 	for id in projectiles_to_remove:
 		print("🗑️ ELIMINANDO PROYECTIL - ID:", id)
-		if is_instance_valid(projectiles[id]):
-			projectiles[id].queue_free()
-		projectiles.erase(id)
+		destroy_projectile(id)
+
+# -------------------------------
+# --- DESTRUCCIÓN DE PROYECTILES
+# -------------------------------
+func destroy_projectile(projectile_id: int):
+	if projectile_id in projectiles:
+		var projectile = projectiles[projectile_id]
+		if is_instance_valid(projectile):
+			if projectile.has_method("on_hit_success"):
+				projectile.on_hit_success()
+			else:
+				projectile.queue_free()
+		projectiles.erase(projectile_id)
+		print("🗑️ PROYECTIL DESTRUIDO - ID:", projectile_id)
 
 # -------------------------------
 # --- INPUT
@@ -361,7 +389,7 @@ func _spawn_projectile(id: int, data: Dictionary):
 	projectile.name = str(id)
 	projectile.position = Vector2(data.x, data.y)
 	
-	# Configurar propiedades - DETERMINAR SI ES LOCAL O REMOTO
+	# DETERMINAR SI ES LOCAL O REMOTO MEJORADO
 	var is_local_projectile = (data.owner_id == Network.player_id)
 	var direction = Vector2(data.direction_x, data.direction_y)
 	
@@ -414,6 +442,7 @@ func _on_projectile_moved(projectile_data):
 
 func _on_projectile_removed(projectile_id):
 	print("📡 Señal: Proyectil removido recibido del servidor:", projectile_id)
+	destroy_projectile(projectile_id)
 
 # -------------------------------
 # --- LOGIN

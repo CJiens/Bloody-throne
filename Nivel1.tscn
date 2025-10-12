@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://ibpop0yh2jl3"]
+
+[ext_resource type="Texture2D" path="res://version final.png" id="1_kuiop"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8yg71"]
+texture = ExtResource("1_kuiop")
+texture_region_size = Vector2i(2996, 1812)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-931.15375, -390.35834, -827.40405, -452.6082, 793.6853, -447.42072, 951, -358.5, 942, 401.5, 770, 520.5, -811, 513.5, -983, 402.5, -992, -448.5, -1071.216, -377.38965, -1099.7471, 426.67075, -845.5603, 592.6703, 796.27905, 634.17017, 995.9973, 496.7018, 1047.8721, -356.63968, 1040.0911, -522.6393, 861.12256, -616.014, 223.06189, -621.2015, -407.21765, -616.014, -850.74774, -613.4203, -1060.841, -543.38916, -1073.8097, -379.98337)
+
+[sub_resource type="TileSet" id="TileSet_i1n8g"]
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_8yg71")
+
+[node name="Nivel1" type="Node2D"]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray(0, 0, 55, 0, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+tile_set = SubResource("TileSet_i1n8g")
+rendering_quadrant_size = 1

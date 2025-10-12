@@ -3504,14 +3504,14 @@ animations = [{
 }]
 
 [node name="Node2D" type="CharacterBody2D"]
+z_index = 1
 scale = Vector2(0.8, 0.8)
-collision_mask = 4
+collision_mask = 0
 script = ExtResource("1_xhfnw")
 metadata/_edit_horizontal_guides_ = [-149.0]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 process_physics_priority = 1
-z_index = -1
 position = Vector2(3.7499998, 6.25)
 rotation = -3.1415925
 scale = Vector2(1.3652575, -3.9893334)
