@@ -107,15 +107,15 @@ func _process(_delta):
 			print("👤 SPAWNEANDO JUGADOR - ID:", id, " Username:", data.username)
 			_spawn_player(id, data.username, Vector2(data.x, data.y), data.hp)
 
-	# --- Actualizar enemigos ---
-	for key in Network.enemies.keys():
-		var id = int(key)
-		var data = Network.enemies[key]
-		if id in enemies:
-			enemies[id].position = Vector2(data.x, data.y)
-		else:
-			print("👹 SPAWNEANDO ENEMIGO - ID:", id, " Tipo:", data.type)
-			_spawn_enemy(id, data.type, Vector2(data.x, data.y))
+	# # --- Actualizar enemigos ---
+	# for key in Network.enemies.keys():
+	# 	var id = int(key)
+	# 	var data = Network.enemies[key]
+	# 	if id in enemies:
+	# 		enemies[id].position = Vector2(data.x, data.y)
+	# 	else:
+	# 		print("👹 SPAWNEANDO ENEMIGO - ID:", id, " Tipo:", data.type)
+	# 		_spawn_enemy(id, data.type, Vector2(data.x, data.y))
 
 	# --- Actualizar proyectiles ---
 	for key in Network.projectiles.keys():
@@ -362,12 +362,12 @@ func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100):
 		bar.value = hp
 		bar.queue_redraw()
 
-func _spawn_enemy(id: int, _enemy_type: String, pos: Vector2):
-	var instance = EnemyScene.instantiate()
-	instance.position = pos
-	instance.name = str(id)
-	enemy_container.add_child(instance)
-	enemies[id] = instance
+# func _spawn_enemy(id: int, _enemy_type: String, pos: Vector2):
+# 	var instance = EnemyScene.instantiate()
+# 	instance.position = pos
+# 	instance.name = str(id)
+# 	enemy_container.add_child(instance)
+# 	enemies[id] = instance
 
 func _spawn_projectile(id: int, data: Dictionary):
 	if ProjectileScene == null:
