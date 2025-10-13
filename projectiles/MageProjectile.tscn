@@ -1,111 +1,718 @@
-[gd_scene load_steps=24 format=3 uid="uid://m5llmhoblgp6"]
+[gd_scene load_steps=35 format=3 uid="uid://m5llmhoblgp6"]
 
-[ext_resource type="Script" uid="uid://ddrg3l27hewcs" path="res://projectiles/projectile.gd" id="1_e7peq"]
-[ext_resource type="Texture2D" uid="uid://dkcml4olm8t4w" path="res://Sprites/mage/proyectile/0001.png" id="2_tevwn"]
-[ext_resource type="Texture2D" uid="uid://l51cutxp635u" path="res://Sprites/mage/proyectile/0002.png" id="3_cwvbk"]
-[ext_resource type="Texture2D" uid="uid://qgv6fhgnot5b" path="res://Sprites/mage/proyectile/0003.png" id="4_66bau"]
-[ext_resource type="Texture2D" uid="uid://dynrayil7v66b" path="res://Sprites/mage/proyectile/0004.png" id="5_krhi2"]
-[ext_resource type="Texture2D" uid="uid://dynhtbtkiqvv1" path="res://Sprites/mage/proyectile/0005.png" id="6_wym2v"]
-[ext_resource type="Texture2D" uid="uid://bx8nhxk161cxh" path="res://Sprites/mage/proyectile/0006.png" id="7_abrjn"]
-[ext_resource type="Texture2D" uid="uid://dqolmpueaxuep" path="res://Sprites/mage/proyectile/0007.png" id="8_05bwe"]
-[ext_resource type="Texture2D" uid="uid://coil4okw7lwq0" path="res://Sprites/mage/proyectile/0008.png" id="9_s3bqu"]
-[ext_resource type="Texture2D" uid="uid://cfj5ufbw48ufg" path="res://Sprites/mage/proyectile/0009.png" id="10_7gbme"]
-[ext_resource type="Texture2D" uid="uid://cvakjuv1tcgse" path="res://Sprites/mage/proyectile/0010.png" id="11_0gako"]
-[ext_resource type="Texture2D" uid="uid://e7jb3kl8sgq1" path="res://Sprites/mage/proyectile/0011.png" id="12_10eno"]
-[ext_resource type="Texture2D" uid="uid://ci62umq20ddb" path="res://Sprites/mage/proyectile/0012.png" id="13_ppq6k"]
-[ext_resource type="Texture2D" uid="uid://b8ysowlapf3m8" path="res://Sprites/mage/proyectile/0013.png" id="14_hcxhf"]
-[ext_resource type="Texture2D" uid="uid://cjkfp7me2gj4p" path="res://Sprites/mage/proyectile/0014.png" id="15_trh0s"]
-[ext_resource type="Texture2D" uid="uid://c8maytmdimv6e" path="res://Sprites/mage/proyectile/0015.png" id="16_5jmhl"]
-[ext_resource type="Texture2D" uid="uid://brcc4b1bb04k4" path="res://Sprites/mage/proyectile/0016.png" id="17_s0lh8"]
-[ext_resource type="Texture2D" uid="uid://c8eqfy603064g" path="res://Sprites/mage/proyectile/0017.png" id="18_nsgyh"]
-[ext_resource type="Texture2D" uid="uid://ce74p3xwf4alb" path="res://Sprites/mage/proyectile/0018.png" id="19_hx8em"]
-[ext_resource type="Texture2D" uid="uid://bfhqpaxejkgm8" path="res://Sprites/mage/proyectile/0019.png" id="20_jvsk7"]
-[ext_resource type="Texture2D" uid="uid://c2rk3twut0mgq" path="res://Sprites/mage/proyectile/0020.png" id="21_31r7c"]
+[ext_resource type="Script" uid="uid://cvrrj37a2fajc" path="res://main.gd" id="1_kaiuj"]
+[ext_resource type="PackedScene" uid="uid://xsdjfolg3h1m" path="res://Player.tscn" id="2_dw16w"]
+[ext_resource type="PackedScene" uid="uid://dftgxtk6badua" path="res://Enemy.tscn" id="3_q13nv"]
+[ext_resource type="PackedScene" uid="uid://ibpop0yh2jl3" path="res://Nivel1.tscn" id="4_qaomd"]
+[ext_resource type="PackedScene" uid="uid://dpqg0t3ve8om3" path="res://Network.tscn" id="5_3b3iy"]
+[ext_resource type="Theme" uid="uid://qkkblp6cijnh" path="res://Temas/Botones segunda parte.tres" id="6_qoef3"]
+[ext_resource type="VideoStream" uid="uid://kyfhj0q8a5v2" path="res://Presentacion-del-Juego-Por-Frame Formato Godot.ogv" id="7_herry"]
+[ext_resource type="Theme" uid="uid://bc0ftxndqriis" path="res://Temas/main_menu.tres" id="8_bd2ok"]
+[ext_resource type="Theme" uid="uid://p6lafxv8viug" path="res://Temas/Input.tres" id="9_ckjso"]
+[ext_resource type="AudioStream" uid="uid://kv8nhocsergj" path="res://Musica/Bloody-Throne-Preferida.ogg" id="10_8t8cj"]
+[ext_resource type="Animation" uid="uid://cggh7b3rqmfak" path="res://Titulo_intro.res" id="11_xqsrp"]
+[ext_resource type="Texture2D" uid="uid://btmllehlbkcto" path="res://Ui_Select_player/Fondo Select.png" id="12_g3fbf"]
+[ext_resource type="Texture2D" uid="uid://bqxj4uxb4mjr3" path="res://Ui_Select_player/Arquera estatuilla.png" id="13_knums"]
+[ext_resource type="Texture2D" uid="uid://ddpmbl6lnlqco" path="res://Ui_Select_player/Caballero.png" id="14_yf76v"]
+[ext_resource type="Texture2D" uid="uid://bhud7o53i8fnl" path="res://Ui_Select_player/Assasin.png" id="15_n8hrq"]
+[ext_resource type="Texture2D" uid="uid://cer36pbgh04wi" path="res://Ui_Select_player/Mago v1.png" id="16_wgywk"]
+[ext_resource type="Texture2D" uid="uid://01vajcef8gwb" path="res://Sprites/mage/Idle/m_levitate_S/0001.png" id="17_nfg47"]
+[ext_resource type="Texture2D" uid="uid://bausrf8owuxdl" path="res://Sprites/mage/Idle/m_levitate_S/0002.png" id="18_ewuvg"]
+[ext_resource type="Texture2D" uid="uid://dvwe0dymtdjo6" path="res://Sprites/mage/Idle/m_levitate_S/0003.png" id="19_koi02"]
+[ext_resource type="Texture2D" uid="uid://b0l5glyoy6v71" path="res://Sprites/mage/Idle/m_levitate_S/0004.png" id="20_mq4l6"]
+[ext_resource type="Texture2D" uid="uid://cltyvox2srvhv" path="res://Sprites/mage/Idle/m_levitate_S/0005.png" id="21_enj8q"]
+[ext_resource type="Texture2D" uid="uid://r5jsug4yik3a" path="res://Sprites/mage/Idle/m_levitate_S/0006.png" id="22_3ic3e"]
+[ext_resource type="Texture2D" uid="uid://cy0x48lxkdhhv" path="res://Sprites/mage/Idle/m_levitate_S/0007.png" id="23_pjt4u"]
+[ext_resource type="Texture2D" uid="uid://c47wbhvavj1u4" path="res://Sprites/mage/Idle/m_levitate_S/0008.png" id="24_bkjw3"]
+[ext_resource type="Texture2D" uid="uid://cm1wpkls0xwrd" path="res://Sprites/mage/Idle/m_levitate_S/0009.png" id="25_wovu3"]
+[ext_resource type="Texture2D" uid="uid://vi6iav5ldmm6" path="res://Sprites/mage/Idle/m_levitate_S/0010.png" id="26_jkjeu"]
+[ext_resource type="Texture2D" uid="uid://daiyxjgcf2uh3" path="res://Sprites/mage/Idle/m_levitate_S/0011.png" id="27_5r3nk"]
+[ext_resource type="Texture2D" uid="uid://dr4eccxps0t44" path="res://Sprites/mage/Idle/m_levitate_S/0012.png" id="28_oh5yk"]
+[ext_resource type="Texture2D" uid="uid://dnc8yhwtu8tq" path="res://Sprites/mage/Idle/m_levitate_S/0013.png" id="29_31nbu"]
+[ext_resource type="Texture2D" uid="uid://5cntvlnq3kcn" path="res://Sprites/mage/Idle/m_levitate_S/0014.png" id="30_pgyi1"]
+[ext_resource type="Texture2D" uid="uid://dpbcydvw21qxr" path="res://Sprites/mage/Idle/m_levitate_S/0015.png" id="31_2e8ec"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_t7eop"]
-size = Vector2(50, 111)
+[sub_resource type="Animation" id="Animation_q3kjg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../HBoxContainer3/VBoxContainer2/Assasin:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../HBoxContainer3/VBoxContainer/ArqueraEstatuilla:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../HBoxContainer3/AspectRatioContainer/Caballero:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../HBoxContainer3/VBoxContainer3/MagoV1:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("../HBoxContainer3/AspectRatioContainer/MarginContainer/Select:modulate")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("../HBoxContainer3/VBoxContainer3/MarginContainer/Select2:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("../HBoxContainer3/VBoxContainer/MarginContainer/Select3:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("../HBoxContainer3/VBoxContainer2/MarginContainer/Select4:modulate")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("../Ready:modulate")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_wgcky"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q3kjg"]
+_data = {
+&"RESET": SubResource("Animation_q3kjg"),
+&"Titulo_intro": ExtResource("11_xqsrp")
+}
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yaehf"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_tevwn")
+"texture": ExtResource("17_nfg47")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_cwvbk")
+"texture": ExtResource("18_ewuvg")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_66bau")
+"texture": ExtResource("19_koi02")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_krhi2")
+"texture": ExtResource("20_mq4l6")
 }, {
 "duration": 1.0,
-"texture": ExtResource("6_wym2v")
+"texture": ExtResource("21_enj8q")
 }, {
 "duration": 1.0,
-"texture": ExtResource("7_abrjn")
+"texture": ExtResource("22_3ic3e")
 }, {
 "duration": 1.0,
-"texture": ExtResource("8_05bwe")
+"texture": ExtResource("23_pjt4u")
 }, {
 "duration": 1.0,
-"texture": ExtResource("9_s3bqu")
+"texture": ExtResource("24_bkjw3")
 }, {
 "duration": 1.0,
-"texture": ExtResource("10_7gbme")
+"texture": ExtResource("25_wovu3")
 }, {
 "duration": 1.0,
-"texture": ExtResource("11_0gako")
+"texture": ExtResource("26_jkjeu")
 }, {
 "duration": 1.0,
-"texture": ExtResource("12_10eno")
+"texture": ExtResource("27_5r3nk")
 }, {
 "duration": 1.0,
-"texture": ExtResource("13_ppq6k")
+"texture": ExtResource("28_oh5yk")
 }, {
 "duration": 1.0,
-"texture": ExtResource("14_hcxhf")
+"texture": ExtResource("29_31nbu")
 }, {
 "duration": 1.0,
-"texture": ExtResource("15_trh0s")
+"texture": ExtResource("30_pgyi1")
 }, {
 "duration": 1.0,
-"texture": ExtResource("16_5jmhl")
-}, {
-"duration": 1.0,
-"texture": ExtResource("17_s0lh8")
-}, {
-"duration": 1.0,
-"texture": ExtResource("18_nsgyh")
-}, {
-"duration": 1.0,
-"texture": ExtResource("19_hx8em")
-}, {
-"duration": 1.0,
-"texture": ExtResource("20_jvsk7")
-}, {
-"duration": 1.0,
-"texture": ExtResource("21_31r7c")
+"texture": ExtResource("31_2e8ec")
 }],
 "loop": true,
-"name": &"default",
-"speed": 50.0
+"name": &"loading",
+"speed": 5.0
 }]
 
-[node name="Projectile" type="Area2D"]
-position = Vector2(-24, -37)
-collision_layer = 4
-script = ExtResource("1_e7peq")
+[node name="Node" type="Node2D"]
+texture_filter = 3
+script = ExtResource("1_kaiuj")
+PlayerScene = ExtResource("2_dw16w")
+EnemyScene = ExtResource("3_q13nv")
+ProjectileScene = null
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(25, 42)
-scale = Vector2(1.1062889, 0.4353767)
-shape = SubResource("RectangleShape2D_t7eop")
+[node name="Nivel1" parent="." instance=ExtResource("4_qaomd")]
+position = Vector2(60, 103)
+scale = Vector2(0.59555024, 0.5924728)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(28.000002, 53)
-scale = Vector2(-0.76798546, -0.7517916)
-sprite_frames = SubResource("SpriteFrames_wgcky")
-frame = 18
-frame_progress = 0.23072161
+[node name="EnemyContainer" type="Node2D" parent="."]
+
+[node name="Network" parent="." instance=ExtResource("5_3b3iy")]
+
+[node name="HTTPRequest" type="HTTPRequest" parent="Network"]
+
+[node name="PlayerContainer" type="Node2D" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Pantalla_Inicial" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.0027344, 1.0235808)
+theme = ExtResource("6_qoef3")
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="CanvasLayer/Pantalla_Inicial"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("7_herry")
+autoplay = true
+expand = true
+loop = true
+
+[node name="Label" type="Label" parent="CanvasLayer/Pantalla_Inicial"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.70900005
+anchor_top = 0.19100001
+anchor_right = 0.70900005
+anchor_bottom = 0.19100001
+offset_left = -236.35522
+offset_top = -84.689514
+offset_right = 378.92896
+offset_bottom = 184.55188
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(0.7893457, 0.5696862)
+theme = ExtResource("8_bd2ok")
+theme_override_font_sizes/font_size = 125
+text = "Bloody
+Throne"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.698
+anchor_top = 0.56100005
+anchor_right = 0.698
+anchor_bottom = 0.56100005
+offset_left = -212.7132
+offset_top = -147.61934
+offset_right = 597.52826
+offset_bottom = 470.38065
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(0.52646655, 0.47865254)
+theme_override_constants/separation = 90
+alignment = 1
+
+[node name="Button" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Sign In"
+
+[node name="Button2" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Sign Up"
+
+[node name="Button3" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Settings"
+
+[node name="Button4" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Exit"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.684
+anchor_top = 0.541
+anchor_right = 0.684
+anchor_bottom = 0.541
+offset_left = -187.60962
+offset_top = -102.41951
+offset_right = 536.3904
+offset_bottom = 329.5805
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(0.5532958, 0.5532958)
+theme = ExtResource("9_ckjso")
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="LineEdit_username" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer2"]
+layout_mode = 2
+placeholder_text = "Email or Username"
+
+[node name="LineEdit_password" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer2"]
+layout_mode = 2
+placeholder_text = "Password"
+secret = true
+
+[node name="Button_login" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer2"]
+layout_mode = 2
+text = "Join NOw"
+
+[node name="Crear Cuenta" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.68500006
+anchor_top = 0.5
+anchor_right = 0.68500006
+anchor_bottom = 0.5
+offset_left = -186.76709
+offset_top = -98.321655
+offset_right = 537.2327
+offset_bottom = 452.67834
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(0.5165774, 0.4605127)
+theme = ExtResource("9_ckjso")
+theme_override_constants/separation = 80
+alignment = 1
+
+[node name="LineEdit_username" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/Crear Cuenta"]
+layout_mode = 2
+placeholder_text = "user name"
+
+[node name="LineEdit_email" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/Crear Cuenta"]
+layout_mode = 2
+placeholder_text = "Email"
+secret = true
+
+[node name="LineEdit_password2" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/Crear Cuenta"]
+layout_mode = 2
+placeholder_text = "password"
+secret = true
+
+[node name="Button_login" type="Button" parent="CanvasLayer/Pantalla_Inicial/Crear Cuenta"]
+layout_mode = 2
+text = "Crear"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CanvasLayer/Pantalla_Inicial"]
+stream = ExtResource("10_8t8cj")
+autoplay = true
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.688
+anchor_top = 0.5
+anchor_right = 0.688
+anchor_bottom = 0.5
+offset_left = -194.21228
+offset_top = -69.989746
+offset_right = 170.26672
+offset_bottom = 144.51904
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(1.0655484, 0.64920044)
+theme_override_constants/separation = 40
+
+[node name="server_ip" type="LineEdit" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer3"]
+layout_mode = 2
+theme = ExtResource("9_ckjso")
+placeholder_text = "Ip"
+
+[node name="Button_ip" type="Button" parent="CanvasLayer/Pantalla_Inicial/VBoxContainer3"]
+layout_mode = 2
+text = "ACEPTAR"
+
+[node name="contrl" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Titulo_Intro" type="AnimationPlayer" parent="CanvasLayer/contrl"]
+root_node = NodePath("../Background")
+libraries = {
+&"": SubResource("AnimationLibrary_q3kjg")
+}
+autoplay = "Titulo_intro"
+playback_auto_capture_duration = 1.0
+playback_auto_capture_ease_type = 2
+
+[node name="FogOverlay" type="ColorRect" parent="CanvasLayer/contrl"]
+modulate = Color(0, 0, 0, 1)
+self_modulate = Color(1, 1, 1, 0.19607843)
+layout_mode = 0
+offset_left = 149.68555
+offset_top = -928.55334
+offset_right = 149.68555
+offset_bottom = -928.55334
+grow_horizontal = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="Background" type="TextureRect" parent="CanvasLayer/contrl"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 768.0
+offset_bottom = 432.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6036114, 0.6018465)
+mouse_filter = 2
+texture = ExtResource("12_g3fbf")
+stretch_mode = 6
+
+[node name="Label" type="Label" parent="CanvasLayer/contrl"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.23300001
+anchor_right = 0.5
+anchor_bottom = 0.23300001
+offset_left = -310.0
+offset_top = -101.98401
+offset_right = 604.0
+offset_bottom = 141.01599
+grow_horizontal = 2
+scale = Vector2(0.6712779, 0.69790155)
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme = ExtResource("8_bd2ok")
+theme_override_font_sizes/font_size = 120
+text = "Choose Your
+  Champions"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="CanvasLayer/contrl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.596
+anchor_right = 0.5
+anchor_bottom = 0.596
+offset_left = -492.0
+offset_top = -162.20801
+offset_right = 4279.0
+offset_bottom = 1531.792
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.20473282, 0.19112669)
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme_override_constants/separation = 225
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/contrl/HBoxContainer3"]
+layout_mode = 2
+
+[node name="ArqueraEstatuilla" type="TextureRect" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = ExtResource("13_knums")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_right = 80
+
+[node name="Select3" type="Button" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer/MarginContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("6_qoef3")
+theme_override_font_sizes/font_size = 80
+text = "Select"
+
+[node name="AspectRatioContainer" type="VBoxContainer" parent="CanvasLayer/contrl/HBoxContainer3"]
+layout_mode = 2
+
+[node name="Caballero" type="TextureRect" parent="CanvasLayer/contrl/HBoxContainer3/AspectRatioContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = ExtResource("14_yf76v")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/contrl/HBoxContainer3/AspectRatioContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_right = 80
+
+[node name="Select" type="Button" parent="CanvasLayer/contrl/HBoxContainer3/AspectRatioContainer/MarginContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 8
+theme = ExtResource("6_qoef3")
+theme_override_font_sizes/font_size = 80
+text = "Select"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/contrl/HBoxContainer3"]
+layout_mode = 2
+
+[node name="Assasin" type="TextureRect" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer2"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = ExtResource("15_n8hrq")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_right = 80
+
+[node name="Select4" type="Button" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer2/MarginContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("6_qoef3")
+theme_override_font_sizes/font_size = 80
+text = "Select"
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/contrl/HBoxContainer3"]
+layout_mode = 2
+
+[node name="MagoV1" type="TextureRect" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer3"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+texture = ExtResource("16_wgywk")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer3"]
+layout_mode = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_right = 80
+
+[node name="Select2" type="Button" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer3/MarginContainer"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("6_qoef3")
+theme_override_font_sizes/font_size = 80
+text = "Select"
+
+[node name="Ready" type="Button" parent="CanvasLayer/contrl"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.91200006
+anchor_top = 0.92600006
+anchor_right = 0.91200006
+anchor_bottom = 0.92600006
+offset_left = -85.62402
+offset_top = -19.048035
+offset_right = 191.37598
+offset_bottom = 54.951965
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.5867112, 0.5867112)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("6_qoef3")
+theme_override_font_sizes/font_size = 30
+text = "1/4 connected"
+
+[node name="Ready2" type="Button" parent="CanvasLayer/contrl"]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -128.23108
+offset_top = -98.61304
+offset_right = -25.23108
+offset_bottom = -37.613037
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("6_qoef3")
+theme_override_font_sizes/font_size = 21
+text = "Ready"
+
+[node name="Button" type="Button" parent="CanvasLayer/contrl"]
+visible = false
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+metadata/_edit_use_anchors_ = true
+
+[node name="ChatUI" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = -8059.0
+offset_top = -1976.0
+offset_right = -8019.0
+offset_bottom = -1936.0
+scale = Vector2(18.75415, 9.214189)
+
+[node name="LineEdit_chatInput" type="LineEdit" parent="CanvasLayer/ChatUI"]
+layout_mode = 0
+offset_left = 3.49712
+offset_top = 22.310633
+offset_right = 72.059616
+offset_bottom = 53.31063
+scale = Vector2(0.27586475, 0.16550095)
+
+[node name="Button_send" type="Button" parent="CanvasLayer/ChatUI"]
+layout_mode = 0
+offset_left = 28.314676
+offset_top = 21.60062
+offset_right = 81.314674
+offset_bottom = 52.60062
+scale = Vector2(0.17301124, 0.14012018)
+text = "send"
+
+[node name="TextEdit_chatLog" type="TextEdit" parent="CanvasLayer/ChatUI"]
+light_mask = 0
+layout_mode = 0
+offset_left = 0.7998229
+offset_top = -13.023401
+offset_right = 8.799823
+offset_bottom = -5.0234013
+scale = Vector2(2.5078459, 1.6702986)
+text = "ar"
+
+[node name="ClassSelection" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="WarriorButton" type="Button" parent="CanvasLayer/ClassSelection"]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="MageButton" type="Button" parent="CanvasLayer/ClassSelection"]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="ArcherButton" type="Button" parent="CanvasLayer/ClassSelection"]
+visible = false
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="RogueButton" type="Button" parent="CanvasLayer/ClassSelection"]
+visible = false
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="LoadingScreen" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/LoadingScreen"]
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 27.0
+
+[node name="LoadingText" type="Label" parent="CanvasLayer/LoadingScreen"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasLayer/LoadingScreen"]
+sprite_frames = SubResource("SpriteFrames_yaehf")
+animation = &"loading"
+
+[connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button3" to="." method="_on_button_3_pressed"]
+[connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button4" to="." method="_on_button_4_pressed"]
+[connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer2/Button_login" to="." method="_on_button_login_pressed"]
+[connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/Crear Cuenta/Button_login" to="." method="_on_button_login_pressed"]
