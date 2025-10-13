@@ -254,7 +254,7 @@ func send_player_state(state: String):
 # MODIFICADO: Agregar parámetro de clase al crear proyectil
 func create_projectile(x: float, y: float, direction: Vector2, damage: int, owner_id: int, speed: float = 400.0, classe: String = "warrior"):
 	if connected:
-		print("🚀 ENVIANDO PROYECTIL - Owner:", owner_id, " Clase:", classe, " Pos:", x, ",", y, " Dir:", direction)
+		print("🚀 ENVIANDO PROYECTIL - Owner:", owner_id, " Clase:", classe)
 		socket.send_text(JSON.stringify({
 			"type": "create_projectile",
 			"x": x,

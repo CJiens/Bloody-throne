@@ -10,6 +10,7 @@ extends Node2D
 @onready var login_ui = $CanvasLayer/Pantalla_Inicial
 @onready var chat_ui = $CanvasLayer/ChatUI
 @onready var class_selection_ui = $CanvasLayer/ClassSelection
+@onready var waiting_room_ui: Control = $CanvasLayer/contrl # Usamos contrl como sala de espera
 @onready var login_button: Button = $"CanvasLayer/Pantalla_Inicial/VBoxContainer2/Button_login"
 @onready var username_input: LineEdit = $"CanvasLayer/Pantalla_Inicial/VBoxContainer2/LineEdit_username"
 @onready var password_input: LineEdit = $"CanvasLayer/Pantalla_Inicial/VBoxContainer2/LineEdit_password"
@@ -28,17 +29,21 @@ extends Node2D
 @onready var contrl: Control = $CanvasLayer/contrl
 
 # Botones de clase
-@onready var warrior_button: Button = $CanvasLayer/ClassSelection/WarriorButton
-@onready var mage_button: Button = $CanvasLayer/ClassSelection/MageButton
-@onready var archer_button: Button = $CanvasLayer/ClassSelection/ArcherButton
-@onready var rogue_button: Button = $CanvasLayer/ClassSelection/RogueButton
+@onready var warrior_button: Button = $CanvasLayer/contrl/HBoxContainer3/AspectRatioContainer/MarginContainer/Select
+@onready var mage_button: Button = $CanvasLayer/contrl/HBoxContainer3/VBoxContainer3/MarginContainer/Select2
+@onready var archer_button: Button = $CanvasLayer/contrl/HBoxContainer3/VBoxContainer/MarginContainer/Select3
+@onready var rogue_button: Button = $CanvasLayer/contrl/HBoxContainer3/VBoxContainer2/MarginContainer/Select4
 
-# Prefabs
-@export var PlayerScene: PackedScene
-@export var EnemyScene: PackedScene
-@export var ProjectileScene: PackedScene # Proyectil por defecto
+@onready var waiting_label: Button = $CanvasLayer/contrl/Ready
 
-# Proyectiles por clase (como respaldo)
+# Nodos dentro de contrl (sala de espera) - Si no existen, se crearán dinámicamente
+var players_list: VBoxContainer
+var start_countdown: Label
+var room_title: Label
+
+# -------------------------------
+# --- PROYECTILES POR CLASE
+# -------------------------------
 var class_projectiles := {
 	"warrior": preload("res://projectiles/WarriorProjectile.tscn"),
 	"mage": preload("res://projectiles/MageProjectile.tscn"),
@@ -46,12 +51,23 @@ var class_projectiles := {
 	"rogue": preload("res://projectiles/RogueProjectile.tscn")
 }
 
+# Prefabs
+@export var PlayerScene: PackedScene
+@export var EnemyScene: PackedScene
+@export var ProjectileScene: PackedScene
+
 # -------------------------------
 # --- VARIABLES DE JUEGO
 # -------------------------------
 var players := {} # id:int -> Node2D
 var enemies := {} # id:int -> Node2D
 var projectiles := {} # id:int -> Node2D
+
+# Variables de espera
+var class_chosen: bool = false
+var game_started: bool = false
+var countdown_timer: float = 0.0
+var countdown_active: bool = false
 
 # -------------------------------
 # --- INICIO
@@ -63,6 +79,7 @@ func _ready():
 	vbox_container_2.visible = false
 	vbox_container_3.visible = false
 	class_selection_ui.visible = false
+	waiting_room_ui.visible = false # Ocultamos contrl inicialmente
 
 	button_ip.pressed.connect(_on_button_ip_pressed)
 	
@@ -83,18 +100,67 @@ func _ready():
 	if not Network.is_connected("projectile_removed", _on_projectile_removed):
 		Network.projectile_removed.connect(_on_projectile_removed)
 
+	# Configurar sala de espera
+	_setup_waiting_room()
+	
 	print("🎮 Main listo - Esperando conexión...")
+
+# -------------------------------
+# --- CONFIGURACIÓN SALA DE ESPERA
+# -------------------------------
+func _setup_waiting_room():
+	# Buscar o crear nodos necesarios en contrl
+	players_list = _get_or_create_node("PlayersList", VBoxContainer)
+	start_countdown = _get_or_create_node("StartCountdown", Label)
+	room_title = _get_or_create_node("RoomTitle", Label)
+	
+	# Configurar textos iniciales
+	waiting_label.text = "Jugadores listos: 0/0"
+	start_countdown.text = "Iniciando en: 5"
+	start_countdown.visible = false
+	room_title.text = "SALA DE ESPERA"
+	
+	# Configurar estilos si es necesario
+	if room_title is Label:
+		room_title.add_theme_font_size_override("font_size", 24)
+	if start_countdown is Label:
+		start_countdown.add_theme_color_override("font_color", Color.GREEN)
+		start_countdown.add_theme_font_size_override("font_size", 20)
+
+func _get_or_create_node(node_name: String, node_type) -> Node:
+	var node = waiting_room_ui.get_node_or_null(node_name)
+	if node == null:
+		print("⚠️ Nodo %s no encontrado en contrl, creando dinámicamente" % node_name)
+		node = node_type.new()
+		node.name = node_name
+		waiting_room_ui.add_child(node)
+	return node
 
 # -------------------------------
 # --- PROCESO PRINCIPAL
 # -------------------------------
-func _process(_delta):
+func _process(delta):
 	if not Network.connected or Network.player_id == -1:
 		return
 
+	# Manejar countdown si está activo
+	if countdown_active:
+		countdown_timer -= delta
+		if countdown_timer <= 0:
+			countdown_active = false
+			_start_game()
+		else:
+			start_countdown.text = "Iniciando en: %d" % ceil(countdown_timer)
+		return
+
+	# Si estamos en la sala de espera, actualizar la lista de jugadores
+	if waiting_room_ui.visible and not game_started:
+		_update_waiting_room()
+		_check_start_conditions()
+
 	# Debug de estado
 	if Engine.get_frames_drawn() % 180 == 0: # Cada 3 segundos aproximadamente
-		print("📊 ESTADO - Jugadores:", players.size(), " Enemigos:", enemies.size(), " Proyectiles:", projectiles.size())
+		print("📊 ESTADO - Jugadores:", Network.players.size(), " Enemigos:", enemies.size(), " Proyectiles:", projectiles.size())
 
 	# --- Actualizar jugadores desde Network ---
 	for key in Network.players.keys():
@@ -136,7 +202,7 @@ func _process(_delta):
 		var data = Network.projectiles[key]
 		if id not in projectiles:
 			# Crear nuevo proyectil
-			print("🎯 SPAWNEANDO PROYECTIL DESDE RED - ID:", id, " Owner:", data.owner_id, " Clase:", data.get("classe", "warrior"))
+			print("🎯 SPAWNEANDO PROYECTIL DESDE RED - ID:", id, " Owner:", data.owner_id)
 			_spawn_projectile(id, data)
 
 	# Los proyectiles remotos se mueven por sí mismos en su _process
@@ -144,6 +210,200 @@ func _process(_delta):
 
 	# --- Eliminar desconectados ---
 	_cleanup_removed_entities()
+
+# -------------------------------
+# --- SALA DE ESPERA (usando contrl)
+# -------------------------------
+func _update_waiting_room():
+	# Limpiar lista actual
+	if players_list:
+		for child in players_list.get_children():
+			child.queue_free()
+	
+	# Agregar jugadores a la lista
+	var ready_count = 0
+	var total_players = Network.players.size()
+	
+	if total_players == 0:
+		if waiting_label:
+			waiting_label.text = "Esperando jugadores..."
+		return
+	
+	for player_id in Network.players:
+		var player_data = Network.players[player_id]
+		
+		if players_list:
+			var player_item = HBoxContainer.new()
+			player_item.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			
+			var name_label = Label.new()
+			name_label.text = player_data.username
+			name_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+			
+			var class_label = Label.new()
+			if player_data.has("classe") and player_data.classe != "":
+				class_label.text = player_data.classe.capitalize()
+				ready_count += 1
+			else:
+				class_label.text = "Eligiendo..."
+			class_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			
+			var status_label = Label.new()
+			if player_data.has("classe") and player_data.classe != "":
+				status_label.text = "✅ Listo"
+				status_label.add_theme_color_override("font_color", Color.GREEN)
+			else:
+				status_label.text = "⏳ Esperando"
+				status_label.add_theme_color_override("font_color", Color.YELLOW)
+			status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+			
+			player_item.add_child(name_label)
+			player_item.add_child(class_label)
+			player_item.add_child(status_label)
+			players_list.add_child(player_item)
+	
+	# Actualizar texto de espera
+	if waiting_label:
+		waiting_label.text = "Jugadores listos: %d/%d" % [ready_count, total_players]
+	
+	# Mostrar información del countdown si está activo
+	if start_countdown:
+		start_countdown.visible = countdown_active
+	
+	if room_title:
+		if countdown_active:
+			room_title.text = "¡SALA LLENA!"
+		else:
+			room_title.text = "SALA DE ESPERA"
+
+func _check_start_conditions():
+	# Contar jugadores con clase elegida
+	var ready_players = 0
+	var total_players = Network.players.size()
+	
+	if total_players == 0:
+		return
+	
+	for player_id in Network.players:
+		var player_data = Network.players[player_id]
+		if player_data.has("classe") and player_data.classe != "":
+			ready_players += 1
+	
+	print("🔍 Verificando inicio - Listos: %d/%d" % [ready_players, total_players])
+	
+	# Si hay al menos 4 jugadores y todos tienen clase elegida, iniciar countdown
+	if ready_players >= 4 and ready_players == total_players and not countdown_active and not game_started:
+		_start_countdown()
+	elif countdown_active and (ready_players < 4 or ready_players != total_players):
+		# Cancelar countdown si ya no se cumplen las condiciones
+		countdown_active = false
+		if start_countdown:
+			start_countdown.visible = false
+		print("❌ Countdown cancelado - Condiciones no cumplidas")
+
+func _start_countdown():
+	print("🚀 CONDICIONES CUMPLIDAS - Iniciando countdown...")
+	countdown_active = true
+	countdown_timer = 5.0 # 5 segundos
+	if start_countdown:
+		start_countdown.visible = true
+		start_countdown.text = "Iniciando en: 5"
+
+# -------------------------------
+# --- INICIO DEL JUEGO
+# -------------------------------
+func _start_game():
+	print("🎮 INICIANDO JUEGO!")
+	game_started = true
+	countdown_active = false
+	waiting_room_ui.visible = false
+	
+	# Reproducir video de introducción y comenzar el juego
+	_play_intro_video()
+
+func _play_intro_video():
+	print("🎬 Reproduciendo video de introducción...")
+	video_stream_player.stop()
+	video_stream_player.stream = load("res://Segunda-Parte-video-por-frame.ogv")
+	video_stream_player.loop = false
+	video_stream_player.autoplay = false
+	video_stream_player.visible = true
+	label.visible = false
+	video_stream_player.play()
+	
+	await video_stream_player.finished
+	
+	video_stream_player.visible = false
+	canvas_layer.visible = false
+	canvas_layer.process_mode = Node.PROCESS_MODE_DISABLED
+	chat_ui.visible = true
+	
+	# Habilitar controles del juego
+	_set_game_ready(true)
+
+func _set_game_ready(ready: bool):
+	# Aquí puedes agregar lógica para habilitar/deshabilitar controles
+	print("🎯 JUEGO %s" % ("LISTO" if ready else "EN ESPERA"))
+
+# -------------------------------
+# --- LOGIN Y SELECCIÓN DE CLASE
+# -------------------------------
+func _on_login_pressed():
+	var username = username_input.text.strip_edges()
+	var password = password_input.text.strip_edges()
+	if username != "" and password != "":
+		print("🔐 Iniciando login con usuario:", username)
+		Network.login_user(username, password)
+
+func _on_login_successful():
+	print("✅ Login exitoso, mostrando selección de clase...")
+	vbox_container.visible = false
+	vbox_container_2.visible = false
+	contrl.visible = true
+
+# -------------------------------
+# --- SELECCIÓN DE CLASE
+# -------------------------------
+func _on_warrior_selected():
+	_select_class("warrior")
+
+func _on_mage_selected():
+	_select_class("mage")
+
+func _on_archer_selected():
+	_select_class("archer")
+
+func _on_rogue_selected():
+	_select_class("rogue")
+
+func _select_class(classe: String):
+	if class_chosen:
+		return
+	
+	print("🎯 Clase seleccionada:", classe)
+	class_chosen = true
+	Network.choose_class(classe)
+	
+	# Ocultar selección de clase y mostrar sala de espera (contrl)
+	class_selection_ui.visible = false
+	waiting_room_ui.visible = true
+	
+	# Actualizar la sala de espera inmediatamente
+	_update_waiting_room()
+
+# -------------------------------
+# --- CONEXIÓN POR IP
+# -------------------------------
+func _on_button_ip_pressed() -> void:
+	var ip = server_ip.text.strip_edges()
+	if ip == "":
+		print("⚠️ Debes ingresar una IP antes de conectar.")
+		return
+	print("🌐 Intentando conectar a:", ip)
+	Network.connect_with_ip(ip)
+	vbox_container.visible = true
+	vbox_container_3.visible = false
 
 # -------------------------------
 # --- LIMPIEZA DE ENTIDADES ELIMINADAS
@@ -201,7 +461,7 @@ func destroy_projectile(projectile_id: int):
 # --- INPUT
 # -------------------------------
 func _unhandled_input(event):
-	if not Network.connected or Network.player_id == -1:
+	if not Network.connected or Network.player_id == -1 or not game_started:
 		return
 
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
@@ -289,8 +549,8 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 
 func _attack_ranged_target(mouse_pos: Vector2) -> void:
 	# Verificar que estamos conectados y tenemos un ID válido
-	if not Network.connected or Network.player_id == -1:
-		print("❌ ATAQUE DISTANCIA FALLIDO - No conectado")
+	if not Network.connected or Network.player_id == -1 or not game_started:
+		print("❌ ATAQUE DISTANCIA FALLIDO - No conectado o juego no iniciado")
 		return
 
 	# Obtener el jugador local con verificación
@@ -299,7 +559,7 @@ func _attack_ranged_target(mouse_pos: Vector2) -> void:
 		print("❌ ATAQUE DISTANCIA FALLIDO - Jugador local no encontrado")
 		return
 
-	print("🎯 INICIANDO ATAQUE A DISTANCIA - Jugador ID:", Network.player_id, " Clase:", player.classe)
+	print("🎯 INICIANDO ATAQUE A DISTANCIA - Jugador ID:", Network.player_id)
 	
 	var player_pos: Vector2 = player.global_position
 	var player_facing: Vector2 = (mouse_pos - player_pos).normalized()
@@ -324,9 +584,14 @@ func _create_projectile(player: Node2D, direction: Vector2, damage: int):
 		push_error("❌ Error: player no está en el árbol de escena")
 		return
 	
-	print("🚀 CREANDO PROYECTIL - Player:", Network.player_id, " Clase:", player.classe, " Pos:", player.global_position, " Dir:", direction)
+	# Obtener la clase del jugador para determinar el proyectil
+	var player_classe = "warrior"
+	if "classe" in player:
+		player_classe = player.classe
 	
-	# Enviar creación del proyectil al servidor
+	print("🚀 CREANDO PROYECTIL - Player:", Network.player_id, " Clase:", player_classe, " Pos:", player.global_position, " Dir:", direction)
+	
+	# Enviar creación del proyectil al servidor (incluyendo la clase)
 	Network.create_projectile(
 		player.global_position.x,
 		player.global_position.y,
@@ -334,7 +599,7 @@ func _create_projectile(player: Node2D, direction: Vector2, damage: int):
 		damage,
 		Network.player_id,
 		400.0, # velocidad
-		player.classe # Enviar la clase para que el servidor sepa qué proyectil crear
+		player_classe  # Enviar la clase del jugador
 	)
 
 # -------------------------------
@@ -394,8 +659,10 @@ func _spawn_projectile(id: int, data: Dictionary):
 	var classe = data.get("classe", "warrior")
 	if class_projectiles.has(classe):
 		projectile_scene = class_projectiles[classe]
+		print("🎯 Usando proyectil específico para clase:", classe)
 	else:
 		projectile_scene = ProjectileScene # Fallback
+		print("⚠️ Usando proyectil por defecto para clase:", classe)
 
 	if projectile_scene == null:
 		push_error("❌ ProjectileScene no asignada para clase:", classe)
@@ -464,60 +731,6 @@ func _on_projectile_removed(projectile_id):
 	destroy_projectile(projectile_id)
 
 # -------------------------------
-# --- LOGIN Y SELECCIÓN DE CLASE
-# -------------------------------
-func _on_login_pressed():
-	var username = username_input.text.strip_edges()
-	var password = password_input.text.strip_edges()
-	if username != "" and password != "":
-		print("🔐 Iniciando login con usuario:", username)
-		Network.login_user(username, password)
-
-func _on_login_successful():
-	print("✅ Login exitoso, mostrando selección de clase...")
-	vbox_container.visible = false
-	vbox_container_2.visible = false
-	class_selection_ui.visible = true
-	canvas_layer.visible = false
-# -------------------------------
-# --- SELECCIÓN DE CLASE
-# -------------------------------
-func _on_warrior_selected():
-	print("🛡️ Guerrero seleccionado")
-	Network.choose_class("warrior")
-	_enter_game()
-
-func _on_mage_selected():
-	print("🔮 Mago seleccionado")
-	Network.choose_class("mage")
-	_enter_game()
-
-func _on_archer_selected():
-	print("🏹 Arquero seleccionado")
-	Network.choose_class("archer")
-	_enter_game()
-
-func _on_rogue_selected():
-	print("⚔️ Pícaro seleccionado")
-	Network.choose_class("rogue")
-	_enter_game()
-
-func _enter_game():
-	class_selection_ui.visible = false
-	video_stream_player.stop()
-	video_stream_player.stream = load("res://Segunda-Parte-video-por-frame.ogv")
-	video_stream_player.loop = false
-	video_stream_player.autoplay = false
-	video_stream_player.visible = true
-	label.visible = false
-	video_stream_player.play()
-	await video_stream_player.finished
-	video_stream_player.visible = false
-	canvas_layer.visible = false
-	canvas_layer.process_mode = Node.PROCESS_MODE_DISABLED
-	chat_ui.visible = true
-
-# -------------------------------
 # --- CHAT
 # -------------------------------
 func _on_chat_send_pressed():
@@ -539,16 +752,3 @@ func _on_button_4_pressed() -> void:
 func _on_button_3_pressed() -> void:
 	vbox_container.visible = false
 	vbox_container_3.visible = true
-
-# -------------------------------
-# --- CONEXIÓN POR IP
-# -------------------------------
-func _on_button_ip_pressed() -> void:
-	var ip = server_ip.text.strip_edges()
-	if ip == "":
-		print("⚠️ Debes ingresar una IP antes de conectar.")
-		return
-	print("🌐 Intentando conectar a:", ip)
-	Network.connect_with_ip(ip)
-	vbox_container.visible = true
-	vbox_container_3.visible = false
