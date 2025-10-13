@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bwgm4jklnf3im"]
+[gd_scene load_steps=24 format=3 uid="uid://bwgm4jklnf3im"]
 
 [ext_resource type="Script" uid="uid://cvrrj37a2fajc" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://xsdjfolg3h1m" path="res://Player.tscn" id="2_1bvp3"]
@@ -15,6 +15,11 @@
 [ext_resource type="Texture2D" uid="uid://bhud7o53i8fnl" path="res://Ui_Select_player/Assasin.png" id="13_074og"]
 [ext_resource type="Texture2D" uid="uid://ddpmbl6lnlqco" path="res://Ui_Select_player/Caballero.png" id="14_cegan"]
 [ext_resource type="Animation" uid="uid://cggh7b3rqmfak" path="res://Titulo_intro.res" id="15_82xsv"]
+[ext_resource type="Texture2D" uid="uid://bani3ix0e0c81" path="res://Barras/Marco.png" id="16_82xsv"]
+[ext_resource type="Texture2D" uid="uid://30qdwnn3beq8" path="res://Barras/Barra de vida vacia.png" id="17_getpj"]
+[ext_resource type="Texture2D" uid="uid://ccqefinnfsyvo" path="res://Barras/Barra de vida llena.png" id="18_ryguw"]
+[ext_resource type="Texture2D" uid="uid://cjlwyheqsxhut" path="res://Barras/Barra de exp vacia.png" id="19_d13ii"]
+[ext_resource type="Texture2D" uid="uid://bprp16fbdl7uh" path="res://Barras/Barra de exp llena.png" id="20_1u8w0"]
 
 [sub_resource type="Animation" id="Animation_q3kjg"]
 length = 0.001
@@ -144,6 +149,8 @@ _data = {
 &"RESET": SubResource("Animation_q3kjg"),
 &"Titulo_intro": ExtResource("15_82xsv")
 }
+
+[sub_resource type="Theme" id="Theme_vivmo"]
 
 [node name="Node" type="Node2D"]
 texture_filter = 3
@@ -314,6 +321,7 @@ stream = ExtResource("10_4c57u")
 autoplay = true
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.688
@@ -356,7 +364,6 @@ playback_auto_capture_duration = 1.0
 playback_auto_capture_ease_type = 2
 
 [node name="FogOverlay" type="ColorRect" parent="CanvasLayer/contrl"]
-visible = false
 modulate = Color(0, 0, 0, 1)
 self_modulate = Color(1, 1, 1, 0.19607843)
 layout_mode = 0
@@ -432,6 +439,7 @@ texture = ExtResource("12_yaehf")
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/contrl/HBoxContainer3/VBoxContainer"]
 layout_mode = 2
+theme = SubResource("Theme_vivmo")
 theme_override_constants/margin_left = 80
 theme_override_constants/margin_right = 80
 
@@ -588,6 +596,41 @@ offset_right = 8.799823
 offset_bottom = -5.0234013
 scale = Vector2(2.5078459, 1.6702986)
 text = "ar"
+
+[node name="HUD" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.27343094, 0.27343094)
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/HUD"]
+layout_mode = 0
+offset_right = 1020.0
+offset_bottom = 600.0
+texture = ExtResource("16_82xsv")
+
+[node name="BarraVida" type="TextureProgressBar" parent="CanvasLayer/HUD"]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 14.0
+offset_right = 1037.0
+offset_bottom = 614.0
+scale = Vector2(0.961111, 0.961111)
+value = 66.0
+texture_under = ExtResource("17_getpj")
+texture_progress = ExtResource("18_ryguw")
+
+[node name="BarraExp" type="TextureProgressBar" parent="CanvasLayer/HUD"]
+layout_mode = 0
+offset_left = 13.0
+offset_top = 14.0
+offset_right = 1033.0
+offset_bottom = 614.0
+scale = Vector2(0.9651852, 0.9651852)
+value = 67.0
+texture_under = ExtResource("19_d13ii")
+texture_progress = ExtResource("20_1u8w0")
 
 [connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button3" to="." method="_on_button_3_pressed"]
