@@ -10,7 +10,8 @@ extends Node2D
 @onready var login_ui = $CanvasLayer/Pantalla_Inicial
 @onready var chat_ui = $CanvasLayer/ChatUI
 @onready var class_selection_ui = $CanvasLayer/ClassSelection
-@onready var waiting_room_ui: Control = $CanvasLayer/contrl # Usamos contrl como sala de espera
+@onready var waiting_room_ui: Control = $CanvasLayer/contrl
+@onready var loading_screen: Control = $CanvasLayer/LoadingScreen  # Nueva pantalla de carga
 @onready var login_button: Button = $"CanvasLayer/Pantalla_Inicial/VBoxContainer2/Button_login"
 @onready var username_input: LineEdit = $"CanvasLayer/Pantalla_Inicial/VBoxContainer2/LineEdit_username"
 @onready var password_input: LineEdit = $"CanvasLayer/Pantalla_Inicial/VBoxContainer2/LineEdit_password"
@@ -36,10 +37,15 @@ extends Node2D
 
 @onready var waiting_label: Button = $CanvasLayer/contrl/Ready
 
-# Nodos dentro de contrl (sala de espera) - Si no existen, se crearán dinámicamente
+# Nodos dentro de contrl (sala de espera)
 var players_list: VBoxContainer
 var start_countdown: Label
 var room_title: Label
+
+# Nodos de pantalla de carga
+@onready var loading_progress: ProgressBar = $CanvasLayer/LoadingScreen/ProgressBar
+@onready var loading_text: Label = $CanvasLayer/LoadingScreen/LoadingText
+@onready var loading_animation: AnimatedSprite2D = $CanvasLayer/LoadingScreen/AnimatedSprite2D
 
 # -------------------------------
 # --- PROYECTILES POR CLASE
@@ -68,6 +74,9 @@ var class_chosen: bool = false
 var game_started: bool = false
 var countdown_timer: float = 0.0
 var countdown_active: bool = false
+var minimum_wait_time: float = 10  # Mínimo 10 segundos para elegir clase
+var wait_timer: float = 0.0
+var loading_complete: bool = false
 
 # -------------------------------
 # --- INICIO
@@ -79,7 +88,8 @@ func _ready():
 	vbox_container_2.visible = false
 	vbox_container_3.visible = false
 	class_selection_ui.visible = false
-	waiting_room_ui.visible = false # Ocultamos contrl inicialmente
+	waiting_room_ui.visible = false
+	loading_screen.visible = false  # Ocultar pantalla de carga inicialmente
 
 	button_ip.pressed.connect(_on_button_ip_pressed)
 	
@@ -106,6 +116,38 @@ func _ready():
 	print("🎮 Main listo - Esperando conexión...")
 
 # -------------------------------
+# --- PANTALLA DE CARGA
+# -------------------------------
+func _show_loading_screen():
+	print("🔄 Mostrando pantalla de carga...")
+	loading_screen.visible = true
+	loading_progress.value = 0
+	loading_text.text = "Cargando recursos..."
+	
+	if loading_animation:
+		loading_animation.play("loading")
+	
+	# Simular progreso de carga
+	var tween = create_tween()
+	tween.tween_method(_update_loading_progress, 0.0, 100.0, 2.0)
+	await tween.finished
+	
+	loading_complete = true
+	loading_screen.visible = false
+	print("✅ Carga completada")
+
+func _update_loading_progress(value: float):
+	loading_progress.value = value
+	if value < 30:
+		loading_text.text = "Cargando modelos..."
+	elif value < 60:
+		loading_text.text = "Cargando texturas..."
+	elif value < 90:
+		loading_text.text = "Cargando animaciones..."
+	else:
+		loading_text.text = "¡Listo!"
+
+# -------------------------------
 # --- CONFIGURACIÓN SALA DE ESPERA
 # -------------------------------
 func _setup_waiting_room():
@@ -115,10 +157,10 @@ func _setup_waiting_room():
 	room_title = _get_or_create_node("RoomTitle", Label)
 	
 	# Configurar textos iniciales
-	waiting_label.text = "Jugadores listos: 0/0"
+	waiting_label.text = "Jugadores listos: 0/4"
 	start_countdown.text = "Iniciando en: 5"
 	start_countdown.visible = false
-	room_title.text = "SALA DE ESPERA"
+	room_title.text = "SALA DE ESPERA - Esperando 4 jugadores"
 	
 	# Configurar estilos si es necesario
 	if room_title is Label:
@@ -156,7 +198,7 @@ func _process(delta):
 	# Si estamos en la sala de espera, actualizar la lista de jugadores
 	if waiting_room_ui.visible and not game_started:
 		_update_waiting_room()
-		_check_start_conditions()
+		_check_start_conditions(delta)
 
 	# Debug de estado
 	if Engine.get_frames_drawn() % 180 == 0: # Cada 3 segundos aproximadamente
@@ -212,7 +254,7 @@ func _process(delta):
 	_cleanup_removed_entities()
 
 # -------------------------------
-# --- SALA DE ESPERA (usando contrl)
+# --- SALA DE ESPERA MEJORADA
 # -------------------------------
 func _update_waiting_room():
 	# Limpiar lista actual
@@ -226,7 +268,7 @@ func _update_waiting_room():
 	
 	if total_players == 0:
 		if waiting_label:
-			waiting_label.text = "Esperando jugadores..."
+			waiting_label.text = "Esperando jugadores... 0/4"
 		return
 	
 	for player_id in Network.players:
@@ -254,7 +296,9 @@ func _update_waiting_room():
 				status_label.text = "✅ Listo"
 				status_label.add_theme_color_override("font_color", Color.GREEN)
 			else:
-				status_label.text = "⏳ Esperando"
+				# Mostrar tiempo restante para elegir
+				var time_left = max(0, minimum_wait_time - wait_timer)
+				status_label.text = "⏳ %ds" % ceil(time_left)
 				status_label.add_theme_color_override("font_color", Color.YELLOW)
 			status_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 			
@@ -265,7 +309,8 @@ func _update_waiting_room():
 	
 	# Actualizar texto de espera
 	if waiting_label:
-		waiting_label.text = "Jugadores listos: %d/%d" % [ready_count, total_players]
+		var time_left = max(0, minimum_wait_time - wait_timer)
+		waiting_label.text = "Jugadores listos: %d/4\nTiempo mínimo: %ds" % [ready_count, ceil(time_left)]
 	
 	# Mostrar información del countdown si está activo
 	if start_countdown:
@@ -273,37 +318,56 @@ func _update_waiting_room():
 	
 	if room_title:
 		if countdown_active:
-			room_title.text = "¡SALA LLENA!"
+			room_title.text = "¡SALA LLENA! Iniciando partida..."
 		else:
-			room_title.text = "SALA DE ESPERA"
+			room_title.text = "SALA DE ESPERA - Esperando 4 jugadores"
+	
+	# Agregar logging para debug
+	if Engine.get_frames_drawn() % 60 == 0: # Cada segundo aproximadamente
+		print("📊 DEBUG SALA - Jugadores totales:", total_players, 
+			  " Listos:", ready_count, 
+			  " Timer:", "%.1f" % wait_timer,
+			  " Clase elegida:", class_chosen)
 
-func _check_start_conditions():
-	# Contar jugadores con clase elegida
+func _check_start_conditions(delta: float):
+	# SOLUCIÓN: El timer debe incrementarse siempre que estemos en la sala de espera
+	# sin importar si hemos elegido clase o no
+	if waiting_room_ui.visible and not game_started:
+		wait_timer += delta
+	
 	var ready_players = 0
 	var total_players = Network.players.size()
 	
 	if total_players == 0:
 		return
 	
+	# Contar jugadores con clase elegida
 	for player_id in Network.players:
 		var player_data = Network.players[player_id]
 		if player_data.has("classe") and player_data.classe != "":
 			ready_players += 1
 	
-	print("🔍 Verificando inicio - Listos: %d/%d" % [ready_players, total_players])
+	print("🔍 Verificando inicio - Listos: %d/4 - Tiempo: %.1f/%.1f" % [ready_players, wait_timer, minimum_wait_time])
 	
-	# Si hay al menos 4 jugadores y todos tienen clase elegida, iniciar countdown
-	if ready_players >= 4 and ready_players == total_players and not countdown_active and not game_started:
+	# CONDICIÓN PRINCIPAL: Exactamente 4 jugadores listos
+	var can_start = (ready_players == 4 and 
+					total_players == 4 and 
+					ready_players == total_players and 
+					wait_timer >= minimum_wait_time and 
+					not countdown_active and 
+					not game_started)
+	
+	if can_start:
 		_start_countdown()
-	elif countdown_active and (ready_players < 4 or ready_players != total_players):
+	elif countdown_active and (ready_players < 4 or total_players != 4):
 		# Cancelar countdown si ya no se cumplen las condiciones
 		countdown_active = false
 		if start_countdown:
 			start_countdown.visible = false
-		print("❌ Countdown cancelado - Condiciones no cumplidas")
+		print("❌ Countdown cancelado - Ya no hay 4 jugadores listos")
 
 func _start_countdown():
-	print("🚀 CONDICIONES CUMPLIDAS - Iniciando countdown...")
+	print("🚀 4 JUGADORES LISTOS - Iniciando countdown...")
 	countdown_active = true
 	countdown_timer = 5.0 # 5 segundos
 	if start_countdown:
@@ -314,10 +378,11 @@ func _start_countdown():
 # --- INICIO DEL JUEGO
 # -------------------------------
 func _start_game():
-	print("🎮 INICIANDO JUEGO!")
+	print("🎮 INICIANDO JUEGO CON 4 JUGADORES!")
 	game_started = true
 	countdown_active = false
 	waiting_room_ui.visible = false
+	
 	
 	# Reproducir video de introducción y comenzar el juego
 	_play_intro_video()
@@ -354,6 +419,9 @@ func _on_login_pressed():
 	var password = password_input.text.strip_edges()
 	if username != "" and password != "":
 		print("🔐 Iniciando login con usuario:", username)
+		# Mostrar pantalla de carga antes del login
+		_show_loading_screen()
+		await loading_complete
 		Network.login_user(username, password)
 
 func _on_login_successful():
@@ -361,6 +429,9 @@ func _on_login_successful():
 	vbox_container.visible = false
 	vbox_container_2.visible = false
 	contrl.visible = true
+	# Reiniciar timer cuando un jugador se conecta
+	wait_timer = 0.0
+	class_chosen = false
 
 # -------------------------------
 # --- SELECCIÓN DE CLASE
@@ -385,12 +456,11 @@ func _select_class(classe: String):
 	class_chosen = true
 	Network.choose_class(classe)
 	
-	# Ocultar selección de clase y mostrar sala de espera (contrl)
-	class_selection_ui.visible = false
-	waiting_room_ui.visible = true
+	# Mostrar confirmación
+	if waiting_label:
+		waiting_label.text = "¡Clase %s seleccionada!\nEsperando otros jugadores..." % classe.capitalize()
 	
-	# Actualizar la sala de espera inmediatamente
-	_update_waiting_room()
+	# No ocultamos la sala de espera, seguimos mostrando el progreso
 
 # -------------------------------
 # --- CONEXIÓN POR IP
@@ -453,7 +523,7 @@ func destroy_projectile(projectile_id: int):
 			if projectile.has_method("on_hit_success"):
 				projectile.on_hit_success()
 			else:
-				projectile.queue_free()
+					projectile.queue_free()
 		projectiles.erase(projectile_id)
 		print("🗑️ PROYECTIL DESTRUIDO - ID:", projectile_id)
 

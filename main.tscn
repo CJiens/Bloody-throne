@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bwgm4jklnf3im"]
+[gd_scene load_steps=36 format=3 uid="uid://bwgm4jklnf3im"]
 
 [ext_resource type="Script" uid="uid://cvrrj37a2fajc" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://xsdjfolg3h1m" path="res://Player.tscn" id="2_1bvp3"]
@@ -17,6 +17,21 @@
 [ext_resource type="Texture2D" uid="uid://bhud7o53i8fnl" path="res://Ui_Select_player/Assasin.png" id="13_074og"]
 [ext_resource type="Texture2D" uid="uid://ddpmbl6lnlqco" path="res://Ui_Select_player/Caballero.png" id="14_cegan"]
 [ext_resource type="Animation" uid="uid://cggh7b3rqmfak" path="res://Titulo_intro.res" id="15_82xsv"]
+[ext_resource type="Texture2D" uid="uid://01vajcef8gwb" path="res://Sprites/mage/Idle/m_levitate_S/0001.png" id="18_htxhm"]
+[ext_resource type="Texture2D" uid="uid://bausrf8owuxdl" path="res://Sprites/mage/Idle/m_levitate_S/0002.png" id="19_jq2sk"]
+[ext_resource type="Texture2D" uid="uid://dvwe0dymtdjo6" path="res://Sprites/mage/Idle/m_levitate_S/0003.png" id="20_4k2k6"]
+[ext_resource type="Texture2D" uid="uid://b0l5glyoy6v71" path="res://Sprites/mage/Idle/m_levitate_S/0004.png" id="21_0rl1p"]
+[ext_resource type="Texture2D" uid="uid://cltyvox2srvhv" path="res://Sprites/mage/Idle/m_levitate_S/0005.png" id="22_ok6jj"]
+[ext_resource type="Texture2D" uid="uid://r5jsug4yik3a" path="res://Sprites/mage/Idle/m_levitate_S/0006.png" id="23_facbu"]
+[ext_resource type="Texture2D" uid="uid://cy0x48lxkdhhv" path="res://Sprites/mage/Idle/m_levitate_S/0007.png" id="24_b1qrp"]
+[ext_resource type="Texture2D" uid="uid://c47wbhvavj1u4" path="res://Sprites/mage/Idle/m_levitate_S/0008.png" id="25_come4"]
+[ext_resource type="Texture2D" uid="uid://cm1wpkls0xwrd" path="res://Sprites/mage/Idle/m_levitate_S/0009.png" id="26_h8e4i"]
+[ext_resource type="Texture2D" uid="uid://vi6iav5ldmm6" path="res://Sprites/mage/Idle/m_levitate_S/0010.png" id="27_4lmeg"]
+[ext_resource type="Texture2D" uid="uid://daiyxjgcf2uh3" path="res://Sprites/mage/Idle/m_levitate_S/0011.png" id="28_0cp0l"]
+[ext_resource type="Texture2D" uid="uid://dr4eccxps0t44" path="res://Sprites/mage/Idle/m_levitate_S/0012.png" id="29_d2t1y"]
+[ext_resource type="Texture2D" uid="uid://dnc8yhwtu8tq" path="res://Sprites/mage/Idle/m_levitate_S/0013.png" id="30_gngh3"]
+[ext_resource type="Texture2D" uid="uid://5cntvlnq3kcn" path="res://Sprites/mage/Idle/m_levitate_S/0014.png" id="31_0n3wm"]
+[ext_resource type="Texture2D" uid="uid://dpbcydvw21qxr" path="res://Sprites/mage/Idle/m_levitate_S/0015.png" id="32_qnost"]
 
 [sub_resource type="Animation" id="Animation_q3kjg"]
 length = 0.001
@@ -146,6 +161,59 @@ _data = {
 &"RESET": SubResource("Animation_q3kjg"),
 &"Titulo_intro": ExtResource("15_82xsv")
 }
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yaehf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("18_htxhm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_jq2sk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_4k2k6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_0rl1p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_ok6jj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_facbu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_b1qrp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_come4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_h8e4i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_4lmeg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_0cp0l")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_d2t1y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_gngh3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_0n3wm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_qnost")
+}],
+"loop": true,
+"name": &"loading",
+"speed": 5.0
+}]
 
 [node name="Node" type="Node2D"]
 texture_filter = 3
@@ -622,6 +690,27 @@ visible = false
 layout_mode = 0
 offset_right = 8.0
 offset_bottom = 8.0
+
+[node name="LoadingScreen" type="Control" parent="CanvasLayer"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/LoadingScreen"]
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 27.0
+
+[node name="LoadingText" type="Label" parent="CanvasLayer/LoadingScreen"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasLayer/LoadingScreen"]
+sprite_frames = SubResource("SpriteFrames_yaehf")
+animation = &"loading"
 
 [connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button3" to="." method="_on_button_3_pressed"]

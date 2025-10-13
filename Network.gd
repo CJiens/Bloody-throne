@@ -207,6 +207,23 @@ func _receive_messages():
 				emit_signal("projectile_removed", data.id)
 				print("🗑️ Proyectil removido - ID:", data.id)
 
+			"player_state_response":
+				players = data.players
+				print("🔄 Estado de jugadores actualizado")
+
+			"player_update":
+				if data.player.id in players:
+					# Actualizar datos del jugador específico
+					players[data.player.id] = {
+						"x": data.player.x,
+						"y": data.player.y,
+						"username": data.player.username,
+						"hp": data.player.hp,
+						"animation_state": data.player.get("animation_state", "Idle"),
+						"classe": data.player.get("classe", "warrior")
+					}
+					print("🔄 Jugador actualizado - ID:", data.player.id, " Clase:", data.player.get("classe", "warrior"))
+
 # -------------------------------
 # --- ENVÍO DE MENSAJES
 # -------------------------------
@@ -264,7 +281,7 @@ func create_projectile(x: float, y: float, direction: Vector2, damage: int, owne
 			"damage": damage,
 			"owner_id": owner_id,
 			"speed": speed,
-			"classe": classe  # Nueva información
+			"classe": classe # Nueva información
 		}))
 
 func remove_projectile(projectile_id: int):
@@ -336,3 +353,10 @@ func _on_request_completed(result: int, response_code: int, headers: Array, body
 		emit_signal("login_successful")
 	else:
 		print("❌ Error en login:", data.error)
+
+# Agregar esta función para forzar sincronización
+func request_player_update():
+	if connected:
+		socket.send_text(JSON.stringify({
+			"type": "get_player_state"
+		}))

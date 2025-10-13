@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://xsdjfolg3h1m"]
+[gd_scene load_steps=8 format=3 uid="uid://xsdjfolg3h1m"]
 
 [ext_resource type="Script" uid="uid://cet0c5gh0dp4l" path="res://Player.gd" id="1_xhfnw"]
 [ext_resource type="SpriteFrames" uid="uid://dqyik6patsouj" path="res://Archer.tres" id="2_kne1u"]
@@ -16,10 +16,6 @@ bg_color = Color(0.6745098, 0, 0.2, 1)
 ProgressBar/constants/outline_size = 1
 ProgressBar/font_sizes/font_size = 5
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_1jgrc")
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_x33b6"]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_kne1u"]
 
 [node name="Node2D" type="CharacterBody2D"]
 z_index = 1
@@ -68,6 +64,26 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Camera2D" type="Camera2D" parent="."]
 
+[node name="RogueSprite" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(-1.8189596, 9.094797)
+scale = Vector2(0.010485759, 0.010485759)
+sprite_frames = ExtResource("2_kne1u")
+animation = &"attack_SE"
+frame = 5
+frame_progress = 1.0
+speed_scale = 6.8
+
+[node name="WarriorSprite" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(-1.6499997, 8.249998)
+scale = Vector2(0.1024, 0.1024)
+sprite_frames = ExtResource("2_kne1u")
+animation = &"attack_SE"
+frame = 5
+frame_progress = 1.0
+speed_scale = 6.8
+
 [node name="MageSprite" type="AnimatedSprite2D" parent="."]
 visible = false
 position = Vector2(3.9999998, -21)
@@ -85,14 +101,5 @@ animation = &"attack_SE"
 frame = 5
 frame_progress = 1.0
 speed_scale = 6.8
-
-[node name="WarriorSprite" type="AnimatedSprite2D" parent="."]
-visible = false
-sprite_frames = SubResource("SpriteFrames_x33b6")
-
-[node name="RogueSprite" type="AnimatedSprite2D" parent="."]
-visible = false
-scale = Vector2(0.99999994, 0.99999994)
-sprite_frames = SubResource("SpriteFrames_kne1u")
 
 [connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]
