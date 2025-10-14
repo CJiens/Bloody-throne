@@ -11,7 +11,7 @@ extends Node2D
 @onready var chat_ui = $CanvasLayer/ChatUI
 @onready var class_selection_ui = $CanvasLayer/ClassSelection
 @onready var waiting_room_ui: Control = $CanvasLayer/contrl
-@onready var loading_screen: Control = $CanvasLayer/LoadingScreen  # Nueva pantalla de carga
+@onready var loading_screen: Control = $CanvasLayer/LoadingScreen
 @onready var login_button: Button = $"CanvasLayer/Pantalla_Inicial/VBoxContainer2/Button_login"
 @onready var username_input: LineEdit = $"CanvasLayer/Pantalla_Inicial/VBoxContainer2/LineEdit_username"
 @onready var password_input: LineEdit = $"CanvasLayer/Pantalla_Inicial/VBoxContainer2/LineEdit_password"
@@ -82,15 +82,9 @@ var loading_complete: bool = false
 # --- INICIO
 # -------------------------------
 func _ready():
+	# Conectar botones UI
 	login_button.pressed.connect(_on_login_pressed)
 	chat_send.pressed.connect(_on_chat_send_pressed)
-	chat_ui.visible = false
-	vbox_container_2.visible = false
-	vbox_container_3.visible = false
-	class_selection_ui.visible = false
-	waiting_room_ui.visible = false
-	loading_screen.visible = false  # Ocultar pantalla de carga inicialmente
-
 	button_ip.pressed.connect(_on_button_ip_pressed)
 	
 	# Conectar botones de clase
@@ -99,16 +93,26 @@ func _ready():
 	archer_button.pressed.connect(_on_archer_selected)
 	rogue_button.pressed.connect(_on_rogue_selected)
 
-	if not Network.is_connected("login_successful", self._on_login_successful):
-		Network.connect("login_successful", self._on_login_successful)
+	# Configurar UI inicial
+	chat_ui.visible = false
+	vbox_container_2.visible = false
+	vbox_container_3.visible = false
+	class_selection_ui.visible = false
+	waiting_room_ui.visible = false
+	loading_screen.visible = false
+
+	# Conectar señales de Network
+	Network.login_successful.connect(_on_login_successful)
+	Network.connection_successful.connect(_on_connection_successful)
+	Network.connection_failed.connect(_on_connection_failed)
+	Network.game_state_updated.connect(_on_game_state_updated)
+	Network.player_joined.connect(_on_player_joined)
+	Network.player_left.connect(_on_player_left)
 		
 	# Conectar señales de proyectiles
-	if not Network.is_connected("projectile_created", _on_projectile_created):
-		Network.projectile_created.connect(_on_projectile_created)
-	if not Network.is_connected("projectile_moved", _on_projectile_moved):
-		Network.projectile_moved.connect(_on_projectile_moved)
-	if not Network.is_connected("projectile_removed", _on_projectile_removed):
-		Network.projectile_removed.connect(_on_projectile_removed)
+	Network.projectile_created.connect(_on_projectile_created)
+	Network.projectile_moved.connect(_on_projectile_moved)
+	Network.projectile_removed.connect(_on_projectile_removed)
 
 	# Configurar sala de espera
 	_setup_waiting_room()
@@ -122,14 +126,14 @@ func _show_loading_screen():
 	print("🔄 Mostrando pantalla de carga...")
 	loading_screen.visible = true
 	loading_progress.value = 0
-	loading_text.text = "Cargando recursos..."
+	loading_text.text = "Conectando al servidor..."
 	
 	if loading_animation:
 		loading_animation.play("loading")
 	
 	# Simular progreso de carga
 	var tween = create_tween()
-	tween.tween_method(_update_loading_progress, 0.0, 100.0, 2.0)
+	tween.tween_method(_update_loading_progress, 0.0, 100.0, 3.0)
 	await tween.finished
 	
 	loading_complete = true
@@ -139,11 +143,11 @@ func _show_loading_screen():
 func _update_loading_progress(value: float):
 	loading_progress.value = value
 	if value < 30:
-		loading_text.text = "Cargando modelos..."
+		loading_text.text = "Estableciendo conexión..."
 	elif value < 60:
-		loading_text.text = "Cargando texturas..."
+		loading_text.text = "Autenticando..."
 	elif value < 90:
-		loading_text.text = "Cargando animaciones..."
+		loading_text.text = "Cargando recursos..."
 	else:
 		loading_text.text = "¡Listo!"
 
@@ -160,7 +164,7 @@ func _setup_waiting_room():
 	waiting_label.text = "Jugadores listos: 0/4"
 	start_countdown.text = "Iniciando en: 5"
 	start_countdown.visible = false
-	room_title.text = "SALA DE ESPERA - Esperando 4 jugadores"
+	room_title.text = "SALA DE ESPERA - Esperando jugadores"
 	
 	# Configurar estilos si es necesario
 	if room_title is Label:
@@ -200,10 +204,14 @@ func _process(delta):
 		_update_waiting_room()
 		_check_start_conditions(delta)
 
+	# Actualizar entidades del juego
+	_update_game_entities()
+
 	# Debug de estado
-	if Engine.get_frames_drawn() % 180 == 0: # Cada 3 segundos aproximadamente
+	if Engine.get_frames_drawn() % 180 == 0:
 		print("📊 ESTADO - Jugadores:", Network.players.size(), " Enemigos:", enemies.size(), " Proyectiles:", projectiles.size())
 
+func _update_game_entities():
 	# --- Actualizar jugadores desde Network ---
 	for key in Network.players.keys():
 		var id = int(key)
@@ -211,9 +219,17 @@ func _process(delta):
 
 		if id in players:
 			var player_node = players[id]
+			
+			# ✅ ACTUALIZAR CLASE SI ES NECESARIO
+			var current_classe = player_node.classe if "classe" in player_node else "warrior"
+			var new_classe = data.get("classe", "warrior")
+			
+			if current_classe != new_classe and player_node.has_method("set_classe"):
+				print("🔄 ACTUALIZANDO CLASE - Jugador:", id, " De:", current_classe, " A:", new_classe)
+				player_node.set_classe(new_classe)
 
 			if id != Network.player_id:
-				# ⚙️ Solo actualiza a los demás jugadores
+				# Solo actualiza a los demás jugadores
 				player_node.position = Vector2(data.x, data.y)
 
 				# Actualizar animación de otros jugadores
@@ -225,7 +241,7 @@ func _process(delta):
 			# Actualizar HP de todos los jugadores
 			_update_player_hp(player_node, data.hp, id)
 		else:
-			print("👤 SPAWNEANDO JUGADOR - ID:", id, " Username:", data.username)
+			print("👤 SPAWNEANDO JUGADOR - ID:", id, " Username:", data.username, " Clase:", data.get("classe", "warrior"))
 			_spawn_player(id, data.username, Vector2(data.x, data.y), data.hp, data.get("classe", "warrior"))
 
 	# --- Actualizar enemigos ---
@@ -234,9 +250,12 @@ func _process(delta):
 		var data = Network.enemies[key]
 		if id in enemies:
 			enemies[id].position = Vector2(data.x, data.y)
+			# Actualizar HP de enemigos
+			if data.has("hp") and enemies[id].has_method("update_hp"):
+				enemies[id].update_hp(data.hp)
 		else:
 			print("👹 SPAWNEANDO ENEMIGO - ID:", id, " Tipo:", data.type)
-			_spawn_enemy(id, data.type, Vector2(data.x, data.y))
+			# _spawn_enemy(id, data.type, Vector2(data.x, data.y))
 
 	# --- Actualizar proyectiles ---
 	for key in Network.projectiles.keys():
@@ -244,11 +263,8 @@ func _process(delta):
 		var data = Network.projectiles[key]
 		if id not in projectiles:
 			# Crear nuevo proyectil
-			print("🎯 SPAWNEANDO PROYECTIL DESDE RED - ID:", id, " Owner:", data.owner_id)
+			print("🎯 SPAWNEANDO PROYECTIL DESDE RED - ID:", id, " Owner:", data.owner_id, " Clase:", data.get("classe", "warrior"))
 			_spawn_projectile(id, data)
-
-	# Los proyectiles remotos se mueven por sí mismos en su _process
-	# No necesitamos actualizar su posición manualmente
 
 	# --- Eliminar desconectados ---
 	_cleanup_removed_entities()
@@ -310,7 +326,10 @@ func _update_waiting_room():
 	# Actualizar texto de espera
 	if waiting_label:
 		var time_left = max(0, minimum_wait_time - wait_timer)
-		waiting_label.text = "Jugadores listos: %d/4\nTiempo mínimo: %ds" % [ready_count, ceil(time_left)]
+		if total_players >= 4:
+			waiting_label.text = "Jugadores listos: %d/%d\nTiempo mínimo: %ds" % [ready_count, total_players, ceil(time_left)]
+		else:
+			waiting_label.text = "Esperando más jugadores... %d/4" % total_players
 	
 	# Mostrar información del countdown si está activo
 	if start_countdown:
@@ -319,19 +338,12 @@ func _update_waiting_room():
 	if room_title:
 		if countdown_active:
 			room_title.text = "¡SALA LLENA! Iniciando partida..."
+		elif total_players >= 4:
+			room_title.text = "SALA LLENA - Esperando que todos elijan clase"
 		else:
-			room_title.text = "SALA DE ESPERA - Esperando 4 jugadores"
-	
-	# Agregar logging para debug
-	if Engine.get_frames_drawn() % 60 == 0: # Cada segundo aproximadamente
-		print("📊 DEBUG SALA - Jugadores totales:", total_players, 
-			  " Listos:", ready_count, 
-			  " Timer:", "%.1f" % wait_timer,
-			  " Clase elegida:", class_chosen)
+			room_title.text = "SALA DE ESPERA - Esperando %d/4 jugadores" % (4 - total_players)
 
 func _check_start_conditions(delta: float):
-	# SOLUCIÓN: El timer debe incrementarse siempre que estemos en la sala de espera
-	# sin importar si hemos elegido clase o no
 	if waiting_room_ui.visible and not game_started:
 		wait_timer += delta
 	
@@ -347,27 +359,28 @@ func _check_start_conditions(delta: float):
 		if player_data.has("classe") and player_data.classe != "":
 			ready_players += 1
 	
-	print("🔍 Verificando inicio - Listos: %d/4 - Tiempo: %.1f/%.1f" % [ready_players, wait_timer, minimum_wait_time])
+	# Debug cada 2 segundos
+	if Engine.get_frames_drawn() % 120 == 0:
+		print("🔍 Verificando inicio - Listos: %d/%d - Tiempo: %.1f/%.1f" % [ready_players, total_players, wait_timer, minimum_wait_time])
 	
-	# CONDICIÓN PRINCIPAL: Exactamente 4 jugadores listos
-	var can_start = (ready_players == 4 and 
-					total_players == 4 and 
-					ready_players == total_players and 
+	# CONDICIÓN PRINCIPAL: Mínimo 4 jugadores listos y tiempo cumplido
+	var can_start = (ready_players >= 4 and 
+					total_players >= 4 and 
 					wait_timer >= minimum_wait_time and 
 					not countdown_active and 
 					not game_started)
 	
 	if can_start:
 		_start_countdown()
-	elif countdown_active and (ready_players < 4 or total_players != 4):
+	elif countdown_active and (ready_players < 4 or total_players < 4):
 		# Cancelar countdown si ya no se cumplen las condiciones
 		countdown_active = false
 		if start_countdown:
 			start_countdown.visible = false
-		print("❌ Countdown cancelado - Ya no hay 4 jugadores listos")
+		print("❌ Countdown cancelado - No hay suficientes jugadores listos")
 
 func _start_countdown():
-	print("🚀 4 JUGADORES LISTOS - Iniciando countdown...")
+	print("🚀 %d JUGADORES LISTOS - Iniciando countdown..." % Network.players.size())
 	countdown_active = true
 	countdown_timer = 5.0 # 5 segundos
 	if start_countdown:
@@ -378,11 +391,10 @@ func _start_countdown():
 # --- INICIO DEL JUEGO
 # -------------------------------
 func _start_game():
-	print("🎮 INICIANDO JUEGO CON 4 JUGADORES!")
+	print("🎮 INICIANDO JUEGO CON %d JUGADORES!" % Network.players.size())
 	game_started = true
 	countdown_active = false
 	waiting_room_ui.visible = false
-	
 	
 	# Reproducir video de introducción y comenzar el juego
 	_play_intro_video()
@@ -408,11 +420,11 @@ func _play_intro_video():
 	_set_game_ready(true)
 
 func _set_game_ready(ready: bool):
-	# Aquí puedes agregar lógica para habilitar/deshabilitar controles
 	print("🎯 JUEGO %s" % ("LISTO" if ready else "EN ESPERA"))
+	# Aquí puedes agregar lógica adicional para habilitar/deshabilitar controles
 
 # -------------------------------
-# --- LOGIN Y SELECCIÓN DE CLASE
+# --- LOGIN Y CONEXIÓN
 # -------------------------------
 func _on_login_pressed():
 	var username = username_input.text.strip_edges()
@@ -428,10 +440,32 @@ func _on_login_successful():
 	print("✅ Login exitoso, mostrando selección de clase...")
 	vbox_container.visible = false
 	vbox_container_2.visible = false
-	contrl.visible = true
+	waiting_room_ui.visible = true
 	# Reiniciar timer cuando un jugador se conecta
 	wait_timer = 0.0
 	class_chosen = false
+	
+	# Forzar sincronización de estado después de un breve delay
+	await get_tree().create_timer(1.0).timeout
+	Network.request_player_update()
+
+func _on_connection_successful():
+	print("✅ Conexión WebSocket establecida")
+
+func _on_connection_failed():
+	print("❌ Falló la conexión al servidor")
+	loading_screen.visible = false
+	# Mostrar mensaje de error al usuario
+
+func _on_game_state_updated():
+	# Esta función se llama cuando el estado del juego cambia
+	pass
+
+func _on_player_joined(player_data):
+	print("👤 Jugador unido desde señal:", player_data.username)
+
+func _on_player_left(player_id):
+	print("🚪 Jugador salió desde señal:", player_id)
 
 # -------------------------------
 # --- SELECCIÓN DE CLASE
@@ -459,8 +493,6 @@ func _select_class(classe: String):
 	# Mostrar confirmación
 	if waiting_label:
 		waiting_label.text = "¡Clase %s seleccionada!\nEsperando otros jugadores..." % classe.capitalize()
-	
-	# No ocultamos la sala de espera, seguimos mostrando el progreso
 
 # -------------------------------
 # --- CONEXIÓN POR IP
@@ -474,6 +506,137 @@ func _on_button_ip_pressed() -> void:
 	Network.connect_with_ip(ip)
 	vbox_container.visible = true
 	vbox_container_3.visible = false
+
+# -------------------------------
+# --- SPAWN DE ENTIDADES
+# -------------------------------
+func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100, classe: String = "warrior"):
+	var instance = PlayerScene.instantiate()
+	
+	# Tamaño de la pantalla
+	var screen_size = get_viewport().get_visible_rect().size
+	var center = screen_size / 2
+	
+	# Definir área de spawn reducida (ej: 40% del tamaño de pantalla)
+	var spawn_width = screen_size.x * 0.4
+	var spawn_height = screen_size.y * 0.4
+	
+	# Calcular posición aleatoria dentro del área central
+	var random_x = randf_range(center.x - spawn_width/2, center.x + spawn_width/2)
+	var random_y = randf_range(center.y - spawn_height/2, center.y + spawn_height/2)
+	
+	instance.position = Vector2(random_x, random_y)
+	instance.name = str(id)
+	
+	# Resto del código igual...
+	
+	# Asignar propiedades usando métodos
+	if instance.has_method("set_player_id"):
+		instance.set_player_id(id)
+	
+	# ASIGNAR CLASE PRIMERO antes de agregar a la escena
+	if instance.has_method("set_classe"):
+		instance.set_classe(classe)
+		print("🎯 CLASE ASIGNADA AL JUGADOR - ID:", id, " Clase:", classe)
+	
+	player_container.add_child(instance)
+	players[id] = instance
+
+	var name_label = instance.get_node_or_null("nombre")
+	if name_label:
+		name_label.text = username
+
+	if id == Network.player_id:
+		var cam = instance.get_node_or_null("Camera2D")
+		if cam:
+			cam.make_current()
+		print("🎯 JUGADOR LOCAL CREADO - ID:", id, " Pos:", instance.position, " Clase:", classe)
+	else:
+		print("👤 JUGADOR REMOTO CREADO - ID:", id, " Clase:", classe)
+	
+	# Configurar barra de vida
+	_update_player_hp(instance, hp, id)
+
+# func _spawn_enemy(id: int, _enemy_type: String, pos: Vector2):
+# 	var instance = EnemyScene.instantiate()
+# 	instance.position = pos
+# 	instance.name = str(id)
+# 	enemy_container.add_child(instance)
+# 	enemies[id] = instance
+
+func _spawn_projectile(id: int, data: Dictionary):
+	var projectile_scene: PackedScene
+	
+	# Determinar qué proyectil instanciar basado en la clase
+	var classe = data.get("classe", "warrior")
+	if class_projectiles.has(classe):
+		projectile_scene = class_projectiles[classe]
+		print("🎯 Usando proyectil específico para clase:", classe)
+	else:
+		projectile_scene = ProjectileScene # Fallback
+		print("⚠️ Usando proyectil por defecto para clase:", classe)
+
+	if projectile_scene == null:
+		push_error("❌ ProjectileScene no asignada para clase:", classe)
+		return
+	
+	var projectile = projectile_scene.instantiate()
+	if projectile == null:
+		push_error("❌ Error al instanciar proyectil")
+		return
+	
+	projectile.name = str(id)
+	projectile.position = Vector2(data.x, data.y)
+	
+	var is_local_projectile = (data.owner_id == Network.player_id)
+	var direction = Vector2(data.direction_x, data.direction_y)
+	
+	print("🎯 CONFIGURANDO PROYECTIL - ID:", id, " Clase:", classe, " Owner:", data.owner_id, " IsLocal:", is_local_projectile)
+	
+	if projectile.has_method("initialize"):
+		projectile.initialize(id, direction, data.damage, data.owner_id, not is_local_projectile)
+	else:
+		# Configuración estándar
+		projectile.set("projectile_id", id)
+		projectile.set("projectile_direction", direction.normalized())
+		projectile.set("projectile_damage", data.damage)
+		projectile.set("projectile_owner_id", data.owner_id)
+		projectile.set("is_remote", not is_local_projectile)
+		projectile.set("projectile_speed", data.speed if data.has("speed") else 400.0)
+	
+	add_child(projectile)
+	projectiles[id] = projectile
+	
+	print("✅ PROYECTIL CREADO - ID:", id, " Tipo:", classe, " Remote:", not is_local_projectile)
+
+# -------------------------------
+# --- SISTEMA DE VIDA
+# -------------------------------
+func update_player_hp(id: int, hp_value: int):
+	var player = players.get(id, null)
+	if not player:
+		return
+
+	if player.has_method("update_hp"):
+		player.update_hp(hp_value)
+	else:
+		var bar = player.get_node_or_null("ProgressBar")
+		if bar:
+			var max_hp = player.max_hp if "max_hp" in player else 100
+			bar.max_value = max_hp
+			bar.value = clamp(hp_value, 0, max_hp)
+			bar.queue_redraw()
+			
+	if id == Network.player_id and hp_value <= 0:
+		print("[GAME OVER] Jugador muerto. Cerrando juego...")
+		get_tree().quit()
+
+func _update_player_hp(player: Node2D, hp_value: int, id: int):
+	update_player_hp(id, hp_value)
+	if id == Network.player_id:
+		print("[HP UPDATE] Jugador local HP:", hp_value)
+	else:
+		print("[HP UPDATE] Jugador", id, "HP:", hp_value)
 
 # -------------------------------
 # --- LIMPIEZA DE ENTIDADES ELIMINADAS
@@ -523,7 +686,7 @@ func destroy_projectile(projectile_id: int):
 			if projectile.has_method("on_hit_success"):
 				projectile.on_hit_success()
 			else:
-					projectile.queue_free()
+				projectile.queue_free()
 		projectiles.erase(projectile_id)
 		print("🗑️ PROYECTIL DESTRUIDO - ID:", projectile_id)
 
@@ -616,14 +779,11 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 					Network.attack("player", player_id, attack_damage)
 					break
 
-
 func _attack_ranged_target(mouse_pos: Vector2) -> void:
-	# Verificar que estamos conectados y tenemos un ID válido
 	if not Network.connected or Network.player_id == -1 or not game_started:
 		print("❌ ATAQUE DISTANCIA FALLIDO - No conectado o juego no iniciado")
 		return
 
-	# Obtener el jugador local con verificación
 	var player = players.get(Network.player_id, null)
 	if player == null:
 		print("❌ ATAQUE DISTANCIA FALLIDO - Jugador local no encontrado")
@@ -645,7 +805,6 @@ func _attack_ranged_target(mouse_pos: Vector2) -> void:
 	_create_projectile(player, player_facing, attack_damage)
 
 func _create_projectile(player: Node2D, direction: Vector2, damage: int):
-	# Verificaciones exhaustivas
 	if player == null:
 		push_error("❌ Error: player es null")
 		return
@@ -668,124 +827,9 @@ func _create_projectile(player: Node2D, direction: Vector2, damage: int):
 		direction,
 		damage,
 		Network.player_id,
-		400.0, # velocidad
-		player_classe  # Enviar la clase del jugador
+		400.0,
+		player_classe
 	)
-
-# -------------------------------
-# --- SPAWN Y HP
-# -------------------------------
-func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100, classe: String = "warrior"):
-	var instance = PlayerScene.instantiate()
-	
-	# Generar posición aleatoria dentro de la pantalla
-	var screen_size = get_viewport().get_visible_rect().size
-	var random_x = randf_range(100, screen_size.x - 100) # Margen de 100 píxeles
-	var random_y = randf_range(100, screen_size.y - 100)
-	
-	instance.position = Vector2(random_x, random_y)
-	instance.name = str(id)
-	
-	# Asignar propiedades usando métodos
-	if instance.has_method("set_player_id"):
-		instance.set_player_id(id)
-	elif "id" in instance:
-		instance.id = id
-	
-	# Asignar clase
-	if instance.has_method("set_classe"):
-		instance.set_classe(classe)
-	
-	player_container.add_child(instance)
-	players[id] = instance
-
-	var name_label = instance.get_node_or_null("nombre")
-	if name_label:
-		name_label.text = username
-
-	if id == Network.player_id:
-		var cam = instance.get_node_or_null("Camera2D")
-		if cam:
-			cam.make_current()
-		print("🎯 JUGADOR LOCAL CREADO - ID:", id, " Pos:", instance.position, " Clase:", classe)
-	
-	var bar = instance.get_node_or_null("ProgressBar")
-	if bar:
-		bar.max_value = 100
-		bar.value = hp
-		bar.queue_redraw()
-
-func _spawn_enemy(id: int, _enemy_type: String, pos: Vector2):
-	var instance = EnemyScene.instantiate()
-	instance.position = pos
-	instance.name = str(id)
-	enemy_container.add_child(instance)
-	enemies[id] = instance
-
-func _spawn_projectile(id: int, data: Dictionary):
-	var projectile_scene: PackedScene
-	
-	# Determinar qué proyectil instanciar basado en la clase
-	var classe = data.get("classe", "warrior")
-	if class_projectiles.has(classe):
-		projectile_scene = class_projectiles[classe]
-		print("🎯 Usando proyectil específico para clase:", classe)
-	else:
-		projectile_scene = ProjectileScene # Fallback
-		print("⚠️ Usando proyectil por defecto para clase:", classe)
-
-	if projectile_scene == null:
-		push_error("❌ ProjectileScene no asignada para clase:", classe)
-		return
-	
-	var projectile = projectile_scene.instantiate()
-	if projectile == null:
-		push_error("❌ Error al instanciar proyectil")
-		return
-	
-	projectile.name = str(id)
-	projectile.position = Vector2(data.x, data.y)
-	
-	var is_local_projectile = (data.owner_id == Network.player_id)
-	var direction = Vector2(data.direction_x, data.direction_y)
-	
-	print("🎯 CONFIGURANDO PROYECTIL - ID:", id, " Clase:", classe, " Owner:", data.owner_id, " IsLocal:", is_local_projectile)
-	
-	if projectile.has_method("initialize"):
-		projectile.initialize(id, direction, data.damage, data.owner_id, not is_local_projectile)
-	else:
-		# Configuración estándar
-		projectile.set("projectile_id", id)
-		projectile.set("projectile_direction", direction.normalized())
-		projectile.set("projectile_damage", data.damage)
-		projectile.set("projectile_owner_id", data.owner_id)
-		projectile.set("is_remote", not is_local_projectile)
-		projectile.set("projectile_speed", data.speed if data.has("speed") else 400.0)
-	
-	add_child(projectile)
-	projectiles[id] = projectile
-	
-	print("✅ PROYECTIL CREADO - ID:", id, " Tipo:", classe, " Remote:", not is_local_projectile)
-
-func update_player_hp(id: int, hp_value: int):
-	var player = players.get(id, null)
-	if not player:
-		return
-
-	var bar = player.get_node_or_null("ProgressBar")
-	if bar:
-		bar.value = clamp(hp_value, 0, 100)
-		bar.queue_redraw()
-		if id == Network.player_id and bar.value <= 0:
-			print("[GAME OVER] Jugador muerto. Cerrando juego...")
-			get_tree().quit()
-
-func _update_player_hp(player: Node2D, hp_value: int, id: int):
-	update_player_hp(id, hp_value)
-	if id == Network.player_id:
-		print("[HP UPDATE] Jugador local HP:", hp_value)
-	else:
-		print("[HP UPDATE] Jugador", id, "HP:", hp_value)
 
 # -------------------------------
 # --- MANEJO DE PROYECTILES

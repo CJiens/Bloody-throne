@@ -413,7 +413,6 @@ layout_mode = 2
 text = "ACEPTAR"
 
 [node name="contrl" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -626,6 +625,31 @@ offset_right = 8.0
 offset_bottom = 8.0
 metadata/_edit_use_anchors_ = true
 
+[node name="RoomTitle" type="Label" parent="CanvasLayer/contrl"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -55.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "sadasd"
+
+[node name="StartCountdown" type="Label" parent="CanvasLayer/contrl"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+
+[node name="PlayersList" type="VBoxContainer" parent="CanvasLayer/contrl"]
+layout_mode = 1
+offset_right = 40.0
+offset_bottom = 40.0
+
 [node name="ChatUI" type="Control" parent="CanvasLayer"]
 visible = false
 layout_mode = 3
@@ -692,23 +716,36 @@ offset_right = 8.0
 offset_bottom = 8.0
 
 [node name="LoadingScreen" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -106.0
+offset_top = -43.0
+offset_right = -66.0
+offset_bottom = -3.0
+grow_horizontal = 0
+grow_vertical = 0
 
 [node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/LoadingScreen"]
 layout_mode = 0
-offset_right = 4.0
-offset_bottom = 27.0
+offset_left = 1.0
+offset_top = -26.0
+offset_right = 5.0
+offset_bottom = 1.0
+value = 50.0
 
 [node name="LoadingText" type="Label" parent="CanvasLayer/LoadingScreen"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 23.0
+offset_left = -15.0
+offset_top = 13.0
+offset_right = 25.0
+offset_bottom = 36.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CanvasLayer/LoadingScreen"]
+position = Vector2(-36, -7)
 sprite_frames = SubResource("SpriteFrames_yaehf")
 animation = &"loading"
 

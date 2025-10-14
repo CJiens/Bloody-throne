@@ -6,7 +6,7 @@ class_name Player
 # -------------------------------
 var id: int
 var hp: int = 100
-var max_hp: int = 200
+var max_hp: int = 100
 var animation_state: String = "Idle"
 var classe: String = "warrior"
 
@@ -127,17 +127,12 @@ func _apply_class_config():
 		hp_bar.max_value = max_hp
 		hp_bar.value = hp
 	
-	print("🎯 CLASE CONFIGURADA - ", classe, " Rango:", attack_range, " Ranged:", is_ranged)
+	print("🎯 CLASE CONFIGURADA - ", classe, " HP:", hp, " Rango:", attack_range, " Ranged:", is_ranged)
 
 # -------------------------------
 # --- CONFIGURACIÓN DE SPRITES POR CLASE
 # -------------------------------
 func _setup_class_sprite():
-	# Ocultar todos los sprites primero
-	# warrior_sprite.visible = false
-	# mage_sprite.visible = false
-	# archer_sprite.visible = false
-	# rogue_sprite.visible = false
 	
 	# Configurar el sprite activo según la clase
 	match classe:
@@ -373,7 +368,7 @@ func update_hp(new_hp: int):
 	if hp_bar:
 		hp_bar.value = hp
 	
-	print("❤️  ACTUALIZANDO HP - Jugador:", id, " HP:", hp)
+	print("❤️  ACTUALIZANDO HP - Jugador:", id, " HP:", hp, "/", max_hp)
 	
 	if hp <= 0:
 		play_death_animation()
@@ -384,7 +379,8 @@ func take_damage(amount: int):
 
 func play_death_animation():
 	if not current_sprite:
-		get_tree().quit()
+		if id == Network.player_id:
+			get_tree().quit()
 		return
 
 	print("💀 JUGADOR MUERTO - ID:", id)
@@ -395,8 +391,7 @@ func play_death_animation():
 	
 	if id == Network.player_id:
 		Network.send_player_state("Die")
-	await current_sprite.animation_finished
-	if id == Network.player_id:
+		await current_sprite.animation_finished
 		get_tree().quit()
 
 # -------------------------------
@@ -437,11 +432,14 @@ func _on_hitbox_area_entered(area):
 		# Notificar al servidor del golpe
 		Network.projectile_hit_player(projectile.projectile_id, id, projectile.projectile_damage)
 		
+		# Aplicar daño localmente
+		take_damage(projectile.projectile_damage)
+		
 		# Efecto visual local
 		_create_hit_effect()
 
 func _create_hit_effect():
 	# Efecto visual de golpe
 	modulate = Color.RED
-	await get_tree().create_timer(0.1).timeout
-	modulate = Color.WHITE
+	var tween = create_tween()
+	tween.tween_property(self, "modulate", Color.WHITE, 0.2)

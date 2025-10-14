@@ -25,9 +25,14 @@ var ws_ready := false
 # --- SEÑALES
 # -------------------------------
 signal login_successful
+signal connection_successful
+signal connection_failed
 signal projectile_created(projectile_data)
 signal projectile_removed(projectile_id)
 signal projectile_moved(projectile_data)
+signal player_joined(player_data)
+signal player_left(player_id)
+signal game_state_updated
 
 # -------------------------------
 # --- FUNCIÓN DE INICIO CON IP
@@ -41,8 +46,10 @@ func connect_with_ip(ip: String):
 	var err = socket.connect_to_url(websocket_url)
 	if err == OK:
 		set_process(true)
+		print("✅ Conexión WS iniciada correctamente")
 	else:
 		push_error("❌ No se pudo iniciar conexión WS a " + websocket_url)
+		emit_signal("connection_failed")
 		set_process(false)
 
 # -------------------------------
@@ -54,19 +61,25 @@ func _process(_delta):
 
 	match state:
 		WebSocketPeer.STATE_CONNECTING:
-			pass
+			print("🔷 Conectando...")
 		WebSocketPeer.STATE_OPEN:
 			if not ws_ready:
 				ws_ready = true
 				print("✅ WS Conexión abierta:", websocket_url)
+				emit_signal("connection_successful")
 				if token != "":
 					auth(token)
 			_receive_messages()
 		WebSocketPeer.STATE_CLOSING:
 			print("🔸 WS cerrando conexión...")
 		WebSocketPeer.STATE_CLOSED:
-			print("🔴 WS cerrada")
+			var code = socket.get_close_code()
+			var reason = socket.get_close_reason()
+			print("🔴 WS cerrada - Código:", code, " Razón:", reason)
+			connected = false
+			ws_ready = false
 			set_process(false)
+			emit_signal("connection_failed")
 
 # -------------------------------
 # --- RECEPCIÓN DE MENSAJES
@@ -80,6 +93,7 @@ func _receive_messages():
 		var text = packet.get_string_from_utf8()
 		var json = JSON.new()
 		if json.parse(text) != OK:
+			print("❌ Error parseando JSON:", text)
 			continue
 		var data = json.get_data()
 
@@ -89,8 +103,10 @@ func _receive_messages():
 			"auth_ok":
 				player_id = data.player.id
 				connected = true
+				players[player_id] = data.player
 				enemies = data.enemies
-				print("✅ Autenticado como:", data.player.username, " ID:", player_id)
+				print("✅ Autenticado como:", data.player.username, " ID:", player_id, " Clase:", data.player.classe)
+				emit_signal("game_state_updated")
 
 			"auth_error":
 				print("❌ Error de autenticación:", data.error)
@@ -101,47 +117,54 @@ func _receive_messages():
 					"y": data.player.y,
 					"username": data.player.username,
 					"hp": data.player.hp,
+					"max_hp": data.player.max_hp,
 					"animation_state": data.player.get("animation_state", "Idle"),
 					"classe": data.player.get("classe", "warrior")
 				}
 				print("👤 Jugador se unió:", data.player.username, " ID:", data.player.id, " Clase:", data.player.get("classe", "warrior"))
+				emit_signal("player_joined", players[data.player.id])
+				emit_signal("game_state_updated")
 
 			"leave":
 				players.erase(data.id)
 				print("🚪 Jugador salió:", data.id)
+				emit_signal("player_left", data.id)
+				emit_signal("game_state_updated")
 
 			"player_moved":
-				if data.player.id in players:
-					players[data.player.id].x = data.player.x
-					players[data.player.id].y = data.player.y
+				if str(data.player.id) in players:
+					players[str(data.player.id)].x = data.player.x
+					players[str(data.player.id)].y = data.player.y
 
 			"enemy_hit":
-				if data.id in enemies:
-					enemies[data.id].hp = data.hp
+				if str(data.id) in enemies:
+					enemies[str(data.id)].hp = data.hp
 					print("💥 Enemigo golpeado - ID:", data.id, " HP:", data.hp)
 
 			"enemy_dead":
-				enemies.erase(data.id)
+				enemies.erase(str(data.id))
 				print("💀 Enemigo muerto - ID:", data.id)
 
 			"player_hit":
-				if data.id in players:
-					players[data.id].hp = data.hp
+				if str(data.id) in players:
+					players[str(data.id)].hp = data.hp
 					print("💥 Jugador golpeado - ID:", data.id, " HP:", data.hp)
+					emit_signal("game_state_updated")
 
 			"player_dead":
-				if data.id in players:
-					players[data.id].hp = 0
+				if str(data.id) in players:
+					players[str(data.id)].hp = 0
 					print("💀 Jugador muerto - ID:", data.id)
+					emit_signal("game_state_updated")
 
 			"player_state_update":
-				var player_id_str = str(int(data.id))
+				var player_id_str = str(data.id)
 				if players.has(player_id_str):
 					players[player_id_str].animation_state = data.state
 					print("🎭 Estado jugador actualizado - ID:", data.id, " Estado:", data.state)
 
 			"chat":
-				print("[CHAT]", data.from, ":", data.text)
+				print("[CHAT]", data.fromUsername, ":", data.text)
 
 			"state":
 				players.clear()
@@ -152,9 +175,11 @@ func _receive_messages():
 						"y": p.y,
 						"username": p.username,
 						"hp": p.get("hp", 100),
+						"max_hp": p.get("max_hp", 100),
 						"animation_state": p.get("animation_state", "Idle"),
 						"classe": p.get("classe", "warrior")
 					}
+				
 				enemies.clear()
 				for eid in data.enemies.keys():
 					var e = data.enemies[eid]
@@ -162,8 +187,10 @@ func _receive_messages():
 						"x": e.x,
 						"y": e.y,
 						"type": e.type,
-						"hp": e.get("hp", 100)
+						"hp": e.get("hp", 100),
+						"max_hp": e.get("max_hp", 100)
 					}
+				
 				# Actualizar proyectiles
 				projectiles.clear()
 				if data.has("projectiles"):
@@ -179,10 +206,11 @@ func _receive_messages():
 							"speed": proj.speed,
 							"classe": proj.get("classe", "warrior")
 						}
-					print("📊 Estado - Proyectiles:", projectiles.size())
+				print("📊 Estado sincronizado - Jugadores:", players.size(), " Enemigos:", enemies.size(), " Proyectiles:", projectiles.size())
+				emit_signal("game_state_updated")
 
 			"projectile_created":
-				projectiles[data.id] = {
+				projectiles[str(data.id)] = {
 					"x": data.x,
 					"y": data.y,
 					"direction_x": data.direction_x,
@@ -192,37 +220,57 @@ func _receive_messages():
 					"speed": data.speed,
 					"classe": data.get("classe", "warrior")
 				}
-				emit_signal("projectile_created", projectiles[data.id])
-				print("🎯 PROYECTIL CREADO EN RED - ID:", data.id, " Owner:", data.owner_id, " Clase:", data.get("classe", "warrior"), " Pos:", data.x, ",", data.y)
+				emit_signal("projectile_created", projectiles[str(data.id)])
+				print("🎯 PROYECTIL CREADO EN RED - ID:", data.id, " Owner:", data.owner_id, " Clase:", data.get("classe", "warrior"))
 				
 			"projectile_moved":
-				if data.id in projectiles:
-					projectiles[data.id].x = data.x
-					projectiles[data.id].y = data.y
-					emit_signal("projectile_moved", projectiles[data.id])
-					print("🔄 Proyectil movido - ID:", data.id, " Pos:", data.x, ",", data.y)
+				var proj_id = str(data.id)
+				if proj_id in projectiles:
+					projectiles[proj_id].x = data.x
+					projectiles[proj_id].y = data.y
+					emit_signal("projectile_moved", projectiles[proj_id])
 				
 			"projectile_removed":
-				projectiles.erase(data.id)
+				var proj_id = str(data.id)
+				projectiles.erase(proj_id)
 				emit_signal("projectile_removed", data.id)
 				print("🗑️ Proyectil removido - ID:", data.id)
 
 			"player_state_response":
 				players = data.players
 				print("🔄 Estado de jugadores actualizado")
+				emit_signal("game_state_updated")
 
 			"player_update":
-				if data.player.id in players:
+				var player_id_str = str(data.player.id)
+				if players.has(player_id_str):
 					# Actualizar datos del jugador específico
-					players[data.player.id] = {
+					var old_classe = players[player_id_str].get("classe", "warrior")
+					var new_classe = data.player.get("classe", "warrior")
+					
+					players[player_id_str] = {
 						"x": data.player.x,
 						"y": data.player.y,
 						"username": data.player.username,
 						"hp": data.player.hp,
+						"max_hp": data.player.max_hp,
 						"animation_state": data.player.get("animation_state", "Idle"),
-						"classe": data.player.get("classe", "warrior")
+						"classe": new_classe
 					}
-					print("🔄 Jugador actualizado - ID:", data.player.id, " Clase:", data.player.get("classe", "warrior"))
+					
+					if old_classe != new_classe:
+						print("🔄 CLASE ACTUALIZADA - ID:", data.player.id, " Nueva clase:", new_classe)
+					else:
+						print("🔄 Jugador actualizado - ID:", data.player.id, " Clase:", new_classe)
+					
+					emit_signal("game_state_updated")
+
+			"all_players_ready":
+				print("🚀 TODOS LOS JUGADORES LISTOS - Iniciando juego...")
+				# Esta señal será manejada por main.gd
+
+			_:
+				print("📨 Mensaje no manejado:", data.type)
 
 # -------------------------------
 # --- ENVÍO DE MENSAJES
@@ -268,7 +316,6 @@ func send_player_state(state: String):
 			"state": state
 		}))
 
-# MODIFICADO: Agregar parámetro de clase al crear proyectil
 func create_projectile(x: float, y: float, direction: Vector2, damage: int, owner_id: int, speed: float = 400.0, classe: String = "warrior"):
 	if connected:
 		print("🚀 ENVIANDO PROYECTIL - Owner:", owner_id, " Clase:", classe)
@@ -281,7 +328,7 @@ func create_projectile(x: float, y: float, direction: Vector2, damage: int, owne
 			"damage": damage,
 			"owner_id": owner_id,
 			"speed": speed,
-			"classe": classe # Nueva información
+			"classe": classe
 		}))
 
 func remove_projectile(projectile_id: int):
@@ -345,14 +392,16 @@ func login_user(username: String, password: String) -> void:
 func _on_request_completed(result: int, response_code: int, headers: Array, body: PackedByteArray) -> void:
 	var json = JSON.new()
 	if json.parse(body.get_string_from_utf8()) != OK:
+		print("❌ Error parseando respuesta del servidor")
 		return
+		
 	var data = json.get_data()
-	if data.ok:
+	if data and data.ok:
 		print("✅ Login exitoso:", data.user.username)
 		auth(data.token)
 		emit_signal("login_successful")
 	else:
-		print("❌ Error en login:", data.error)
+		print("❌ Error en login:", data.error if data else "Respuesta vacía")
 
 # Agregar esta función para forzar sincronización
 func request_player_update():
@@ -360,3 +409,19 @@ func request_player_update():
 		socket.send_text(JSON.stringify({
 			"type": "get_player_state"
 		}))
+
+func disconnect_from_server():
+	if connected:
+		socket.close()
+		connected = false
+		ws_ready = false
+		player_id = -1
+		players.clear()
+		enemies.clear()
+		projectiles.clear()
+		set_process(false)
+		print("🔌 Desconectado del servidor")
+
+# CORREGIDO: Cambiar nombre de la función que entraba en conflicto
+func is_server_connected() -> bool:
+	return connected and ws_ready
