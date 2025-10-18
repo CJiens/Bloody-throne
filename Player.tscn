@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://xsdjfolg3h1m"]
 
 [ext_resource type="Script" uid="uid://cet0c5gh0dp4l" path="res://Player.gd" id="1_xhfnw"]
-[ext_resource type="SpriteFrames" uid="uid://dqyik6patsouj" path="res://Archer.tres" id="2_kne1u"]
+[ext_resource type="SpriteFrames" uid="uid://ccgibxgs3r40s" path="res://Warrior.tres" id="2_kne1u"]
 [ext_resource type="SpriteFrames" uid="uid://dxopahsk2cn8a" path="res://Mague.tres" id="150_5tdsq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_erspt"]
@@ -76,12 +76,10 @@ speed_scale = 6.8
 
 [node name="WarriorSprite" type="AnimatedSprite2D" parent="."]
 visible = false
-position = Vector2(-1.6499997, 8.249998)
-scale = Vector2(0.1024, 0.1024)
+position = Vector2(1.2499999, 12.5)
+scale = Vector2(1.117, 1.117)
 sprite_frames = ExtResource("2_kne1u")
-animation = &"attack_SE"
-frame = 5
-frame_progress = 1.0
+animation = &"run_N"
 speed_scale = 6.8
 
 [node name="MageSprite" type="AnimatedSprite2D" parent="."]
@@ -89,7 +87,7 @@ visible = false
 position = Vector2(3.9999998, -21)
 scale = Vector2(0.99999994, 0.99999994)
 sprite_frames = ExtResource("150_5tdsq")
-animation = &"run_SE"
+animation = &"run_W"
 speed_scale = 6.8
 
 [node name="ArcherSprite" type="AnimatedSprite2D" parent="."]
@@ -97,8 +95,8 @@ visible = false
 position = Vector2(-1.2499999, 6.2499995)
 scale = Vector2(0.32, 0.32)
 sprite_frames = ExtResource("2_kne1u")
-animation = &"attack_SE"
-frame = 5
+animation = &"roll_N"
+frame = 6
 frame_progress = 1.0
 speed_scale = 6.8
 

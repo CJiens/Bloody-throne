@@ -74,7 +74,7 @@ var class_chosen: bool = false
 var game_started: bool = false
 var countdown_timer: float = 0.0
 var countdown_active: bool = false
-var minimum_wait_time: float = 10  # Mínimo 10 segundos para elegir clase
+var minimum_wait_time: float = 10 # Mínimo 10 segundos para elegir clase
 var wait_timer: float = 0.0
 var loading_complete: bool = false
 
@@ -364,10 +364,10 @@ func _check_start_conditions(delta: float):
 		print("🔍 Verificando inicio - Listos: %d/%d - Tiempo: %.1f/%.1f" % [ready_players, total_players, wait_timer, minimum_wait_time])
 	
 	# CONDICIÓN PRINCIPAL: Mínimo 4 jugadores listos y tiempo cumplido
-	var can_start = (ready_players >= 4 and 
-					total_players >= 4 and 
-					wait_timer >= minimum_wait_time and 
-					not countdown_active and 
+	var can_start = (ready_players >= 1 and
+					total_players >= 1 and
+					wait_timer >= minimum_wait_time and
+					not countdown_active and
 					not game_started)
 	
 	if can_start:
@@ -522,8 +522,8 @@ func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100, class
 	var spawn_height = screen_size.y * 0.4
 	
 	# Calcular posición aleatoria dentro del área central
-	var random_x = randf_range(center.x - spawn_width/2, center.x + spawn_width/2)
-	var random_y = randf_range(center.y - spawn_height/2, center.y + spawn_height/2)
+	var random_x = randf_range(center.x - spawn_width / 2, center.x + spawn_width / 2)
+	var random_y = randf_range(center.y - spawn_height / 2, center.y + spawn_height / 2)
 	
 	instance.position = Vector2(random_x, random_y)
 	instance.name = str(id)
@@ -558,11 +558,11 @@ func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100, class
 	_update_player_hp(instance, hp, id)
 
 # func _spawn_enemy(id: int, _enemy_type: String, pos: Vector2):
-# 	var instance = EnemyScene.instantiate()
-# 	instance.position = pos
-# 	instance.name = str(id)
-# 	enemy_container.add_child(instance)
-# 	enemies[id] = instance
+#   var instance = EnemyScene.instantiate()
+#   instance.position = pos
+#   instance.name = str(id)
+#   enemy_container.add_child(instance)
+#   enemies[id] = instance
 
 func _spawn_projectile(id: int, data: Dictionary):
 	var projectile_scene: PackedScene
@@ -691,25 +691,39 @@ func destroy_projectile(projectile_id: int):
 		print("🗑️ PROYECTIL DESTRUIDO - ID:", projectile_id)
 
 # -------------------------------
-# --- INPUT
+# --- INPUT (MODIFICADO PARA CLASES)
 # -------------------------------
 func _unhandled_input(event):
 	if not Network.connected or Network.player_id == -1 or not game_started:
 		return
+	
 
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		if event.pressed:
-			var player = players.get(Network.player_id, null)
-			if player and player.has_method("can_attack") and player.can_attack():
-				print("🖱️ CLICK IZQUIERDO - Ataque cuerpo a cuerpo")
+	print("TEST")
+	print(players.get(Network.player_id, null))
+
+	# CLICK IZQUIERDO - Ataque según clase
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var player = players.get(Network.player_id, null)
+		if player and player.has_method("can_attack") and player.can_attack():
+			var player_classe = player.classe if "classe" in player else "warrior"
+			
+			# Warrior y Rogue - Ataque cuerpo a cuerpo
+			if player_classe == "warrior" or player_classe == "rogue":
+				print("🖱️ CLICK IZQUIERDO - Ataque cuerpo a cuerpo (" + player_classe + ")")
 				_attack_near_target(get_global_mouse_position())
-
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
-		if event.pressed:
-			var player = players.get(Network.player_id, null)
-			if player and player.has_method("can_attack") and player.can_attack():
-				print("🖱️ CLICK DERECHO - Ataque a distancia")
+			
+			# Mage y Archer - Ataque a distancia
+			elif player_classe == "mage" or player_classe == "archer":
+				print("🖱️ CLICK IZQUIERDO - Ataque a distancia (" + player_classe + ")")
 				_attack_ranged_target(get_global_mouse_position())
+
+	# ELIMINAR el click derecho para ataques (opcional - puedes mantenerlo para otra función)
+	# if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
+	#     if event.pressed:
+	#         var player = players.get(Network.player_id, null)
+	#         if player and player.has_method("can_attack") and player.can_attack():
+	#             print("🖱️ CLICK DERECHO - Función alternativa")
+	#             # Aquí puedes poner otra función como habilidad especial, etc.
 
 	if event.is_action_pressed("roll"):
 		var player = players.get(Network.player_id, null)
@@ -723,31 +737,35 @@ func _unhandled_input(event):
 func _attack_near_target(mouse_pos: Vector2) -> void:
 	var player = players.get(Network.player_id, null)
 	if player == null:
-		print("❌ ATAQUE FALLIDO - Jugador no encontrado")
+		print("❌ ATAQUE CUERPO A CUERPO FALLIDO - Jugador no encontrado")
 		return
 
+	var player_classe = player.classe if "classe" in player else "warrior"
 	var player_pos: Vector2 = player.global_position
 	var player_facing: Vector2 = (mouse_pos - player_pos).normalized()
 	var hit_something := false
 
-	print("💥 INICIANDO ATAQUE CUERPO A CUERPO - Pos:", player_pos, " Mouse:", mouse_pos)
+	print("💥 ATAQUE CUERPO A CUERPO - Clase: " + player_classe + " Pos:", player_pos)
 
 	# Ejecutar ataque del jugador
 	if player.has_method("execute_attack"):
 		player.execute_attack(mouse_pos)
 
-	# Obtener propiedades de ataque del jugador
+	# Propiedades de ataque específicas por clase
 	var attack_range = 40.0
 	var attack_cone_angle = deg_to_rad(45.0)
 	var attack_damage = 10
 	
-	# Si el jugador tiene estas propiedades, usarlas
-	if "attack_range" in player:
-		attack_range = player.attack_range
-	if "attack_cone_angle" in player:
-		attack_cone_angle = player.attack_cone_angle
-	if "attack_damage" in player:
-		attack_damage = player.attack_damage
+	# Ajustar propiedades según clase
+	match player_classe:
+		"warrior":
+			attack_range = 50.0
+			attack_damage = 15
+			attack_cone_angle = deg_to_rad(60.0)
+		"rogue":
+			attack_range = 35.0
+			attack_damage = 12
+			attack_cone_angle = deg_to_rad(90.0)  # Más ángulo para rogue
 
 	# Detección de golpes
 	for enemy_id in enemies.keys():
@@ -789,7 +807,8 @@ func _attack_ranged_target(mouse_pos: Vector2) -> void:
 		print("❌ ATAQUE DISTANCIA FALLIDO - Jugador local no encontrado")
 		return
 
-	print("🎯 INICIANDO ATAQUE A DISTANCIA - Jugador ID:", Network.player_id)
+	var player_classe = player.classe if "classe" in player else "mage"
+	print("🎯 ATAQUE A DISTANCIA - Clase: " + player_classe + " Jugador ID:", Network.player_id)
 	
 	var player_pos: Vector2 = player.global_position
 	var player_facing: Vector2 = (mouse_pos - player_pos).normalized()
@@ -798,9 +817,13 @@ func _attack_ranged_target(mouse_pos: Vector2) -> void:
 	if player.has_method("execute_attack"):
 		player.execute_attack(mouse_pos)
 
+	# Daño específico por clase
 	var attack_damage = 8
-	if "attack_damage" in player:
-		attack_damage = player.attack_damage
+	match player_classe:
+		"mage":
+			attack_damage = 10
+		"archer":
+			attack_damage = 12
 
 	_create_projectile(player, player_facing, attack_damage)
 
