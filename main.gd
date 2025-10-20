@@ -364,8 +364,8 @@ func _check_start_conditions(delta: float):
 		print("🔍 Verificando inicio - Listos: %d/%d - Tiempo: %.1f/%.1f" % [ready_players, total_players, wait_timer, minimum_wait_time])
 	
 	# CONDICIÓN PRINCIPAL: Mínimo 4 jugadores listos y tiempo cumplido
-	var can_start = (ready_players >= 1 and
-					total_players >= 1 and
+	var can_start = (ready_players >= 2 and
+					total_players >= 2 and
 					wait_timer >= minimum_wait_time and
 					not countdown_active and
 					not game_started)
