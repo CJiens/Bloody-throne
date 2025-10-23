@@ -5,6 +5,7 @@ extends Node2D
 # -------------------------------
 @onready var player_container = $PlayerContainer
 @onready var enemy_container = $EnemyContainer
+@onready var object_container = $ObjectContainer  # NUEVO: Contenedor para objetos
 
 # UI
 @onready var login_ui = $CanvasLayer/Pantalla_Inicial
@@ -61,6 +62,8 @@ var class_projectiles := {
 @export var PlayerScene: PackedScene
 @export var EnemyScene: PackedScene
 @export var ProjectileScene: PackedScene
+@export var GhostScene: PackedScene  # NUEVO: Escena del fantasma
+@export var BarrelScene: PackedScene  # NUEVO: Escena del barril
 
 # -------------------------------
 # --- VARIABLES DE JUEGO
@@ -68,6 +71,7 @@ var class_projectiles := {
 var players := {} # id:int -> Node2D
 var enemies := {} # id:int -> Node2D
 var projectiles := {} # id:int -> Node2D
+var ghosts := {} # id:int -> Node2D  # NUEVO: Fantasmas
 
 # Variables de espera
 var class_chosen: bool = false
@@ -82,6 +86,9 @@ var loading_complete: bool = false
 # --- INICIO
 # -------------------------------
 func _ready():
+	# Agregar este nodo al grupo "main" para que los fantasmas puedan encontrarlo
+	add_to_group("main")
+	
 	# Conectar botones UI
 	login_button.pressed.connect(_on_login_pressed)
 	chat_send.pressed.connect(_on_chat_send_pressed)
@@ -108,6 +115,12 @@ func _ready():
 	Network.game_state_updated.connect(_on_game_state_updated)
 	Network.player_joined.connect(_on_player_joined)
 	Network.player_left.connect(_on_player_left)
+	Network.on_player_became_ghost.connect(_on_player_became_ghost)
+	
+	# NUEVAS SEÑALES: Conectar señales de fantasmas y posesión
+	Network.on_ghost_possession_started.connect(_on_ghost_possession_started)
+	Network.on_ghost_possession_ended.connect(_on_ghost_possession_ended)
+	Network.on_object_thrown.connect(_on_object_thrown)
 		
 	# Conectar señales de proyectiles
 	Network.projectile_created.connect(_on_projectile_created)
@@ -117,7 +130,29 @@ func _ready():
 	# Configurar sala de espera
 	_setup_waiting_room()
 	
+	# NUEVO: Spawnear barriles en posiciones predefinidas
+	spawn_predefined_barrels()
+	
 	print("🎮 Main listo - Esperando conexión...")
+
+# -------------------------------
+# --- BARRILES PREDEFINIDOS
+# -------------------------------
+func spawn_predefined_barrels():
+	var barrel_positions = [
+		Vector2(300, 200),
+		Vector2(500, 300),
+		Vector2(700, 400),
+		Vector2(400, 500),
+		Vector2(600, 200)
+	]
+	
+	for i in range(barrel_positions.size()):
+		var barrel = BarrelScene.instantiate()
+		barrel.position = barrel_positions[i]
+		barrel.name = "Barrel_%d" % i
+		object_container.add_child(barrel)
+		print("📦 BARRIL CREADO - Posición:", barrel_positions[i])
 
 # -------------------------------
 # --- PANTALLA DE CARGA
@@ -181,8 +216,7 @@ func _get_or_create_node(node_name: String, node_type) -> Node:
 		node.name = node_name
 		waiting_room_ui.add_child(node)
 	return node
-
-# -------------------------------
+	# -------------------------------
 # --- PROCESO PRINCIPAL
 # -------------------------------
 func _process(delta):
@@ -196,7 +230,8 @@ func _process(delta):
 			countdown_active = false
 			_start_game()
 		else:
-			start_countdown.text = "Iniciando en: %d" % ceil(countdown_timer)
+			if start_countdown:
+				start_countdown.text = "Iniciando en: %d" % ceil(countdown_timer)
 		return
 
 	# Si estamos en la sala de espera, actualizar la lista de jugadores
@@ -207,10 +242,16 @@ func _process(delta):
 	# Actualizar entidades del juego
 	_update_game_entities()
 
+	# Limpiar entidades eliminadas (incluyendo fantasmas)
+	_cleanup_removed_entities()
+
 	# Debug de estado
 	if Engine.get_frames_drawn() % 180 == 0:
-		print("📊 ESTADO - Jugadores:", Network.players.size(), " Enemigos:", enemies.size(), " Proyectiles:", projectiles.size())
+		print("📊 ESTADO - Jugadores:", players.size(), " Enemigos:", enemies.size(), " Proyectiles:", projectiles.size(), " Fantasmas:", ghosts.size())
 
+# -------------------------------
+# --- ACTUALIZACIÓN DE ENTIDADES DEL JUEGO
+# -------------------------------
 func _update_game_entities():
 	# --- Actualizar jugadores desde Network ---
 	for key in Network.players.keys():
@@ -266,8 +307,17 @@ func _update_game_entities():
 			print("🎯 SPAWNEANDO PROYECTIL DESDE RED - ID:", id, " Owner:", data.owner_id, " Clase:", data.get("classe", "warrior"))
 			_spawn_projectile(id, data)
 
-	# --- Eliminar desconectados ---
-	_cleanup_removed_entities()
+# -------------------------------
+# --- SISTEMA DE VISIBILIDAD DE FANTASMAS
+# -------------------------------
+func is_local_player_ghost() -> bool:
+	return Network.player_id in ghosts
+
+func update_all_ghosts_visibility():
+	for ghost_id in ghosts:
+		var ghost = ghosts[ghost_id]
+		if ghost and ghost.has_method("_update_visibility"):
+			ghost._update_visibility()
 
 # -------------------------------
 # --- SALA DE ESPERA MEJORADA
@@ -422,7 +472,6 @@ func _play_intro_video():
 func _set_game_ready(ready: bool):
 	print("🎯 JUEGO %s" % ("LISTO" if ready else "EN ESPERA"))
 	# Aquí puedes agregar lógica adicional para habilitar/deshabilitar controles
-
 # -------------------------------
 # --- LOGIN Y CONEXIÓN
 # -------------------------------
@@ -557,13 +606,6 @@ func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100, class
 	# Configurar barra de vida
 	_update_player_hp(instance, hp, id)
 
-# func _spawn_enemy(id: int, _enemy_type: String, pos: Vector2):
-#   var instance = EnemyScene.instantiate()
-#   instance.position = pos
-#   instance.name = str(id)
-#   enemy_container.add_child(instance)
-#   enemies[id] = instance
-
 func _spawn_projectile(id: int, data: Dictionary):
 	var projectile_scene: PackedScene
 	
@@ -676,6 +718,26 @@ func _cleanup_removed_entities():
 		print("🗑️ ELIMINANDO PROYECTIL - ID:", id)
 		destroy_projectile(id)
 
+	# NUEVO: Limpiar fantasmas
+	_cleanup_ghosts()
+
+func _cleanup_ghosts():
+	var ghosts_to_remove = []
+	for ghost_id in ghosts.keys():
+		# Mantener al fantasma local incluso si no está en Network.players
+		if ghost_id == Network.player_id:
+			continue
+		
+		# Remover fantasmas cuyos jugadores ya no están conectados
+		if not Network.players.has(str(ghost_id)):
+			ghosts_to_remove.append(ghost_id)
+	
+	for ghost_id in ghosts_to_remove:
+		print("👻 ELIMINANDO FANTASMA - ID:", ghost_id)
+		if is_instance_valid(ghosts[ghost_id]):
+			ghosts[ghost_id].queue_free()
+		ghosts.erase(ghost_id)
+
 # -------------------------------
 # --- DESTRUCCIÓN DE PROYECTILES
 # -------------------------------
@@ -689,17 +751,12 @@ func destroy_projectile(projectile_id: int):
 				projectile.queue_free()
 		projectiles.erase(projectile_id)
 		print("🗑️ PROYECTIL DESTRUIDO - ID:", projectile_id)
-
 # -------------------------------
 # --- INPUT (MODIFICADO PARA CLASES)
 # -------------------------------
 func _unhandled_input(event):
 	if not Network.connected or Network.player_id == -1 or not game_started:
 		return
-	
-
-	print("TEST")
-	print(players.get(Network.player_id, null))
 
 	# CLICK IZQUIERDO - Ataque según clase
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
@@ -716,14 +773,6 @@ func _unhandled_input(event):
 			elif player_classe == "mage" or player_classe == "archer":
 				print("🖱️ CLICK IZQUIERDO - Ataque a distancia (" + player_classe + ")")
 				_attack_ranged_target(get_global_mouse_position())
-
-	# ELIMINAR el click derecho para ataques (opcional - puedes mantenerlo para otra función)
-	# if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT:
-	#     if event.pressed:
-	#         var player = players.get(Network.player_id, null)
-	#         if player and player.has_method("can_attack") and player.can_attack():
-	#             print("🖱️ CLICK DERECHO - Función alternativa")
-	#             # Aquí puedes poner otra función como habilidad especial, etc.
 
 	if event.is_action_pressed("roll"):
 		var player = players.get(Network.player_id, null)
@@ -866,6 +915,63 @@ func _on_projectile_moved(projectile_data):
 func _on_projectile_removed(projectile_id):
 	print("📡 Señal: Proyectil removido recibido del servidor:", projectile_id)
 	destroy_projectile(projectile_id)
+
+# -------------------------------
+# --- CONVERSIÓN JUGADOR -> FANTASMA
+# -------------------------------
+func _on_player_became_ghost(player_id: int):
+	print("👻 EVENTO: Jugador se convirtió en fantasma - ID:", player_id)
+	replace_player_with_ghost(player_id)
+
+func replace_player_with_ghost(player_id: int):
+	# Verificar si el jugador existe
+	if not player_id in players:
+		print("❌ No se puede convertir a fantasma - Jugador no encontrado:", player_id)
+		return
+	if player_id in ghosts:
+		print("⚠️ El jugador ya es un fantasma - ID:", player_id)
+		return
+	var player_node = players[player_id]
+	var ghost_position = player_node.position
+	
+	# Eliminar jugador
+	players.erase(player_id)
+	if is_instance_valid(player_node):
+		player_node.queue_free()
+	
+	# Crear fantasma
+	var ghost = GhostScene.instantiate()
+	ghost.position = ghost_position
+	ghost.name = "Ghost_" + str(player_id)
+	ghost.set_ghost_id(player_id)
+	
+	# Si es el jugador local, configurar como controlable
+	if player_id == Network.player_id:
+		ghost.set_is_local(true)
+		print("🎮 FANTASMA LOCAL CREADO - ID:", player_id)
+	
+	player_container.add_child(ghost)
+	ghosts[player_id] = ghost
+	
+	# Actualizar visibilidad de todos los fantasmas
+	update_all_ghosts_visibility()
+	
+	print("👻 FANTASMA CREADO - ID:", player_id, " Posición:", ghost_position)
+
+# -------------------------------
+# --- MANEJO DE POSESIÓN DE OBJETOS
+# -------------------------------
+func _on_ghost_possession_started(player_id: int, object_id: int):
+	print("🎯 POSESIÓN INICIADA - Ghost:", player_id, " Object:", object_id)
+	# Aquí podrías agregar efectos visuales o sonidos
+
+func _on_ghost_possession_ended(player_id: int, object_id: int):
+	print("🎯 POSESIÓN TERMINADA - Ghost:", player_id, " Object:", object_id)
+	# Aquí podrías agregar efectos visuales o sonidos
+
+func _on_object_thrown(object_id: int, direction: Vector2):
+	print("🚀 OBJETO LANZADO - Object:", object_id, " Direction:", direction)
+	# Aquí podrías agregar efectos visuales o sonidos
 
 # -------------------------------
 # --- CHAT

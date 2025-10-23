@@ -133,6 +133,11 @@ func _apply_class_config():
 # --- CONFIGURACIÓN DE SPRITES POR CLASE
 # -------------------------------
 func _setup_class_sprite():
+	# Ocultar todos los sprites primero
+	warrior_sprite.visible = false
+	mage_sprite.visible = false
+	archer_sprite.visible = false
+	rogue_sprite.visible = false
 	
 	# Configurar el sprite activo según la clase
 	match classe:
@@ -380,19 +385,20 @@ func take_damage(amount: int):
 func play_death_animation():
 	if not current_sprite:
 		if id == Network.player_id:
-			get_tree().quit()
+			# Convertir en fantasma en lugar de cerrar el juego
+			_convert_to_ghost()
 		return
 
 	print("💀 JUGADOR MUERTO - ID:", id)
 	if current_sprite.sprite_frames and current_sprite.sprite_frames.has_animation("Die"):
 		current_sprite.play("Die")
 	else:
-		current_sprite.play("Idle")  # Fallback
+		current_sprite.play("Idle")
 	
 	if id == Network.player_id:
 		Network.send_player_state("Die")
 		await current_sprite.animation_finished
-		get_tree().quit()
+		_convert_to_ghost()
 
 # -------------------------------
 # --- COOLDOWNS
@@ -443,3 +449,16 @@ func _create_hit_effect():
 	modulate = Color.RED
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.2)
+
+# -------------------------------
+# --- CONVERSIÓN A FANTASMA AL MORIR
+# -------------------------------
+func _convert_to_ghost():
+	print("👻 CONVIRTIENDO JUGADOR EN FANTASMA - ID:", id)
+	
+	# Notificar al servidor que nos convertimos en fantasma
+	Network.player_became_ghost(id)
+	
+	# Esta función será implementada en main.gd
+	if get_parent().has_method("replace_player_with_ghost"):
+		get_parent().replace_player_with_ghost(id, position)

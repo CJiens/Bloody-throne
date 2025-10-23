@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://ibpop0yh2jl3"]
+[gd_scene load_steps=5 format=3 uid="uid://ibpop0yh2jl3"]
 
 [ext_resource type="Texture2D" uid="uid://dli27qflys3mv" path="res://version final.png" id="1_kuiop"]
+[ext_resource type="PackedScene" uid="uid://854hwc6rgjxy" path="res://Barrel.tscn" id="2_8yg71"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8yg71"]
 texture = ExtResource("1_kuiop")
@@ -22,3 +23,18 @@ position = Vector2(-836, -377)
 tile_map_data = PackedByteArray(0, 0, 55, 0, 22, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 tile_set = SubResource("TileSet_i1n8g")
 rendering_quadrant_size = 1
+
+[node name="Barrel" parent="." instance=ExtResource("2_8yg71")]
+position = Vector2(-658, -254)
+
+[node name="Barrel2" parent="." instance=ExtResource("2_8yg71")]
+position = Vector2(847, -132)
+
+[node name="Barrel3" parent="." instance=ExtResource("2_8yg71")]
+position = Vector2(-661, 370)
+
+[node name="Barrel4" parent="." instance=ExtResource("2_8yg71")]
+position = Vector2(759, 384)
+
+[node name="Barrel5" parent="." instance=ExtResource("2_8yg71")]
+position = Vector2(193, -261)

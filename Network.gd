@@ -33,6 +33,10 @@ signal projectile_moved(projectile_data)
 signal player_joined(player_data)
 signal player_left(player_id)
 signal game_state_updated
+signal on_player_became_ghost(player_id)
+signal on_ghost_possession_started(player_id, object_id)
+signal on_ghost_possession_ended(player_id, object_id) 
+signal on_object_thrown(object_id, direction)
 
 # -------------------------------
 # --- FUNCIÓN DE INICIO CON IP
@@ -269,8 +273,30 @@ func _receive_messages():
 				print("🚀 TODOS LOS JUGADORES LISTOS - Iniciando juego...")
 				# Esta señal será manejada por main.gd
 
+			# NUEVOS MENSAJES PARA FANTASMAS Y OBJETOS
+			"player_became_ghost":
+				print("👻 Jugador se convirtió en fantasma - ID:", data.player_id)
+				emit_signal("on_player_became_ghost", data.player_id)
+			
+			"ghost_possession_started":
+				print("🎯 Fantasma poseyendo objeto - Player:", data.player_id, " Objeto:", data.object_id)
+				emit_signal("on_ghost_possession_started", data.player_id, data.object_id)
+			
+			"ghost_possession_ended":
+				print("🎯 Fantasma liberó objeto - Player:", data.player_id, " Objeto:", data.object_id)
+				emit_signal("on_ghost_possession_ended", data.player_id, data.object_id)
+
+			"object_thrown":
+				print("🚀 Objeto lanzado - Objeto:", data.object_id, " Dirección:", Vector2(data.direction_x, data.direction_y))
+				emit_signal("on_object_thrown", data.object_id, Vector2(data.direction_x, data.direction_y))
+			
+			"ghost_moved":
+				# Podemos manejar el movimiento de fantasmas remotos si es necesario
+				pass
+		
 			_:
 				print("📨 Mensaje no manejado:", data.type)
+				
 
 # -------------------------------
 # --- ENVÍO DE MENSAJES
@@ -425,3 +451,59 @@ func disconnect_from_server():
 # CORREGIDO: Cambiar nombre de la función que entraba en conflicto
 func is_server_connected() -> bool:
 	return connected and ws_ready
+
+# -------------------------------
+# --- NUEVAS FUNCIONES PARA FANTASMAS Y OBJETOS
+# -------------------------------
+func player_became_ghost(player_id: int):
+	if connected and ws_ready:
+		print("👻 ENVIANDO CONVERSIÓN A FANTASMA - Player:", player_id)
+		socket.send_text(JSON.stringify({
+			"type": "player_became_ghost",
+			"player_id": player_id
+		}))
+	else:
+		print("❌ No conectado - No se puede enviar conversión a fantasma")
+
+func ghost_possession_started(player_id: int, object_id: int):
+	if connected and ws_ready:
+		print("🎯 ENVIANDO POSESIÓN INICIADA - Player:", player_id, " Object:", object_id)
+		socket.send_text(JSON.stringify({
+			"type": "ghost_possession_started", 
+			"player_id": player_id,
+			"object_id": object_id
+		}))
+	else:
+		print("❌ No conectado - No se puede enviar posesión")
+
+func ghost_possession_ended(player_id: int, object_id: int):
+	if connected and ws_ready:
+		print("🎯 ENVIANDO POSESIÓN TERMINADA - Player:", player_id, " Object:", object_id)
+		socket.send_text(JSON.stringify({
+			"type": "ghost_possession_ended",
+			"player_id": player_id, 
+			"object_id": object_id
+		}))
+	else:
+		print("❌ No conectado - No se puede enviar fin de posesión")
+
+func throw_object(object_id: int, direction: Vector2):
+	if connected and ws_ready:
+		print("🚀 ENVIANDO OBJETO LANZADO - Object:", object_id, " Direction:", direction)
+		socket.send_text(JSON.stringify({
+			"type": "object_thrown",
+			"object_id": object_id,
+			"direction_x": direction.x,
+			"direction_y": direction.y
+		}))
+	else:
+		print("❌ No conectado - No se puede enviar objeto lanzado")
+
+# Función para movimiento de fantasma (reutiliza move_player)
+func move_ghost(x: float, y: float):
+	if connected:
+		socket.send_text(JSON.stringify({
+			"type": "move",
+			"x": x,
+			"y": y
+		}))
