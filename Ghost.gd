@@ -117,9 +117,14 @@ func possess(object: Node2D):
 	if not object or not is_instance_valid(object):
 		print("❌ Error: Objeto no válido para posesión")
 		return
-		
-	print("🎯 FANTASMA POSEYENDO OBJETO - Ghost:", ghost_id, " Object:", object.name)
 	
+	if not object.has_method("ppossessed_by"):
+		print("❌ Error: Objeto no puede ser poseído")
+		return
+	print("🎯 FANTASMA POSEYENDO OBJETO - Ghost:", ghost_id, " Object:", object.name)
+	if not object.has_method("ppossessed_by"):
+		print("❌ Error: Objeto no puede ser poseído")
+		return
 	# ✅ CORREGIDO: Fantasma se mueve a la posición del objeto
 	global_position = object.global_position
 	
@@ -131,8 +136,8 @@ func possess(object: Node2D):
 	set_physics_process(false)
 	
 	# Notificar al servidor
-	if Network.connected and ws_ready:
-		Network.ghost_possession_started(ghost_id, object.get_instance_id())
+	if Network.connected and Network.ws_ready:
+		Network.ghost_possession_started(ghost_id, object.name)
 
 func unpossess():
 	if possessed_object:
@@ -153,8 +158,14 @@ func _throw_object():
 		var direction = _get_throw_direction()
 		if direction != Vector2.ZERO:
 			print("🚀 LANZANDO OBJETO - Ghost:", ghost_id, " Direction:", direction)
+			if Network.connected and Network.ws_ready:
+				Network.throw_object(possessed_object.name, direction)
+			else:
+				print("❌ No conectado - No se puede sincronizar lanzamiento")
 			possessed_object.throw(direction)
 			unpossess()
+	else:
+		print("❌ No hay objeto poseído para lanzar")
 
 func _get_throw_direction() -> Vector2:
 	var direction = Vector2.ZERO

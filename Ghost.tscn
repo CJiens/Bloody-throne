@@ -11,10 +11,11 @@ radius = 54.34151
 radius = 59.0
 
 [node name="Ghost" type="CharacterBody2D"]
+collision_layer = 256
 script = ExtResource("1_d6xk1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-modulate = Color(0.19215687, 0.5411765, 1, 0.49803922)
+modulate = Color(1, 1, 1, 0.49800003)
 scale = Vector2(0.27341393, 0.30397728)
 texture = ExtResource("2_ff2av")
 region_enabled = true
@@ -24,11 +25,15 @@ region_rect = Rect2(89.069916, 70.31489, 331.54007, 352.1101)
 shape = SubResource("CircleShape2D_41nkq")
 
 [node name="PossessionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 64
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PossessionArea"]
 shape = SubResource("CircleShape2D_ljs81")
 
 [node name="PossessIndicator" type="Sprite2D" parent="."]
+modulate = Color(0.92048246, 0.996774, 0.7497589, 0.8)
 position = Vector2(0, -39.8125)
 scale = Vector2(0.11246419, 0.04859051)
 texture = ExtResource("3_ff2av")
@@ -36,3 +41,5 @@ region_enabled = true
 region_rect = Rect2(66.079895, 86.04489, 349.69012, 337.5901)
 
 [node name="Camera2D" type="Camera2D" parent="."]
+enabled = false
+position_smoothing_enabled = true

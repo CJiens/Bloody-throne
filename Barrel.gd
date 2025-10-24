@@ -2,7 +2,7 @@ extends RigidBody2D
 class_name Barrel
 
 # Variables del barril
-var possessed_by: int = -1  # -1 = no poseído, ghost_id = poseído por
+var possessed_by: int = -1
 var is_possessed: bool = false
 var throw_force: float = 800.0
 var damage: int = 25
@@ -19,21 +19,14 @@ func _ready():
 	add_to_group("possessable")
 	original_position = position
 	
-	# Configurar como objeto estático inicialmente
-	freeze = true
+	# Configuración básica de física
+	freeze = true  # Congelado hasta que sea lanzado
 	gravity_scale = 1.0
-	mass = 2.0  # Peso del barril
+	mass = 2.0
 	
-	# Configurar hitbox para dañar jugadores
+	# Configurar hitbox
 	hitbox.set_collision_layer_value(8, true)   # Layer de objetos lanzados
 	hitbox.set_collision_mask_value(1, true)    # Colisiona con jugadores
-	hitbox.set_collision_mask_value(4, false)   # No colisiona con paredes
-	hitbox.set_collision_mask_value(7, false)   # No colisiona con otros objetos
-	
-	# Configurar colisiones del barril
-	set_collision_layer_value(7, true)   # Layer de objetos poseíbles
-	set_collision_mask_value(4, true)    # Colisiona con paredes
-	set_collision_mask_value(1, false)   # No colisiona con jugadores (el hitbox se encarga)
 	
 	# Conectar señal de hitbox
 	if not hitbox.area_entered.is_connected(_on_hitbox_area_entered):
@@ -58,7 +51,7 @@ func ppossessed_by(ghost_id: int):
 	_start_possession_effect()
 
 func _start_possession_effect():
-	# Efecto visual simple - cambiar color temporalmente
+	# Efecto visual simple
 	var tween = create_tween()
 	tween.tween_property(sprite, "modulate", Color(0.5, 0.8, 1.0, 1.0), 0.2)
 	tween.tween_property(sprite, "modulate", Color(1, 1, 1, 1), 0.2)
@@ -79,9 +72,8 @@ func throw(direction: Vector2):
 	freeze = false
 	collision.disabled = false
 	
-	# Aplicar fuerza de lanzamiento con un poco de aleatoriedad
-	var actual_force = throw_force * randf_range(0.9, 1.1)
-	apply_impulse(direction * actual_force)
+	# Aplicar fuerza de lanzamiento
+	apply_impulse(direction * throw_force)
 	
 	# Aplicar rotación aleatoria
 	apply_torque_impulse(randf_range(-10, 10))
@@ -91,8 +83,8 @@ func throw(direction: Vector2):
 		trail_particles.emitting = true
 	
 	# Notificar al servidor
-	if Network.connected:
-		Network.throw_object(get_instance_id(), direction)
+	if Network.connected and Network.ws_ready:
+		Network.throw_object(name, direction) 
 	
 	# Programar auto-destrucción después de 5 segundos
 	_start_destruction_timer()
@@ -101,7 +93,9 @@ func _start_destruction_timer():
 	await get_tree().create_timer(5.0).timeout
 	if is_instance_valid(self):
 		print("💥 BARRIL DESTRUIDO - ID:", get_instance_id())
-		_create_destruction_effect()
+		# Sincronizar destrucción con otros clientes
+		if Network.connected and Network.ws_ready:
+			Network.sync_object_destruction(name)  # ✅
 		queue_free()
 
 func _create_destruction_effect():
@@ -115,21 +109,25 @@ func _on_hitbox_area_entered(area: Area2D):
 	# Verificar si golpeó a un jugador
 	var parent = area.get_parent()
 	
-	# ✅ CORREGIDO: Usar grupos en lugar de tipo Player
-	if parent and parent.is_in_group("players") and not is_possessed:
-		# Verificar que no sea auto-daño (el fantasma que lo lanzó)
-		if parent.has_method("get_player_id") and parent.get_player_id() != possessed_by:
-			print("💥 BARRIL GOLPEÓ JUGADOR - Barril:", get_instance_id(), " Player:", parent.get_player_id())
-			
-			# Efecto visual de impacto
-			_create_impact_effect()
-			
-			# Aplicar daño al jugador
-			if parent.has_method("take_damage"):
-				parent.take_damage(damage)
-			
-			# Destruir barril inmediatamente
-			queue_free()
+	if parent and parent.is_in_group("players"):
+		# Verificar que tenga los métodos necesarios
+		if parent.has_method("get_player_id") and parent.has_method("take_damage"):
+			# Solo dañar si no está poseído y tiene velocidad
+			if not is_possessed and linear_velocity.length() > 50:
+				# Verificar que no sea auto-daño
+				if parent.get_player_id() != possessed_by:
+					print("💥 BARRIL GOLPEÓ JUGADOR - Barril:", get_instance_id(), " Player:", parent.get_player_id())
+					
+					# Efecto visual de impacto
+					_create_impact_effect()
+					
+					# Aplicar daño al jugador
+					parent.take_damage(damage)
+					
+					# Sincronizar destrucción
+					if Network.connected and Network.ws_ready:
+						Network.sync_object_destruction(name)
+					queue_free()
 
 func _create_impact_effect():
 	# Efecto visual simple de impacto

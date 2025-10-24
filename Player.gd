@@ -173,7 +173,7 @@ func _ready():
 	if hp_bar:
 		hp_bar.max_value = max_hp
 		hp_bar.value = hp
-	
+	add_to_group("players")
 	# ✅ CONFIGURACIÓN DE COLISIONES MEJORADA
 	
 	# Colisiones de movimiento (solo paredes)
@@ -457,7 +457,8 @@ func _convert_to_ghost():
 	print("👻 CONVIRTIENDO JUGADOR EN FANTASMA - ID:", id)
 	
 	# Notificar al servidor que nos convertimos en fantasma
-	Network.player_became_ghost(id)
+	if Network.connected and Network.ws_ready:
+		Network.player_became_ghost(id)
 	
 	# Esta función será implementada en main.gd
 	if get_parent().has_method("replace_player_with_ghost"):

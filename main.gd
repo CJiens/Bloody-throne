@@ -72,6 +72,7 @@ var players := {} # id:int -> Node2D
 var enemies := {} # id:int -> Node2D
 var projectiles := {} # id:int -> Node2D
 var ghosts := {} # id:int -> Node2D  # NUEVO: Fantasmas
+var possessable_objects := {}
 
 # Variables de espera
 var class_chosen: bool = false
@@ -116,7 +117,7 @@ func _ready():
 	Network.player_joined.connect(_on_player_joined)
 	Network.player_left.connect(_on_player_left)
 	Network.on_player_became_ghost.connect(_on_player_became_ghost)
-	
+	Network.on_object_destroyed.connect(_on_object_destroyed_sync)
 	# NUEVAS SEÑALES: Conectar señales de fantasmas y posesión
 	Network.on_ghost_possession_started.connect(_on_ghost_possession_started)
 	Network.on_ghost_possession_ended.connect(_on_ghost_possession_ended)
@@ -139,20 +140,25 @@ func _ready():
 # --- BARRILES PREDEFINIDOS
 # -------------------------------
 func spawn_predefined_barrels():
+	print("🔄 SPAWNEANDO BARRILES EN POSICIONES ESPECÍFICAS...")
+	
 	var barrel_positions = [
-		Vector2(300, 200),
-		Vector2(500, 300),
-		Vector2(700, 400),
-		Vector2(400, 500),
-		Vector2(600, 200)
+		Vector2(-338, -44),
+		Vector2(-331, 321),
+		Vector2(180, -55), 
+		Vector2(564, 23),
+		Vector2(511, 333)
 	]
 	
 	for i in range(barrel_positions.size()):
-		var barrel = BarrelScene.instantiate()
-		barrel.position = barrel_positions[i]
-		barrel.name = "Barrel_%d" % i
-		object_container.add_child(barrel)
-		print("📦 BARRIL CREADO - Posición:", barrel_positions[i])
+		if BarrelScene:
+			var barrel = BarrelScene.instantiate()
+			barrel.position = barrel_positions[i]
+			barrel.name = "Barrel_%d" % i
+			object_container.add_child(barrel)
+			print("📦 BARRIL %d CREADO - Posición: %s" % [i, barrel_positions[i]])
+		else:
+			push_error("❌ ERROR CRÍTICO: BarrelScene no asignada en el inspector de main.tscn")
 
 # -------------------------------
 # --- PANTALLA DE CARGA
@@ -719,9 +725,16 @@ func _cleanup_removed_entities():
 		destroy_projectile(id)
 
 	# NUEVO: Limpiar fantasmas
-	_cleanup_ghosts()
-
-func _cleanup_ghosts():
+	_cleanup_ghosts_improved()
+	
+	var objects_to_remove = []
+	for object_id in possessable_objects.keys():
+		var object = possessable_objects[object_id]
+		if not is_instance_valid(object):
+			objects_to_remove.append(object_id)
+	for object_id in objects_to_remove:
+		possessable_objects.erase(object_id)
+func _cleanup_ghosts_improved():
 	var ghosts_to_remove = []
 	for ghost_id in ghosts.keys():
 		# Mantener al fantasma local incluso si no está en Network.players
@@ -729,7 +742,7 @@ func _cleanup_ghosts():
 			continue
 		
 		# Remover fantasmas cuyos jugadores ya no están conectados
-		if not Network.players.has(str(ghost_id)):
+		if not is_instance_valid(ghosts[ghost_id]) or not Network.players.has(str(ghost_id)):
 			ghosts_to_remove.append(ghost_id)
 	
 	for ghost_id in ghosts_to_remove:
@@ -961,17 +974,25 @@ func replace_player_with_ghost(player_id: int):
 # -------------------------------
 # --- MANEJO DE POSESIÓN DE OBJETOS
 # -------------------------------
-func _on_ghost_possession_started(player_id: int, object_id: int):
-	print("🎯 POSESIÓN INICIADA - Ghost:", player_id, " Object:", object_id)
+func _on_ghost_possession_started(player_id: int, object_name: String):
+	print("🎯 POSESIÓN SINCRONIZADA - Ghost:", player_id, " Object:", object_name)
+	var object = object_container.get_node_or_null(object_name)
+	# Buscar objeto por nombre en lugar de ID de instancia
+	if object.has_method("_start_possession_effect"):
+		object._start_possession_effect()
+		pass
+
+func _on_ghost_possession_ended(player_id: int, object_name: String):
+	print("🎯 POSESIÓN TERMINADA - Ghost:", player_id, " Object:", object_name)
 	# Aquí podrías agregar efectos visuales o sonidos
 
-func _on_ghost_possession_ended(player_id: int, object_id: int):
-	print("🎯 POSESIÓN TERMINADA - Ghost:", player_id, " Object:", object_id)
-	# Aquí podrías agregar efectos visuales o sonidos
-
-func _on_object_thrown(object_id: int, direction: Vector2):
-	print("🚀 OBJETO LANZADO - Object:", object_id, " Direction:", direction)
-	# Aquí podrías agregar efectos visuales o sonidos
+func _on_object_thrown(object_name: String, direction: Vector2):
+	print("🚀 OBJETO LANZADO SINCRONIZADO - Object:", object_name)
+	var object = object_container.get_node_or_null(object_name)
+	if object and object.has_method("throw"):
+		
+		if not object.is_possessed:
+			object.throw(direction)
 
 # -------------------------------
 # --- CHAT
@@ -995,3 +1016,16 @@ func _on_button_4_pressed() -> void:
 func _on_button_3_pressed() -> void:
 	vbox_container.visible = false
 	vbox_container_3.visible = true
+func _find_object_by_id(object_id: int) -> Node:
+	"""Busca un objeto por su ID de instancia en el object_container"""
+	if not object_container:
+		return null
+	for child in object_container.get_children():
+		if child.get_instance_id() == object_id:
+			return child
+	return null
+func _on_object_destroyed_sync(object_name: String):
+	print("🗑️ DESTRUYENDO OBJETO SINCRONIZADO - Nombre:", object_name)
+	var object = object_container.get_node_or_null(object_name)
+	if object and is_instance_valid(object):
+		object.queue_free()
