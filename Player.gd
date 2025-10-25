@@ -41,6 +41,7 @@ var roll_cooldown_timer := 0.0
 @onready var mage_sprite: AnimatedSprite2D = $MageSprite
 @onready var archer_sprite: AnimatedSprite2D = $ArcherSprite
 @onready var rogue_sprite: AnimatedSprite2D = $RogueSprite
+@onready var knight_sprite: AnimatedSprite2D = $KnightSprite
 
 # Sprite activo actualmente
 var current_sprite: AnimatedSprite2D
@@ -51,6 +52,16 @@ var projectile_scene: PackedScene
 # Configuraciones por clase
 var class_configs := {
 	"warrior": {
+		"hp": 150,
+		"speed": 180,
+		"attack_damage": 15,
+		"attack_range": 50,
+		"is_ranged": false,
+		"attack_cooldown": 0.6,
+		"sprite": null,
+		"projectile": preload("res://projectiles/WarriorProjectile.tscn")
+	},
+	"knight": {
 		"hp": 150,
 		"speed": 180,
 		"attack_damage": 15,
@@ -133,12 +144,14 @@ func _apply_class_config():
 # --- CONFIGURACIÓN DE SPRITES POR CLASE
 # -------------------------------
 func _setup_class_sprite():
-	
 	# Configurar el sprite activo según la clase
 	match classe:
 		"warrior":
-			current_sprite = warrior_sprite
-			class_configs["warrior"].sprite = warrior_sprite
+			current_sprite = knight_sprite
+			class_configs["knight"].sprite = knight_sprite
+		"knight":
+			current_sprite = knight_sprite
+			class_configs["knight"].sprite = knight_sprite
 		"mage":
 			current_sprite = mage_sprite
 			class_configs["mage"].sprite = mage_sprite
@@ -172,12 +185,12 @@ func _ready():
 	# ✅ CONFIGURACIÓN DE COLISIONES MEJORADA
 	
 	# Colisiones de movimiento (solo paredes)
-	set_collision_layer_value(1, true)   # Layer de players
-	set_collision_mask_value(1, false)   # NO otros jugadores
-	set_collision_mask_value(2, false)   # NO enemigos
-	set_collision_mask_value(3, false)   # NO proyectiles
-	set_collision_mask_value(4, true)    # ✅ SÍ paredes (TileMap)
-	set_collision_mask_value(5, false)   # NO environment
+	set_collision_layer_value(1, true) # Layer de players
+	set_collision_mask_value(1, false) # NO otros jugadores
+	set_collision_mask_value(2, false) # NO enemigos
+	set_collision_mask_value(3, false) # NO proyectiles
+	set_collision_mask_value(4, true) # ✅ SÍ paredes (TileMap)
+	set_collision_mask_value(5, false) # NO environment
 	
 	# Reactivar CollisionShape2D para movimiento
 	var collision_shape = $CollisionShape2D
@@ -187,12 +200,12 @@ func _ready():
 	# ✅ CONFIGURAR HITBOX PARA PROYECTILES
 	if hitbox_area:
 		# Hitbox en layer diferente para proyectiles
-		hitbox_area.set_collision_layer_value(6, true)  # Layer de hitbox de jugadores
-		hitbox_area.set_collision_mask_value(3, true)   # ✅ SÍ detectar proyectiles
-		hitbox_area.set_collision_mask_value(1, false)  # NO jugadores
-		hitbox_area.set_collision_mask_value(2, false)  # NO enemigos
-		hitbox_area.set_collision_mask_value(4, false)  # NO paredes
-		hitbox_area.set_collision_mask_value(5, false)  # NO environment
+		hitbox_area.set_collision_layer_value(6, true) # Layer de hitbox de jugadores
+		hitbox_area.set_collision_mask_value(3, true) # ✅ SÍ detectar proyectiles
+		hitbox_area.set_collision_mask_value(1, false) # NO jugadores
+		hitbox_area.set_collision_mask_value(2, false) # NO enemigos
+		hitbox_area.set_collision_mask_value(4, false) # NO paredes
+		hitbox_area.set_collision_mask_value(5, false) # NO environment
 		
 		# Conectar señal de área entrante
 		if not hitbox_area.area_entered.is_connected(_on_hitbox_area_entered):
@@ -247,7 +260,7 @@ func _handle_local_movement(delta: float):
 		# El jugador no se movió a pesar de tener velocidad -> colisión con pared
 		print("🧱 COLISIÓN LOCAL CON PARED - Jugador:", id)
 		# Efecto visual opcional
-		modulate = Color(1, 0.5, 0.5)  # Rojo claro
+		modulate = Color(1, 0.5, 0.5) # Rojo claro
 		await get_tree().create_timer(0.1).timeout
 		modulate = Color.WHITE
 
@@ -306,7 +319,7 @@ func update_animation(dir: Vector2, attacking: bool = false, rolling: bool = fal
 	if not can_attack_var:
 		return
 
-	var anim_name := "Idle"  # Formato simple: Idle, run_N, attack_SW, etc.
+	var anim_name := "Idle" # Formato simple: Idle, run_N, attack_SW, etc.
 
 	if rolling:
 		var vec = dir
@@ -337,19 +350,19 @@ func _get_direction_animation(angle: float, action: String) -> String:
 	var direction := ""
 	
 	if angle >= -PI / 8 and angle < PI / 8:
-		direction = "E"  # Este
+		direction = "E" # Este
 	elif angle >= PI / 8 and angle < 3 * PI / 8:
 		direction = "SE" # Sureste
 	elif angle >= 3 * PI / 8 and angle < 5 * PI / 8:
-		direction = "S"  # Sur
+		direction = "S" # Sur
 	elif angle >= 5 * PI / 8 and angle < 7 * PI / 8:
 		direction = "SW" # Suroeste
 	elif angle >= 7 * PI / 8 or angle < -7 * PI / 8:
-		direction = "W"  # Oeste
+		direction = "W" # Oeste
 	elif angle >= -7 * PI / 8 and angle < -5 * PI / 8:
 		direction = "NW" # Noroeste
 	elif angle >= -5 * PI / 8 and angle < -3 * PI / 8:
-		direction = "N"  # Norte
+		direction = "N" # Norte
 	elif angle >= -3 * PI / 8 and angle < -PI / 8:
 		direction = "NE" # Noreste
 	
@@ -387,7 +400,7 @@ func play_death_animation():
 	if current_sprite.sprite_frames and current_sprite.sprite_frames.has_animation("Die"):
 		current_sprite.play("Die")
 	else:
-		current_sprite.play("Idle")  # Fallback
+		current_sprite.play("Idle") # Fallback
 	
 	if id == Network.player_id:
 		Network.send_player_state("Die")

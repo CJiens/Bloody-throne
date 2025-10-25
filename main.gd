@@ -364,8 +364,8 @@ func _check_start_conditions(delta: float):
 		print("🔍 Verificando inicio - Listos: %d/%d - Tiempo: %.1f/%.1f" % [ready_players, total_players, wait_timer, minimum_wait_time])
 	
 	# CONDICIÓN PRINCIPAL: Mínimo 4 jugadores listos y tiempo cumplido
-	var can_start = (ready_players >= 2 and
-					total_players >= 2 and
+	var can_start = (ready_players >= 1 and
+					total_players >= 1 and
 					wait_timer >= minimum_wait_time and
 					not countdown_active and
 					not game_started)
@@ -471,7 +471,7 @@ func _on_player_left(player_id):
 # --- SELECCIÓN DE CLASE
 # -------------------------------
 func _on_warrior_selected():
-	_select_class("warrior")
+	_select_class("knight")
 
 func _on_mage_selected():
 	_select_class("mage")
@@ -708,7 +708,7 @@ func _unhandled_input(event):
 			var player_classe = player.classe if "classe" in player else "warrior"
 			
 			# Warrior y Rogue - Ataque cuerpo a cuerpo
-			if player_classe == "warrior" or player_classe == "rogue":
+			if player_classe == "warrior" or player_classe == "rogue" or player_classe == "knight":
 				print("🖱️ CLICK IZQUIERDO - Ataque cuerpo a cuerpo (" + player_classe + ")")
 				_attack_near_target(get_global_mouse_position())
 			

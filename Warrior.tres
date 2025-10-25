@@ -298,7 +298,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("172_p46nt")
+"texture": ExtResource("173_hw1nd")
 }],
 "loop": true,
 "name": &"Idle",

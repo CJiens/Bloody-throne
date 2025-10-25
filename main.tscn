@@ -223,7 +223,7 @@ EnemyScene = ExtResource("2_h2yge")
 ProjectileScene = ExtResource("4_2cqfq")
 
 [node name="Nivel1" parent="." instance=ExtResource("5_074og")]
-position = Vector2(60, 103)
+position = Vector2(581, 320)
 scale = Vector2(0.59555024, 0.5924728)
 
 [node name="EnemyContainer" type="Node2D" parent="."]
