@@ -75,6 +75,7 @@ animation = &"run_W"
 speed_scale = 6.8
 
 [node name="KnightSprite" type="AnimatedSprite2D" parent="."]
+visible = false
 position = Vector2(5.000001, -23.749998)
 scale = Vector2(0.515, 0.515)
 sprite_frames = ExtResource("2_kne1u")
@@ -92,12 +93,11 @@ frame_progress = 1.0
 speed_scale = 6.8
 
 [node name="ArcherSprite" type="AnimatedSprite2D" parent="."]
-visible = false
 position = Vector2(-1.2499999, 6.2499995)
 scale = Vector2(0.32, 0.32)
 sprite_frames = ExtResource("4_e80uo")
-animation = &"attack_NW"
-frame = 5
+animation = &"run_W"
+frame = 7
 frame_progress = 1.0
 speed_scale = 6.8
 
