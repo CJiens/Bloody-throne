@@ -181,7 +181,7 @@ func _ready():
 	if hp_bar:
 		hp_bar.max_value = max_hp
 		hp_bar.value = hp
-	
+	add_to_group("players")
 	# ✅ CONFIGURACIÓN DE COLISIONES MEJORADA
 	
 	# Colisiones de movimiento (solo paredes)
@@ -393,7 +393,8 @@ func take_damage(amount: int):
 func play_death_animation():
 	if not current_sprite:
 		if id == Network.player_id:
-			get_tree().quit()
+			# Convertir en fantasma en lugar de cerrar el juego
+			_convert_to_ghost()
 		return
 
 	print("💀 JUGADOR MUERTO - ID:", id)
@@ -405,7 +406,7 @@ func play_death_animation():
 	if id == Network.player_id:
 		Network.send_player_state("Die")
 		await current_sprite.animation_finished
-		get_tree().quit()
+		_convert_to_ghost()
 
 # -------------------------------
 # --- COOLDOWNS
@@ -456,3 +457,17 @@ func _create_hit_effect():
 	modulate = Color.RED
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.2)
+
+# -------------------------------
+# --- CONVERSIÓN A FANTASMA AL MORIR
+# -------------------------------
+func _convert_to_ghost():
+	print("👻 CONVIRTIENDO JUGADOR EN FANTASMA - ID:", id)
+	
+	# Notificar al servidor que nos convertimos en fantasma
+	if Network.connected and Network.ws_ready:
+		Network.player_became_ghost(id)
+	
+	# Esta función será implementada en main.gd
+	if get_parent().has_method("replace_player_with_ghost"):
+		get_parent().replace_player_with_ghost(id, position)

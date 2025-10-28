@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=3 uid="uid://cm7wlnvc2oxwa"]
+
+[ext_resource type="Script" uid="uid://bbdtkcki1wr04" path="res://Ghost.gd" id="1_d6xk1"]
+[ext_resource type="Texture2D" uid="uid://ciwtp6enq3tj1" path="res://Sprites/Fantasma.png" id="2_ff2av"]
+[ext_resource type="Texture2D" uid="uid://bsim7kquabxvb" path="res://Sprites/circulo.png" id="3_ff2av"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_41nkq"]
+radius = 54.34151
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ljs81"]
+radius = 59.0
+
+[node name="Ghost" type="CharacterBody2D"]
+collision_layer = 256
+script = ExtResource("1_d6xk1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.49800003)
+scale = Vector2(0.27341393, 0.30397728)
+texture = ExtResource("2_ff2av")
+region_enabled = true
+region_rect = Rect2(89.069916, 70.31489, 331.54007, 352.1101)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_41nkq")
+
+[node name="PossessionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 64
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PossessionArea"]
+shape = SubResource("CircleShape2D_ljs81")
+
+[node name="PossessIndicator" type="Sprite2D" parent="."]
+modulate = Color(0.92048246, 0.996774, 0.7497589, 0.8)
+position = Vector2(0, -39.8125)
+scale = Vector2(0.11246419, 0.04859051)
+texture = ExtResource("3_ff2av")
+region_enabled = true
+region_rect = Rect2(66.079895, 86.04489, 349.69012, 337.5901)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+enabled = false
+position_smoothing_enabled = true
