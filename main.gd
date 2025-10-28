@@ -11,6 +11,7 @@ extends Node2D
 @onready var chat_ui = $CanvasLayer/ChatUI
 @onready var class_selection_ui = $CanvasLayer/ClassSelection
 @onready var waiting_room_ui: Control = $CanvasLayer/contrl
+@onready var titulo_intro: AnimationPlayer = $CanvasLayer/contrl/Titulo_Intro
 @onready var loading_screen: Control = $CanvasLayer/LoadingScreen
 @onready var login_button: Button = $"CanvasLayer/Pantalla_Inicial/VBoxContainer2/Button_login"
 @onready var username_input: LineEdit = $"CanvasLayer/Pantalla_Inicial/VBoxContainer2/LineEdit_username"
@@ -300,7 +301,7 @@ func _update_waiting_room():
 			name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 			
 			var class_label = Label.new()
-			if player_data.has("classe") and player_data.classe != "":
+			if player_data.classe == "warrior" and player_data.classe != "":
 				class_label.text = player_data.classe.capitalize()
 				ready_count += 1
 			else:
@@ -308,7 +309,7 @@ func _update_waiting_room():
 			class_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			
 			var status_label = Label.new()
-			if player_data.has("classe") and player_data.classe != "":
+			if player_data.classe == "warrior" and player_data.classe != "":
 				status_label.text = "✅ Listo"
 				status_label.add_theme_color_override("font_color", Color.GREEN)
 			else:
@@ -326,10 +327,10 @@ func _update_waiting_room():
 	# Actualizar texto de espera
 	if waiting_label:
 		var time_left = max(0, minimum_wait_time - wait_timer)
-		if total_players >= 4:
+		if total_players >= 2:
 			waiting_label.text = "Jugadores listos: %d/%d\nTiempo mínimo: %ds" % [ready_count, total_players, ceil(time_left)]
 		else:
-			waiting_label.text = "Esperando más jugadores... %d/4" % total_players
+			waiting_label.text = "Esperando más jugadores... %d/2" % total_players
 	
 	# Mostrar información del countdown si está activo
 	if start_countdown:
@@ -338,10 +339,10 @@ func _update_waiting_room():
 	if room_title:
 		if countdown_active:
 			room_title.text = "¡SALA LLENA! Iniciando partida..."
-		elif total_players >= 4:
+		elif total_players >= 2:
 			room_title.text = "SALA LLENA - Esperando que todos elijan clase"
 		else:
-			room_title.text = "SALA DE ESPERA - Esperando %d/4 jugadores" % (4 - total_players)
+			room_title.text = "SALA DE ESPERA - Esperando %d/2 jugadores" % (2 - total_players)
 
 func _check_start_conditions(delta: float):
 	if waiting_room_ui.visible and not game_started:
@@ -356,7 +357,7 @@ func _check_start_conditions(delta: float):
 	# Contar jugadores con clase elegida
 	for player_id in Network.players:
 		var player_data = Network.players[player_id]
-		if player_data.has("classe") and player_data.classe != "":
+		if player_data.classe != "warrior" and player_data.classe != "":
 			ready_players += 1
 	
 	# Debug cada 2 segundos
@@ -364,15 +365,15 @@ func _check_start_conditions(delta: float):
 		print("🔍 Verificando inicio - Listos: %d/%d - Tiempo: %.1f/%.1f" % [ready_players, total_players, wait_timer, minimum_wait_time])
 	
 	# CONDICIÓN PRINCIPAL: Mínimo 4 jugadores listos y tiempo cumplido
-	var can_start = (ready_players >= 1 and
-					total_players >= 1 and
+	var can_start = (ready_players == 2 and
+					total_players == 2 and
 					wait_timer >= minimum_wait_time and
 					not countdown_active and
 					not game_started)
 	
 	if can_start:
 		_start_countdown()
-	elif countdown_active and (ready_players < 4 or total_players < 4):
+	elif countdown_active and (ready_players < 5 or total_players < 5):
 		# Cancelar countdown si ya no se cumplen las condiciones
 		countdown_active = false
 		if start_countdown:
@@ -441,6 +442,8 @@ func _on_login_successful():
 	vbox_container.visible = false
 	vbox_container_2.visible = false
 	waiting_room_ui.visible = true
+	titulo_intro.play()
+	await titulo_intro.animation_finished
 	# Reiniciar timer cuando un jugador se conecta
 	wait_timer = 0.0
 	class_chosen = false
@@ -765,7 +768,7 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 		"rogue":
 			attack_range = 35.0
 			attack_damage = 12
-			attack_cone_angle = deg_to_rad(90.0)  # Más ángulo para rogue
+			attack_cone_angle = deg_to_rad(90.0) # Más ángulo para rogue
 
 	# Detección de golpes
 	for enemy_id in enemies.keys():

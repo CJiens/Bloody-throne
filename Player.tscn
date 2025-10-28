@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://xsdjfolg3h1m"]
+[gd_scene load_steps=11 format=3 uid="uid://xsdjfolg3h1m"]
 
 [ext_resource type="Script" uid="uid://cet0c5gh0dp4l" path="res://Player.gd" id="1_xhfnw"]
 [ext_resource type="SpriteFrames" uid="uid://ddrfrns38hs4k" path="res://Rogue.tres" id="2_cxr5p"]
 [ext_resource type="SpriteFrames" uid="uid://ccgibxgs3r40s" path="res://Warrior.tres" id="2_kne1u"]
-[ext_resource type="SpriteFrames" uid="uid://dqyik6patsouj" path="res://Archer.tres" id="4_e80uo"]
+[ext_resource type="SpriteFrames" uid="uid://bo604nekfqts0" path="res://Knight.tres" id="3_tdg3f"]
+[ext_resource type="SpriteFrames" path="res://Archer.tres" id="4_e80uo"]
 [ext_resource type="SpriteFrames" uid="uid://dxopahsk2cn8a" path="res://Mague.tres" id="150_5tdsq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_erspt"]
@@ -75,10 +76,11 @@ animation = &"run_W"
 speed_scale = 6.8
 
 [node name="KnightSprite" type="AnimatedSprite2D" parent="."]
+visible = false
 position = Vector2(5.000001, -23.749998)
 scale = Vector2(0.515, 0.515)
-sprite_frames = ExtResource("2_kne1u")
-animation = &"run_W"
+sprite_frames = ExtResource("3_tdg3f")
+animation = &"attack_E"
 speed_scale = 6.8
 
 [node name="MageSprite" type="AnimatedSprite2D" parent="."]
@@ -86,9 +88,7 @@ visible = false
 position = Vector2(3.9999998, -21)
 scale = Vector2(0.99999994, 0.99999994)
 sprite_frames = ExtResource("150_5tdsq")
-animation = &"attack_E"
-frame = 14
-frame_progress = 1.0
+animation = &"run_W"
 speed_scale = 6.8
 
 [node name="ArcherSprite" type="AnimatedSprite2D" parent="."]
@@ -96,17 +96,15 @@ visible = false
 position = Vector2(-1.2499999, 6.2499995)
 scale = Vector2(0.32, 0.32)
 sprite_frames = ExtResource("4_e80uo")
-animation = &"attack_NW"
-frame = 5
-frame_progress = 1.0
+animation = &"run_W"
 speed_scale = 6.8
 
 [node name="WarriorSprite" type="AnimatedSprite2D" parent="."]
 visible = false
 position = Vector2(7.575001, -35.981243)
 scale = Vector2(0.26522496, 0.26522496)
-sprite_frames = ExtResource("2_cxr5p")
-animation = &"run_W"
+sprite_frames = ExtResource("2_kne1u")
+animation = &"Idle"
 speed_scale = 6.8
 
 [connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]
