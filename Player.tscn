@@ -92,7 +92,6 @@ animation = &"run_W"
 speed_scale = 6.8
 
 [node name="ArcherSprite" type="AnimatedSprite2D" parent="."]
-visible = false
 position = Vector2(-1.2499999, 6.2499995)
 scale = Vector2(0.32, 0.32)
 sprite_frames = ExtResource("4_e80uo")
