@@ -148,7 +148,7 @@ func _setup_class_sprite():
 	match classe:
 		"warrior":
 			current_sprite = knight_sprite
-			class_configs["warrior"].sprite = warrior_sprite
+			class_configs["knight"].sprite = knight_sprite
 		"knight":
 			current_sprite = knight_sprite
 			class_configs["knight"].sprite = knight_sprite

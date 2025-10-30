@@ -150,7 +150,7 @@ func unpossess():
 		# Liberar objeto
 		possessed_object.unpossessed()
 		if Network.connected:
-			Network.ghost_possession_ended(ghost_id, possessed_object.get_instance_id())
+			Network.ghost_possession_ended(ghost_id, possessed_object.name)
 		possessed_object = null
 
 func _throw_object():

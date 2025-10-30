@@ -9,8 +9,8 @@
 script = ExtResource("1_gtfhs")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(25, 36)
-scale = Vector2(-1, -1)
+position = Vector2(-7, -10)
+scale = Vector2(0.3, 0.3)
 sprite_frames = ExtResource("1_tp7qp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

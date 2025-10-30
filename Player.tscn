@@ -69,10 +69,10 @@ metadata/_edit_use_anchors_ = true
 
 [node name="RogueSprite" type="AnimatedSprite2D" parent="."]
 visible = false
-position = Vector2(-1.8189596, 9.094797)
-scale = Vector2(0.010485759, 0.010485759)
+position = Vector2(5, 27.5)
+scale = Vector2(0.311, 0.29)
 sprite_frames = ExtResource("2_cxr5p")
-animation = &"run_W"
+animation = &"roll_NW"
 speed_scale = 6.8
 
 [node name="KnightSprite" type="AnimatedSprite2D" parent="."]
@@ -84,14 +84,14 @@ animation = &"attack_E"
 speed_scale = 6.8
 
 [node name="MageSprite" type="AnimatedSprite2D" parent="."]
-visible = false
-position = Vector2(3.9999998, -21)
-scale = Vector2(0.99999994, 0.99999994)
+position = Vector2(8.75, 6.2499995)
+scale = Vector2(0.095, 0.095)
 sprite_frames = ExtResource("150_5tdsq")
-animation = &"run_W"
+animation = &"Idle"
 speed_scale = 6.8
 
 [node name="ArcherSprite" type="AnimatedSprite2D" parent="."]
+visible = false
 position = Vector2(-1.2499999, 6.2499995)
 scale = Vector2(0.32, 0.32)
 sprite_frames = ExtResource("4_e80uo")
@@ -103,7 +103,7 @@ visible = false
 position = Vector2(7.575001, -35.981243)
 scale = Vector2(0.26522496, 0.26522496)
 sprite_frames = ExtResource("2_kne1u")
-animation = &"Idle"
+animation = &"run_W"
 speed_scale = 6.8
 
 [connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]
