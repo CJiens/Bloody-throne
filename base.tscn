@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://cog04o3t2cbln"]
+
+[ext_resource type="Script" uid="uid://j2h54f2tlvs" path="res://Base.gd" id="1_rpg24"]
+[ext_resource type="Texture2D" uid="uid://clycv8dtg6io2" path="res://mapa/as.png" id="2_3vi8l"]
+
+[node name="Base" type="Node2D"]
+position = Vector2(0, 1)
+script = ExtResource("1_rpg24")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -5.0
+offset_top = 56.0
+offset_right = -1.0
+offset_bottom = 83.0
+scale = Vector2(3.352616, 0.68543005)
+metadata/_edit_use_anchors_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_3vi8l")

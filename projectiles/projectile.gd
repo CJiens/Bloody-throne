@@ -23,18 +23,21 @@ func _ready():
 		area_entered.connect(_on_area_entered)
 		body_entered.connect(_on_body_entered)
 		
-		# Configurar layers y masks para proyectiles locales
-		set_collision_layer_value(3, true)   # projectiles layer
-		set_collision_mask_value(6, true)    # ✅ SÍ detectar hitbox de jugadores
+		# ✅ CONFIGURACIÓN CORREGIDA DE LAYERS Y MÁSCARAS
+		set_collision_layer_value(3, true)   # Layer 3: proyectiles
+		set_collision_mask_value(6, true)    # ✅ SÍ detectar hitbox de jugadores (layer 6)
+		set_collision_mask_value(7, true)    # ✅ SÍ detectar hitbox de enemigos (layer 7) - NUEVO
 		set_collision_mask_value(4, true)    # ✅ SÍ detectar walls
 		set_collision_mask_value(1, false)   # NO detectar players (movimiento)
-		set_collision_mask_value(2, false)   # NO detectar enemigos
+		set_collision_mask_value(2, false)   # NO detectar enemigos (movimiento)
 		set_collision_mask_value(5, false)   # NO detectar environment
 		
 		if collision_shape:
 			collision_shape.disabled = false
 			
 		print("🔧 PROYECTIL LOCAL LISTO - Colisiones ACTIVADAS")
+		print("   - Layers: 3 (proyectiles)")
+		print("   - Mask: 6 (player_hitbox), 7 (enemy_hitbox), 4 (walls)")
 	else:
 		# Proyectiles remotos: desactivar TODAS las colisiones
 		set_collision_layer_value(3, false)  # NO estar en layer de projectiles
@@ -44,6 +47,7 @@ func _ready():
 		set_collision_mask_value(4, false)   # NO detectar paredes
 		set_collision_mask_value(5, false)   # NO detectar environment
 		set_collision_mask_value(6, false)   # NO detectar hitbox de jugadores
+		set_collision_mask_value(7, false)   # NO detectar hitbox de enemigos
 		
 		if collision_shape:
 			collision_shape.disabled = true
@@ -86,16 +90,42 @@ func _process(delta):
 	# Rotar el proyectil según la dirección
 	rotation = projectile_direction.angle()
 
-# COLISIÓN CON ÁREAS (hitbox de jugadores)
+# COLISIÓN CON ÁREAS (hitbox de jugadores Y enemigos) - CORREGIDO
 func _on_area_entered(area):
 	if has_hit or is_remote:
 		return
 	
 	print("🎯 COLISIÓN CON HITBOX - Proyectil:", projectile_id)
 	print("   - Area:", area.name, " Parent:", area.get_parent().name if area.get_parent() else "N/A")
+	print("   - Area Layers:", area.collision_layer)
 	
-	# El área debería ser el hitbox del jugador
-	# La lógica de daño se maneja en el Player.gd
+	# ✅ DETECTAR HITBOX DE JUGADORES (layer 6)
+	if area.get_collision_layer_value(6):
+		var player = area.get_parent()
+		if player and player.has_method("get_player_id"):
+			var player_id = player.get_player_id()
+			# Verificar que no sea auto-daño
+			if player_id != projectile_owner_id:
+				print("💥 PROYECTIL GOLPEÓ JUGADOR - Proyectil:", projectile_id, " Jugador:", player_id)
+				# Notificar al servidor del golpe
+				Network.projectile_hit_player(projectile_id, player_id, projectile_damage)
+				has_hit = true
+				_create_hit_effect()
+				queue_free()
+			else:
+				print("🚫 AUTO-DAÑO IGNORADO - Proyectil:", projectile_id, " Jugador:", player_id)
+	
+	# ✅ DETECTAR HITBOX DE ENEMIGOS (layer 7) - NUEVO
+	elif area.get_collision_layer_value(7):
+		var enemy = area.get_parent()
+		if enemy and enemy.has_method("get_enemy_id"):
+			var enemy_id = enemy.get_enemy_id()
+			print("💥 PROYECTIL GOLPEÓ ENEMIGO - Proyectil:", projectile_id, " Enemigo:", enemy_id)
+			# Notificar al servidor del golpe
+			Network.attack("enemy", enemy_id, projectile_damage)
+			has_hit = true
+			_create_hit_effect()
+			queue_free()
 
 # COLISIÓN CON CUERPOS (paredes)
 func _on_body_entered(body):
@@ -104,6 +134,7 @@ func _on_body_entered(body):
 	
 	print("🧱 COLISIÓN CON PARED - Proyectil:", projectile_id)
 	print("   - Body:", body.name, " Type:", body.get_class())
+	print("   - Body Layers:", body.collision_layer)
 	
 	# Colisión con paredes u otros objetos
 	if body is StaticBody2D or body is TileMap:

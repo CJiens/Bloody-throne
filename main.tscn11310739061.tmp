@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://bwgm4jklnf3im"]
+[gd_scene load_steps=37 format=3 uid="uid://bwgm4jklnf3im"]
 
 [ext_resource type="Script" uid="uid://cvrrj37a2fajc" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://xsdjfolg3h1m" path="res://Player.tscn" id="2_1bvp3"]
@@ -10,7 +10,6 @@
 [ext_resource type="VideoStream" uid="uid://kyfhj0q8a5v2" path="res://Presentacion-del-Juego-Por-Frame Formato Godot.ogv" id="6_272bh"]
 [ext_resource type="Theme" uid="uid://qkkblp6cijnh" path="res://Temas/Botones segunda parte.tres" id="6_kek77"]
 [ext_resource type="Theme" uid="uid://bc0ftxndqriis" path="res://Temas/main_menu.tres" id="7_5vw27"]
-[ext_resource type="PackedScene" uid="uid://cog04o3t2cbln" path="res://base.tscn" id="7_cegan"]
 [ext_resource type="Theme" uid="uid://p6lafxv8viug" path="res://Temas/Input.tres" id="9_kek77"]
 [ext_resource type="AudioStream" uid="uid://kv8nhocsergj" path="res://Musica/Bloody-Throne-Preferida.ogg" id="10_4c57u"]
 [ext_resource type="Texture2D" uid="uid://btmllehlbkcto" path="res://Ui_Select_player/Fondo Select.png" id="10_vivmo"]
@@ -19,7 +18,6 @@
 [ext_resource type="Texture2D" uid="uid://bhud7o53i8fnl" path="res://Ui_Select_player/Assasin.png" id="13_074og"]
 [ext_resource type="Texture2D" uid="uid://ddpmbl6lnlqco" path="res://Ui_Select_player/Caballero.png" id="14_cegan"]
 [ext_resource type="Animation" uid="uid://cggh7b3rqmfak" path="res://Titulo_intro.res" id="15_82xsv"]
-[ext_resource type="PackedScene" uid="uid://b6gqm85kbtrsp" path="res://Nivel1.tscn" id="20_82xsv"]
 
 [sub_resource type="Animation" id="Animation_q3kjg"]
 length = 0.001
@@ -256,11 +254,6 @@ EnemyScene = ExtResource("2_h2yge")
 ProjectileScene = ExtResource("4_2cqfq")
 GhostScene = ExtResource("5_4k2k6")
 BarrelScene = ExtResource("6_0rl1p")
-BaseScene = ExtResource("7_cegan")
-
-[node name="Nivel1" parent="." instance=ExtResource("20_82xsv")]
-position = Vector2(621.00006, 297.00003)
-scale = Vector2(5.152, 3)
 
 [node name="EnemyContainer" type="Node2D" parent="."]
 
@@ -725,13 +718,9 @@ text = "ar"
 
 [node name="ClassSelection" type="Control" parent="CanvasLayer"]
 layout_mode = 3
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -20.00003
+anchors_preset = 0
 offset_right = 40.0
-offset_bottom = 20.00003
-grow_vertical = 2
+offset_bottom = 40.0
 
 [node name="WarriorButton" type="Button" parent="CanvasLayer/ClassSelection"]
 layout_mode = 0
@@ -756,7 +745,6 @@ offset_right = 8.0
 offset_bottom = 8.0
 
 [node name="LoadingScreen" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 3
 anchor_left = 1.0
@@ -790,36 +778,58 @@ position = Vector2(-36, -7)
 sprite_frames = SubResource("SpriteFrames_yaehf")
 animation = &"loading"
 
-[node name="GameOverUI" type="Control" parent="CanvasLayer"]
-visible = false
+[node name="WaveUI" type="Control" parent="CanvasLayer"]
 layout_mode = 3
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -20.0
-offset_right = 20.0
+anchors_preset = 0
+offset_right = 40.0
 offset_bottom = 40.0
-grow_horizontal = 2
-scale = Vector2(5.937142, 4.628812)
-metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/GameOverUI"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -41.0
-offset_right = 41.0
-offset_bottom = 50.0
-grow_horizontal = 2
-scale = Vector2(0.9057958, 0.8508035)
+[node name="WaveLabel" type="Label" parent="CanvasLayer/WaveUI"]
+layout_mode = 0
+offset_left = 197.0
+offset_top = 12.0
+offset_right = 237.0
+offset_bottom = 35.0
+text = "WAVE LAVEL"
 
-[node name="Title" type="Label" parent="CanvasLayer/GameOverUI/VBoxContainer"]
-layout_mode = 2
-text = "¡VICTORIA!"
+[node name="EnemyCountLabel" type="Label" parent="CanvasLayer/WaveUI"]
+layout_mode = 0
+offset_left = 325.0
+offset_top = 11.0
+offset_right = 440.0
+offset_bottom = 34.0
+text = "ENEMY COUNT"
 
-[node name="Reason" type="Label" parent="CanvasLayer/GameOverUI/VBoxContainer"]
-layout_mode = 2
+[node name="DecisionUI" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ShopButton" type="Button" parent="CanvasLayer/DecisionUI"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 9.0
+offset_right = 76.0
+offset_bottom = 40.0
+text = "shop"
+
+[node name="CurseButton" type="Button" parent="CanvasLayer/DecisionUI"]
+layout_mode = 0
+offset_left = 88.0
+offset_top = 8.0
+offset_right = 138.0
+offset_bottom = 39.0
+scale = Vector2(0.9856193, 0.9754832)
+text = "curse"
+
+[node name="CurrencyLabel" type="Label" parent="CanvasLayer/DecisionUI"]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 38.0
+offset_right = 69.0
+offset_bottom = 61.0
+text = "asd"
 
 [node name="ObjectContainer" type="Node2D" parent="."]
 
@@ -827,8 +837,6 @@ layout_mode = 2
 
 [node name="DecisionSystem" type="Node2D" parent="."]
 position = Vector2(-2, 1)
-
-[node name="BaseContainer" type="Node2D" parent="."]
 
 [connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button3" to="." method="_on_button_3_pressed"]
