@@ -1,5 +1,5 @@
 // ----------------------------
-// server.js - BLOODY-THRONE CON SISTEMA DE EQUIPOS Y VICTORIA - CORREGIDO
+// server.js - BLOODY-THRONE CON SISTEMA DE EQUIPOS Y VICTORIA
 // ----------------------------
 require('dotenv').config();
 const express = require('express');
@@ -330,18 +330,18 @@ const economySystem = new EconomySystem();
 // Bases del juego
 let bases = {
   1: {
-    hp: 1000,
+    hp: 200,
     maxHp: 1000,
     team: 1,
-    x: -500,  // Posición izquierda
-    y: 0
+    x: 1900,  // Posición izquierda
+    y: -450
   },
   2: {
-    hp: 1000,
+    hp: 200,
     maxHp: 1000,
     team: 2,
-    x: 500,   // Posición derecha
-    y: 0
+    x: -1900,   // Posición derecha
+    y: 450
   }
 };
 
@@ -442,7 +442,6 @@ function checkGameStartConditions() {
 function startGame() {
   console.log("🎮 INICIANDO JUEGO!");
   gameState = 'playing';
-  winningTeam = null; // Asegurar que no hay ganador previo
 
   // Resetear bases
   bases[1].hp = bases[1].maxHp;
@@ -486,6 +485,7 @@ function startRespawnTimer(playerId) {
     }
   }, 1000);
 }
+
 function respawnPlayer(playerId) {
   if (players[playerId] && players[playerId].team > 0) {
     const team = players[playerId].team;
@@ -510,87 +510,67 @@ function respawnPlayer(playerId) {
   }
 }
 
-// NUEVAS FUNCIONES PARA SISTEMA DE VICTORIA - CORREGIDAS
+// NUEVAS FUNCIONES PARA SISTEMA DE VICTORIA
 function checkBaseDestruction() {
   for (let team in bases) {
     if (bases[team].hp <= 0 && gameState === 'playing') {
       console.log(`💀 BASE DESTRUIDA - Equipo ${team}`);
       gameState = 'finished';
       winningTeam = team === '1' ? 2 : 1; // El equipo contrario gana
-      
-      console.log(`🎉 EQUIPO GANADOR: ${winningTeam}`);
-      
-      // Notificar fin del juego
+
       broadcast({
         type: 'game_over',
-        winning_team: parseInt(winningTeam), // Asegurar que sea número
-        reason: 'La base enemiga ha sido destruida'
+        winning_team: winningTeam,
+        reason: 'base_destroyed'
       });
-      
-      // Reiniciar juego después de 5 segundos (reducido de 10)
+
+      // Reiniciar juego después de 10 segundos
       setTimeout(() => {
         resetGame();
-      }, 5000);
-      
+      }, 10000);
+
       break;
     }
   }
 }
 
-// FUNCIÓN RESETGAME CORREGIDA
 function resetGame() {
-  console.log("🔄 REINICIANDO JUEGO COMPLETAMENTE");
-  
-  // Resetear estado del juego
+  console.log("🔄 REINICIANDO JUEGO");
   gameState = 'waiting';
   winningTeam = null;
-  
-  // Resetear bases
-  bases[1].hp = bases[1].maxHp;
-  bases[2].hp = bases[2].maxHp;
-  
+
+  // Resetear jugadores (mantener equipos pero resetear estado)
+  for (let playerId in players) {
+    players[playerId].is_alive = true;
+    players[playerId].hp = players[playerId].max_hp;
+    players[playerId].respawn_timer = 0;
+
+    // Posicionar en sus bases
+    if (players[playerId].team > 0) {
+      const base = bases[players[playerId].team];
+      players[playerId].x = base.x + (Math.random() * 100 - 50);
+      players[playerId].y = base.y + (Math.random() * 100 - 50);
+    }
+  }
+
   // Limpiar enemigos y proyectiles
   enemies = {};
   projectiles = {};
-  nextProjectileId = 1;
-  
-  // Resetear sistema de oleadas
+
+  // Resetear oleadas
   waveSystem.currentWave = 0;
   waveSystem.waveInProgress = false;
-  waveSystem.enemiesRemaining = 0;
-  
-  // Resetear jugadores (mantener equipos pero resetear estado de juego)
+
+  // Resetear economía
   for (let playerId in players) {
-    const player = players[playerId];
-    
-    // Resetear estado de vida y posición
-    player.is_alive = true;
-    player.hp = player.max_hp;
-    player.respawn_timer = 0;
-    
-    // Posicionar en sus bases según equipo
-    if (player.team > 0) {
-      const base = bases[player.team];
-      player.x = base.x + (Math.random() * 100 - 50);
-      player.y = base.y + (Math.random() * 100 - 50);
-    }
-    
-    // Resetear economía del jugador
     economySystem.resetPlayerCurrency(playerId);
   }
-  
-  console.log("✅ JUEGO REINICIADO - Todos los jugadores en estado inicial");
-  
-  // Broadcast del reset a todos los clientes
+
   broadcast({
     type: 'game_reset',
     players: players,
-    bases: bases,
-    game_state: gameState
+    bases: bases
   });
-  
-  // Enviar actualización de equipos
-  broadcastTeamUpdate();
 }
 
 // Spawn de enemigos para oleada
@@ -615,11 +595,13 @@ function spawnEnemy(id, availableTypes) {
   // Spawn en áreas específicas según el equipo (simulando bases opuestas)
   const spawnArea = Math.random() > 0.5 ? 1 : 2;
   if (spawnArea === 1) {
-    x = Math.random() * 400 - 600; // Lado izquierdo
-    y = Math.random() * 400 - 200;
+    // Cerca de x = -450, y = 1900
+    x = -450 + Math.random() * 200 - 100; // Entre -550 y -350
+    y = 1900 + Math.random() * 200 - 100; // Entre 1800 y 2000
   } else {
-    x = Math.random() * 400 + 200; // Lado derecho
-    y = Math.random() * 400 - 200;
+    // Cerca de x = 450, y = -1900
+    x = 450 + Math.random() * 200 - 100; // Entre 350 y 550
+    y = -1900 + Math.random() * 200 - 100; // Entre -2000 y -1800
   }
 
   const baseHp = enemyType === 'grunt' ? 50 : enemyType === 'archer' ? 40 : enemyType === 'mage' ? 30 : 100;
@@ -668,52 +650,48 @@ function startGameLoop() {
   if (gameLoop) clearInterval(gameLoop);
 
   gameLoop = setInterval(() => {
-    // Solo actualizar si el juego está en progreso
-    if (gameState === 'playing') {
-      // Movimiento de enemigos (IA simple hacia bases)
-      for (let enemyId in enemies) {
-        const enemy = enemies[enemyId];
-        if (enemy.type === 'boss') continue; // Jefe tiene comportamiento especial
+    // Movimiento de enemigos (IA simple hacia bases)
+    for (let enemyId in enemies) {
+      const enemy = enemies[enemyId];
+      if (enemy.type === 'boss') continue; // Jefe tiene comportamiento especial
 
-        // Movimiento hacia la base enemiga
-        const targetBase = enemy.team === 1 ? bases[2] : bases[1];
-        const dx = targetBase.x - enemy.x;
-        const dy = targetBase.y - enemy.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
+      // Movimiento hacia la base enemiga
+      const targetBase = enemy.team === 1 ? bases[2] : bases[1];
+      const dx = targetBase.x - enemy.x;
+      const dy = targetBase.y - enemy.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance > 50) { // Si no está muy cerca de la base
-          enemy.x += (dx / distance) * enemy.move_speed * 0.016; // 60 FPS
-          enemy.y += (dy / distance) * enemy.move_speed * 0.016;
-        } else {
-          // Atacar la base
-          targetBase.hp -= enemy.attack_damage * 0.016;
-          console.log(`💥 BASE ${targetBase.team} ATACADA - HP: ${Math.round(targetBase.hp)}`);
+      if (distance > 50) { // Si no está muy cerca de la base
+        enemy.x += (dx / distance) * enemy.move_speed * 0.016; // 60 FPS
+        enemy.y += (dy / distance) * enemy.move_speed * 0.016;
+      } else {
+        // Atacar la base
+        targetBase.hp -= enemy.attack_damage * 0.016;
+        console.log(`💥 BASE ${targetBase.team} ATACADA - HP: ${Math.round(targetBase.hp)}`);
 
-          if (targetBase.hp <= 0) {
-            console.log(`💀 BASE ${targetBase.team} DESTRUIDA!`);
-            targetBase.hp = 0;
-            // La verificación de victoria se hace en checkBaseDestruction()
-          }
+        if (targetBase.hp <= 0) {
+          console.log(`💀 BASE ${targetBase.team} DESTRUIDA!`);
+          targetBase.hp = 0;
+          // La verificación de victoria se hace en checkBaseDestruction()
         }
       }
-
-      // Verificar fin de oleada
-      if (waveSystem.waveInProgress && Object.keys(enemies).length === 0) {
-        endCurrentWave();
-      }
-
-      // Verificar destrucción de bases
-      checkBaseDestruction();
     }
 
-    // Broadcast estado del juego (siempre, para mantener sincronización)
+    // Verificar fin de oleada
+    if (waveSystem.waveInProgress && Object.keys(enemies).length === 0) {
+      endCurrentWave();
+    }
+
+    // Verificar destrucción de bases
+    checkBaseDestruction();
+
+    // Broadcast estado del juego
     broadcast({
       type: 'state',
       players,
       enemies,
       projectiles,
       bases,
-      game_state: gameState, // Incluir estado del juego
       timestamp: Date.now()
     });
   }, 50); // 20 FPS para optimizar
@@ -1017,10 +995,10 @@ wss.on('connection', (ws) => {
         // Asignar equipo al jugador
         players[userId].team = requestedTeam;
 
-        // Posicionar jugador en su base
+        // Posicionar jugador CERCA DE SU BASE (área más amplia)
         const base = bases[requestedTeam];
-        players[userId].x = base.x + (Math.random() * 100 - 50);
-        players[userId].y = base.y + (Math.random() * 100 - 50);
+        players[userId].x = base.x + (Math.random() * 300 - 150);  // Entre -150 y +150 de la base
+        players[userId].y = base.y + (Math.random() * 300 - 150);
         players[userId].is_alive = true;
 
         console.log(`✅ EQUIPO ASIGNADO - User: ${userId}, Equipo: ${requestedTeam}, Pos: (${players[userId].x}, ${players[userId].y})`);
@@ -1433,7 +1411,7 @@ wss.on('connection', (ws) => {
 
       // ✅ CORREGIDO: Obtener teamCounts actualizados
       const currentTeamCounts = getTeamCounts();
-      
+
       ws.send(JSON.stringify({
         type: 'auth_ok',
         player: players[userId],

@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://bh0dr7i42wwp8"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(1.6654228, 1.8096153)
+
+[node name="BossName" type="Label" parent="."]
+layout_mode = 0
+offset_left = 6.0
+offset_top = 2.0
+offset_right = 61.0
+offset_bottom = 25.0
+text = "asdasd"
+
+[node name="HealthBar" type="ProgressBar" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 43.0
+offset_right = 58.11
+offset_bottom = 68.665
+show_percentage = false
+
+[node name="HealthText" type="Label" parent="."]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 44.0
+offset_right = 50.0
+offset_bottom = 67.0
+
+[node name="PhaseIndicator" type="Label" parent="."]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 20.0
+offset_right = 51.0
+offset_bottom = 43.0

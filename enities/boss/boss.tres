@@ -1,0 +1,94 @@
+[gd_resource type="SpriteFrames" load_steps=2 format=3 uid="uid://df1okf4gl2wjh"]
+
+[ext_resource type="Texture2D" uid="uid://bvtpnyotk01le" path="res://icon.svg" id="1_5nxte"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_5nxte")
+}],
+"loop": true,
+"name": &"attack_melee",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_5nxte")
+}],
+"loop": true,
+"name": &"attack_ranged",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_5nxte")
+}],
+"loop": true,
+"name": &"attack_special",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_5nxte")
+}],
+"loop": true,
+"name": &"chase",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_5nxte")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_5nxte")
+}],
+"loop": true,
+"name": &"move",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_5nxte")
+}],
+"loop": true,
+"name": &"patrol",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_5nxte")
+}],
+"loop": true,
+"name": &"phase_transition",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_5nxte")
+}],
+"loop": true,
+"name": &"phase_transition_rage",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_5nxte")
+}],
+"loop": true,
+"name": &"teleport",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_5nxte")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]

@@ -97,6 +97,8 @@ var game_start_countdown := 0
 var respawn_timers := {} # player_id -> time_left
 var local_player_team := 0
 var MAX_PLAYERS_PER_TEAM = 2
+var bosses := {} # id:int -> Node2D
+
 
 # -------------------------------
 # --- INICIO
@@ -104,6 +106,10 @@ var MAX_PLAYERS_PER_TEAM = 2
 func _ready():
 	# Agregar este nodo al grupo "main" para que los fantasmas puedan encontrarlo
 	add_to_group("main")
+
+	Network.boss_spawned.connect(_on_boss_spawned_permanent)
+	Network.boss_died.connect(_on_boss_died)
+
 	
 	# Conectar botones UI
 	login_button.pressed.connect(_on_login_pressed)
@@ -115,8 +121,6 @@ func _ready():
 	mage_button.pressed.connect(_on_mage_selected)
 	archer_button.pressed.connect(_on_archer_selected)
 	rogue_button.pressed.connect(_on_rogue_selected)
-
-	# ❌ ELIMINADO: Conexión duplicada - Network.decision_period_started.connect(_on_decision_period_started)
 
 	# Configurar UI inicial
 	chat_ui.visible = false
@@ -164,6 +168,11 @@ func _ready():
 	Network.game_over.connect(_on_game_over)
 	Network.game_reset.connect(_on_game_reset)
 
+	# CONEXIONES PARA EL JEFE PERMANENTE
+	Network.boss_phase_changed.connect(_on_boss_phase_changed)
+	Network.boss_attacked.connect(_on_boss_attacked)
+	Network.boss_health_updated.connect(_on_boss_health_updated)
+
 	# Configurar sala de espera
 	_setup_waiting_room()
 	
@@ -175,7 +184,6 @@ func _ready():
 # -------------------------------
 # --- SISTEMA DE BASES
 # -------------------------------
-# En la función spawn_initial_bases, asegurar el acceso correcto:
 func spawn_initial_bases():
 	print("🏰 SPAWNEANDO BASES INICIALES...")
 	
@@ -201,16 +209,6 @@ func spawn_initial_bases():
 		else:
 			push_error("❌ ERROR: BaseScene no asignada en el inspector de main.tscn")
 
-# Función auxiliar para acceder de forma segura a los diccionarios
-func get_dict_value_safe(dict: Dictionary, key, default_value = null):
-	if dict.has(str(key)):
-		return dict[str(key)]
-	elif dict.has(key):
-		return dict[key]
-	else:
-		return default_value
-
-# Función para actualizar bases desde datos del servidor
 func update_bases_from_server():
 	if not Network.bases.is_empty():
 		for team_str in Network.bases:
@@ -270,6 +268,185 @@ func _on_decision_period_started(duration: float, currency: int, cards: Array):
 	var local_player = players.get(Network.player_id, null)
 	if local_player and local_player.has_method("show_decision_period"):
 		local_player.show_decision_period(duration, currency, cards)
+
+# -------------------------------
+# --- SISTEMA DEL JEFE PERMANENTE
+# -------------------------------
+func _on_boss_spawned_permanent(boss_data: Dictionary):
+	print("👹 JEFE PERMANENTE SPAWNEADO - Datos:", boss_data)
+	_spawn_boss(boss_data)
+
+func _spawn_boss(boss_data: Dictionary):
+	if not BossScene:
+		push_error("❌ BossScene no asignada en main.tscn")
+		return
+	
+	# ✅ CORREGIDO: Verificar que el diccionario tenga el campo 'id'
+	if not boss_data.has("id"):
+		push_error("❌ Datos del boss no tienen campo 'id':", boss_data)
+		return
+	
+	var boss_id = boss_data.id
+	print("👹 SPAWNEANDO BOSS - ID:", boss_id, " Datos:", boss_data)
+	
+	# Si ya existe un boss con este ID, eliminarlo primero
+	if bosses.has(boss_id):
+		var old_boss = bosses[boss_id]
+		if is_instance_valid(old_boss):
+			old_boss.queue_free()
+		bosses.erase(boss_id)
+	
+	var boss = BossScene.instantiate()
+	
+	# ✅ CORREGIDO: Manejo seguro de la posición
+	var spawn_pos = Vector2.ZERO
+	if boss_data.has("x") and boss_data.has("y"):
+		spawn_pos = Vector2(boss_data.x, boss_data.y)
+	else:
+		# Posición por defecto
+		spawn_pos = Vector2(500, 500)
+		print("⚠️ Usando posición por defecto para boss:", spawn_pos)
+	
+	boss.position = spawn_pos
+	
+	# Configurar el boss
+	if boss.has_method("set_boss_id"):
+		boss.set_boss_id(boss_id)
+	if boss.has_method("set_boss_type"):
+		var boss_type = boss_data.get("type", "final_boss")
+		boss.set_boss_type(boss_type)
+	
+	# Conectar señales del boss
+	if boss.has_signal("boss_phase_changed"):
+		if not boss.boss_phase_changed.is_connected(_on_boss_phase_changed):
+			boss.boss_phase_changed.connect(_on_boss_phase_changed)
+	
+	if boss.has_signal("boss_died"):
+		if not boss.boss_died.is_connected(_on_boss_died):
+			boss.boss_died.connect(_on_boss_died)
+	
+	# Actualizar HP inicial
+	if boss.has_method("update_hp") and boss_data.has("hp"):
+		boss.update_hp(boss_data.hp)
+	
+	enemy_container.add_child(boss)
+	bosses[boss_id] = boss
+	
+	# Inicializar UI del boss
+	_init_boss_ui(boss)
+	
+	print("✅ BOSS CREADO - ID:", boss_id, " HP:", boss_data.get("hp", "N/A"), " Posición:", spawn_pos)
+
+
+func _on_boss_died():
+	print("💀 BOSS MUERTO - Limpiando bosses...")
+	
+	# Limpiar todos los bosses
+	for boss_id in bosses.keys():
+		var boss = bosses[boss_id]
+		if is_instance_valid(boss):
+			boss.queue_free()
+	bosses.clear()
+	
+	# Ocultar UI de salud del boss
+	var boss_health_ui = get_node_or_null("BossHealthUI")
+	if boss_health_ui:
+		boss_health_ui.visible = false
+
+func _init_boss_ui(boss: Node):
+	# Crear UI de salud del jefe si no existe
+	var boss_health_ui = preload("res://ui/boss/BossHealthUI.tscn")
+	if boss_health_ui and not has_node("BossHealthUI"):
+		var ui_instance = boss_health_ui.instantiate()
+		ui_instance.name = "BossHealthUI"
+		canvas_layer.add_child(ui_instance)
+		ui_instance.visible = false
+		
+		print("✅ UI DEL JEFE INICIALIZADA")
+
+func _on_boss_phase_changed(boss_id: int, phase: int):
+	print("🔥 JEFE CAMBIA FASE - ID:", boss_id, " Fase:", phase)
+	
+	# Efectos visuales para cambio de fase
+	if enemies.has(boss_id):
+		var boss = enemies[boss_id]
+		if boss and boss.has_method("_transition_to_phase"):
+			boss._transition_to_phase(phase)
+	
+	# Efectos de pantalla
+	_screen_shake(1.0, 25)
+	_flash_screen(Color(1, 0.3, 0.3, 0.4), 0.8)
+	
+	# Mostrar mensaje de fase
+	_show_boss_message("FASE " + str(phase) + "!")
+
+func _on_boss_attacked(target_id: int, damage: int):
+	print("💥 JEFE ATACÓ - Target:", target_id, " Daño:", damage)
+	
+	# Efectos de ataque del jefe
+	if target_id == Network.player_id:
+		_screen_shake(0.3, 15)
+
+func _on_boss_health_updated(hp: int, max_hp: int):
+	print("❤️  JEFE ACTUALIZA SALUD - HP:", hp, "/", max_hp)
+	
+	# Actualizar UI de salud del jefe
+	var boss_health_ui = get_node_or_null("BossHealthUI")
+	if boss_health_ui and boss_health_ui.has_method("update_health"):
+		boss_health_ui.update_health(hp, max_hp)
+		
+		# Mostrar UI si no está visible
+		if not boss_health_ui.visible and hp < max_hp:
+			boss_health_ui.visible = true
+
+
+func _show_boss_victory_effects():
+	print("🎊 VICTORIA CONTRA EL JEFE!")
+	
+	# Efectos visuales/sonoros por derrotar al jefe
+	_flash_screen(Color(0, 1, 0, 0.3), 1.5)
+	_screen_shake(0.8, 20)
+	
+	# Mostrar mensaje de victoria
+	_show_boss_message("¡JEFE DERROTADO!")
+
+func _screen_shake(duration: float, intensity: float):
+	# Implementar screen shake básico
+	var camera = get_viewport().get_camera_2d()
+	if camera:
+		var original_offset = camera.offset
+		var tween = create_tween()
+		for i in range(int(duration * 10)):
+			var random_offset = Vector2(randf_range(-1, 1), randf_range(-1, 1)) * intensity
+			tween.tween_property(camera, "offset", original_offset + random_offset, 0.1)
+			tween.tween_property(camera, "offset", original_offset, 0.1)
+
+func _flash_screen(color: Color, duration: float):
+	# Crear un overlay temporal para efectos de pantalla
+	var flash = ColorRect.new()
+	flash.color = color
+	flash.size = get_viewport().size
+	flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	canvas_layer.add_child(flash)
+	
+	var tween = create_tween()
+	tween.tween_property(flash, "color", Color(color.r, color.g, color.b, 0), duration)
+	tween.tween_callback(flash.queue_free)
+
+func _show_boss_message(text: String):
+	var label = Label.new()
+	label.text = text
+	label.add_theme_font_size_override("font_size", 36)
+	label.add_theme_color_override("font_color", Color.GOLD)
+	label.position = Vector2(get_viewport().size.x / 2 - 150, 100)
+	
+	canvas_layer.add_child(label)
+	
+	var tween = create_tween()
+	tween.parallel().tween_property(label, "position:y", label.position.y - 50, 2.0)
+	tween.parallel().tween_property(label, "modulate", Color(1, 1, 1, 0), 2.0)
+	tween.tween_callback(label.queue_free)
 
 # -------------------------------
 # --- PANTALLA DE CARGA
@@ -420,14 +597,41 @@ func _update_game_entities():
 	for key in Network.enemies.keys():
 		var id = int(key)
 		var data = Network.enemies[key]
-		if id in enemies:
-			enemies[id].position = Vector2(data.x, data.y)
-			# Actualizar HP de enemigos
-			if data.has("hp") and enemies[id].has_method("update_hp"):
-				enemies[id].update_hp(data.hp)
+		
+		# ✅ CORREGIDO: Verificar si es un boss de manera más robusta
+		var is_boss = data.get("type") == "final_boss" or data.get("is_permanent") or data.get("type") == "boss_wave"
+		
+		if is_boss:
+			if bosses.has(id):
+				# Actualizar boss existente
+				if data.has("x") and data.has("y"):
+					bosses[id].position = Vector2(data.x, data.y)
+				if data.has("hp") and bosses[id].has_method("update_hp"):
+					bosses[id].update_hp(data.hp)
+				
+				# Sincronizar animación si está disponible
+				if data.has("animation_state") and bosses[id].has_method("play_animation"):
+					bosses[id].play_animation(data.animation_state)
+				elif bosses[id].has_method("play_animation"):
+					# Si no hay animación específica, usar una por defecto
+					bosses[id].play_animation("idle")
+			else:
+				# Spawnear nuevo boss solo si tiene datos válidos
+				if data.has("id"):
+					_spawn_boss(data)
+				else:
+					# Si no tiene ID, usar la clave como ID
+					data["id"] = id
+					_spawn_boss(data)
 		else:
-			print("👹 SPAWNEANDO ENEMIGO - ID:", id, " Tipo:", data.type)
-			_spawn_enemy(id, data.type, Vector2(data.x, data.y))
+			# Enemigos normales
+			if id in enemies:
+				enemies[id].position = Vector2(data.x, data.y)
+				if data.has("hp") and enemies[id].has_method("update_hp"):
+					enemies[id].update_hp(data.hp)
+			else:
+				print("👹 SPAWNEANDO ENEMIGO - ID:", id, " Tipo:", data.type)
+				_spawn_enemy(id, data.type, Vector2(data.x, data.y))
 
 	# --- Verificar enemigos eliminados ---
 	_check_enemy_deaths()
@@ -441,6 +645,39 @@ func _update_game_entities():
 			print("🎯 SPAWNEANDO PROYECTIL DESDE RED - ID:", id, " Owner:", data.owner_id, " Clase:", data.get("classe", "warrior"))
 			_spawn_projectile(id, data)
 
+	# --- Actualizar posición de proyectiles existentes ---
+	for projectile_id in projectiles:
+		if Network.projectiles.has(str(projectile_id)):
+			var proj_data = Network.projectiles[str(projectile_id)]
+			var projectile_node = projectiles[projectile_id]
+			
+			if is_instance_valid(projectile_node):
+				# ✅ CORREGIDO: Verificación más segura para proyectiles remotos
+				var is_remote = true
+				
+				# Verificar si el proyectil es del jugador local
+				if proj_data.has("owner_id"):
+					is_remote = (proj_data.owner_id != Network.player_id)
+				
+				# Solo actualizar proyectiles remotos (no los del jugador local)
+				if is_remote:
+					projectile_node.position = Vector2(proj_data.x, proj_data.y)
+
+	# --- Actualizar bases desde datos del servidor ---
+	update_bases_from_server()
+
+	# --- Limpiar entidades eliminadas ---
+	_cleanup_removed_entities()
+
+	# --- Actualizar timers de respawn ---
+	for player_id in respawn_timers.keys():
+		# Los timers se actualizan principalmente desde el servidor,
+		# pero podemos hacer una actualización visual suave aquí si es necesario
+		pass
+
+	# Debug de estado
+	if Engine.get_frames_drawn() % 180 == 0:
+		print("📊 ESTADO - Jugadores:", players.size(), " Enemigos:", enemies.size(), " Bosses:", bosses.size(), " Proyectiles:", projectiles.size(), " Fantasmas:", ghosts.size(), " Bases:", bases.size())
 # NUEVO: Verificar muertes de enemigos
 func _check_enemy_deaths():
 	# Buscar enemigos que estaban pero ya no están en Network.enemies
@@ -451,15 +688,11 @@ func _check_enemy_deaths():
 				# El enemigo fue eliminado, verificar quién lo mató
 				_process_enemy_death(enemy_id, enemy)
 
-# En main.gd, modificar _process_enemy_death:
 func _process_enemy_death(enemy_id: int, enemy: Node):
-	# ❌ ELIMINAR: No dar recompensa grupal aquí
-	# El servidor ahora maneja las recompensas individuales
 	var enemy_type = enemy.get_enemy_type() if enemy.has_method("get_enemy_type") else "grunt"
 	print("💀 PROCESANDO MUERTE DE ENEMIGO - ID:", enemy_id, " Tipo:", enemy_type)
 	
-	# ❌ ELIMINADO: Recompensa grupal
-	# El servidor ahora da recompensa solo al asesino
+	# El servidor ahora maneja las recompensas individuales
 
 # -------------------------------
 # --- SPAWN DE ENEMIGOS
@@ -834,26 +1067,27 @@ func _spawn_projectile(id: int, data: Dictionary):
 	projectile.name = str(id)
 	projectile.position = Vector2(data.x, data.y)
 	
-	var is_local_projectile = (data.owner_id == Network.player_id)
+	# Configuración básica del proyectil
 	var direction = Vector2(data.direction_x, data.direction_y)
 	
-	print("🎯 CONFIGURANDO PROYECTIL - ID:", id, " Clase:", classe, " Owner:", data.owner_id, " IsLocal:", is_local_projectile)
+	print("🎯 CONFIGURANDO PROYECTIL - ID:", id, " Clase:", classe, " Owner:", data.owner_id)
 	
+	# Configuración según el tipo de proyectil
 	if projectile.has_method("initialize"):
-		projectile.initialize(id, direction, data.damage, data.owner_id, not is_local_projectile)
+		var is_remote = (data.owner_id != Network.player_id)
+		projectile.initialize(id, direction, data.damage, data.owner_id, is_remote)
 	else:
-		# Configuración estándar
+		# Configuración estándar para proyectiles simples
 		projectile.set("projectile_id", id)
 		projectile.set("projectile_direction", direction.normalized())
 		projectile.set("projectile_damage", data.damage)
 		projectile.set("projectile_owner_id", data.owner_id)
-		projectile.set("is_remote", not is_local_projectile)
 		projectile.set("projectile_speed", data.speed if data.has("speed") else 400.0)
 	
 	add_child(projectile)
 	projectiles[id] = projectile
 	
-	print("✅ PROYECTIL CREADO - ID:", id, " Tipo:", classe, " Remote:", not is_local_projectile)
+	print("✅ PROYECTIL CREADO - ID:", id, " Tipo:", classe)
 
 # -------------------------------
 # --- SISTEMA DE VIDA
@@ -900,7 +1134,7 @@ func _cleanup_removed_entities():
 			players[id].queue_free()
 		players.erase(id)
 
-	# Enemigos eliminados
+	# Enemigos normales eliminados
 	var enemies_to_remove := []
 	for id in enemies.keys():
 		if not Network.enemies.has(str(id)):
@@ -911,6 +1145,18 @@ func _cleanup_removed_entities():
 		if is_instance_valid(enemies[id]):
 			enemies[id].queue_free()
 		enemies.erase(id)
+
+	# Bosses eliminados
+	var bosses_to_remove := []
+	for id in bosses.keys():
+		if not Network.enemies.has(str(id)):
+			bosses_to_remove.append(id)
+	
+	for id in bosses_to_remove:
+		print("👹 ELIMINANDO BOSS - ID:", id)
+		if is_instance_valid(bosses[id]):
+			bosses[id].queue_free()
+		bosses.erase(id)
 
 	# Proyectiles eliminados
 	var projectiles_to_remove := []

@@ -65,6 +65,12 @@ signal player_respawned(player_data)
 signal game_over(winning_team, reason)
 signal game_reset(players, bases)
 
+# SEÑALES PARA JEFE PERMANENTE
+signal boss_phase_changed(boss_id, phase)
+signal boss_attacked(target_id, damage)
+signal boss_health_updated(hp, max_hp)
+signal boss_died(boss_id)
+
 # -------------------------------
 # --- FUNCIÓN DE INICIO CON IP
 # -------------------------------
@@ -393,10 +399,6 @@ func _receive_messages():
 				print("👥 ACTUALIZACIÓN DE EQUIPOS - Equipo 1:", data.team_counts["1"], " Equipo 2:", data.team_counts["2"])
 				emit_signal("team_update", data.team_counts, data.players)
 
-			"currency_updated":
-				print("💰 MONEDAS ACTUALIZADAS:", data.amount)
-				emit_signal("currency_updated", data.amount)
-			
 			"team_selected":
 				print("✅ EQUIPO SELECCIONADO - Equipo:", data.team, " Posición:", data.position)
 				emit_signal("team_selected", data.team, data.position)
@@ -436,6 +438,31 @@ func _receive_messages():
 			"game_reset":
 				print("🔄 JUEGO REINICIADO")
 				emit_signal("game_reset", data.players, data.bases)
+			
+			# MENSAJES PARA JEFE PERMANENTE
+			"boss_phase_changed":
+				print("🔥 JEFE CAMBIA FASE - ID:", data.boss_id, " Fase:", data.phase)
+				emit_signal("boss_phase_changed", data.boss_id, data.phase)
+			
+			"boss_attacked":
+				print("💥 JEFE ATACÓ - Target:", data.target_id, " Daño:", data.damage)
+				emit_signal("boss_attacked", data.target_id, data.damage)
+			
+			"boss_health_updated":
+				print("❤️  JEFE ACTUALIZA SALUD - HP:", data.hp, "/", data.max_hp)
+				emit_signal("boss_health_updated", data.hp, data.max_hp)
+			
+			"boss_died":
+				print("💀 JEFE MUERTO - ID:", data.boss_id)
+				emit_signal("boss_died", data.boss_id)
+			
+			"boss_teleported":
+				print("🌀 JEFE SE TELETRANSPORTÓ - ID:", data.boss_id, " Posición:", data.x, data.y)
+				# Actualizar posición del jefe localmente
+				if enemies.has(str(data.boss_id)):
+					var boss = enemies[str(data.boss_id)]
+					if boss and boss.has_method("set_global_position"):
+						boss.set_global_position(Vector2(data.x, data.y))
 		
 			_:
 				print("📨 Mensaje no manejado:", data.type)
@@ -687,3 +714,39 @@ func select_team(team: int):
 			"type": "select_team",
 			"team": team
 		}))
+
+# NUEVAS FUNCIONES PARA JEFE PERMANENTE
+func request_boss_respawn():
+	if connected and ws_ready:
+		print("🔄 SOLICITANDO RESPawN DEL JEFE")
+		socket.send_text(JSON.stringify({
+			"type": "request_boss_respawn"
+		}))
+
+func request_boss_spawn():
+	if connected and ws_ready:
+		print("🎯 SOLICITANDO SPAWN DEL JEFE")
+		socket.send_text(JSON.stringify({
+			"type": "request_boss_spawn"
+		}))
+
+# -------------------------------
+# --- FUNCIONES DE UTILIDAD
+# -------------------------------
+func get_player_count() -> int:
+	return players.size()
+
+func get_enemy_count() -> int:
+	return enemies.size()
+
+func get_projectile_count() -> int:
+	return projectiles.size()
+
+func get_player_by_id(player_id: int) -> Dictionary:
+	return players.get(str(player_id), {})
+
+func get_enemy_by_id(enemy_id: int) -> Dictionary:
+	return enemies.get(str(enemy_id), {})
+
+func get_projectile_by_id(projectile_id: int) -> Dictionary:
+	return projectiles.get(str(projectile_id), {})
