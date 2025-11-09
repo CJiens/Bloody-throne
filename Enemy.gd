@@ -78,7 +78,7 @@ var is_ranged: bool = false
 @onready var attack_area: Area2D = $AttackArea
 @onready var detection_area: Area2D = $DetectionArea
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
-
+@onready var vida_label: Label = $vidaLabel
 # Proyectiles para enemigos ranged
 @export var projectile_scene: PackedScene
 
@@ -94,6 +94,10 @@ func _ready():
 	
 	# Configurar estado inicial
 	state = "moving"
+
+	#Barra de vida
+	hp_bar.max_value = max_hp
+	vida_label.text = str(hp) + "/" + str(max_hp)
 	
 	print("👹 ENEMIGO CREADO - ID:", enemy_id, " Tipo:", enemy_type, " HP:", hp)
 
@@ -143,6 +147,10 @@ func set_enemy_type(type: String):
 	if hp_bar:
 		hp_bar.max_value = max_hp
 		hp_bar.value = hp
+
+	#label de vida
+	if vida_label:
+		vida_label.text = str(hp) + "/" + str(max_hp)
 	
 	# Configurar animaciones
 	setup_animations()
@@ -330,6 +338,8 @@ func update_hp(new_hp: int):
 	
 	if hp_bar:
 		hp_bar.value = hp
+	if vida_label:
+		vida_label.text = str(hp) + "/" + str(max_hp)
 	
 	print("❤️ ENEMIGO HP ACTUALIZADO - ID:", enemy_id, " HP:", hp, "/", max_hp)
 	

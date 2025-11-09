@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://dftgxtk6badua"]
+[gd_scene load_steps=8 format=3 uid="uid://dftgxtk6badua"]
 
 [ext_resource type="Script" uid="uid://ctkncisqt3gv6" path="res://Enemy.gd" id="1_7k104"]
+[ext_resource type="Theme" uid="uid://bri7bopivwxvd" path="res://bars.tres" id="2_2hac7"]
 [ext_resource type="SpriteFrames" uid="uid://p1oxkqfwowoh" path="res://Enemy.tres" id="2_s7bn3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s7bn3"]
@@ -32,11 +33,13 @@ scale = Vector2(11.29791, 10.69197)
 shape = SubResource("RectangleShape2D_e6d4v")
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
-offset_left = -6.0
-offset_top = 68.0
-offset_right = -2.0
-offset_bottom = 95.0
-scale = Vector2(4.549007, 1.4383777)
+offset_left = -88.0
+offset_top = 134.0
+offset_right = 112.0
+offset_bottom = 174.0
+theme = ExtResource("2_2hac7")
+max_value = 0.0
+show_percentage = false
 
 [node name="DetectionArea" type="Area2D" parent="."]
 
@@ -49,4 +52,11 @@ light_mask = 2
 visibility_layer = 4
 scale = Vector2(1.0068027, 1)
 sprite_frames = ExtResource("2_s7bn3")
-animation = &"attack"
+animation = &"walk"
+
+[node name="vidaLabel" type="Label" parent="."]
+offset_left = -22.999998
+offset_top = 141.0
+offset_right = 51.885002
+offset_bottom = 184.0
+scale = Vector2(0.95339864, 0.6307633)

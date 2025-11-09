@@ -42,7 +42,7 @@ var roll_cooldown_timer: float = 0.0
 @onready var hp_bar: ProgressBar = $ProgressBar
 @onready var hitbox_area: Area2D = $HitboxArea
 @onready var hitbox_collision: CollisionShape2D = $HitboxArea/CollisionShape2D
-
+@onready var hplabel: Label = $Camera2D/PlayerInfoUI/HPLabel
 # AnimatedSprites por clase
 @onready var warrior_sprite: AnimatedSprite2D = $WarriorSprite
 @onready var mage_sprite: AnimatedSprite2D = $MageSprite
@@ -108,7 +108,7 @@ var class_configs := {
 @onready var stats_ui: Control = $Camera2D/StatsUI
 @onready var wave_label: Label = $Camera2D/WaveUI/WaveLabel
 @onready var enemy_count_label: Label = $Camera2D/WaveUI/EnemyCountLabel
-@onready var currency_label: Label = $Camera2D/DecisionUI/VBoxContainer/CurrencyLabel
+@onready var currency_label: Label = $Camera2D/DecisionUI/HBoxContainer/CurrencyLabel
 
 # NUEVO: Elementos del PlayerInfoUI básico
 @onready var player_currency_label: Label = $Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer/Monedas
@@ -125,9 +125,9 @@ var class_configs := {
 @onready var stats_kills_label: Label = $Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer2/StatsKillsLabel
 
 # NUEVO: Nodos para las tarjetas
-@onready var card_1: Control = $Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card1
-@onready var card_2: Control = $Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card2
-@onready var card_3: Control = $Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card3
+@onready var card_1: Control = $Camera2D/DecisionUI/HBoxContainer2/Card1
+@onready var card_2: Control = $Camera2D/DecisionUI/HBoxContainer2/Card2
+@onready var card_3: Control = $Camera2D/DecisionUI/HBoxContainer2/Card3
 
 # Variables para controlar UI
 var current_wave: int = 0
@@ -229,6 +229,7 @@ func _ready():
 	if hp_bar:
 		hp_bar.max_value = max_hp
 		hp_bar.value = hp
+		hplabel.text = str(hp) + "/" + str(max_hp)
 	add_to_group("players")
 	
 	set_collision_layer_value(1, true)
@@ -261,13 +262,18 @@ func _ready():
 	
 	if not Network.card_purchased.is_connected(_on_card_purchased):
 		Network.card_purchased.connect(_on_card_purchased)
-	if not Network.card_purchase_failed.is_connected(_on_card_purchase_failed):
-		Network.card_purchase_failed.connect(_on_card_purchase_failed)
+
+	
+	# ✅ CORREGIDO: Conectar señal currency_updated con player_id
+	if not Network.currency_updated.is_connected(_on_currency_updated):
+		Network.currency_updated.connect(_on_currency_updated)
 	
 	_apply_class_config()
 	print("👤 JUGADOR LISTO - ID:", id, " Clase:", classe, " Hitbox: ACTIVADO")
+	
 
 func _process(delta):
+	print("Esta es la pocision de la x => " + str(get_local_mouse_position().x) + "Esta es la pocision de la y =>" + str(get_local_mouse_position().y))
 	_handle_cooldowns(delta)
 	
 	if in_decision_period:
@@ -315,7 +321,7 @@ func _setup_player_ui():
 	if player_info_ui:
 		player_info_ui.visible = true
 	if stats_ui:
-		stats_ui.visible = false  # Inicialmente oculto
+		stats_ui.visible = false # Inicialmente oculto
 	
 	_update_player_info()
 
@@ -324,7 +330,7 @@ func _setup_cards_ui():
 	for card_ui in card_ui_nodes:
 		if card_ui:
 			card_ui.visible = false
-			var buy_button = card_ui.get_node_or_null("VBoxContainer/HBoxContainer/BuyButton")
+			var buy_button = card_ui.get_node_or_null("Panel/VBoxContainer/HBoxContainer/BuyButton")
 			if buy_button and not buy_button.pressed.is_connected(_on_card_buy_pressed):
 				buy_button.pressed.connect(_on_card_buy_pressed.bind(card_ui))
 
@@ -348,7 +354,7 @@ func _update_detailed_stats():
 	
 	# Calcular cooldown de ataque real con bonus
 	var real_attack_cooldown = attack_cooldown * (1.0 - (attack_speed_bonus / 100.0))
-	if real_attack_cooldown < 0.1:  # Límite mínimo
+	if real_attack_cooldown < 0.1: # Límite mínimo
 		real_attack_cooldown = 0.1
 	
 	if stats_hp_label:
@@ -470,10 +476,10 @@ func _display_available_cards():
 			card_ui.visible = false
 
 func _setup_card_ui(card_ui: Control, card_data: Dictionary):
-	var name_label = card_ui.get_node_or_null("VBoxContainer/CardName")
-	var desc_label = card_ui.get_node_or_null("VBoxContainer/CardDescription")
-	var cost_label = card_ui.get_node_or_null("VBoxContainer/HBoxContainer/CardCost")
-	var buy_button = card_ui.get_node_or_null("HBoxContainer/HBoxContainer/BuyButton")
+	var name_label = card_ui.get_node_or_null("Panel/VBoxContainer/CardName")
+	var desc_label = card_ui.get_node_or_null("Panel/VBoxContainer/CardDescription")
+	var cost_label = card_ui.get_node_or_null("Panel/VBoxContainer/CardCost")
+	var buy_button = card_ui.get_node_or_null("Panel/HBoxContainer/HBoxContainer/BuyButton")
 	
 	if name_label:
 		name_label.text = card_data.get("name", "Carta Sin Nombre")
@@ -520,6 +526,13 @@ func _on_card_purchased(card_data: Dictionary, new_balance: int):
 				card_ui_nodes[i].visible = false
 			break
 
+# ✅ CORREGIDO: Nueva función para manejar actualización de monedas con player_id
+func _on_currency_updated(target_player_id: int, amount: int):
+	# Solo actualizar si es para este jugador
+	if target_player_id == id:
+		print("💰 ACTUALIZANDO MONEDAS LOCALES - Jugador:", id, " Cantidad:", amount)
+		update_currency(amount)
+
 # NUEVO: Aplicar efecto de carta localmente
 func _apply_card_effect(card_data: Dictionary):
 	var card_type = card_data.get("type", "")
@@ -545,9 +558,6 @@ func _apply_card_effect(card_data: Dictionary):
 		"critical":
 			critical_chance += card_value
 			print("🎯 PROB. CRÍTICO: %d%%" % critical_chance)
-
-func _on_card_purchase_failed(reason: String):
-	print("❌ FALLO EN COMPRA DE CARTA:", reason)
 
 func _show_card_purchase_effect(card_data: Dictionary):
 	modulate = Color(0.5, 1, 0.5)
@@ -593,13 +603,13 @@ func update_currency(amount: int):
 	if in_decision_period:
 		_update_card_buttons_state()
 	
-	print("💰 MONEDAS ACTUALIZADAS:", amount)
+	print("💰 MONEDAS ACTUALIZADAS - Jugador %d: %d" % [id, amount])
 
 func _update_card_buttons_state():
 	for i in range(card_ui_nodes.size()):
 		var card_ui = card_ui_nodes[i]
 		if card_ui and card_ui.visible and i < available_cards.size():
-			var buy_button = card_ui.get_node_or_null("HBoxContainer/BuyButton")
+			var buy_button = card_ui.get_node_or_null("Panel/HBoxContainer/HBoxContainer/BuyButton")
 			var card_data = available_cards[i]
 			if buy_button and card_data:
 				buy_button.disabled = player_currency < card_data.get("cost", 0)
@@ -763,6 +773,7 @@ func update_hp(new_hp: int):
 	if hp_bar:
 		hp_bar.max_value = max_hp
 		hp_bar.value = hp
+		hplabel.text = str(hp) + "/" + str(max_hp)
 	
 	_update_player_info()
 	if show_detailed_stats:

@@ -1,9 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://xsdjfolg3h1m"]
+[gd_scene load_steps=15 format=3 uid="uid://xsdjfolg3h1m"]
 
 [ext_resource type="Script" uid="uid://cet0c5gh0dp4l" path="res://Player.gd" id="1_xhfnw"]
 [ext_resource type="SpriteFrames" uid="uid://ddrfrns38hs4k" path="res://Rogue.tres" id="2_cxr5p"]
 [ext_resource type="SpriteFrames" uid="uid://ccgibxgs3r40s" path="res://Warrior.tres" id="2_kne1u"]
+[ext_resource type="Texture2D" uid="uid://corh6kuqtn6v3" path="res://mapa/coin_icon_129365.png" id="3_5ncpa"]
 [ext_resource type="SpriteFrames" uid="uid://bo604nekfqts0" path="res://Knight.tres" id="3_tdg3f"]
+[ext_resource type="Theme" uid="uid://ch3brqsl47v7o" path="res://enities/boss/cards.tres" id="3_wi0c6"]
 [ext_resource type="SpriteFrames" uid="uid://dqyik6patsouj" path="res://Archer.tres" id="4_e80uo"]
 [ext_resource type="Theme" uid="uid://df3w3w54o8cod" path="res://stats.tres" id="5_hp6x6"]
 [ext_resource type="SpriteFrames" uid="uid://dxopahsk2cn8a" path="res://Mague.tres" id="150_5tdsq"]
@@ -48,21 +50,21 @@ scale = Vector2(1.6566701, 4.141701)
 shape = SubResource("RectangleShape2D_x33b6")
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
-offset_left = -62.5
-offset_top = -56.250004
-offset_right = -58.5
-offset_bottom = -29.249943
-scale = Vector2(33.629852, 0.45444566)
+offset_left = -61.250004
+offset_top = -58.75
+offset_right = -57.250004
+offset_bottom = -31.749939
+scale = Vector2(33.71904, 0.7390539)
 theme = SubResource("Theme_7wy67")
 value = 50.0
 show_percentage = false
 
 [node name="nombre" type="Label" parent="."]
-offset_left = -64.86813
-offset_top = -83.00815
-offset_right = -6.8681335
-offset_bottom = -60.00815
-scale = Vector2(2.425373, 1.0404111)
+offset_left = -42.499992
+offset_top = -77.500015
+offset_right = 15.500008
+offset_bottom = -54.500015
+scale = Vector2(1.6272476, 0.67120314)
 text = "player4"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -191,6 +193,7 @@ layout_mode = 2
 text = "20%"
 
 [node name="WaveUI" type="Control" parent="Camera2D"]
+visible = false
 layout_mode = 3
 anchors_preset = 10
 anchor_right = 1.0
@@ -221,144 +224,191 @@ scale = Vector2(0.6315881, 1.0243223)
 text = "ENEMY COUNT"
 
 [node name="DecisionUI" type="Control" parent="Camera2D"]
-visible = false
 layout_mode = 3
-anchors_preset = 0
-offset_left = -223.75
-offset_top = 23.75
-offset_right = -183.75
-offset_bottom = 63.75
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -568.75
+offset_top = -286.25
+offset_right = 2431.25
+offset_bottom = 713.75
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(0.37766635, 0.6431528)
+size_flags_horizontal = 6
+size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/DecisionUI"]
-layout_mode = 0
-offset_left = -964.4123
-offset_top = -612.8345
-offset_right = -924.4123
-offset_bottom = -572.8345
-scale = Vector2(25.141712, 15.534646)
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/DecisionUI"]
+layout_mode = 1
+offset_left = 33.097996
+offset_top = 5.8306518
+offset_right = 1083.098
+offset_bottom = 517.8306
+scale = Vector2(0.561129, 0.285583)
 
-[node name="CurrencyLabel" type="Label" parent="Camera2D/DecisionUI/VBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="Camera2D/DecisionUI/HBoxContainer"]
 layout_mode = 2
-text = "Monedas:213"
+texture = ExtResource("3_5ncpa")
+
+[node name="CurrencyLabel" type="Label" parent="Camera2D/DecisionUI/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 300
+text = "213"
 horizontal_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/DecisionUI/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 45
-
-[node name="Card3" type="Control" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-
-[node name="ColorRect" type="ColorRect" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card3"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Camera2D/DecisionUI"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-color = Color(0.9764706, 0.7764706, 0.44313726, 1)
+offset_left = 36.40776
+offset_top = 229.33896
+offset_right = 2528.8777
+offset_bottom = 579.339
+theme_override_constants/separation = 225
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card3"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-scale = Vector2(0.44845653, 0.47081107)
-
-[node name="CardName" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card3/VBoxContainer"]
+[node name="Card3" type="Control" parent="Camera2D/DecisionUI/HBoxContainer2"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_wi0c6")
+
+[node name="Panel" type="Panel" parent="Camera2D/DecisionUI/HBoxContainer2/Card3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/DecisionUI/HBoxContainer2/Card3/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CardName" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card3/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Card1"
 
-[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card3/VBoxContainer"]
+[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card3/Panel/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 6
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "desc"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card3/VBoxContainer"]
+[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card3/Panel/VBoxContainer"]
 layout_mode = 2
-
-[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card3/VBoxContainer/HBoxContainer"]
-layout_mode = 2
+size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.02874092, 0.061595596, 0.07940511, 1)
 text = "$price"
 
-[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card3/VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/DecisionUI/HBoxContainer2/Card3/Panel/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/HBoxContainer2/Card3/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 text = "buy"
 
-[node name="Card2" type="Control" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer"]
+[node name="Card2" type="Control" parent="Camera2D/DecisionUI/HBoxContainer2"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_wi0c6")
 
-[node name="ColorRect" type="ColorRect" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card2"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-color = Color(0.9764706, 0.7764706, 0.44313726, 1)
+[node name="Panel" type="Panel" parent="Camera2D/DecisionUI/HBoxContainer2/Card2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card2"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-scale = Vector2(0.44845653, 0.47081107)
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/DecisionUI/HBoxContainer2/Card2/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="CardName" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card2/VBoxContainer"]
+[node name="CardName" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card2/Panel/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 6
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Card1"
 
-[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card2/VBoxContainer"]
+[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card2/Panel/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 6
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "desc"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card2/VBoxContainer"]
+[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card2/Panel/VBoxContainer"]
 layout_mode = 2
-
-[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card2/VBoxContainer/HBoxContainer"]
-layout_mode = 2
+size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.02874092, 0.061595596, 0.07940511, 1)
 text = "$price"
 
-[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card2/VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/DecisionUI/HBoxContainer2/Card2/Panel/VBoxContainer"]
 layout_mode = 2
+
+[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/HBoxContainer2/Card2/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 text = "buy"
 
-[node name="Card1" type="Control" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer"]
+[node name="Card1" type="Control" parent="Camera2D/DecisionUI/HBoxContainer2"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_wi0c6")
 
-[node name="ColorRect" type="ColorRect" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card1"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-color = Color(0.9764706, 0.7764706, 0.44313726, 1)
+[node name="Panel" type="Panel" parent="Camera2D/DecisionUI/HBoxContainer2/Card1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -0.34002686
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card1"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-scale = Vector2(0.44845653, 0.47081107)
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/DecisionUI/HBoxContainer2/Card1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="CardName" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card1/VBoxContainer"]
+[node name="CardName" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card1/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 6
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Card1"
 
-[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card1/VBoxContainer"]
+[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card1/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 6
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "desc"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card1/VBoxContainer"]
+[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card1/VBoxContainer"]
 layout_mode = 2
-
-[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card1/VBoxContainer/HBoxContainer"]
-layout_mode = 2
+size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.02874092, 0.061595596, 0.07940511, 1)
 text = "$price"
 
-[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card1/VBoxContainer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/DecisionUI/HBoxContainer2/Card1/VBoxContainer"]
 layout_mode = 2
+
+[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/HBoxContainer2/Card1/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 text = "buy"
 
 [node name="PlayerInfoUI" type="Control" parent="Camera2D"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -375,10 +425,13 @@ text = "0"
 horizontal_alignment = 1
 
 [node name="RogueSprite" type="AnimatedSprite2D" parent="."]
+visible = false
 position = Vector2(5, 27.5)
 scale = Vector2(0.311, 0.29)
 sprite_frames = ExtResource("2_cxr5p")
-animation = &"attack_S"
+animation = &"attack_E"
+frame = 11
+frame_progress = 1.0
 speed_scale = 6.8
 
 [node name="KnightSprite" type="AnimatedSprite2D" parent="."]
@@ -386,16 +439,19 @@ visible = false
 position = Vector2(5.000001, -23.749998)
 scale = Vector2(0.515, 0.515)
 sprite_frames = ExtResource("3_tdg3f")
-animation = &"attack_E"
+animation = &"attack_S"
+frame = 17
+frame_progress = 1.0
 speed_scale = 6.8
 
 [node name="MageSprite" type="AnimatedSprite2D" parent="."]
 visible = false
 position = Vector2(8.75, 6.2499995)
-scale = Vector2(0.095, 0.095)
+scale = Vector2(0.2, 0.2)
 sprite_frames = ExtResource("150_5tdsq")
-animation = &"run_W"
-speed_scale = 6.8
+animation = &"Idle"
+frame_progress = 0.64436346
+speed_scale = 9.0
 
 [node name="ArcherSprite" type="AnimatedSprite2D" parent="."]
 visible = false

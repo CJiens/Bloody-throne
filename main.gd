@@ -107,8 +107,9 @@ func _ready():
 	# Agregar este nodo al grupo "main" para que los fantasmas puedan encontrarlo
 	add_to_group("main")
 
-	Network.boss_spawned.connect(_on_boss_spawned_permanent)
 	Network.boss_died.connect(_on_boss_died)
+	# Conectar señal de animaciones del boss
+	Network.boss_animation_updated.connect(_on_boss_animation_updated)
 
 	
 	# Conectar botones UI
@@ -144,8 +145,9 @@ func _ready():
 	Network.on_object_thrown.connect(_on_object_thrown)
 	Network.wave_started.connect(_on_wave_started)
 	Network.wave_ended.connect(_on_wave_ended)
-	Network.boss_spawned.connect(_on_boss_spawned)
-	Network.currency_updated.connect(_on_currency_updated)
+	Network.boss_spawned.connect(_on_boss_spawned_permanent)
+	# ✅ CORREGIDO: Cambiar conexión de currency_updated
+	Network.currency_updated.connect(_on_currency_updated_by_id)
 	
 	# ✅ MANTENER SOLO UNA CONEXIÓN:
 	Network.decision_period_started.connect(_on_decision_period_started)
@@ -189,8 +191,8 @@ func spawn_initial_bases():
 	
 	# Posiciones fijas para las bases (ajustar según tu mapa)
 	var base_positions = {
-		1: Vector2(-450, 1900), # Base izquierda - Equipo 1
-		2: Vector2(450, -1900) # Base derecha - Equipo 2
+		1: Vector2(-519, 500), # Base izquierda - Equipo 1
+		2: Vector2(383, 249) # Base derecha - Equipo 2
 	}
 	
 	for team in [1, 2]:
@@ -253,13 +255,15 @@ func _on_boss_spawned(boss_data: Dictionary):
 	print("👹 JEFE INTERMEDIO APARECE")
 	# El servidor maneja el spawn del jefe, aquí solo mostramos notificación
 
-func _on_currency_updated(amount: int):
-	print("💰 MONEDAS ACTUALIZADAS: %d" % amount)
-	
-	# Actualizar monedas del jugador local
-	var local_player = players.get(Network.player_id, null)
-	if local_player and local_player.has_method("update_currency"):
-		local_player.update_currency(amount)
+# ✅ CORREGIDO: Nueva función para manejar currency_updated con player_id
+func _on_currency_updated_by_id(player_id: int, amount: int):
+	# Solo procesar si es el jugador local
+	if player_id == Network.player_id:
+		print("💰 MONEDAS ACTUALIZADAS EN MAIN - Jugador:", player_id, " Cantidad:", amount)
+		# Actualizar el jugador local
+		var local_player = players.get(Network.player_id, null)
+		if local_player and local_player.has_method("update_currency"):
+			local_player.update_currency(amount)
 
 func _on_decision_period_started(duration: float, currency: int, cards: Array):
 	print("⏰ PERIODO DE DECISIONES - Duración: %.1fs, Monedas: %d, Cartas: %d" % [duration, currency, cards.size()])
@@ -270,73 +274,119 @@ func _on_decision_period_started(duration: float, currency: int, cards: Array):
 		local_player.show_decision_period(duration, currency, cards)
 
 # -------------------------------
-# --- SISTEMA DEL JEFE PERMANENTE
+# --- SISTEMA DEL JEFE PERMANENTE (CORREGIDO)
 # -------------------------------
 func _on_boss_spawned_permanent(boss_data: Dictionary):
 	print("👹 JEFE PERMANENTE SPAWNEADO - Datos:", boss_data)
 	_spawn_boss(boss_data)
 
 func _spawn_boss(boss_data: Dictionary):
+	print("👹 INICIANDO SPAWN BOSS - Datos recibidos:", boss_data)
+	
 	if not BossScene:
-		push_error("❌ BossScene no asignada en main.tscn")
+		push_error("❌ ERROR CRÍTICO: BossScene no asignada en main.tscn")
+		# Debug: listar todas las propiedades exportadas
+		print("📋 Propiedades exportadas disponibles:")
+		for property in get_property_list():
+			if property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
+				print("  -", property.name, ":", get(property.name))
 		return
 	
-	# ✅ CORREGIDO: Verificar que el diccionario tenga el campo 'id'
-	if not boss_data.has("id"):
-		push_error("❌ Datos del boss no tienen campo 'id':", boss_data)
-		return
+	# ✅ CORREGIDO: Manejar el caso cuando los datos no tienen 'id'
+	var boss_id = -1
+	if boss_data.has("id"):
+		boss_id = boss_data.id
+	else:
+		# Si no tiene ID, usar un ID por defecto (999 para boss permanente)
+		boss_id = 999
+		print("⚠️ Boss data no tiene campo 'id', usando ID por defecto:", boss_id)
+		# Agregar el ID a los datos para referencia futura
+		boss_data["id"] = boss_id
 	
-	var boss_id = boss_data.id
-	print("👹 SPAWNEANDO BOSS - ID:", boss_id, " Datos:", boss_data)
+	print("👹 SPAWNEANDO BOSS - ID:", boss_id)
 	
-	# Si ya existe un boss con este ID, eliminarlo primero
+	# Eliminar boss existente si hay uno
 	if bosses.has(boss_id):
 		var old_boss = bosses[boss_id]
 		if is_instance_valid(old_boss):
+			print("🗑️ Eliminando boss existente:", boss_id)
 			old_boss.queue_free()
 		bosses.erase(boss_id)
 	
+	# Instanciar nuevo boss
 	var boss = BossScene.instantiate()
+	if not boss:
+		push_error("❌ ERROR: No se pudo instanciar BossScene")
+		return
 	
-	# ✅ CORREGIDO: Manejo seguro de la posición
+	# Configurar posición
 	var spawn_pos = Vector2.ZERO
 	if boss_data.has("x") and boss_data.has("y"):
 		spawn_pos = Vector2(boss_data.x, boss_data.y)
 	else:
-		# Posición por defecto
-		spawn_pos = Vector2(500, 500)
-		print("⚠️ Usando posición por defecto para boss:", spawn_pos)
+		spawn_pos = Vector2(0, 0)
+		print("⚠️ Usando posición por defecto para boss")
 	
 	boss.position = spawn_pos
 	
-	# Configurar el boss
+	# Configurar propiedades básicas
+	boss.name = "Boss_" + str(boss_id)
+	
+	# Asignar ID y tipo ANTES de agregar a la escena
 	if boss.has_method("set_boss_id"):
 		boss.set_boss_id(boss_id)
+	
 	if boss.has_method("set_boss_type"):
 		var boss_type = boss_data.get("type", "final_boss")
 		boss.set_boss_type(boss_type)
 	
-	# Conectar señales del boss
-	if boss.has_signal("boss_phase_changed"):
-		if not boss.boss_phase_changed.is_connected(_on_boss_phase_changed):
-			boss.boss_phase_changed.connect(_on_boss_phase_changed)
-	
-	if boss.has_signal("boss_died"):
-		if not boss.boss_died.is_connected(_on_boss_died):
-			boss.boss_died.connect(_on_boss_died)
-	
-	# Actualizar HP inicial
-	if boss.has_method("update_hp") and boss_data.has("hp"):
-		boss.update_hp(boss_data.hp)
-	
+	# Añadir a la escena
 	enemy_container.add_child(boss)
 	bosses[boss_id] = boss
 	
-	# Inicializar UI del boss
-	_init_boss_ui(boss)
+	# Forzar visibilidad inmediatamente
+	if boss.has_method("force_visibility"):
+		boss.force_visibility()
 	
-	print("✅ BOSS CREADO - ID:", boss_id, " HP:", boss_data.get("hp", "N/A"), " Posición:", spawn_pos)
+	print("✅ BOSS CREADO EXITOSAMENTE")
+	print("   - ID:", boss_id)
+	print("   - Nombre:", boss.name)
+	print("   - Posición:", boss.position)
+	print("   - En escena:", boss.is_inside_tree())
+	print("   - Válido:", is_instance_valid(boss))
+	
+	# Debug de la estructura del nodo
+	print("📁 ESTRUCTURA DEL BOSS:")
+	_print_node_structure(boss, 1)
+	
+	return boss
 
+func _print_node_structure(node: Node, indent: int = 0):
+	if not node:
+		return
+		
+	var indent_str = "  ".repeat(indent)
+	print(indent_str + "📁 " + node.name + " (" + node.get_class() + ")")
+	
+	# Propiedades importantes para sprites
+	if node is AnimatedSprite2D:
+		var sprite = node as AnimatedSprite2D
+		print(indent_str + "  🎭 AnimatedSprite2D")
+		print(indent_str + "  👀 Visible:", sprite.visible)
+		print(indent_str + "  🎨 Modulate:", sprite.modulate)
+		print(indent_str + "  📏 Position:", sprite.position)
+		
+		if sprite.sprite_frames:
+			var anim_names = sprite.sprite_frames.get_animation_names()
+			print(indent_str + "  📋 SpriteFrames - Animaciones:", anim_names)
+			print(indent_str + "  🔄 Animación actual:", sprite.animation)
+			print(indent_str + "  ▶️ Reproduciendo:", sprite.is_playing())
+		else:
+			print(indent_str + "  ❌ NO TIENE SPRITE_FRAMES")
+	
+	# Recursión para hijos
+	for child in node.get_children():
+		_print_node_structure(child, indent + 1)
 
 func _on_boss_died():
 	print("💀 BOSS MUERTO - Limpiando bosses...")
@@ -368,8 +418,8 @@ func _on_boss_phase_changed(boss_id: int, phase: int):
 	print("🔥 JEFE CAMBIA FASE - ID:", boss_id, " Fase:", phase)
 	
 	# Efectos visuales para cambio de fase
-	if enemies.has(boss_id):
-		var boss = enemies[boss_id]
+	if bosses.has(boss_id):
+		var boss = bosses[boss_id]
 		if boss and boss.has_method("_transition_to_phase"):
 			boss._transition_to_phase(phase)
 	
@@ -512,7 +562,7 @@ func _get_or_create_node(node_name: String, node_type) -> Node:
 	return node
 
 # -------------------------------
-# --- PROCESO PRINCIPAL
+# --- PROCESO PRINCIPAL (CORREGIDO)
 # -------------------------------
 func _process(delta):
 	if not Network.connected or Network.player_id == -1:
@@ -555,10 +605,10 @@ func _process(delta):
 
 	# Debug de estado
 	if Engine.get_frames_drawn() % 180 == 0:
-		print("📊 ESTADO - Jugadores:", players.size(), " Enemigos:", enemies.size(), " Proyectiles:", projectiles.size(), " Fantasmas:", ghosts.size(), " Bases:", bases.size())
+		print("📊 ESTADO - Jugadores:", players.size(), " Enemigos:", enemies.size(), " Bosses:", bosses.size(), " Proyectiles:", projectiles.size(), " Fantasmas:", ghosts.size(), " Bases:", bases.size())
 
 # -------------------------------
-# --- ACTUALIZACIÓN DE ENTIDADES DEL JUEGO
+# --- ACTUALIZACIÓN DE ENTIDADES DEL JUEGO (CORREGIDO)
 # -------------------------------
 func _update_game_entities():
 	# --- Actualizar jugadores desde Network ---
@@ -593,15 +643,24 @@ func _update_game_entities():
 			print("👤 SPAWNEANDO JUGADOR - ID:", id, " Username:", data.username, " Clase:", data.get("classe", "warrior"))
 			_spawn_player(id, data.username, Vector2(data.x, data.y), data.hp, data.get("classe", "warrior"))
 
-	# --- Actualizar enemigos ---
+	# --- Actualizar enemigos y bosses ---
+	print("🔄 ACTUALIZANDO ENEMIGOS - Total en Network:", Network.enemies.size())
 	for key in Network.enemies.keys():
 		var id = int(key)
 		var data = Network.enemies[key]
 		
-		# ✅ CORREGIDO: Verificar si es un boss de manera más robusta
-		var is_boss = data.get("type") == "final_boss" or data.get("is_permanent") or data.get("type") == "boss_wave"
+		# ✅ DETECCIÓN MEJORADA DE BOSSES
+		var is_boss = (
+			data.get("type") == "final_boss" or
+			data.get("is_permanent") == true or
+			data.get("type") == "boss_wave" or
+			str(id) == "999" # ID específico del boss permanente
+		)
+		
+		print("   Enemigo ID:", id, " Tipo:", data.get("type"), " Es boss?", is_boss, " Razón: type=", data.get("type"), ", is_permanent=", data.get("is_permanent"))
 		
 		if is_boss:
+			print("🎯 ENEMIGO ES BOSS - ID:", id, " Datos:", data)
 			if bosses.has(id):
 				# Actualizar boss existente
 				if data.has("x") and data.has("y"):
@@ -616,7 +675,8 @@ func _update_game_entities():
 					# Si no hay animación específica, usar una por defecto
 					bosses[id].play_animation("idle")
 			else:
-				# Spawnear nuevo boss solo si tiene datos válidos
+				# Spawnear nuevo boss
+				print("👹 SPAWNEANDO NUEVO BOSS DESDE UPDATE - ID:", id)
 				if data.has("id"):
 					_spawn_boss(data)
 				else:
@@ -669,15 +729,6 @@ func _update_game_entities():
 	# --- Limpiar entidades eliminadas ---
 	_cleanup_removed_entities()
 
-	# --- Actualizar timers de respawn ---
-	for player_id in respawn_timers.keys():
-		# Los timers se actualizan principalmente desde el servidor,
-		# pero podemos hacer una actualización visual suave aquí si es necesario
-		pass
-
-	# Debug de estado
-	if Engine.get_frames_drawn() % 180 == 0:
-		print("📊 ESTADO - Jugadores:", players.size(), " Enemigos:", enemies.size(), " Bosses:", bosses.size(), " Proyectiles:", projectiles.size(), " Fantasmas:", ghosts.size(), " Bases:", bases.size())
 # NUEVO: Verificar muertes de enemigos
 func _check_enemy_deaths():
 	# Buscar enemigos que estaban pero ya no están en Network.enemies
@@ -1119,7 +1170,7 @@ func _update_player_hp(player: Node2D, hp_value: int, id: int):
 		print("[HP UPDATE] Jugador", id, "HP:", hp_value)
 
 # -------------------------------
-# --- LIMPIEZA DE ENTIDADES ELIMINADAS
+# --- LIMPIEZA DE ENTIDADES ELIMINADAS (CORREGIDO)
 # -------------------------------
 func _cleanup_removed_entities():
 	# Jugadores eliminados
@@ -1146,7 +1197,7 @@ func _cleanup_removed_entities():
 			enemies[id].queue_free()
 		enemies.erase(id)
 
-	# Bosses eliminados
+	# Bosses eliminados - SOLO si no están en Network.enemies
 	var bosses_to_remove := []
 	for id in bosses.keys():
 		if not Network.enemies.has(str(id)):
@@ -1852,3 +1903,128 @@ func safe_dict_access(dict: Dictionary, key, default_value = null):
 	# Finalmente devolver valor por defecto
 	else:
 		return default_value
+
+func _on_boss_animation_updated(boss_id: int, animation_name: String):
+	print("🎭 ACTUALIZANDO ANIMACIÓN BOSS - ID:", boss_id, " Animación:", animation_name)
+	
+	if bosses.has(boss_id):
+		var boss = bosses[boss_id]
+		if is_instance_valid(boss):
+			if boss.has_method("play_animation"):
+				print("✅ EJECUTANDO play_animation en boss:", boss_id)
+				boss.play_animation(animation_name)
+				
+				# Forzar actualización visual
+				if boss.has_method("force_visibility"):
+					boss.force_visibility()
+			else:
+				print("❌ Boss no tiene método play_animation")
+		else:
+			print("❌ Boss no es válido - Re-spawneando...")
+			# Intentar re-spawnear el boss
+			if Network.enemies.has(str(boss_id)):
+				var boss_data = Network.enemies[str(boss_id)]
+				# ✅ CORREGIDO: Asegurar que los datos tengan ID
+				if not boss_data.has("id"):
+					boss_data["id"] = boss_id
+				_spawn_boss(boss_data)
+	else:
+		print("❌ Boss ID", boss_id, "no encontrado en bosses dict.")
+		print("📋 Bosses actuales:", bosses.keys())
+		print("📋 Enemigos en Network:", Network.enemies.keys())
+		
+		# Intentar spawnear el boss si existe en Network.enemies
+		if Network.enemies.has(str(boss_id)):
+			print("🔄 Intentando spawnear boss desde Network...")
+			var boss_data = Network.enemies[str(boss_id)]
+			# ✅ CORREGIDO: Asegurar que los datos tengan ID
+			if not boss_data.has("id"):
+				boss_data["id"] = boss_id
+			_spawn_boss(boss_data)
+
+# Función temporal para debug del boss - Ejecutar en consola
+func debug_boss():
+	print("🐛 ===== DEBUG COMPLETO DEL BOSS =====")
+	print("Bosses en escena:", bosses.size())
+	
+	for boss_id in bosses:
+		var boss = bosses[boss_id]
+		print("\n🔍 BOSS ID:", boss_id)
+		print("   Válido:", is_instance_valid(boss))
+		
+		if boss:
+			print("   Posición:", boss.position)
+			print("   En árbol:", boss.is_inside_tree())
+			print("   Visible:", boss.visible)
+			print("   Modulate:", boss.modulate)
+			
+			if boss.has_method("play_animation"):
+				print("   Tiene método play_animation: ✅ SÍ")
+			else:
+				print("   Tiene método play_animation: ❌ NO")
+			
+			# Buscar AnimatedSprite2D
+			var sprite = boss.get_node_or_null("AnimatedSprite2D")
+			if sprite:
+				print("   AnimatedSprite2D encontrado: ✅")
+				print("   Sprite visible:", sprite.visible)
+				print("   Sprite modulate:", sprite.modulate)
+				print("   Tiene SpriteFrames:", sprite.sprite_frames != null)
+				
+				if sprite.sprite_frames:
+					print("   Animaciones disponibles:", sprite.sprite_frames.get_animation_names())
+					print("   Animación actual:", sprite.animation)
+					print("   Reproduciendo:", sprite.is_playing())
+			else:
+				print("   AnimatedSprite2D: ❌ NO ENCONTRADO")
+				# Buscar recursivamente
+				var found_sprite = _find_node_recursive(boss, "AnimatedSprite2D")
+				if found_sprite:
+					print("   Encontrado recursivamente: ✅")
+				else:
+					print("   No encontrado en toda la jerarquía: ❌")
+	
+	print("===== FIN DEBUG =====")
+
+func _find_node_recursive(root: Node, node_name: String) -> Node:
+	if root.name == node_name:
+		return root
+	
+	for child in root.get_children():
+		var found = _find_node_recursive(child, node_name)
+		if found:
+			return found
+	
+	return null
+
+# Función para forzar visibilidad (debug)
+func force_boss_visibility():
+	print("🔧 FORZANDO VISIBILIDAD DE TODOS LOS BOSSES")
+	
+	for boss_id in bosses:
+		var boss = bosses[boss_id]
+		if boss:
+			print("👹 Aplicando a boss:", boss_id)
+			
+			# Forzar propiedades de visibilidad
+			boss.visible = true
+			boss.modulate = Color.WHITE
+			boss.z_index = 100 # Asegurar que esté por encima
+			
+			# Si el boss tiene el método force_visibility, usarlo
+			if boss.has_method("force_visibility"):
+				boss.force_visibility()
+			
+			# Buscar y forzar visibilidad del sprite
+			var sprite = boss.get_node_or_null("AnimatedSprite2D")
+			if sprite:
+				sprite.visible = true
+				sprite.modulate = Color.WHITE
+				sprite.z_index = 101
+				print("   ✅ Sprite forzado a visible")
+			else:
+				print("   ❌ No se encontró sprite")
+			
+			boss.queue_redraw()
+	
+	print("✅ Visibilidad forzada para", bosses.size(), "bosses")

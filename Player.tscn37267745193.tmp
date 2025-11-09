@@ -1,0 +1,421 @@
+[gd_scene load_steps=13 format=3 uid="uid://xsdjfolg3h1m"]
+
+[ext_resource type="Script" uid="uid://cet0c5gh0dp4l" path="res://Player.gd" id="1_xhfnw"]
+[ext_resource type="SpriteFrames" uid="uid://ddrfrns38hs4k" path="res://Rogue.tres" id="2_cxr5p"]
+[ext_resource type="SpriteFrames" uid="uid://ccgibxgs3r40s" path="res://Warrior.tres" id="2_kne1u"]
+[ext_resource type="SpriteFrames" uid="uid://bo604nekfqts0" path="res://Knight.tres" id="3_tdg3f"]
+[ext_resource type="SpriteFrames" uid="uid://dqyik6patsouj" path="res://Archer.tres" id="4_e80uo"]
+[ext_resource type="Theme" uid="uid://df3w3w54o8cod" path="res://stats.tres" id="5_hp6x6"]
+[ext_resource type="SpriteFrames" uid="uid://dxopahsk2cn8a" path="res://Mague.tres" id="150_5tdsq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_erspt"]
+size = Vector2(23.876465, 19.581665)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x33b6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dtqjt"]
+bg_color = Color(1, 0.7120075, 0.6902049, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jgrc"]
+bg_color = Color(0.5660922, 1.7688051e-06, 3.3691526e-07, 1)
+
+[sub_resource type="Theme" id="Theme_7wy67"]
+ProgressBar/constants/outline_size = 1
+ProgressBar/font_sizes/font_size = 5
+ProgressBar/styles/background = SubResource("StyleBoxFlat_dtqjt")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_1jgrc")
+
+[node name="Node2D" type="CharacterBody2D"]
+z_index = 1
+scale = Vector2(0.8, 0.8)
+collision_mask = 0
+script = ExtResource("1_xhfnw")
+metadata/_edit_horizontal_guides_ = [-149.0]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+process_physics_priority = 1
+position = Vector2(1.1920929e-07, 32.5)
+rotation = -3.1415925
+scale = Vector2(1.2499961, -1.4206276)
+shape = SubResource("RectangleShape2D_erspt")
+
+[node name="HitboxArea" type="Area2D" parent="."]
+scale = Vector2(0.99999994, 0.99999994)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxArea"]
+position = Vector2(6.2500005, 5.0000005)
+scale = Vector2(1.6566701, 4.141701)
+shape = SubResource("RectangleShape2D_x33b6")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -62.5
+offset_top = -56.250004
+offset_right = -58.5
+offset_bottom = -29.249943
+scale = Vector2(33.629852, 0.45444566)
+theme = SubResource("Theme_7wy67")
+value = 50.0
+show_percentage = false
+
+[node name="nombre" type="Label" parent="."]
+offset_left = -64.86813
+offset_top = -83.00815
+offset_right = -6.8681335
+offset_bottom = -60.00815
+scale = Vector2(2.425373, 1.0404111)
+text = "player4"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="StatsUI" type="Control" parent="Camera2D"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(8.989, 7.265)
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme = ExtResource("5_hp6x6")
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -74.6746
+offset_top = -50.585
+offset_right = 75.3254
+offset_bottom = 49.415
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_hp6x6")
+
+[node name="MarginContainer" type="MarginContainer" parent="Camera2D/StatsUI/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.826122
+offset_top = 1.8926346
+offset_right = 45.82614
+offset_bottom = 283.89264
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.66421527, 0.24613859)
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="VBoxContainer" parent="Camera2D/StatsUI/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="nombre" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "JESUS"
+
+[node name="nivel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "12"
+
+[node name="HSeparator" type="HSeparator" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="StatsHPLabel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+text = "12/12"
+
+[node name="Monedas" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+text = "213"
+
+[node name="ClassLabel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+text = "warrior"
+
+[node name="HSeparator2" type="HSeparator" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+text = "DAMAGE"
+
+[node name="GridContainer2" type="GridContainer" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="StatsCriticalLabel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer2"]
+layout_mode = 2
+text = "50%"
+
+[node name="StatsDamageLabel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer2"]
+layout_mode = 2
+text = "123"
+
+[node name="StatsAttackSpeedLabel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer2"]
+layout_mode = 2
+text = "2.2"
+
+[node name="StatsKillsLabel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer2"]
+layout_mode = 2
+text = "123"
+
+[node name="HSeparator3" type="HSeparator" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="GridContainer3" type="GridContainer" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="StatsSpeedLabel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer3"]
+layout_mode = 2
+text = "222"
+
+[node name="StatsGoldBonusLabel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer3"]
+layout_mode = 2
+text = "20%"
+
+[node name="WaveUI" type="Control" parent="Camera2D"]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -78.75
+offset_top = -205.00002
+offset_right = -78.75
+offset_bottom = -205.00002
+grow_horizontal = 2
+scale = Vector2(1.894613, 1.5495455)
+size_flags_horizontal = 4
+
+[node name="WaveLabel" type="Label" parent="Camera2D/WaveUI"]
+layout_mode = 0
+offset_left = -42.85618
+offset_top = 15.543526
+offset_right = 53.14382
+offset_bottom = 38.543526
+scale = Vector2(0.6315881, 1.0243223)
+text = "WAVE LAVEL"
+
+[node name="EnemyCountLabel" type="Label" parent="Camera2D/WaveUI"]
+layout_mode = 0
+offset_left = 85.14382
+offset_top = 14.543526
+offset_right = 200.14383
+offset_bottom = 37.543526
+scale = Vector2(0.6315881, 1.0243223)
+text = "ENEMY COUNT"
+
+[node name="DecisionUI" type="Control" parent="Camera2D"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -223.75
+offset_top = 23.75
+offset_right = -183.75
+offset_bottom = 63.75
+scale = Vector2(0.37766635, 0.6431528)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/DecisionUI"]
+layout_mode = 0
+offset_left = -964.4123
+offset_top = -612.8345
+offset_right = -924.4123
+offset_bottom = -572.8345
+scale = Vector2(25.141712, 15.534646)
+
+[node name="CurrencyLabel" type="Label" parent="Camera2D/DecisionUI/VBoxContainer"]
+layout_mode = 2
+text = "Monedas:213"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/DecisionUI/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 45
+
+[node name="Card3" type="Control" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card3"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.9764706, 0.7764706, 0.44313726, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card3"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.44845653, 0.47081107)
+
+[node name="CardName" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card3/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Card1"
+
+[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card3/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "desc"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card3/VBoxContainer"]
+layout_mode = 2
+
+[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card3/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.02874092, 0.061595596, 0.07940511, 1)
+text = "$price"
+
+[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card3/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "buy"
+
+[node name="Card2" type="Control" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card2"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.9764706, 0.7764706, 0.44313726, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card2"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.44845653, 0.47081107)
+
+[node name="CardName" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card2/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Card1"
+
+[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card2/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "desc"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card2/VBoxContainer"]
+layout_mode = 2
+
+[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.02874092, 0.061595596, 0.07940511, 1)
+text = "$price"
+
+[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card2/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "buy"
+
+[node name="Card1" type="Control" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card1"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.9764706, 0.7764706, 0.44313726, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card1"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.44845653, 0.47081107)
+
+[node name="CardName" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card1/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Card1"
+
+[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card1/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "desc"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card1/VBoxContainer"]
+layout_mode = 2
+
+[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card1/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.02874092, 0.061595596, 0.07940511, 1)
+text = "$price"
+
+[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/VBoxContainer/HBoxContainer/Card1/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "buy"
+
+[node name="PlayerInfoUI" type="Control" parent="Camera2D"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HPLabel" type="Label" parent="Camera2D/PlayerInfoUI"]
+layout_mode = 0
+offset_left = -15.0
+offset_top = -56.250004
+offset_right = 25.0
+offset_bottom = -33.250004
+scale = Vector2(1, 0.5555583)
+text = "0"
+horizontal_alignment = 1
+
+[node name="RogueSprite" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(5, 27.5)
+scale = Vector2(0.311, 0.29)
+sprite_frames = ExtResource("2_cxr5p")
+animation = &"attack_E"
+frame = 11
+frame_progress = 1.0
+speed_scale = 6.8
+
+[node name="KnightSprite" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(5.000001, -23.749998)
+scale = Vector2(0.515, 0.515)
+sprite_frames = ExtResource("3_tdg3f")
+animation = &"attack_S"
+frame = 17
+frame_progress = 1.0
+speed_scale = 6.8
+
+[node name="MageSprite" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(8.75, 6.2499995)
+scale = Vector2(0.2, 0.2)
+sprite_frames = ExtResource("150_5tdsq")
+animation = &"Idle"
+frame_progress = 0.5459906
+speed_scale = 9.0
+
+[node name="ArcherSprite" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(-1.2499999, 6.2499995)
+scale = Vector2(0.32, 0.32)
+sprite_frames = ExtResource("4_e80uo")
+animation = &"run_W"
+speed_scale = 6.8
+
+[node name="WarriorSprite" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(7.575001, -35.981243)
+scale = Vector2(0.26522496, 0.26522496)
+sprite_frames = ExtResource("2_kne1u")
+animation = &"run_W"
+speed_scale = 6.8
+
+[connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]

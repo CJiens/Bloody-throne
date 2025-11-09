@@ -1,0 +1,72 @@
+[gd_scene load_steps=7 format=3 uid="uid://c50dg0rerb3ol"]
+
+[ext_resource type="Script" uid="uid://21foowxwsngg" path="res://enities/boss/boss.gd" id="1_qxqmh"]
+[ext_resource type="SpriteFrames" uid="uid://df1okf4gl2wjh" path="res://enities/boss/boss.tres" id="2_uiq5h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uiq5h"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nr1dr"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hhqnq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cibbq"]
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_qxqmh")
+
+[node name="HPBarContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="HPBar" type="ProgressBar" parent="HPBarContainer"]
+layout_mode = 0
+offset_left = -44.0
+offset_top = 72.0
+offset_right = 51.055
+offset_bottom = 99.0
+show_percentage = false
+
+[node name="HPText" type="Label" parent="HPBarContainer"]
+layout_mode = 0
+offset_left = -14.0
+offset_top = 160.0
+offset_right = 26.0
+offset_bottom = 183.0
+
+[node name="HealthBar" type="ProgressBar" parent="HPBarContainer"]
+layout_mode = 0
+offset_left = -3.0
+offset_top = 108.0
+offset_right = 1.0
+offset_bottom = 135.0
+
+[node name="DetectionArea" type="Area2D" parent="."]
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
+scale = Vector2(14.212231, 13.631053)
+shape = SubResource("RectangleShape2D_uiq5h")
+
+[node name="AggroArea" type="Area2D" parent="."]
+collision_layer = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AggroArea"]
+scale = Vector2(10.099179, -10.251246)
+shape = SubResource("RectangleShape2D_nr1dr")
+
+[node name="AttackArea" type="Area2D" parent="."]
+collision_layer = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+scale = Vector2(-7.40724, 7.4900336)
+shape = SubResource("RectangleShape2D_hhqnq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(8.043327, -14.721902)
+shape = SubResource("RectangleShape2D_cibbq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_uiq5h")
+animation = &"idle"

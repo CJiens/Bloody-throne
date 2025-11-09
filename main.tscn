@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cvrrj37a2fajc" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="PackedScene" uid="uid://xsdjfolg3h1m" path="res://Player.tscn" id="2_1bvp3"]
 [ext_resource type="PackedScene" uid="uid://dftgxtk6badua" path="res://Enemy.tscn" id="2_h2yge"]
-[ext_resource type="PackedScene" uid="uid://dpqg0t3ve8om3" path="res://Network.tscn" id="2_lquwl"]
+[ext_resource type="PackedScene" uid="uid://dpqg0t3ve8om3" path="res://Network/Network.tscn" id="2_lquwl"]
 [ext_resource type="PackedScene" uid="uid://m5llmhoblgp6" path="res://projectiles/MageProjectile.tscn" id="4_2cqfq"]
 [ext_resource type="PackedScene" path="res://Ghost.tscn" id="5_4k2k6"]
 [ext_resource type="PackedScene" path="res://Barrel.tscn" id="6_0rl1p"]
@@ -11,7 +11,7 @@
 [ext_resource type="Theme" uid="uid://qkkblp6cijnh" path="res://Temas/Botones segunda parte.tres" id="6_kek77"]
 [ext_resource type="Theme" uid="uid://bc0ftxndqriis" path="res://Temas/main_menu.tres" id="7_5vw27"]
 [ext_resource type="PackedScene" uid="uid://cog04o3t2cbln" path="res://base.tscn" id="7_cegan"]
-[ext_resource type="PackedScene" uid="uid://c50dg0rerb3ol" path="res://enities/boss/character_body_2d.tscn" id="7_getpj"]
+[ext_resource type="PackedScene" uid="uid://c50dg0rerb3ol" path="res://enities/boss/boss.tscn" id="7_getpj"]
 [ext_resource type="Theme" uid="uid://p6lafxv8viug" path="res://Temas/Input.tres" id="9_kek77"]
 [ext_resource type="AudioStream" uid="uid://kv8nhocsergj" path="res://Musica/Bloody-Throne-Preferida.ogg" id="10_4c57u"]
 [ext_resource type="Texture2D" uid="uid://btmllehlbkcto" path="res://Ui_Select_player/Fondo Select.png" id="10_vivmo"]
@@ -261,8 +261,7 @@ BossScene = ExtResource("7_getpj")
 BaseScene = ExtResource("7_cegan")
 
 [node name="Nivel1" parent="." instance=ExtResource("20_82xsv")]
-position = Vector2(621.00006, 297.00003)
-scale = Vector2(5.152, 3)
+position = Vector2(-281, 39.000015)
 
 [node name="EnemyContainer" type="Node2D" parent="."]
 

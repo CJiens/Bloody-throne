@@ -1,20 +1,38 @@
-[gd_scene load_steps=3 format=3 uid="uid://cog04o3t2cbln"]
+[gd_scene load_steps=4 format=3 uid="uid://cog04o3t2cbln"]
 
 [ext_resource type="Script" uid="uid://j2h54f2tlvs" path="res://Base.gd" id="1_rpg24"]
-[ext_resource type="Texture2D" uid="uid://clycv8dtg6io2" path="res://mapa/as.png" id="2_3vi8l"]
+[ext_resource type="Theme" uid="uid://bri7bopivwxvd" path="res://bars.tres" id="2_8rhti"]
+[ext_resource type="Texture2D" uid="uid://c7rbs4egg0mh3" path="res://mapa/base/0003.png" id="3_8rhti"]
 
 [node name="Base" type="Node2D"]
 position = Vector2(0, 1)
+scale = Vector2(3, 3)
 script = ExtResource("1_rpg24")
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
-offset_left = -5.0
-offset_top = 56.0
-offset_right = -1.0
-offset_bottom = 83.0
-scale = Vector2(3.352616, 0.68543005)
+offset_left = -38.66667
+offset_top = 53.666664
+offset_right = 55.658325
+offset_bottom = 80.66666
+scale = Vector2(0.98307526, 0.9063631)
+theme = ExtResource("2_8rhti")
+show_percentage = false
 metadata/_edit_use_anchors_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.1, 0.1)
-texture = ExtResource("2_3vi8l")
+texture = ExtResource("3_8rhti")
+
+[node name="teamLabel" type="Label" parent="."]
+offset_left = -47.666664
+offset_top = -82.00001
+offset_right = 51.64834
+offset_bottom = -39.000008
+scale = Vector2(0.9480245, 0.6080482)
+
+[node name="vidaLabel" type="Label" parent="."]
+offset_left = -7.333333
+offset_top = 56.66666
+offset_right = 20.586666
+offset_bottom = 99.66667
+scale = Vector2(1.1581872, 0.46231937)
