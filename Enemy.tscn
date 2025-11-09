@@ -41,6 +41,17 @@ theme = ExtResource("2_2hac7")
 max_value = 0.0
 show_percentage = false
 
+[node name="vidaLabel" type="Label" parent="ProgressBar"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -11.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="DetectionArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea"]
@@ -53,10 +64,3 @@ visibility_layer = 4
 scale = Vector2(1.0068027, 1)
 sprite_frames = ExtResource("2_s7bn3")
 animation = &"walk"
-
-[node name="vidaLabel" type="Label" parent="."]
-offset_left = -22.999998
-offset_top = 141.0
-offset_right = 51.885002
-offset_bottom = 184.0
-scale = Vector2(0.95339864, 0.6307633)

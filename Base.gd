@@ -7,7 +7,7 @@ var max_hp: int = 1000
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var hp_bar: ProgressBar = $ProgressBar
-@onready var vida_label: Label = $vidaLabel
+@onready var vida_label: Label = $ProgressBar/vidaLabel
 func _ready():
 	vida_label.text = str(hp) + "/" + str(max_hp)
 	hp_bar.max_value = max_hp

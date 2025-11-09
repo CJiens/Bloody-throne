@@ -259,9 +259,14 @@ GhostScene = ExtResource("5_4k2k6")
 BarrelScene = ExtResource("6_0rl1p")
 BossScene = ExtResource("7_getpj")
 BaseScene = ExtResource("7_cegan")
+base_positions = {
+1: Vector2(-1581, -904),
+2: Vector2(1402, 407)
+}
 
 [node name="Nivel1" parent="." instance=ExtResource("20_82xsv")]
 position = Vector2(-281, 39.000015)
+scale = Vector2(2, 2)
 
 [node name="EnemyContainer" type="Node2D" parent="."]
 
@@ -830,6 +835,10 @@ layout_mode = 2
 position = Vector2(-2, 1)
 
 [node name="BaseContainer" type="Node2D" parent="."]
+
+[node name="Base" parent="." instance=ExtResource("7_cegan")]
+visible = false
+position = Vector2(1402, 407)
 
 [connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button3" to="." method="_on_button_3_pressed"]

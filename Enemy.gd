@@ -78,7 +78,7 @@ var is_ranged: bool = false
 @onready var attack_area: Area2D = $AttackArea
 @onready var detection_area: Area2D = $DetectionArea
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
-@onready var vida_label: Label = $vidaLabel
+@onready var vida_label: Label = $ProgressBar/vidaLabel
 # Proyectiles para enemigos ranged
 @export var projectile_scene: PackedScene
 
@@ -245,11 +245,10 @@ func _is_valid_target(target: Node2D) -> bool:
 func _move_to_base():
 	# Moverse hacia la base del equipo opuesto
 	var target_base_position = Vector2.ZERO
-	
 	if team == 1:
-		target_base_position = Vector2(-450, 1900) # Base derecha
+		target_base_position = Vector2(-1600, -800) # Base derecha
 	else:
-		target_base_position = Vector2(450, -1900) # Base izquierda
+		target_base_position = Vector2(1400, 400) # Base izquierda
 	
 	target_position = target_base_position
 	state = "moving"

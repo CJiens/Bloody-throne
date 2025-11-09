@@ -72,8 +72,58 @@ var class_projectiles := {
 @export var BaseScene: PackedScene
 
 # -------------------------------
-# --- VARIABLES DE JUEGO
+# --- VARIABLES DE JUEGO (PUBLICAS)
 # -------------------------------
+
+# CONFIGURACIÓN DE SPAWN
+@export_group("Configuración de Spawn")
+@export var spawn_area_percentage: float = 0.4  # 40% del área central para spawn
+@export var base_positions: Dictionary = {      # Posiciones de las bases
+	1: Vector2(-1600, -800),
+	2: Vector2(1400, 400)
+}
+
+# CONFIGURACIÓN DE SALA DE ESPERA
+@export_group("Configuración de Sala de Espera")
+@export var minimum_wait_time: float = 10.0  # Mínimo 10 segundos para elegir clase
+@export var game_start_countdown_time: float = 5.0  # 5 segundos de countdown
+
+# CONFIGURACIÓN DE EQUIPOS
+@export_group("Configuración de Equipos")
+@export var MAX_PLAYERS_PER_TEAM: int = 2
+
+# CONFIGURACIÓN DE ATAQUES
+@export_group("Configuración de Ataques - Cuerpo a Cuerpo")
+@export var warrior_attack_range: float = 80.0
+@export var warrior_attack_damage: int = 15
+@export var warrior_attack_cone_angle: float = 120.0
+
+@export var rogue_attack_range: float = 60.0
+@export var rogue_attack_damage: int = 12
+@export var rogue_attack_cone_angle: float = 150.0
+
+@export_group("Configuración de Ataques - A Distancia")
+@export var mage_attack_damage: int = 10
+@export var archer_attack_damage: int = 12
+@export var projectile_speed: float = 400.0
+
+# CONFIGURACIÓN DE BASES
+@export_group("Configuración de Bases")
+@export var base_health: int = 1000
+@export var base_max_health: int = 1000
+
+# CONFIGURACIÓN DE EFECTOS VISUALES
+@export_group("Configuración de Efectos Visuales")
+@export var screen_shake_intensity: float = 25.0
+@export var screen_shake_duration: float = 1.0
+@export var flash_screen_duration: float = 0.8
+@export var flash_screen_color: Color = Color(1, 0.3, 0.3, 0.4)
+
+# CONFIGURACIÓN DE LOADING SCREEN
+@export_group("Configuración de Loading Screen")
+@export var loading_duration: float = 3.0
+
+# Variables internas del juego
 var players := {} # id:int -> Node2D
 var enemies := {} # id:int -> Node2D
 var projectiles := {} # id:int -> Node2D
@@ -86,19 +136,16 @@ var class_chosen: bool = false
 var game_started: bool = false
 var countdown_timer: float = 0.0
 var countdown_active: bool = false
-var minimum_wait_time: float = 10 # Mínimo 10 segundos para elegir clase
 var wait_timer: float = 0.0
 var loading_complete: bool = false
 
-# NUEVAS VARIABLES PARA SISTEMA DE EQUIPOS Y VICTORIA
+# Variables de equipos y victoria
 var player_teams := {} # id -> team
 var team_counts := {1: 0, 2: 0}
 var game_start_countdown := 0
 var respawn_timers := {} # player_id -> time_left
 var local_player_team := 0
-var MAX_PLAYERS_PER_TEAM = 2
 var bosses := {} # id:int -> Node2D
-
 
 # -------------------------------
 # --- INICIO
@@ -189,21 +236,15 @@ func _ready():
 func spawn_initial_bases():
 	print("🏰 SPAWNEANDO BASES INICIALES...")
 	
-	# Posiciones fijas para las bases (ajustar según tu mapa)
-	var base_positions = {
-		1: Vector2(-519, 500), # Base izquierda - Equipo 1
-		2: Vector2(383, 249) # Base derecha - Equipo 2
-	}
-	
 	for team in [1, 2]:
 		if BaseScene:
 			var base = BaseScene.instantiate()
 			base.position = base_positions[team]
 			base.name = "Base_Team_" + str(team)
 			
-			# Configurar base
+			# Configurar base usando variables públicas
 			if base.has_method("setup"):
-				base.setup(team, 1000, 1000) # team, hp, max_hp
+				base.setup(team, base_health, base_max_health)
 			
 			base_container.add_child(base)
 			bases[team] = base
@@ -221,8 +262,8 @@ func update_bases_from_server():
 				var base_node = bases[team]
 				if base_node and base_node.has_method("update_hp"):
 					# Usar get() con valores por defecto para evitar errores
-					var current_hp = base_data.get("hp", 1000)
-					var max_hp = base_data.get("maxHp", base_data.get("max_hp", 1000))
+					var current_hp = base_data.get("hp", base_health)
+					var max_hp = base_data.get("maxHp", base_data.get("max_hp", base_max_health))
 					
 					base_node.update_hp(current_hp)
 					
@@ -423,9 +464,9 @@ func _on_boss_phase_changed(boss_id: int, phase: int):
 		if boss and boss.has_method("_transition_to_phase"):
 			boss._transition_to_phase(phase)
 	
-	# Efectos de pantalla
-	_screen_shake(1.0, 25)
-	_flash_screen(Color(1, 0.3, 0.3, 0.4), 0.8)
+	# Efectos de pantalla usando variables públicas
+	_screen_shake(screen_shake_duration, screen_shake_intensity)
+	_flash_screen(flash_screen_color, flash_screen_duration)
 	
 	# Mostrar mensaje de fase
 	_show_boss_message("FASE " + str(phase) + "!")
@@ -448,7 +489,6 @@ func _on_boss_health_updated(hp: int, max_hp: int):
 		# Mostrar UI si no está visible
 		if not boss_health_ui.visible and hp < max_hp:
 			boss_health_ui.visible = true
-
 
 func _show_boss_victory_effects():
 	print("🎊 VICTORIA CONTRA EL JEFE!")
@@ -510,9 +550,9 @@ func _show_loading_screen():
 	if loading_animation:
 		loading_animation.play("loading")
 	
-	# Simular progreso de carga
+	# Simular progreso de carga usando variable pública
 	var tween = create_tween()
-	tween.tween_method(_update_loading_progress, 0.0, 100.0, 3.0)
+	tween.tween_method(_update_loading_progress, 0.0, 100.0, loading_duration)
 	await tween.finished
 	
 	loading_complete = true
@@ -887,10 +927,10 @@ func _check_start_conditions(delta: float):
 func _start_countdown():
 	print("🚀 %d JUGADORES LISTOS - Iniciando countdown..." % Network.players.size())
 	countdown_active = true
-	countdown_timer = 5.0 # 5 segundos
+	countdown_timer = game_start_countdown_time # Usar variable pública
 	if start_countdown:
 		start_countdown.visible = true
-		start_countdown.text = "Iniciando en: 5"
+		start_countdown.text = "Iniciando en: %d" % game_start_countdown_time
 
 # -------------------------------
 # --- INICIO DEL JUEGO (CORREGIDO)
@@ -1056,9 +1096,9 @@ func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100, class
 	var screen_size = get_viewport().get_visible_rect().size
 	var center = screen_size / 2
 	
-	# Definir área de spawn reducida (ej: 40% del tamaño de pantalla)
-	var spawn_width = screen_size.x * 0.4
-	var spawn_height = screen_size.y * 0.4
+	# Definir área de spawn usando variable pública
+	var spawn_width = screen_size.x * spawn_area_percentage
+	var spawn_height = screen_size.y * spawn_area_percentage
 	
 	# Calcular posición aleatoria dentro del área central
 	var random_x = randf_range(center.x - spawn_width / 2, center.x + spawn_width / 2)
@@ -1133,7 +1173,7 @@ func _spawn_projectile(id: int, data: Dictionary):
 		projectile.set("projectile_direction", direction.normalized())
 		projectile.set("projectile_damage", data.damage)
 		projectile.set("projectile_owner_id", data.owner_id)
-		projectile.set("projectile_speed", data.speed if data.has("speed") else 400.0)
+		projectile.set("projectile_speed", data.speed if data.has("speed") else projectile_speed)
 	
 	add_child(projectile)
 	projectiles[id] = projectile
@@ -1310,21 +1350,21 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 	if player.has_method("execute_attack"):
 		player.execute_attack(mouse_pos)
 
-	# Propiedades de ataque específicas por clase
-	var attack_range = 60.0 # AUMENTADO para mejor detección
-	var attack_cone_angle = deg_to_rad(90.0) # AUMENTADO para mejor detección
+	# Propiedades de ataque específicas por clase - USANDO VARIABLES PÚBLICAS
+	var attack_range = 60.0
+	var attack_cone_angle = deg_to_rad(90.0)
 	var attack_damage = 10
 	
-	# Ajustar propiedades según clase
+	# Ajustar propiedades según clase usando variables públicas
 	match player_classe:
 		"warrior":
-			attack_range = 80.0 # AUMENTADO
-			attack_damage = 15
-			attack_cone_angle = deg_to_rad(120.0) # AUMENTADO
+			attack_range = warrior_attack_range
+			attack_damage = warrior_attack_damage
+			attack_cone_angle = deg_to_rad(warrior_attack_cone_angle)
 		"rogue":
-			attack_range = 60.0 # AUMENTADO
-			attack_damage = 12
-			attack_cone_angle = deg_to_rad(150.0) # AUMENTADO
+			attack_range = rogue_attack_range
+			attack_damage = rogue_attack_damage
+			attack_cone_angle = deg_to_rad(rogue_attack_cone_angle)
 
 	# DEBUG: Dibujar área de ataque (opcional)
 	_draw_debug_attack_area(player_pos, player_facing, attack_range, attack_cone_angle)
@@ -1411,13 +1451,13 @@ func _attack_ranged_target(mouse_pos: Vector2) -> void:
 	if player.has_method("execute_attack"):
 		player.execute_attack(mouse_pos)
 
-	# Daño específico por clase
+	# Daño específico por clase usando variables públicas
 	var attack_damage = 8
 	match player_classe:
 		"mage":
-			attack_damage = 10
+			attack_damage = mage_attack_damage
 		"archer":
-			attack_damage = 12
+			attack_damage = archer_attack_damage
 
 	_create_projectile(player, player_facing, attack_damage)
 
@@ -1444,7 +1484,7 @@ func _create_projectile(player: Node2D, direction: Vector2, damage: int):
 		direction,
 		damage,
 		Network.player_id,
-		400.0,
+		projectile_speed, # Usar variable pública
 		player_classe
 	)
 

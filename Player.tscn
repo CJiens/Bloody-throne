@@ -75,29 +75,27 @@ metadata/_edit_use_anchors_ = true
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="StatsUI" type="Control" parent="Camera2D"]
-visible = false
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -300.0
+offset_right = 300.0
+offset_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(8.989, 7.265)
 size_flags_horizontal = 6
 size_flags_vertical = 6
 theme = ExtResource("5_hp6x6")
 
 [node name="Panel" type="Panel" parent="Camera2D/StatsUI"]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -74.6746
-offset_top = -50.585
-offset_right = 75.3254
-offset_bottom = 49.415
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("5_hp6x6")
@@ -107,13 +105,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 16.826122
-offset_top = 1.8926346
-offset_right = 45.82614
-offset_bottom = 283.89264
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.66421527, 0.24613859)
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -125,71 +118,99 @@ theme_override_constants/separation = 3
 
 [node name="nombre" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 6
 text = "JESUS"
 
 [node name="nivel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 6
 text = "12"
 
 [node name="HSeparator" type="HSeparator" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="GridContainer" type="GridContainer" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="StatsHPLabel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
 text = "12/12"
 
 [node name="Monedas" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
 text = "213"
 
 [node name="ClassLabel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
 text = "warrior"
 
 [node name="HSeparator2" type="HSeparator" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Label" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 6
 text = "DAMAGE"
 
 [node name="GridContainer2" type="GridContainer" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="StatsCriticalLabel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer2"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
 text = "50%"
 
 [node name="StatsDamageLabel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer2"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
 text = "123"
 
 [node name="StatsAttackSpeedLabel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer2"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
 text = "2.2"
 
 [node name="StatsKillsLabel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer2"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
 text = "123"
 
 [node name="HSeparator3" type="HSeparator" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="Label2" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 6
 
 [node name="GridContainer3" type="GridContainer" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 3
 
 [node name="StatsSpeedLabel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer3"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
 text = "222"
 
 [node name="StatsGoldBonusLabel" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer3"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
 text = "20%"
 
 [node name="WaveUI" type="Control" parent="Camera2D"]
@@ -224,6 +245,7 @@ scale = Vector2(0.6315881, 1.0243223)
 text = "ENEMY COUNT"
 
 [node name="DecisionUI" type="Control" parent="Camera2D"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
