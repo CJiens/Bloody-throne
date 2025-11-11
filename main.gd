@@ -66,8 +66,6 @@ var class_projectiles := {
 @export var PlayerScene: PackedScene
 @export var EnemyScene: PackedScene
 @export var ProjectileScene: PackedScene
-@export var GhostScene: PackedScene
-@export var BarrelScene: PackedScene
 @export var BossScene: PackedScene
 @export var BaseScene: PackedScene
 
@@ -127,8 +125,6 @@ var class_projectiles := {
 var players := {} # id:int -> Node2D
 var enemies := {} # id:int -> Node2D
 var projectiles := {} # id:int -> Node2D
-var ghosts := {} # id:int -> Node2D
-var possessable_objects := {}
 var bases := {} # team:int -> Node2D
 
 # Variables de espera
@@ -186,11 +182,7 @@ func _ready():
 	Network.game_state_updated.connect(_on_game_state_updated)
 	Network.player_joined.connect(_on_player_joined)
 	Network.player_left.connect(_on_player_left)
-	Network.on_player_became_ghost.connect(_on_player_became_ghost)
-	Network.on_object_destroyed.connect(_on_object_destroyed_sync)
-	Network.on_ghost_possession_started.connect(_on_ghost_possession_started)
-	Network.on_ghost_possession_ended.connect(_on_ghost_possession_ended)
-	Network.on_object_thrown.connect(_on_object_thrown)
+
 	Network.wave_started.connect(_on_wave_started)
 	Network.wave_ended.connect(_on_wave_ended)
 	Network.boss_spawned.connect(_on_boss_spawned_permanent)
@@ -646,7 +638,7 @@ func _process(delta):
 
 	# Debug de estado
 	if Engine.get_frames_drawn() % 180 == 0:
-		print("📊 ESTADO - Jugadores:", players.size(), " Enemigos:", enemies.size(), " Bosses:", bosses.size(), " Proyectiles:", projectiles.size(), " Fantasmas:", ghosts.size(), " Bases:", bases.size())
+		print("📊 ESTADO - Jugadores:", players.size(), " Enemigos:", enemies.size(), " Bosses:", bosses.size(), " Proyectiles:", projectiles.size(), " Bases:", bases.size())
 
 # -------------------------------
 # --- ACTUALIZACIÓN DE ENTIDADES DEL JUEGO (CORREGIDO)
@@ -803,17 +795,7 @@ func _spawn_enemy(id: int, type: String, pos: Vector2):
 	enemies[id] = instance
 	print("👹 ENEMIGO CREADO - ID:", id, " Tipo:", type, " Pos:", pos)
 
-# -------------------------------
-# --- SISTEMA DE VISIBILIDAD DE FANTASMAS
-# -------------------------------
-func is_local_player_ghost() -> bool:
-	return Network.player_id in ghosts
 
-func update_all_ghosts_visibility():
-	for ghost_id in ghosts:
-		var ghost = ghosts[ghost_id]
-		if ghost and ghost.has_method("_update_visibility"):
-			ghost._update_visibility()
 
 # -------------------------------
 # --- SALA DE ESPERA MEJORADA
@@ -1260,33 +1242,6 @@ func _cleanup_removed_entities():
 		print("🗑️ ELIMINANDO PROYECTIL - ID:", id)
 		destroy_projectile(id)
 
-	# Limpiar fantasmas
-	_cleanup_ghosts_improved()
-	
-	var objects_to_remove = []
-	for object_id in possessable_objects.keys():
-		var object = possessable_objects[object_id]
-		if not is_instance_valid(object):
-			objects_to_remove.append(object_id)
-	for object_id in objects_to_remove:
-		possessable_objects.erase(object_id)
-
-func _cleanup_ghosts_improved():
-	var ghosts_to_remove = []
-	for ghost_id in ghosts.keys():
-		# Mantener al fantasma local incluso si no está en Network.players
-		if ghost_id == Network.player_id:
-			continue
-		
-		# Remover fantasmas cuyos jugadores ya no están conectados
-		if not is_instance_valid(ghosts[ghost_id]) or not Network.players.has(str(ghost_id)):
-			ghosts_to_remove.append(ghost_id)
-	
-	for ghost_id in ghosts_to_remove:
-		print("👻 ELIMINANDO FANTASMA - ID:", ghost_id)
-		if is_instance_valid(ghosts[ghost_id]):
-			ghosts[ghost_id].queue_free()
-		ghosts.erase(ghost_id)
 
 # -------------------------------
 # --- DESTRUCCIÓN DE PROYECTILES
@@ -1509,68 +1464,7 @@ func _on_projectile_removed(projectile_id):
 	print("📡 Señal: Proyectil removido recibido del servidor:", projectile_id)
 	destroy_projectile(projectile_id)
 
-# -------------------------------
-# --- CONVERSIÓN JUGADOR -> FANTASMA
-# -------------------------------
-func _on_player_became_ghost(player_id: int):
-	print("👻 EVENTO: Jugador se convirtió en fantasma - ID:", player_id)
-	replace_player_with_ghost(player_id)
 
-func replace_player_with_ghost(player_id: int):
-	# Verificar si el jugador existe
-	if not player_id in players:
-		print("❌ No se puede convertir a fantasma - Jugador no encontrado:", player_id)
-		return
-	if player_id in ghosts:
-		print("⚠️ El jugador ya es un fantasma - ID:", player_id)
-		return
-	var player_node = players[player_id]
-	var ghost_position = player_node.position
-	
-	# Eliminar jugador
-	players.erase(player_id)
-	if is_instance_valid(player_node):
-		player_node.queue_free()
-	
-	# Crear fantasma
-	var ghost = GhostScene.instantiate()
-	ghost.position = ghost_position
-	ghost.name = "Ghost_" + str(player_id)
-	ghost.set_ghost_id(player_id)
-	
-	# Si es el jugador local, configurar como controlable
-	if player_id == Network.player_id:
-		ghost.set_is_local(true)
-		print("🎮 FANTASMA LOCAL CREADO - ID:", player_id)
-	
-	player_container.add_child(ghost)
-	ghosts[player_id] = ghost
-	
-	# Actualizar visibilidad de todos los fantasmas
-	update_all_ghosts_visibility()
-	
-	print("👻 FANTASMA CREADO - ID:", player_id, " Posición:", ghost_position)
-
-# -------------------------------
-# --- MANEJO DE POSESIÓN DE OBJETOS
-# -------------------------------
-func _on_ghost_possession_started(player_id: int, object_name: String):
-	print("🎯 POSESIÓN SINCRONIZADA - Ghost:", player_id, " Object:", object_name)
-	var object = object_container.get_node_or_null(object_name)
-	# Buscar objeto por nombre en lugar de ID de instancia
-	if object and object.has_method("_start_possession_effect"):
-		object._start_possession_effect()
-
-func _on_ghost_possession_ended(player_id: int, object_name: String):
-	print("🎯 POSESIÓN TERMINADA - Ghost:", player_id, " Object:", object_name)
-	# Aquí podrías agregar efectos visuales o sonidos
-
-func _on_object_thrown(object_name: String, direction: Vector2):
-	print("🚀 OBJETO LANZADO SINCRONIZADO - Object:", object_name)
-	var object = object_container.get_node_or_null(object_name)
-	if object and object.has_method("throw"):
-		if not object.is_possessed:
-			object.throw(direction)
 
 # -------------------------------
 # --- CHAT
@@ -1604,11 +1498,7 @@ func _find_object_by_id(object_id: int) -> Node:
 			return child
 	return null
 
-func _on_object_destroyed_sync(object_name: String):
-	print("🗑️ DESTRUYENDO OBJETO SINCRONIZADO - Nombre:", object_name)
-	var object = object_container.get_node_or_null(object_name)
-	if object and is_instance_valid(object):
-		object.queue_free()
+
 
 # -------------------------------
 # --- SISTEMA DE RECOMPENSAS POR KILLS
@@ -1794,11 +1684,7 @@ func _cleanup_all_entities():
 			projectiles[id].queue_free()
 	projectiles.clear()
 	
-	# Limpiar fantasmas
-	for id in ghosts:
-		if is_instance_valid(ghosts[id]):
-			ghosts[id].queue_free()
-	ghosts.clear()
+	
 	
 	# Resetear timers
 	respawn_timers.clear()

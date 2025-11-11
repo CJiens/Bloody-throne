@@ -886,8 +886,6 @@ func take_damage(amount: int):
 
 func play_death_animation():
 	if not current_sprite:
-		if id == Network.player_id:
-			_convert_to_ghost()
 		return
 
 	print("💀 JUGADOR MUERTO - ID:", id)
@@ -898,8 +896,7 @@ func play_death_animation():
 	
 	if id == Network.player_id:
 		Network.send_player_state("Die")
-		await current_sprite.animation_finished
-		_convert_to_ghost()
+		
 
 # -------------------------------
 # --- COOLDOWNS
@@ -947,15 +944,3 @@ func _create_hit_effect():
 	modulate = Color.RED
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.2)
-
-# -------------------------------
-# --- CONVERSIÓN A FANTASMA AL MORIR
-# -------------------------------
-func _convert_to_ghost():
-	print("👻 CONVIRTIENDO JUGADOR EN FANTASMA - ID:", id)
-	
-	if Network.connected and Network.ws_ready:
-		Network.player_became_ghost(id)
-	
-	if get_parent().has_method("replace_player_with_ghost"):
-		get_parent().replace_player_with_ghost(id)
