@@ -25,6 +25,16 @@ var attack_timer: float = 0.0
 var can_attack_var: bool = true
 var is_ranged: bool = false
 
+# Ataque de área para arquera
+var area_attack_cooldown: float = 3.0
+var area_attack_timer: float = 0.0
+var can_area_attack: bool = true
+var area_attack_range: float = 200.0
+var last_direction: Vector2 = Vector2.RIGHT
+# Escena del proyectil de área
+var area_projectile_scene: PackedScene = preload("res://projectiles/ArcherAreaProjectile.tscn")
+
+
 # Estadísticas mejoradas por cartas
 var gold_bonus: int = 0
 var attack_speed_bonus: int = 0
@@ -176,6 +186,11 @@ func _apply_class_config():
 	attack_cooldown = config.attack_cooldown
 	projectile_scene = config.projectile
 	
+	# CONFIGURACIÓN ESPECÍFICA PARA ARQUERA ← AGREGAR ESTO
+	if classe == "archer":
+		area_attack_cooldown = 3.0  # 3 segundos de cooldown
+		area_attack_range = 200.0   # 200 píxeles de rango
+		can_area_attack = true
 	_setup_class_sprite()
 	
 	if hp_bar:
@@ -275,7 +290,7 @@ func _ready():
 func _process(delta):
 	print("Esta es la pocision de la x => " + str(get_local_mouse_position().x) + "Esta es la pocision de la y =>" + str(get_local_mouse_position().y))
 	_handle_cooldowns(delta)
-	
+	_handle_area_attack_cooldown(delta)
 	if in_decision_period:
 		decision_time_remaining -= delta
 		if decision_time_remaining <= 0:
@@ -634,6 +649,9 @@ func _handle_local_movement(delta: float):
 		if move_dir != Vector2.ZERO:
 			move_dir = move_dir.normalized()
 			velocity = move_dir * speed * speed_multiplier
+			# GUARDAR ÚLTIMA DIRECCIÓN ← AGREGAR ESTO
+			last_direction = move_dir
+
 		else:
 			velocity = Vector2.ZERO
 
@@ -695,6 +713,84 @@ func execute_attack(mouse_pos: Vector2):
 func can_attack() -> bool:
 	return can_attack_var
 
+func execute_area_attack(mouse_pos: Vector2):
+	if not can_area_attack or classe != "archer":
+		print("❌ ATAQUE DE ÁREA NO DISPONIBLE - Cooldown:", area_attack_timer)
+		return
+	
+	print("🎯 ATAQUE DE ÁREA ACTIVADO - Arquera ID:", id)
+	
+	# Calcular la posición del ataque (200 píxeles en la dirección del mouse)
+	var direction = (mouse_pos - global_position).normalized()
+	
+	
+	# ORIENTAR AL JUGADOR EN LA DIRECCIÓN DEL ATAQUE ← NUEVO
+	last_direction = direction
+
+	# CREAR EFECTO VISUAL INMEDIATO EN CLIENTE ← NUEVO
+	var attack_pos = global_position + (direction * area_attack_range)
+	_create_immediate_area_effect(attack_pos, direction)
+	# Enviar mensaje al servidor
+	Network.socket.send_text(JSON.stringify({
+		"type": "area_attack",
+		"x": attack_pos.x,
+		"y": attack_pos.y,
+		"damage": attack_damage
+	}))
+	
+	# Reproducir animación de ataque de área ← CORREGIDO
+	if current_sprite and current_sprite.sprite_frames.has_animation("attack_Area"):
+		# FORZAR LA ANIMACIÓN Y ESPERAR A QUE TERMINE ← NUEVO
+		current_sprite.play("attack_Area")
+		# Deshabilitar movimiento durante el ataque
+		set_physics_process(false)
+		# Esperar a que termine la animación
+		await current_sprite.animation_finished
+		# Volver a habilitar movimiento
+		set_physics_process(true)
+		current_sprite.play("idle")
+		print("🎭 ANIMACIÓN attack_Area COMPLETADA")
+	else:
+		print("❌ Animación attack_Area no encontrada")
+	
+	# Activar cooldown
+	can_area_attack = false
+	area_attack_timer = area_attack_cooldown
+	
+	print("⏳ ATAQUE DE ÁREA EN COOLDOWN - Tiempo:", area_attack_cooldown, "s")
+# NUEVA FUNCIÓN PARA EFECTO INMEDIATO ← AGREGAR ESTA FUNCIÓN
+func _create_immediate_area_effect(attack_pos: Vector2, direction: Vector2):
+	if not area_projectile_scene:
+		print("❌ area_projectile_scene no asignada")
+		return
+	
+	var area_projectile = area_projectile_scene.instantiate()
+	if not area_projectile:
+		print("❌ No se pudo instanciar area_projectile")
+		return
+	
+	# Posicionar y orientar
+	area_projectile.position = attack_pos
+	if area_projectile.has_node("AnimatedSprite2D"):
+		var sprite = area_projectile.get_node("AnimatedSprite2D")
+		if direction.x > 0:
+			sprite.flip_h = false
+		elif direction.x < 0:
+			sprite.flip_h = true
+	
+	# Agregar a la escena del juego
+	# Buscar el contenedor de enemigos en la escena principal
+	var main_node = get_tree().current_scene
+	if main_node and main_node.has_node("EnemyContainer"):
+		main_node.get_node("EnemyContainer").add_child(area_projectile)
+		print("⚡ EFECTO INMEDIATO CREADO - Posición:", attack_pos)
+	else:
+		print("❌ No se encontró EnemyContainer en la escena principal")
+# NUEVA FUNCIÓN PARA ORIENTAR EL SPRITE ← AGREGAR ESTA FUNCIÓN
+
+# NUEVA FUNCIÓN PARA OBTENER DIRECCIÓN ← AGREGAR ESTA FUNCIÓN
+func get_last_direction() -> Vector2:
+	return last_direction
 # -------------------------------
 # --- SISTEMA DE ROLL
 # -------------------------------
@@ -823,6 +919,12 @@ func _handle_cooldowns(delta):
 	if roll_cooldown_timer > 0:
 		roll_cooldown_timer -= delta
 
+func _handle_area_attack_cooldown(delta):
+	if not can_area_attack:
+		area_attack_timer -= delta
+		if area_attack_timer <= 0:
+			can_area_attack = true
+			print("✅ ATAQUE DE ÁREA LISTO - Cooldown terminado")
 # -------------------------------
 # --- COLISIONES CON PROYECTILES
 # -------------------------------

@@ -5,8 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://dftgxtk6badua" path="res://Enemy.tscn" id="2_h2yge"]
 [ext_resource type="PackedScene" uid="uid://dpqg0t3ve8om3" path="res://Network/Network.tscn" id="2_lquwl"]
 [ext_resource type="PackedScene" uid="uid://m5llmhoblgp6" path="res://projectiles/MageProjectile.tscn" id="4_2cqfq"]
-[ext_resource type="PackedScene" path="res://Ghost.tscn" id="5_4k2k6"]
-[ext_resource type="PackedScene" path="res://Barrel.tscn" id="6_0rl1p"]
+[ext_resource type="PackedScene" uid="uid://cm7wlnvc2oxwa" path="res://Ghost.tscn" id="5_4k2k6"]
+[ext_resource type="PackedScene" uid="uid://854hwc6rgjxy" path="res://Barrel.tscn" id="6_0rl1p"]
 [ext_resource type="VideoStream" uid="uid://kyfhj0q8a5v2" path="res://Presentacion-del-Juego-Por-Frame Formato Godot.ogv" id="6_272bh"]
 [ext_resource type="Theme" uid="uid://qkkblp6cijnh" path="res://Temas/Botones segunda parte.tres" id="6_kek77"]
 [ext_resource type="Theme" uid="uid://bc0ftxndqriis" path="res://Temas/main_menu.tres" id="7_5vw27"]
@@ -837,7 +837,6 @@ position = Vector2(-2, 1)
 [node name="BaseContainer" type="Node2D" parent="."]
 
 [node name="Base" parent="." instance=ExtResource("7_cegan")]
-visible = false
 position = Vector2(1402, 407)
 
 [connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button" to="." method="_on_button_pressed"]

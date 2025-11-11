@@ -157,7 +157,8 @@ func _ready():
 	Network.boss_died.connect(_on_boss_died)
 	# Conectar señal de animaciones del boss
 	Network.boss_animation_updated.connect(_on_boss_animation_updated)
-
+	# Conectar señal de ataque de área
+	Network.area_attack_effect.connect(_on_area_attack_effect)
 	
 	# Conectar botones UI
 	login_button.pressed.connect(_on_login_pressed)
@@ -221,7 +222,7 @@ func _ready():
 	Network.boss_phase_changed.connect(_on_boss_phase_changed)
 	Network.boss_attacked.connect(_on_boss_attacked)
 	Network.boss_health_updated.connect(_on_boss_health_updated)
-
+	Network.base_hit.connect(_on_base_hit)
 	# Configurar sala de espera
 	_setup_waiting_room()
 	
@@ -1324,6 +1325,13 @@ func _unhandled_input(event):
 				print("🖱️ CLICK IZQUIERDO - Ataque a distancia (" + player_classe + ")")
 				_attack_ranged_target(get_global_mouse_position())
 
+	# CLICK DERECHO - Ataque de área para arquera ← AGREGAR ESTO
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		var player = players.get(Network.player_id, null)
+		if player and player.has_method("execute_area_attack") and player.classe == "archer":
+			print("🖱️ CLICK DERECHO - Ataque de área (Archer)")
+			player.execute_area_attack(get_global_mouse_position())
+
 	if event.is_action_pressed("roll"):
 		var player = players.get(Network.player_id, null)
 		if player and player.has_method("try_roll"):
@@ -2068,3 +2076,54 @@ func force_boss_visibility():
 			boss.queue_redraw()
 	
 	print("✅ Visibilidad forzada para", bosses.size(), "bosses")
+func _on_area_attack_effect(x: float, y: float, player_id: int):
+	print("💥 CREANDO EFECTO DE ATAQUE DE ÁREA - Jugador:", player_id, " Posición:", Vector2(x, y))
+	
+	# VERIFICAR SI LA ESCENA EXISTE ← NUEVO
+	var area_projectile_scene = preload("res://projectiles/ArcherAreaProjectile.tscn")
+	if not area_projectile_scene:
+		print("❌ ERROR: No se pudo cargar ArcherAreaProjectile.tscn")
+		return
+	
+	# CREAR EFECTO INMEDIATAMENTE ← CORREGIDO
+	var area_projectile = area_projectile_scene.instantiate()
+	
+	# VERIFICAR QUE SE INSTANCIÓ CORRECTAMENTE
+	if not area_projectile:
+		print("❌ ERROR: No se pudo instanciar ArcherAreaProjectile")
+		return
+	
+	# POSICIONAR CORRECTAMENTE
+	area_projectile.position = Vector2(x, y)
+	
+	# ORIENTAR EL EFECTO SEGÚN LA DIRECCIÓN DEL JUGADOR ← NUEVO
+	if player_id in players:
+		var attacker = players[player_id]
+		if attacker and attacker.has_method("get_last_direction"):
+			# Si el jugador tiene método para obtener dirección, usarlo
+			var direction = attacker.get_last_direction()
+			_orient_area_effect(area_projectile, direction)
+	
+	# Agregar a la escena INMEDIATAMENTE
+	enemy_container.add_child(area_projectile)
+	
+	print("✅ EFECTO DE ÁREA CREADO INMEDIATAMENTE - Posición:", Vector2(x, y))
+
+# NUEVA FUNCIÓN PARA ORIENTAR EL EFECTO DE ÁREA ← AGREGAR ESTA FUNCIÓN
+func _orient_area_effect(effect: Node, direction: Vector2):
+	if effect.has_node("AnimatedSprite2D"):
+		var sprite = effect.get_node("AnimatedSprite2D")
+		# Ajustar la orientación según la dirección
+		if direction.x > 0:
+			sprite.flip_h = false
+		elif direction.x < 0:
+			sprite.flip_h = true
+		print("🧭 EFECTO ORIENTADO - Dirección:", direction)
+# Nueva función para manejar daño a basess
+func _on_base_hit(team: int, hp: int, max_hp: int):
+	print("🏰 ACTUALIZANDO BASE - Equipo:", team, " HP:", hp, "/", max_hp)
+	
+	if bases.has(team):
+		var base_node = bases[team]
+		if base_node and base_node.has_method("update_hp"):
+			base_node.update_hp(hp)

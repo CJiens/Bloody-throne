@@ -476,11 +476,12 @@ frame_progress = 0.64436346
 speed_scale = 9.0
 
 [node name="ArcherSprite" type="AnimatedSprite2D" parent="."]
-visible = false
 position = Vector2(-1.2499999, 6.2499995)
 scale = Vector2(0.32, 0.32)
 sprite_frames = ExtResource("4_e80uo")
-animation = &"run_W"
+animation = &"attack_Area"
+frame = 7
+frame_progress = 1.0
 speed_scale = 6.8
 
 [node name="WarriorSprite" type="AnimatedSprite2D" parent="."]

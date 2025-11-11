@@ -39,7 +39,8 @@ signal on_ghost_possession_started(player_id, object_id)
 signal on_ghost_possession_ended(player_id, object_id)
 signal on_object_thrown(object_id, direction)
 signal on_object_destroyed(object_id)
-
+# Señales para daño a bases
+signal base_hit(team, hp, max_hp)
 # SEÑALES NUEVAS PARA SISTEMA DE OLEADAS
 signal wave_started(wave_number, enemy_count)
 signal wave_ended()
@@ -52,7 +53,8 @@ signal game_session_started()
 signal card_purchased(card_data, new_balance)
 signal card_purchase_failed(reason)
 signal player_upgraded(player_id, upgrade_type)
-
+# Señal para efecto de ataque de área
+signal area_attack_effect(x, y, player_id)
 # SEÑALES NUEVAS PARA SISTEMA DE EQUIPOS Y VICTORIA
 signal team_update(team_counts, players)
 signal team_selected(team, position)
@@ -147,6 +149,7 @@ func _receive_messages():
 				if get_tree().current_scene.has_method("_on_enemy_killed"):
 					get_tree().current_scene._on_enemy_killed(data.id, data.killer_id, data.enemy_type)
 			
+
 			"auth_ok":
 				player_id = data.player.id
 				connected = true
@@ -154,13 +157,18 @@ func _receive_messages():
 				enemies = data.enemies
 				print("✅ Autenticado como:", data.player.username, " ID:", player_id, " Clase:", data.player.classe)
 				emit_signal("game_state_updated")
-
+			"area_attack_effect":
+				print("💥 EFECTO DE ATAQUE DE ÁREA RECIBIDO - Posición:", data.x, data.y, " Jugador:", data.player_id)
+				emit_signal("area_attack_effect", data.x, data.y, data.player_id)
 			"object_destroyed":
 				print("💥 OBJETO DESTRUIDO RECIBIDO - ID:", data.object_name)
 				emit_signal("on_object_destroyed", data.object_name)
 
 			"auth_error":
 				print("❌ Error de autenticación:", data.error)
+			"base_hit":
+				print("🏰 BASE GOLPEADA - Equipo:", data.team, " HP:", data.hp, "/", data.max_hp)
+				emit_signal("base_hit", data.team, data.hp, data.max_hp)
 
 			"join":
 				players[data.player.id] = {
