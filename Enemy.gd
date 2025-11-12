@@ -154,7 +154,7 @@ func set_enemy_type(type: String):
 	
 	# Configurar animaciones
 	setup_animations()
-
+	setup_team_color()
 func setup_animations():
 	if not sprite:
 		return
@@ -209,6 +209,12 @@ func _update_ai(delta):
 		_find_target()
 		return
 	
+	# Verificar que el objetivo siga siendo válido
+	if not _is_valid_target(aggro_target):
+		aggro_target = null
+		state = "moving"
+		return
+	
 	# Calcular distancia al objetivo
 	var distance_to_target = global_position.distance_to(aggro_target.global_position)
 	
@@ -229,26 +235,26 @@ func _find_target():
 	for body in players_in_range:
 		if body.is_in_group("players") and _is_valid_target(body):
 			aggro_target = body
-			print("🎯 ENEMIGO %d ENCONTRÓ OBJETIVO: %s" % [enemy_id, body.name])
 			return
 	
-	# Si no hay jugadores, moverse hacia la base enemiga
+	# Si no hay jugadores enemigos, moverse hacia la base enemiga
 	_move_to_base()
 
 func _is_valid_target(target: Node2D) -> bool:
-	# Verificar que el objetivo esté vivo
-	if target.has_method("get_player_id"):
+	# Verificar que el objetivo esté vivo y sea de equipo contrario
+	if target.is_in_group("players"):
 		var player_hp = target.hp if "hp" in target else 0
-		return player_hp > 0
+		var player_team = target.team if "team" in target else 0
+		return player_hp > 0 and player_team != team
 	return false
 
 func _move_to_base():
 	# Moverse hacia la base del equipo opuesto
 	var target_base_position = Vector2.ZERO
 	if team == 1:
-		target_base_position = Vector2(-1600, -800) # Base derecha
+		target_base_position = Vector2(1400, 400)  # Base del equipo 2
 	else:
-		target_base_position = Vector2(1400, 400) # Base izquierda
+		target_base_position = Vector2(-1600, -800) # Base del equipo 1
 	
 	target_position = target_base_position
 	state = "moving"
@@ -447,7 +453,6 @@ func _on_detection_area_body_entered(body):
 	if body.is_in_group("players") and _is_valid_target(body):
 		if not aggro_target:
 			aggro_target = body
-			print("🎯 ENEMIGO %d DETECTÓ JUGADOR: %s" % [enemy_id, body.name])
 
 func _on_detection_area_body_exited(body):
 	if body == aggro_target:
@@ -534,3 +539,27 @@ func _debug_info():
 			max_hp,
 			aggro_target.name if aggro_target else "Ninguno"
 		])
+# -------------------------------
+# --- CONFIGURACIÓN DE EQUIPO
+# -------------------------------
+func set_team(new_team: int):
+	team = new_team
+	print("🎯 EQUIPO ASIGNADO - Enemigo:", enemy_id, " Equipo:", team)
+	setup_team_color()
+
+# -------------------------------
+# --- IDENTIFICADORES VISUALES POR EQUIPO
+# -------------------------------
+func setup_team_color():
+	if not is_inside_tree():
+		# Esperar a que esté en el árbol de escena
+		await ready
+	
+	match team:
+		1:
+			modulate = Color(0.6, 0.6, 1.0)  # Azul claro para equipo 1
+		2:
+			modulate = Color(1.0, 0.6, 0.6)  # Rojo claro para equipo 2
+		_:
+			modulate = Color(1.0, 1.0, 1.0)  # Blanco para neutral
+	print("🎨 COLOR DE EQUIPO ASIGNADO - Enemigo:", enemy_id, " Equipo:", team, " Color:", modulate)

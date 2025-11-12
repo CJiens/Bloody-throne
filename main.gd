@@ -721,7 +721,10 @@ func _update_game_entities():
 			if id in enemies:
 				enemies[id].position = Vector2(data.x, data.y)
 				if data.has("hp") and enemies[id].has_method("update_hp"):
-					enemies[id].update_hp(data.hp)
+						enemies[id].update_hp(data.hp)
+				# ✅ NUEVO: Actualizar equipo si es necesario
+				if data.has("team") and enemies[id].has_method("set_team"):
+					enemies[id].set_team(data.team)
 			else:
 				print("👹 SPAWNEANDO ENEMIGO - ID:", id, " Tipo:", data.type)
 				_spawn_enemy(id, data.type, Vector2(data.x, data.y))
@@ -791,9 +794,17 @@ func _spawn_enemy(id: int, type: String, pos: Vector2):
 	if instance.has_method("set_enemy_type"):
 		instance.set_enemy_type(type)
 	
+	# ✅ NUEVO: Establecer equipo del enemigo
+	if instance.has_method("set_team"):
+		var enemy_data = Network.enemies.get(str(id))
+		if enemy_data and enemy_data.has("team"):
+			instance.set_team(enemy_data.team)
+			print("👹 ENEMIGO CREADO - ID:", id, " Tipo:", type, " Equipo:", enemy_data.team, " Pos:", pos)
+		else:
+			print("⚠️ ENEMIGO SIN DATOS DE EQUIPO - ID:", id)
+	
 	enemy_container.add_child(instance)
 	enemies[id] = instance
-	print("👹 ENEMIGO CREADO - ID:", id, " Tipo:", type, " Pos:", pos)
 
 
 
@@ -1338,6 +1349,10 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 		if not is_instance_valid(enemy):
 			continue
 			
+		# ✅ NUEVO: Verificar que el enemigo sea de equipo contrario
+		if enemy.team == player.team:
+			continue
+		
 		var to_enemy: Vector2 = enemy.position - player_pos
 		var dist: float = to_enemy.length()
 
