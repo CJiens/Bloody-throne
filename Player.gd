@@ -37,7 +37,13 @@ var area_projectile_scene: PackedScene = preload("res://projectiles/ArcherAreaPr
 var rogue_area_attack_cooldown: float = 3.0
 var rogue_area_attack_timer: float = 0.0
 var can_rogue_area_attack: bool = true
-
+# Ataque de área para maga
+var mage_area_attack_cooldown: float = 8.0
+var mage_area_attack_timer: float = 0.0
+var can_mage_area_attack: bool = true
+var mage_area_attack_range: float = 150.0
+# Escena del proyectil de área de la maga
+var mage_area_projectile_scene: PackedScene = preload("res://projectiles/MageAreaProjectile.tscn")
 # Estadísticas mejoradas por cartas
 var gold_bonus: int = 0
 var attack_speed_bonus: int = 0
@@ -277,7 +283,7 @@ func _ready():
 	
 	_setup_player_ui()
 	_setup_cards_ui()
-	_debug_animations()
+
 	if not Network.card_purchased.is_connected(_on_card_purchased):
 		Network.card_purchased.connect(_on_card_purchased)
 
@@ -295,6 +301,7 @@ func _process(delta):
 	_handle_cooldowns(delta)
 	_handle_area_attack_cooldown(delta)
 	_handle_rogue_area_attack_cooldown(delta)
+	_handle_mage_area_attack_cooldown(delta)
 	if in_decision_period:
 		decision_time_remaining -= delta
 		if decision_time_remaining <= 0:
@@ -948,6 +955,12 @@ func _handle_rogue_area_attack_cooldown(delta):
 		if rogue_area_attack_timer <= 0:
 			can_rogue_area_attack = true
 			print("✅ ATAQUE DE ÁREA ROGUE LISTO - Cooldown terminado")
+func _handle_mage_area_attack_cooldown(delta):
+	if not can_mage_area_attack:
+		mage_area_attack_timer -= delta
+		if mage_area_attack_timer <= 0:
+			can_mage_area_attack = true
+			print("✅ ATAQUE DE ÁREA MAGA LISTO - Cooldown terminado")
 # -------------------------------
 # --- COLISIONES CON PROYECTILES
 # -------------------------------
@@ -1019,6 +1032,61 @@ func execute_rogue_area_attack(mouse_pos: Vector2):
 	rogue_area_attack_timer = rogue_area_attack_cooldown
 
 	print("⏳ ATAQUE DE ÁREA ROGUE EN COOLDOWN - Tiempo:", rogue_area_attack_cooldown, "s")
+func execute_mage_area_attack():
+	if not can_mage_area_attack or classe != "mage":
+		print("❌ ATAQUE DE ÁREA MAGA NO DISPONIBLE - Cooldown:", mage_area_attack_timer)
+		return
+
+	print("🎯 ATAQUE DE ÁREA MAGA ACTIVADO - Maga ID:", id)
+	
+	# Calcular la posición del ataque (en la posición actual de la maga)
+	var attack_pos = global_position
+	
+	# ORIENTAR AL JUGADOR EN LA DIRECCIÓN DEL ATAQUE
+	var mouse_pos = get_global_mouse_position()
+	var direction = (mouse_pos - global_position).normalized()
+	last_direction = direction
+
+	# CREAR EFECTO VISUAL INMEDIATO EN CLIENTE
+	_create_mage_area_effect(attack_pos)
+
+	# Enviar mensaje al servidor (INCLUYENDO EL EQUIPO para filtrado)
+	Network.socket.send_text(JSON.stringify({
+		"type": "mage_area_attack",
+		"x": attack_pos.x,
+		"y": attack_pos.y,
+		"damage": attack_damage,
+		"team": team  # ← IMPORTANTE: enviar equipo para filtrado en servidor
+	}))
+
+	# Reproducir animación de ataque de área
+	var anim_suffix = _get_mage_area_direction_suffix(direction.angle())
+	var anim_name = "attack_Area_" + anim_suffix
+
+	print("🎭 INTENTANDO ANIMACIÓN MAGA AREA: ", anim_name)
+
+	if current_sprite and current_sprite.sprite_frames.has_animation(anim_name):
+		current_sprite.play(anim_name)
+		print("✅ ANIMACIÓN MAGA AREA ENCONTRADA Y REPRODUCIENDO: ", anim_name)
+		
+		# Esperar a que termine la animación
+		set_physics_process(false)
+		await current_sprite.animation_finished
+		set_physics_process(true)
+		
+	else:
+		print("❌ Animación Maga Area no encontrada: ", anim_name)
+		# Fallback a animaciones básicas
+		if current_sprite and current_sprite.sprite_frames.has_animation("attack_Area_S"):
+			current_sprite.play("attack_Area_S")
+		elif current_sprite and current_sprite.sprite_frames.has_animation("attack_S"):
+			current_sprite.play("attack_S")
+
+	# Activar cooldown
+	can_mage_area_attack = false
+	mage_area_attack_timer = mage_area_attack_cooldown
+
+	print("⏳ ATAQUE DE ÁREA MAGA EN COOLDOWN - Tiempo:", mage_area_attack_cooldown, "s")
 func _get_rogue_area_direction_suffix(angle: float) -> String:
 	# Convertir ángulo a grados y ajustar para que 0 sea este
 	var degrees = rad_to_deg(angle)
@@ -1042,9 +1110,50 @@ func _get_rogue_area_direction_suffix(angle: float) -> String:
 		return "N"      # Norte
 	else: # 292.5 a 337.5
 		return "NE"     # Noreste
-func _debug_animations():
-	if current_sprite and current_sprite.sprite_frames:
-		var animations = current_sprite.sprite_frames.get_animation_names()
-		print("🎭 ANIMACIONES DISPONIBLES para ", classe, ": ", animations)
+func _get_mage_area_direction_suffix(angle: float) -> String:
+	# Convertir ángulo a grados y ajustar para que 0 sea este
+	var degrees = rad_to_deg(angle)
+	if degrees < 0:
+		degrees += 360
+
+	# Determinar dirección basada en ángulos
+	if degrees >= 337.5 or degrees < 22.5:
+		return "E"      # Este
+	elif degrees >= 22.5 and degrees < 67.5:
+		return "SE"     # Sureste
+	elif degrees >= 67.5 and degrees < 112.5:
+		return "S"      # Sur
+	elif degrees >= 112.5 and degrees < 157.5:
+		return "SW"     # Suroeste
+	elif degrees >= 157.5 and degrees < 202.5:
+		return "W"      # Oeste
+	elif degrees >= 202.5 and degrees < 247.5:
+		return "NW"     # Noroeste
+	elif degrees >= 247.5 and degrees < 292.5:
+		return "N"      # Norte
+	else: # 292.5 a 337.5
+		return "NE"     # Noreste
+func _create_mage_area_effect(attack_pos: Vector2):
+	if not mage_area_projectile_scene:
+		print("❌ mage_area_projectile_scene no asignada")
+		return
+	
+	var area_projectile = mage_area_projectile_scene.instantiate()
+	if not area_projectile:
+		print("❌ No se pudo instanciar mage_area_projectile")
+		return
+	
+	# Posicionar en la misma posición que la maga
+	area_projectile.position = attack_pos
+	
+	# Pasar información del equipo para filtrado local (opcional)
+	if area_projectile.has_method("initialize"):
+		area_projectile.initialize(attack_damage, id, team)
+	
+	# Agregar a la escena del juego - EN UN CONTENEDOR DEBAJO
+	var main_node = get_tree().current_scene
+	if main_node and main_node.has_node("ObjectContainer"):  # Usar ObjectContainer para efectos
+		main_node.get_node("ObjectContainer").add_child(area_projectile)
+		print("⚡ EFECTO MAGA INMEDIATO CREADO - Posición:", attack_pos, " Equipo:", team)
 	else:
-		print("❌ No hay SpriteFrames o current_sprite")
+		print("❌ No se encontró ObjectContainer en la escena principal")

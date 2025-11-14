@@ -149,13 +149,14 @@ var bosses := {} # id:int -> Node2D
 func _ready():
 	# Agregar este nodo al grupo "main" para que los fantasmas puedan encontrarlo
 	add_to_group("main")
-
+	
 	Network.boss_died.connect(_on_boss_died)
 	# Conectar señal de animaciones del boss
 	Network.boss_animation_updated.connect(_on_boss_animation_updated)
 	# Conectar señal de ataque de área
 	Network.area_attack_effect.connect(_on_area_attack_effect)
 	Network.rogue_area_attack_effect.connect(_on_rogue_area_attack_effect)
+	Network.mage_area_attack_effect.connect(_on_mage_area_attack_effect)
 	# Conectar botones UI
 	login_button.pressed.connect(_on_login_pressed)
 	chat_send.pressed.connect(_on_chat_send_pressed)
@@ -1291,7 +1292,7 @@ func _unhandled_input(event):
 				print("🖱️ CLICK IZQUIERDO - Ataque a distancia (" + player_classe + ")")
 				_attack_ranged_target(get_global_mouse_position())
 
-# CLICK DERECHO - Ataque de área según clase
+	# CLICK DERECHO - Ataque de área según clase
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		var player = players.get(Network.player_id, null)
 		if player:
@@ -1303,6 +1304,9 @@ func _unhandled_input(event):
 			elif player_classe == "rogue" and player.has_method("execute_rogue_area_attack"):
 				print("🖱️ CLICK DERECHO - Ataque de área (Rogue)")
 				player.execute_rogue_area_attack(get_global_mouse_position())
+			elif player_classe == "mage" and player.has_method("execute_mage_area_attack"):
+				print("🖱️ CLICK DERECHO - Ataque de área (Mage)")
+				player.execute_mage_area_attack()
 
 	if event.is_action_pressed("roll"):
 		var player = players.get(Network.player_id, null)
@@ -2013,7 +2017,30 @@ func _on_area_attack_effect(x: float, y: float, player_id: int):
 	enemy_container.add_child(area_projectile)
 	
 	print("✅ EFECTO DE ÁREA CREADO INMEDIATAMENTE - Posición:", Vector2(x, y))
-
+func _on_mage_area_attack_effect(x: float, y: float, player_id: int):
+	print("💥 EFECTO DE ATAQUE DE ÁREA MAGA - Jugador:", player_id, " Posición:", Vector2(x, y))
+	
+	# Cargar la escena del proyectil de área de la maga
+	var mage_area_projectile_scene = preload("res://projectiles/MageAreaProjectile.tscn")
+	if not mage_area_projectile_scene:
+		print("❌ ERROR: No se pudo cargar MageAreaProjectile.tscn")
+		return
+	
+	var area_projectile = mage_area_projectile_scene.instantiate()
+	if not area_projectile:
+		print("❌ ERROR: No se pudo instanciar MageAreaProjectile")
+		return
+	
+	# Posicionar y configurar Z-index para que esté DEBAJO
+	area_projectile.position = Vector2(x, y)
+	area_projectile.z_index = -1  # ← IMPORTANTE: debajo de los personajes
+	
+	# Agregar a ObjectContainer (para efectos visuales)
+	if object_container:
+		object_container.add_child(area_projectile)
+		print("✅ EFECTO DE ÁREA MAGA CREADO EN CLIENTE - Posición:", Vector2(x, y))
+	else:
+		print("❌ No se encontró object_container")
 # NUEVA FUNCIÓN PARA ORIENTAR EL EFECTO DE ÁREA ← AGREGAR ESTA FUNCIÓN
 func _orient_area_effect(effect: Node, direction: Vector2):
 	if effect.has_node("AnimatedSprite2D"):

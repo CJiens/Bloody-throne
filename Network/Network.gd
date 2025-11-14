@@ -63,7 +63,7 @@ signal respawn_countdown(player_id, time_left)
 signal player_respawned(player_data)
 signal game_over(winning_team, reason)
 signal game_reset(players, bases)
-
+signal mage_area_attack_effect(x, y, player_id)
 # SEÑALES PARA JEFE PERMANENTE
 signal boss_phase_changed(boss_id, phase)
 signal boss_attacked(target_id, damage)
@@ -148,6 +148,9 @@ func _receive_messages():
 			"rogue_area_attack_effect":
 				print("💥 EFECTO DE ATAQUE DE ÁREA ROGUE RECIBIDO - Posición:", data.x, data.y, " Jugador:", data.player_id)
 				emit_signal("rogue_area_attack_effect", data.x, data.y, data.player_id)
+			"mage_area_attack_effect":
+				print("💥 EFECTO DE ATAQUE DE ÁREA MAGA RECIBIDO - Posición:", data.x, data.y, " Jugador:", data.player_id)
+				emit_signal("mage_area_attack_effect", data.x, data.y, data.player_id)
 			"auth_ok":
 				player_id = data.player.id
 				connected = true

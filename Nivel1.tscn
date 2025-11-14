@@ -8049,6 +8049,7 @@ texture = ExtResource("1_kuiop")
 sources/0 = SubResource("TileSetAtlasSource_kuiop")
 
 [node name="Nivel1" type="Node2D"]
+z_index = -2
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(-116, -98)
