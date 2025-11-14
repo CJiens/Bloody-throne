@@ -1,6 +1,6 @@
 bl_info = {
     "name": "Render Multi-Vistas (Modal)",
-    "author": "Rolando",
+    "author": "RolanZanvel",
     "version": (1, 7, 7),
     "blender": (4, 5, 0),
     "location": "Topbar > Procesar (Render); Properties > Output",
