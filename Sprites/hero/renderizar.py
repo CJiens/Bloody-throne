@@ -1,9 +1,18 @@
+bl_info = {
+    "name": "Render Multi-Vistas (Cámara Activa)",
+    "author": "Rolando",
+    "version": (1, 0),
+    "blender": (4, 5, 0),
+    "location": "View3D > Object > Procesar",
+    "description": "Renderiza animaciones desde múltiples posiciones usando la cámara activa",
+    "category": "Render",
+}
+
 import bpy
 import os
 import math
 
 # --- CONFIGURACIÓN ---
-camera_name = "Camera"  # Nombre de la cámara en tu escena
 base_output_dir = bpy.path.abspath("//renders")  # Carpeta base
 
 # Diccionario: clave = nombre de carpeta, valor = parámetros de cámara
@@ -20,9 +29,10 @@ render_configs = {
 }
 
 def render_frames():
-    cam = bpy.data.objects.get(camera_name)
+    # Tomar la cámara activa de la escena
+    cam = bpy.context.scene.camera
     if not cam:
-        print(f"No se encontró la cámara '{camera_name}'")
+        print("No hay cámara activa en la escena.")
         return
 
     # Crear carpeta base si no existe
@@ -44,9 +54,32 @@ def render_frames():
         # Configurar ruta de salida de fotogramas
         bpy.context.scene.render.filepath = os.path.join(output_dir, "frame_")
 
-        # Ejecutar render de animación (usará la configuración actual de fotogramas)
-        print(f"Renderizando fotogramas en carpeta: {folder_name} | Posición (X={params['pos'][0]}, Y={params['pos'][1]}) | RotZ={params['rot_z']}°")
+        # Ejecutar render de animación
+        print(f"Renderizando en carpeta: {folder_name} | Posición (X={params['pos'][0]}, Y={params['pos'][1]}) | RotZ={params['rot_z']}°")
         bpy.ops.render.render(animation=True)
 
-# Ejecutar
-render_frames()
+# --- OPERADOR ---
+class RENDER_OT_multi_views(bpy.types.Operator):
+    bl_idname = "render.multi_views"
+    bl_label = "Render Multi-Vistas (Cámara Activa)"
+    bl_description = "Renderiza animaciones desde múltiples posiciones usando la cámara activa"
+
+    def execute(self, context):
+        render_frames()
+        return {'FINISHED'}
+
+# --- MENÚ ---
+def menu_func(self, context):
+    self.layout.operator(RENDER_OT_multi_views.bl_idname)
+
+# --- REGISTRO ---
+def register():
+    bpy.utils.register_class(RENDER_OT_multi_views)
+    bpy.types.VIEW3D_MT_object.append(menu_func)
+
+def unregister():
+    bpy.types.VIEW3D_MT_object.remove(menu_func)
+    bpy.utils.unregister_class(RENDER_OT_multi_views)
+
+if __name__ == "__main__":
+    register()
