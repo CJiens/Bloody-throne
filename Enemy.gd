@@ -373,7 +373,6 @@ func take_damage(amount: int):
 
 func _create_hit_effect():
 	# Efecto visual de golpe
-	modulate = Color.RED
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.2)
 
