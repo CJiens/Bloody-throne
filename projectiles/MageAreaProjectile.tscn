@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://b10u65yptvqxe"]
+
+[ext_resource type="Texture2D" uid="uid://b43ox4c2dhmye" path="res://Sprites/mage/suelo agrietado/suelo agrietado/crater_00.png" id="1_d760a"]
+[ext_resource type="Texture2D" uid="uid://crn57bscqsw6g" path="res://Sprites/mage/suelo agrietado/suelo agrietado/crater_01.png" id="2_plwiw"]
+[ext_resource type="Texture2D" uid="uid://dv58qly184m4w" path="res://Sprites/mage/suelo agrietado/suelo agrietado/crater_02.png" id="3_tiqb4"]
+[ext_resource type="Texture2D" uid="uid://erd8cmtvngat" path="res://Sprites/mage/suelo agrietado/suelo agrietado/crater_03.png" id="4_u2noe"]
+[ext_resource type="Texture2D" uid="uid://diqndr5el5dro" path="res://Sprites/mage/suelo agrietado/suelo agrietado/crater_04.png" id="5_gkmw5"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_60qbk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_d760a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_plwiw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_tiqb4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_u2noe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_gkmw5")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Area2D" type="Area2D"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_60qbk")
+frame = 2
+frame_progress = 0.6947205
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]

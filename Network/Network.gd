@@ -34,11 +34,7 @@ signal projectile_moved(projectile_data)
 signal player_joined(player_data)
 signal player_left(player_id)
 signal game_state_updated
-signal on_player_became_ghost(player_id)
-signal on_ghost_possession_started(player_id, object_id)
-signal on_ghost_possession_ended(player_id, object_id)
-signal on_object_thrown(object_id, direction)
-signal on_object_destroyed(object_id)
+signal rogue_area_attack_effect(x, y, player_id)
 # Señales para daño a bases
 signal base_hit(team, hp, max_hp)
 # SEÑALES NUEVAS PARA SISTEMA DE OLEADAS
@@ -149,7 +145,9 @@ func _receive_messages():
 				if get_tree().current_scene.has_method("_on_enemy_killed"):
 					get_tree().current_scene._on_enemy_killed(data.id, data.killer_id, data.enemy_type)
 			
-
+			"rogue_area_attack_effect":
+				print("💥 EFECTO DE ATAQUE DE ÁREA ROGUE RECIBIDO - Posición:", data.x, data.y, " Jugador:", data.player_id)
+				emit_signal("rogue_area_attack_effect", data.x, data.y, data.player_id)
 			"auth_ok":
 				player_id = data.player.id
 				connected = true

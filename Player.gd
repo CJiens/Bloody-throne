@@ -33,7 +33,10 @@ var area_attack_range: float = 200.0
 var last_direction: Vector2 = Vector2.RIGHT
 # Escena del proyectil de área
 var area_projectile_scene: PackedScene = preload("res://projectiles/ArcherAreaProjectile.tscn")
-
+# Ataque de área del Rogue
+var rogue_area_attack_cooldown: float = 3.0
+var rogue_area_attack_timer: float = 0.0
+var can_rogue_area_attack: bool = true
 
 # Estadísticas mejoradas por cartas
 var gold_bonus: int = 0
@@ -274,7 +277,7 @@ func _ready():
 	
 	_setup_player_ui()
 	_setup_cards_ui()
-	
+	_debug_animations()
 	if not Network.card_purchased.is_connected(_on_card_purchased):
 		Network.card_purchased.connect(_on_card_purchased)
 
@@ -291,6 +294,7 @@ func _process(delta):
 	print("Esta es la pocision de la x => " + str(get_local_mouse_position().x) + "Esta es la pocision de la y =>" + str(get_local_mouse_position().y))
 	_handle_cooldowns(delta)
 	_handle_area_attack_cooldown(delta)
+	_handle_rogue_area_attack_cooldown(delta)
 	if in_decision_period:
 		decision_time_remaining -= delta
 		if decision_time_remaining <= 0:
@@ -837,29 +841,44 @@ func _get_direction_animation(angle: float, action: String) -> String:
 	if not current_sprite:
 		return "Idle"
 	
+	# Convertir ángulo a grados y ajustar para que 0 sea este
+	var degrees = rad_to_deg(angle)
+	if degrees < 0:
+		degrees += 360
+	
+	# Determinar dirección basada en ángulos
 	var direction := ""
 	
-	if angle >= -PI / 8 and angle < PI / 8:
-		direction = "E"
-	elif angle >= PI / 8 and angle < 3 * PI / 8:
-		direction = "SE"
-	elif angle >= 3 * PI / 8 and angle < 5 * PI / 8:
-		direction = "S"
-	elif angle >= 5 * PI / 8 and angle < 7 * PI / 8:
-		direction = "SW"
-	elif angle >= 7 * PI / 8 or angle < -7 * PI / 8:
-		direction = "W"
-	elif angle >= -7 * PI / 8 and angle < -5 * PI / 8:
-		direction = "NW"
-	elif angle >= -5 * PI / 8 and angle < -3 * PI / 8:
-		direction = "N"
-	elif angle >= -3 * PI / 8 and angle < -PI / 8:
-		direction = "NE"
+	if degrees >= 337.5 or degrees < 22.5:
+		direction = "E"      # Este
+	elif degrees >= 22.5 and degrees < 67.5:
+		direction = "SE"     # Sureste
+	elif degrees >= 67.5 and degrees < 112.5:
+		direction = "S"      # Sur
+	elif degrees >= 112.5 and degrees < 157.5:
+		direction = "SW"     # Suroeste
+	elif degrees >= 157.5 and degrees < 202.5:
+		direction = "W"      # Oeste
+	elif degrees >= 202.5 and degrees < 247.5:
+		direction = "NW"     # Noroeste
+	elif degrees >= 247.5 and degrees < 292.5:
+		direction = "N"      # Norte
+	else: # 292.5 a 337.5
+		direction = "NE"     # Noreste
 	
-	if direction == "":
-		return action
+	var anim_name = action + "_" + direction
+	
+	# Verificar si la animación existe
+	if current_sprite.sprite_frames and current_sprite.sprite_frames.has_animation(anim_name):
+		print("🎯 ANIMACIÓN ENCONTRADA: ", anim_name)
+		return anim_name
 	else:
-		return action + "_" + direction
+		# Si no existe, usar una por defecto
+		print("❌ Animación no encontrada: ", anim_name, " - Usando ", action, "_S")
+		if current_sprite.sprite_frames and current_sprite.sprite_frames.has_animation(action + "_S"):
+			return action + "_S"
+		else:
+			return action
 
 # -------------------------------
 # --- SISTEMA DE VIDA (ACTUALIZADO)
@@ -922,6 +941,13 @@ func _handle_area_attack_cooldown(delta):
 		if area_attack_timer <= 0:
 			can_area_attack = true
 			print("✅ ATAQUE DE ÁREA LISTO - Cooldown terminado")
+
+func _handle_rogue_area_attack_cooldown(delta):
+	if not can_rogue_area_attack:
+		rogue_area_attack_timer -= delta
+		if rogue_area_attack_timer <= 0:
+			can_rogue_area_attack = true
+			print("✅ ATAQUE DE ÁREA ROGUE LISTO - Cooldown terminado")
 # -------------------------------
 # --- COLISIONES CON PROYECTILES
 # -------------------------------
@@ -944,3 +970,81 @@ func _create_hit_effect():
 	modulate = Color.RED
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.2)
+func execute_rogue_area_attack(mouse_pos: Vector2):
+	if not can_rogue_area_attack or classe != "rogue":
+		print("❌ ATAQUE DE ÁREA ROGUE NO DISPONIBLE - Cooldown:", rogue_area_attack_timer)
+		return
+
+	print("🎯 ATAQUE DE ÁREA ROGUE ACTIVADO - Rogue ID:", id)
+	print("📍 Posición jugador: ", global_position)
+	print("🎯 Posición mouse: ", mouse_pos)
+	# Calcular dirección para la animación
+	var direction = (mouse_pos - global_position).normalized()
+	last_direction = direction
+	print("🧭 Dirección calculada: ", direction)
+	# Determinar la animación según la dirección
+	var anim_suffix = _get_rogue_area_direction_suffix(direction.angle())
+	var anim_name = "attack_Area_" + anim_suffix
+
+	print("🎭 INTENTANDO ANIMACIÓN ROGUE AREA: ", anim_name)
+
+	# Reproducir animación - SOLO USAMOS LAS ANIMACIONES DEL PLAYER
+	if current_sprite and current_sprite.sprite_frames.has_animation(anim_name):
+		current_sprite.play(anim_name)
+		print("✅ ANIMACIÓN ROGUE AREA ENCONTRADA Y REPRODUCIENDO: ", anim_name)
+		
+		# Esperar a que termine la animación
+		set_physics_process(false)
+		await current_sprite.animation_finished
+		set_physics_process(true)
+		
+	else:
+		print("❌ Animación Rogue Area no encontrada: ", anim_name)
+		# Fallback a animaciones básicas
+		if current_sprite and current_sprite.sprite_frames.has_animation("attack_Area_S"):
+			current_sprite.play("attack_Area_S")
+		elif current_sprite and current_sprite.sprite_frames.has_animation("attack_S"):
+			current_sprite.play("attack_S")
+
+	# Enviar mensaje al servidor - desde la posición del jugador con radio 150px
+	Network.socket.send_text(JSON.stringify({
+		"type": "rogue_area_attack",
+		"x": global_position.x,
+		"y": global_position.y,
+		"damage": attack_damage
+	}))
+
+	# Activar cooldown
+	can_rogue_area_attack = false
+	rogue_area_attack_timer = rogue_area_attack_cooldown
+
+	print("⏳ ATAQUE DE ÁREA ROGUE EN COOLDOWN - Tiempo:", rogue_area_attack_cooldown, "s")
+func _get_rogue_area_direction_suffix(angle: float) -> String:
+	# Convertir ángulo a grados y ajustar para que 0 sea este
+	var degrees = rad_to_deg(angle)
+	if degrees < 0:
+		degrees += 360
+
+	# Determinar dirección basada en ángulos
+	if degrees >= 337.5 or degrees < 22.5:
+		return "E"      # Este
+	elif degrees >= 22.5 and degrees < 67.5:
+		return "SE"     # Sureste
+	elif degrees >= 67.5 and degrees < 112.5:
+		return "S"      # Sur
+	elif degrees >= 112.5 and degrees < 157.5:
+		return "SW"     # Suroeste
+	elif degrees >= 157.5 and degrees < 202.5:
+		return "W"      # Oeste
+	elif degrees >= 202.5 and degrees < 247.5:
+		return "NW"     # Noroeste
+	elif degrees >= 247.5 and degrees < 292.5:
+		return "N"      # Norte
+	else: # 292.5 a 337.5
+		return "NE"     # Noreste
+func _debug_animations():
+	if current_sprite and current_sprite.sprite_frames:
+		var animations = current_sprite.sprite_frames.get_animation_names()
+		print("🎭 ANIMACIONES DISPONIBLES para ", classe, ": ", animations)
+	else:
+		print("❌ No hay SpriteFrames o current_sprite")

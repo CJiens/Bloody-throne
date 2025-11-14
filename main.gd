@@ -155,7 +155,7 @@ func _ready():
 	Network.boss_animation_updated.connect(_on_boss_animation_updated)
 	# Conectar señal de ataque de área
 	Network.area_attack_effect.connect(_on_area_attack_effect)
-	
+	Network.rogue_area_attack_effect.connect(_on_rogue_area_attack_effect)
 	# Conectar botones UI
 	login_button.pressed.connect(_on_login_pressed)
 	chat_send.pressed.connect(_on_chat_send_pressed)
@@ -1291,12 +1291,18 @@ func _unhandled_input(event):
 				print("🖱️ CLICK IZQUIERDO - Ataque a distancia (" + player_classe + ")")
 				_attack_ranged_target(get_global_mouse_position())
 
-	# CLICK DERECHO - Ataque de área para arquera ← AGREGAR ESTO
+# CLICK DERECHO - Ataque de área según clase
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		var player = players.get(Network.player_id, null)
-		if player and player.has_method("execute_area_attack") and player.classe == "archer":
-			print("🖱️ CLICK DERECHO - Ataque de área (Archer)")
-			player.execute_area_attack(get_global_mouse_position())
+		if player:
+			var player_classe = player.classe if "classe" in player else "warrior"
+			
+			if player_classe == "archer" and player.has_method("execute_area_attack"):
+				print("🖱️ CLICK DERECHO - Ataque de área (Archer)")
+				player.execute_area_attack(get_global_mouse_position())
+			elif player_classe == "rogue" and player.has_method("execute_rogue_area_attack"):
+				print("🖱️ CLICK DERECHO - Ataque de área (Rogue)")
+				player.execute_rogue_area_attack(get_global_mouse_position())
 
 	if event.is_action_pressed("roll"):
 		var player = players.get(Network.player_id, null)
@@ -1339,9 +1345,7 @@ func _attack_near_target(mouse_pos: Vector2) -> void:
 			attack_range = rogue_attack_range
 			attack_damage = rogue_attack_damage
 			attack_cone_angle = deg_to_rad(rogue_attack_cone_angle)
-
-	# DEBUG: Dibujar área de ataque (opcional)
-	_draw_debug_attack_area(player_pos, player_facing, attack_range, attack_cone_angle)
+	
 
 	# Detección de golpes - PRIMERO enemigos
 	for enemy_id in enemies.keys():
@@ -2028,3 +2032,5 @@ func _on_base_hit(team: int, hp: int, max_hp: int):
 		var base_node = bases[team]
 		if base_node and base_node.has_method("update_hp"):
 			base_node.update_hp(hp)
+func _on_rogue_area_attack_effect(x: float, y: float, player_id: int):
+	print("💥 EFECTO DE ATAQUE DE ÁREA ROGUE - Jugador:", player_id, " Posición:", Vector2(x, y))

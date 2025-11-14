@@ -451,9 +451,7 @@ visible = false
 position = Vector2(5, 27.5)
 scale = Vector2(0.311, 0.29)
 sprite_frames = ExtResource("2_cxr5p")
-animation = &"attack_E"
-frame = 11
-frame_progress = 1.0
+animation = &"attack_Area_E"
 speed_scale = 6.8
 
 [node name="KnightSprite" type="AnimatedSprite2D" parent="."]
@@ -467,15 +465,14 @@ frame_progress = 1.0
 speed_scale = 6.8
 
 [node name="MageSprite" type="AnimatedSprite2D" parent="."]
-visible = false
 position = Vector2(8.75, 6.2499995)
 scale = Vector2(0.2, 0.2)
 sprite_frames = ExtResource("150_5tdsq")
-animation = &"Idle"
-frame_progress = 0.64436346
+animation = &"attack_Area_NW"
 speed_scale = 9.0
 
 [node name="ArcherSprite" type="AnimatedSprite2D" parent="."]
+visible = false
 position = Vector2(-1.2499999, 6.2499995)
 scale = Vector2(0.32, 0.32)
 sprite_frames = ExtResource("4_e80uo")
