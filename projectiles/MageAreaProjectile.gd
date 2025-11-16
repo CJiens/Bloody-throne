@@ -1,5 +1,5 @@
+#MageAreaProjectile.gd
 extends Area2D
-
 class_name MageAreaProjectile
 
 var damage: int = 10

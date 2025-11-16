@@ -1,6 +1,6 @@
+#Player.gd
 extends CharacterBody2D
 class_name Player
-
 # -------------------------------
 # --- PROPIEDADES DEL JUGADOR
 # -------------------------------
@@ -443,20 +443,30 @@ func add_currency_for_kill(enemy_type: String, amount: int = 0):
 
 func update_wave_ui(wave_number: int, enemy_count: int):
 	current_wave = wave_number
-	enemies_remaining = enemy_count
+	# ✅ NUEVO: Contar solo enemigos rivales (del equipo contrario)
+	var rival_enemies_count = 0
+	
+	# Obtener todos los enemigos de la escena
+	var all_enemies = get_tree().get_nodes_in_group("enemies")
+	for enemy in all_enemies:
+		# Solo contar enemigos de equipo contrario
+		if enemy.team != team:
+			rival_enemies_count += 1
+	
+	enemies_remaining = rival_enemies_count
 	in_decision_period = false
 	
 	if wave_label:
 		wave_label.text = "OLEADA %d" % wave_number
 	if enemy_count_label:
-		enemy_count_label.text = "Enemigos: %d" % enemy_count
+		enemy_count_label.text = "Enemigos: %d" % rival_enemies_count
 	
 	if wave_ui:
 		wave_ui.visible = true
 	if decision_ui:
 		decision_ui.visible = false
 	
-	print("🌊 UI ACTUALIZADA - Oleada:", wave_number, " Enemigos:", enemy_count)
+	print("🌊 UI ACTUALIZADA - Oleada:", wave_number, " Enemigos Rivales:", rival_enemies_count, " (Total:", enemy_count, ")")
 
 # -------------------------------
 # --- SISTEMA DE DECISIONES Y CARTAS

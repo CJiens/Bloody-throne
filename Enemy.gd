@@ -1,6 +1,6 @@
+#Enemy.gd
 extends CharacterBody2D
 class_name Enemy
-
 # -------------------------------
 # --- PROPIEDADES DEL ENEMIGO
 # -------------------------------

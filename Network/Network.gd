@@ -1,5 +1,5 @@
+#Network.gd
 extends Node
-
 # -------------------------------
 # --- VARIABLES CONFIGURACIÓN
 # -------------------------------
@@ -65,13 +65,13 @@ signal game_over(winning_team, reason)
 signal game_reset(players, bases)
 signal mage_area_attack_effect(x, y, player_id)
 # SEÑALES PARA JEFE PERMANENTE
-signal boss_phase_changed(boss_id, phase)
-signal boss_attacked(target_id, damage)
-signal boss_health_updated(hp, max_hp)
-signal boss_died(boss_id)
-
-# Añadir junto a las otras señales del boss
-signal boss_animation_updated(boss_id, animation_name)
+#signal boss_phase_changed(boss_id, phase)
+#signal boss_attacked(target_id, damage)
+#signal boss_health_updated(hp, max_hp)
+#signal boss_died(boss_id)
+#
+## Añadir junto a las otras señales del boss
+#signal boss_animation_updated(boss_id, animation_name)
 
 # -------------------------------
 # --- FUNCIÓN DE INICIO CON IP
@@ -338,9 +338,9 @@ func _receive_messages():
 				print("✅ OLEADA TERMINADA")
 				emit_signal("wave_ended")
 			
-			"boss_spawned":
-				print("👹 JEFE INTERMEDIO APARECE")
-				emit_signal("boss_spawned", data.boss_data)
+			#"boss_spawned":
+				#print("👹 JEFE INTERMEDIO APARECE")
+				#emit_signal("boss_spawned", data.boss_data)
 			
 			# ✅ CORREGIDO: Manejar currency_updated con player_id
 			"currency_updated":
@@ -432,27 +432,27 @@ func _receive_messages():
 				print("🔄 JUEGO REINICIADO")
 				emit_signal("game_reset", data.players, data.bases)
 			
-			# MENSAJES PARA JEFE PERMANENTE
-			"boss_phase_changed":
-				print("🔥 JEFE CAMBIA FASE - ID:", data.boss_id, " Fase:", data.phase)
-				emit_signal("boss_phase_changed", data.boss_id, data.phase)
-			
-			"boss_attacked":
-				print("💥 JEFE ATACÓ - Target:", data.target_id, " Daño:", data.damage)
-				emit_signal("boss_attacked", data.target_id, data.damage)
-			
-			"boss_health_updated":
-				print("❤️  JEFE ACTUALIZA SALUD - HP:", data.hp, "/", data.max_hp)
-				emit_signal("boss_health_updated", data.hp, data.max_hp)
-			
-			"boss_died":
-				print("💀 JEFE MUERTO - ID:", data.boss_id)
-				emit_signal("boss_died", data.boss_id)
-				
-			"boss_animation_update":
-				print("🎭 ACTUALIZACIÓN ANIMACIÓN BOSS - ID:", data.boss_id, " Animación:", data.animation)
-				emit_signal("boss_animation_updated", data.boss_id, data.animation)
-		
+			## MENSAJES PARA JEFE PERMANENTE
+			#"boss_phase_changed":
+				#print("🔥 JEFE CAMBIA FASE - ID:", data.boss_id, " Fase:", data.phase)
+				#emit_signal("boss_phase_changed", data.boss_id, data.phase)
+			#
+			#"boss_attacked":
+				#print("💥 JEFE ATACÓ - Target:", data.target_id, " Daño:", data.damage)
+				#emit_signal("boss_attacked", data.target_id, data.damage)
+			#
+			#"boss_health_updated":
+				#print("❤️  JEFE ACTUALIZA SALUD - HP:", data.hp, "/", data.max_hp)
+				#emit_signal("boss_health_updated", data.hp, data.max_hp)
+			#
+			#"boss_died":
+				#print("💀 JEFE MUERTO - ID:", data.boss_id)
+				#emit_signal("boss_died", data.boss_id)
+				#
+			#"boss_animation_update":
+				#print("🎭 ACTUALIZACIÓN ANIMACIÓN BOSS - ID:", data.boss_id, " Animación:", data.animation)
+				#emit_signal("boss_animation_updated", data.boss_id, data.animation)
+		#
 			_:
 				print("📨 Mensaje no manejado:", data.type)
 				

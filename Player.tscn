@@ -450,7 +450,7 @@ horizontal_alignment = 1
 position = Vector2(5, 27.5)
 scale = Vector2(0.311, 0.29)
 sprite_frames = ExtResource("2_cxr5p")
-animation = &"run_W"
+animation = &"roll_NW"
 speed_scale = 6.8
 
 [node name="KnightSprite" type="AnimatedSprite2D" parent="."]
@@ -458,9 +458,7 @@ visible = false
 position = Vector2(5.000001, -23.749998)
 scale = Vector2(0.515, 0.515)
 sprite_frames = ExtResource("3_tdg3f")
-animation = &"attack_S"
-frame = 17
-frame_progress = 1.0
+animation = &"attack_W"
 speed_scale = 6.8
 
 [node name="MageSprite" type="AnimatedSprite2D" parent="."]
@@ -468,7 +466,7 @@ visible = false
 position = Vector2(8.75, 6.2499995)
 scale = Vector2(0.2, 0.2)
 sprite_frames = ExtResource("150_5tdsq")
-animation = &"attack_Area_NW"
+animation = &"run_S"
 speed_scale = 9.0
 
 [node name="ArcherSprite" type="AnimatedSprite2D" parent="."]
@@ -476,9 +474,7 @@ visible = false
 position = Vector2(-1.2499999, 6.2499995)
 scale = Vector2(0.32, 0.32)
 sprite_frames = ExtResource("4_e80uo")
-animation = &"attack_Area"
-frame = 7
-frame_progress = 1.0
+animation = &"roll_E"
 speed_scale = 6.8
 
 [node name="WarriorSprite" type="AnimatedSprite2D" parent="."]
@@ -486,7 +482,7 @@ visible = false
 position = Vector2(7.575001, -35.981243)
 scale = Vector2(0.26522496, 0.26522496)
 sprite_frames = ExtResource("2_kne1u")
-animation = &"run_W"
+animation = &"attack_E"
 speed_scale = 6.8
 
 [connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]

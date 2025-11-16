@@ -1,5 +1,5 @@
+#ArcherAreaProjectile.gd
 extends Area2D
-
 class_name ArcherAreaProjectile
 
 var damage: int = 10

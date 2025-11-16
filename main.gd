@@ -1,3 +1,4 @@
+#main.gd
 extends Node2D
 
 # -------------------------------
@@ -150,10 +151,10 @@ func _ready():
 	# Agregar este nodo al grupo "main" para que los fantasmas puedan encontrarlo
 	add_to_group("main")
 	
-	Network.boss_died.connect(_on_boss_died)
-	# Conectar señal de animaciones del boss
-	Network.boss_animation_updated.connect(_on_boss_animation_updated)
-	# Conectar señal de ataque de área
+	#Network.boss_died.connect(_on_boss_died)
+	## Conectar señal de animaciones del boss
+	#Network.boss_animation_updated.connect(_on_boss_animation_updated)
+	## Conectar señal de ataque de área
 	Network.area_attack_effect.connect(_on_area_attack_effect)
 	Network.rogue_area_attack_effect.connect(_on_rogue_area_attack_effect)
 	Network.mage_area_attack_effect.connect(_on_mage_area_attack_effect)
@@ -186,7 +187,7 @@ func _ready():
 
 	Network.wave_started.connect(_on_wave_started)
 	Network.wave_ended.connect(_on_wave_ended)
-	Network.boss_spawned.connect(_on_boss_spawned_permanent)
+	#Network.boss_spawned.connect(_on_boss_spawned_permanent)
 	# ✅ CORREGIDO: Cambiar conexión de currency_updated
 	Network.currency_updated.connect(_on_currency_updated_by_id)
 	
@@ -212,9 +213,9 @@ func _ready():
 	Network.game_reset.connect(_on_game_reset)
 
 	# CONEXIONES PARA EL JEFE PERMANENTE
-	Network.boss_phase_changed.connect(_on_boss_phase_changed)
-	Network.boss_attacked.connect(_on_boss_attacked)
-	Network.boss_health_updated.connect(_on_boss_health_updated)
+	#Network.boss_phase_changed.connect(_on_boss_phase_changed)
+	#Network.boss_attacked.connect(_on_boss_attacked)
+	#Network.boss_health_updated.connect(_on_boss_health_updated)
 	Network.base_hit.connect(_on_base_hit)
 	# Configurar sala de espera
 	_setup_waiting_room()
@@ -311,90 +312,90 @@ func _on_decision_period_started(duration: float, currency: int, cards: Array):
 # -------------------------------
 # --- SISTEMA DEL JEFE PERMANENTE (CORREGIDO)
 # -------------------------------
-func _on_boss_spawned_permanent(boss_data: Dictionary):
-	print("👹 JEFE PERMANENTE SPAWNEADO - Datos:", boss_data)
-	_spawn_boss(boss_data)
-
-func _spawn_boss(boss_data: Dictionary):
-	print("👹 INICIANDO SPAWN BOSS - Datos recibidos:", boss_data)
-	
-	if not BossScene:
-		push_error("❌ ERROR CRÍTICO: BossScene no asignada en main.tscn")
-		# Debug: listar todas las propiedades exportadas
-		print("📋 Propiedades exportadas disponibles:")
-		for property in get_property_list():
-			if property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
-				print("  -", property.name, ":", get(property.name))
-		return
-	
-	# ✅ CORREGIDO: Manejar el caso cuando los datos no tienen 'id'
-	var boss_id = -1
-	if boss_data.has("id"):
-		boss_id = boss_data.id
-	else:
-		# Si no tiene ID, usar un ID por defecto (999 para boss permanente)
-		boss_id = 999
-		print("⚠️ Boss data no tiene campo 'id', usando ID por defecto:", boss_id)
-		# Agregar el ID a los datos para referencia futura
-		boss_data["id"] = boss_id
-	
-	print("👹 SPAWNEANDO BOSS - ID:", boss_id)
-	
-	# Eliminar boss existente si hay uno
-	if bosses.has(boss_id):
-		var old_boss = bosses[boss_id]
-		if is_instance_valid(old_boss):
-			print("🗑️ Eliminando boss existente:", boss_id)
-			old_boss.queue_free()
-		bosses.erase(boss_id)
-	
-	# Instanciar nuevo boss
-	var boss = BossScene.instantiate()
-	if not boss:
-		push_error("❌ ERROR: No se pudo instanciar BossScene")
-		return
-	
-	# Configurar posición
-	var spawn_pos = Vector2.ZERO
-	if boss_data.has("x") and boss_data.has("y"):
-		spawn_pos = Vector2(boss_data.x, boss_data.y)
-	else:
-		spawn_pos = Vector2(0, 0)
-		print("⚠️ Usando posición por defecto para boss")
-	
-	boss.position = spawn_pos
-	
-	# Configurar propiedades básicas
-	boss.name = "Boss_" + str(boss_id)
-	
-	# Asignar ID y tipo ANTES de agregar a la escena
-	if boss.has_method("set_boss_id"):
-		boss.set_boss_id(boss_id)
-	
-	if boss.has_method("set_boss_type"):
-		var boss_type = boss_data.get("type", "final_boss")
-		boss.set_boss_type(boss_type)
-	
-	# Añadir a la escena
-	enemy_container.add_child(boss)
-	bosses[boss_id] = boss
-	
-	# Forzar visibilidad inmediatamente
-	if boss.has_method("force_visibility"):
-		boss.force_visibility()
-	
-	print("✅ BOSS CREADO EXITOSAMENTE")
-	print("   - ID:", boss_id)
-	print("   - Nombre:", boss.name)
-	print("   - Posición:", boss.position)
-	print("   - En escena:", boss.is_inside_tree())
-	print("   - Válido:", is_instance_valid(boss))
-	
-	# Debug de la estructura del nodo
-	print("📁 ESTRUCTURA DEL BOSS:")
-	_print_node_structure(boss, 1)
-	
-	return boss
+#func _on_boss_spawned_permanent(boss_data: Dictionary):
+	#print("👹 JEFE PERMANENTE SPAWNEADO - Datos:", boss_data)
+	#_spawn_boss(boss_data)
+#
+#func _spawn_boss(boss_data: Dictionary):
+	#print("👹 INICIANDO SPAWN BOSS - Datos recibidos:", boss_data)
+	#
+	#if not BossScene:
+		#push_error("❌ ERROR CRÍTICO: BossScene no asignada en main.tscn")
+		## Debug: listar todas las propiedades exportadas
+		#print("📋 Propiedades exportadas disponibles:")
+		#for property in get_property_list():
+			#if property.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
+				#print("  -", property.name, ":", get(property.name))
+		#return
+	#
+	## ✅ CORREGIDO: Manejar el caso cuando los datos no tienen 'id'
+	#var boss_id = -1
+	#if boss_data.has("id"):
+		#boss_id = boss_data.id
+	#else:
+		## Si no tiene ID, usar un ID por defecto (999 para boss permanente)
+		#boss_id = 999
+		#print("⚠️ Boss data no tiene campo 'id', usando ID por defecto:", boss_id)
+		## Agregar el ID a los datos para referencia futura
+		#boss_data["id"] = boss_id
+	#
+	#print("👹 SPAWNEANDO BOSS - ID:", boss_id)
+	#
+	## Eliminar boss existente si hay uno
+	#if bosses.has(boss_id):
+		#var old_boss = bosses[boss_id]
+		#if is_instance_valid(old_boss):
+			#print("🗑️ Eliminando boss existente:", boss_id)
+			#old_boss.queue_free()
+		#bosses.erase(boss_id)
+	#
+	## Instanciar nuevo boss
+	#var boss = BossScene.instantiate()
+	#if not boss:
+		#push_error("❌ ERROR: No se pudo instanciar BossScene")
+		#return
+	#
+	## Configurar posición
+	#var spawn_pos = Vector2.ZERO
+	#if boss_data.has("x") and boss_data.has("y"):
+		#spawn_pos = Vector2(boss_data.x, boss_data.y)
+	#else:
+		#spawn_pos = Vector2(0, 0)
+		#print("⚠️ Usando posición por defecto para boss")
+	#
+	#boss.position = spawn_pos
+	#
+	## Configurar propiedades básicas
+	#boss.name = "Boss_" + str(boss_id)
+	#
+	## Asignar ID y tipo ANTES de agregar a la escena
+	#if boss.has_method("set_boss_id"):
+		#boss.set_boss_id(boss_id)
+	#
+	#if boss.has_method("set_boss_type"):
+		#var boss_type = boss_data.get("type", "final_boss")
+		#boss.set_boss_type(boss_type)
+	#
+	## Añadir a la escena
+	#enemy_container.add_child(boss)
+	#bosses[boss_id] = boss
+	#
+	## Forzar visibilidad inmediatamente
+	#if boss.has_method("force_visibility"):
+		#boss.force_visibility()
+	#
+	#print("✅ BOSS CREADO EXITOSAMENTE")
+	#print("   - ID:", boss_id)
+	#print("   - Nombre:", boss.name)
+	#print("   - Posición:", boss.position)
+	#print("   - En escena:", boss.is_inside_tree())
+	#print("   - Válido:", is_instance_valid(boss))
+	#
+	## Debug de la estructura del nodo
+	#print("📁 ESTRUCTURA DEL BOSS:")
+	#_print_node_structure(boss, 1)
+	#
+	#return boss
 
 func _print_node_structure(node: Node, indent: int = 0):
 	if not node:
@@ -423,20 +424,20 @@ func _print_node_structure(node: Node, indent: int = 0):
 	for child in node.get_children():
 		_print_node_structure(child, indent + 1)
 
-func _on_boss_died():
-	print("💀 BOSS MUERTO - Limpiando bosses...")
-	
-	# Limpiar todos los bosses
-	for boss_id in bosses.keys():
-		var boss = bosses[boss_id]
-		if is_instance_valid(boss):
-			boss.queue_free()
-	bosses.clear()
-	
-	# Ocultar UI de salud del boss
-	var boss_health_ui = get_node_or_null("BossHealthUI")
-	if boss_health_ui:
-		boss_health_ui.visible = false
+#func _on_boss_died():
+	#print("💀 BOSS MUERTO - Limpiando bosses...")
+	#
+	## Limpiar todos los bosses
+	#for boss_id in bosses.keys():
+		#var boss = bosses[boss_id]
+		#if is_instance_valid(boss):
+			#boss.queue_free()
+	#bosses.clear()
+	#
+	## Ocultar UI de salud del boss
+	#var boss_health_ui = get_node_or_null("BossHealthUI")
+	#if boss_health_ui:
+		#boss_health_ui.visible = false
 
 func _init_boss_ui(boss: Node):
 	# Crear UI de salud del jefe si no existe
@@ -449,40 +450,40 @@ func _init_boss_ui(boss: Node):
 		
 		print("✅ UI DEL JEFE INICIALIZADA")
 
-func _on_boss_phase_changed(boss_id: int, phase: int):
-	print("🔥 JEFE CAMBIA FASE - ID:", boss_id, " Fase:", phase)
-	
-	# Efectos visuales para cambio de fase
-	if bosses.has(boss_id):
-		var boss = bosses[boss_id]
-		if boss and boss.has_method("_transition_to_phase"):
-			boss._transition_to_phase(phase)
-	
-	# Efectos de pantalla usando variables públicas
-	_screen_shake(screen_shake_duration, screen_shake_intensity)
-	_flash_screen(flash_screen_color, flash_screen_duration)
-	
-	# Mostrar mensaje de fase
-	_show_boss_message("FASE " + str(phase) + "!")
-
-func _on_boss_attacked(target_id: int, damage: int):
-	print("💥 JEFE ATACÓ - Target:", target_id, " Daño:", damage)
-	
-	# Efectos de ataque del jefe
-	if target_id == Network.player_id:
-		_screen_shake(0.3, 15)
-
-func _on_boss_health_updated(hp: int, max_hp: int):
-	print("❤️  JEFE ACTUALIZA SALUD - HP:", hp, "/", max_hp)
-	
-	# Actualizar UI de salud del jefe
-	var boss_health_ui = get_node_or_null("BossHealthUI")
-	if boss_health_ui and boss_health_ui.has_method("update_health"):
-		boss_health_ui.update_health(hp, max_hp)
-		
-		# Mostrar UI si no está visible
-		if not boss_health_ui.visible and hp < max_hp:
-			boss_health_ui.visible = true
+#func _on_boss_phase_changed(boss_id: int, phase: int):
+	#print("🔥 JEFE CAMBIA FASE - ID:", boss_id, " Fase:", phase)
+	#
+	## Efectos visuales para cambio de fase
+	#if bosses.has(boss_id):
+		#var boss = bosses[boss_id]
+		#if boss and boss.has_method("_transition_to_phase"):
+			#boss._transition_to_phase(phase)
+	#
+	## Efectos de pantalla usando variables públicas
+	#_screen_shake(screen_shake_duration, screen_shake_intensity)
+	#_flash_screen(flash_screen_color, flash_screen_duration)
+	#
+	## Mostrar mensaje de fase
+	#_show_boss_message("FASE " + str(phase) + "!")
+#
+#func _on_boss_attacked(target_id: int, damage: int):
+	#print("💥 JEFE ATACÓ - Target:", target_id, " Daño:", damage)
+	#
+	## Efectos de ataque del jefe
+	#if target_id == Network.player_id:
+		#_screen_shake(0.3, 15)
+#
+#func _on_boss_health_updated(hp: int, max_hp: int):
+	#print("❤️  JEFE ACTUALIZA SALUD - HP:", hp, "/", max_hp)
+	#
+	## Actualizar UI de salud del jefe
+	#var boss_health_ui = get_node_or_null("BossHealthUI")
+	#if boss_health_ui and boss_health_ui.has_method("update_health"):
+		#boss_health_ui.update_health(hp, max_hp)
+		#
+		## Mostrar UI si no está visible
+		#if not boss_health_ui.visible and hp < max_hp:
+			#boss_health_ui.visible = true
 
 func _show_boss_victory_effects():
 	print("🎊 VICTORIA CONTRA EL JEFE!")
@@ -708,15 +709,15 @@ func _update_game_entities():
 				elif bosses[id].has_method("play_animation"):
 					# Si no hay animación específica, usar una por defecto
 					bosses[id].play_animation("idle")
-			else:
-				# Spawnear nuevo boss
-				print("👹 SPAWNEANDO NUEVO BOSS DESDE UPDATE - ID:", id)
-				if data.has("id"):
-					_spawn_boss(data)
-				else:
-					# Si no tiene ID, usar la clave como ID
-					data["id"] = id
-					_spawn_boss(data)
+			#else:
+				## Spawnear nuevo boss
+				#print("👹 SPAWNEANDO NUEVO BOSS DESDE UPDATE - ID:", id)
+				#if data.has("id"):
+					#_spawn_boss(data)
+				#else:
+					## Si no tiene ID, usar la clave como ID
+					#data["id"] = id
+					#_spawn_boss(data)
 		else:
 			# Enemigos normales
 			if id in enemies:
@@ -1861,43 +1862,43 @@ func safe_dict_access(dict: Dictionary, key, default_value = null):
 	else:
 		return default_value
 
-func _on_boss_animation_updated(boss_id: int, animation_name: String):
-	print("🎭 ACTUALIZANDO ANIMACIÓN BOSS - ID:", boss_id, " Animación:", animation_name)
-	
-	if bosses.has(boss_id):
-		var boss = bosses[boss_id]
-		if is_instance_valid(boss):
-			if boss.has_method("play_animation"):
-				print("✅ EJECUTANDO play_animation en boss:", boss_id)
-				boss.play_animation(animation_name)
-				
-				# Forzar actualización visual
-				if boss.has_method("force_visibility"):
-					boss.force_visibility()
-			else:
-				print("❌ Boss no tiene método play_animation")
-		else:
-			print("❌ Boss no es válido - Re-spawneando...")
-			# Intentar re-spawnear el boss
-			if Network.enemies.has(str(boss_id)):
-				var boss_data = Network.enemies[str(boss_id)]
-				# ✅ CORREGIDO: Asegurar que los datos tengan ID
-				if not boss_data.has("id"):
-					boss_data["id"] = boss_id
-				_spawn_boss(boss_data)
-	else:
-		print("❌ Boss ID", boss_id, "no encontrado en bosses dict.")
-		print("📋 Bosses actuales:", bosses.keys())
-		print("📋 Enemigos en Network:", Network.enemies.keys())
-		
-		# Intentar spawnear el boss si existe en Network.enemies
-		if Network.enemies.has(str(boss_id)):
-			print("🔄 Intentando spawnear boss desde Network...")
-			var boss_data = Network.enemies[str(boss_id)]
-			# ✅ CORREGIDO: Asegurar que los datos tengan ID
-			if not boss_data.has("id"):
-				boss_data["id"] = boss_id
-			_spawn_boss(boss_data)
+#func _on_boss_animation_updated(boss_id: int, animation_name: String):
+	#print("🎭 ACTUALIZANDO ANIMACIÓN BOSS - ID:", boss_id, " Animación:", animation_name)
+	#
+	#if bosses.has(boss_id):
+		#var boss = bosses[boss_id]
+		#if is_instance_valid(boss):
+			#if boss.has_method("play_animation"):
+				#print("✅ EJECUTANDO play_animation en boss:", boss_id)
+				#boss.play_animation(animation_name)
+				#
+				## Forzar actualización visual
+				#if boss.has_method("force_visibility"):
+					#boss.force_visibility()
+			#else:
+				#print("❌ Boss no tiene método play_animation")
+		#else:
+			#print("❌ Boss no es válido - Re-spawneando...")
+			## Intentar re-spawnear el boss
+			#if Network.enemies.has(str(boss_id)):
+				#var boss_data = Network.enemies[str(boss_id)]
+				## ✅ CORREGIDO: Asegurar que los datos tengan ID
+				#if not boss_data.has("id"):
+					#boss_data["id"] = boss_id
+				#_spawn_boss(boss_data)
+	#else:
+		#print("❌ Boss ID", boss_id, "no encontrado en bosses dict.")
+		#print("📋 Bosses actuales:", bosses.keys())
+		#print("📋 Enemigos en Network:", Network.enemies.keys())
+		#
+		## Intentar spawnear el boss si existe en Network.enemies
+		#if Network.enemies.has(str(boss_id)):
+			#print("🔄 Intentando spawnear boss desde Network...")
+			#var boss_data = Network.enemies[str(boss_id)]
+			## ✅ CORREGIDO: Asegurar que los datos tengan ID
+			#if not boss_data.has("id"):
+				#boss_data["id"] = boss_id
+			#_spawn_boss(boss_data)
 
 # Función temporal para debug del boss - Ejecutar en consola
 func debug_boss():

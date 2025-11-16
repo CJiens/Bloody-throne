@@ -12,11 +12,11 @@
 [ext_resource type="PackedScene" uid="uid://c50dg0rerb3ol" path="res://enities/boss/boss.tscn" id="7_getpj"]
 [ext_resource type="Theme" uid="uid://p6lafxv8viug" path="res://Temas/Input.tres" id="9_kek77"]
 [ext_resource type="AudioStream" uid="uid://kv8nhocsergj" path="res://Musica/Bloody-Throne-Preferida.ogg" id="10_4c57u"]
-[ext_resource type="Texture2D" uid="uid://btmllehlbkcto" path="res://Ui_Select_player/Fondo Select.png" id="10_vivmo"]
-[ext_resource type="Texture2D" uid="uid://cer36pbgh04wi" path="res://Ui_Select_player/Mago v1.png" id="11_2cqfq"]
-[ext_resource type="Texture2D" uid="uid://bqxj4uxb4mjr3" path="res://Ui_Select_player/Arquera estatuilla.png" id="12_yaehf"]
-[ext_resource type="Texture2D" uid="uid://bhud7o53i8fnl" path="res://Ui_Select_player/Assasin.png" id="13_074og"]
-[ext_resource type="Texture2D" uid="uid://ddpmbl6lnlqco" path="res://Ui_Select_player/Caballero.png" id="14_cegan"]
+[ext_resource type="Texture2D" uid="uid://deeic4wanlsa0" path="res://Ui_Select_player/Fondo Select.png" id="10_vivmo"]
+[ext_resource type="Texture2D" uid="uid://cpnf78fww7aou" path="res://Ui_Select_player/Mago v1.png" id="11_2cqfq"]
+[ext_resource type="Texture2D" uid="uid://yd7ed5yfldm" path="res://Ui_Select_player/Arquera estatuilla.png" id="12_yaehf"]
+[ext_resource type="Texture2D" uid="uid://csyo6qyx8vktx" path="res://Ui_Select_player/Assasin.png" id="13_074og"]
+[ext_resource type="Texture2D" uid="uid://bjnljqymy58am" path="res://Ui_Select_player/Caballero.png" id="14_cegan"]
 [ext_resource type="Animation" uid="uid://cggh7b3rqmfak" path="res://Titulo_intro.res" id="15_82xsv"]
 [ext_resource type="PackedScene" uid="uid://b6gqm85kbtrsp" path="res://Nivel1.tscn" id="20_82xsv"]
 
@@ -150,49 +150,34 @@ _data = {
 }
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cegan"]
-load_path = "res://.godot/imported/0001.png-d5bd1cd57372e81c3bfe2e4d5ce66411.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_82xsv"]
-load_path = "res://.godot/imported/0002.png-56585bf86230f5de3337f5361266debf.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_getpj"]
-load_path = "res://.godot/imported/0003.png-583bbbcd954dfba655d4b15675f6df42.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ryguw"]
-load_path = "res://.godot/imported/0004.png-b68c00d058269903156b516132b82ca2.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_d13ii"]
-load_path = "res://.godot/imported/0005.png-54c166674182c70b18edd4564023f567.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1u8w0"]
-load_path = "res://.godot/imported/0006.png-93e8a60ba235ae5b274e3f8d96aca6cc.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0odxb"]
-load_path = "res://.godot/imported/0007.png-08e6470e1426b1a42019e6922d1d0a2b.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_lswn8"]
-load_path = "res://.godot/imported/0008.png-da44dd88882481fbcdf1dea265072487.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_a6jrf"]
-load_path = "res://.godot/imported/0009.png-ca3dad4861b6738d0addce666dea05cf.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xuqvo"]
-load_path = "res://.godot/imported/0010.png-b0edf46c9e0cb5dbfbb63aba79722002.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qsp4k"]
-load_path = "res://.godot/imported/0011.png-5dda18cace400ec59ddf69c0ecb70f0e.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_kq58d"]
-load_path = "res://.godot/imported/0012.png-858958f35095d925999c34dd877e6c07.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_seu75"]
-load_path = "res://.godot/imported/0013.png-1c1b7fa2e7a524dc253cbee931338067.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_htxhm"]
-load_path = "res://.godot/imported/0014.png-11991910abbcf51b3c917445da6ae70a.ctex"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jq2sk"]
-load_path = "res://.godot/imported/0015.png-4fe05c9c30dc5c7de06ca5a5adae329c.ctex"
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_yaehf"]
 animations = [{

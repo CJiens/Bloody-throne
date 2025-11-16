@@ -921,7 +921,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("162_cb4y8")
 }],
-"loop": true,
+"loop": false,
 "name": &"attack_Area_W",
 "speed": 3.5
 }, {
