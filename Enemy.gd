@@ -98,8 +98,11 @@ func _ready():
 	#Barra de vida
 	hp_bar.max_value = max_hp
 	vida_label.text = str(hp) + "/" + str(max_hp)
+	# ✅ APLICAR COLOR INMEDIATAMENTE SI EL EQUIPO YA ESTÁ ASIGNADO
+	if team != 0:
+		_apply_team_color_immediately()
 	
-	print("👹 ENEMIGO CREADO - ID:", enemy_id, " Tipo:", enemy_type, " HP:", hp)
+	print("👹 ENEMIGO CREADO - ID:", enemy_id, " Tipo:", enemy_type, " HP:", hp, " Equipo:", team)
 
 func setup_collisions():
 	# Configurar layers y masks
@@ -154,7 +157,6 @@ func set_enemy_type(type: String):
 	
 	# Configurar animaciones
 	setup_animations()
-	setup_team_color()
 func setup_animations():
 	if not sprite:
 		return
@@ -544,16 +546,15 @@ func _debug_info():
 func set_team(new_team: int):
 	team = new_team
 	print("🎯 EQUIPO ASIGNADO - Enemigo:", enemy_id, " Equipo:", team)
-	setup_team_color()
+	
+	# ✅ APLICAR COLOR INMEDIATAMENTE, SIN ESPERAR
+	_apply_team_color_immediately()
 
 # -------------------------------
 # --- IDENTIFICADORES VISUALES POR EQUIPO
 # -------------------------------
-func setup_team_color():
-	if not is_inside_tree():
-		# Esperar a que esté en el árbol de escena
-		await ready
-	
+func _apply_team_color_immediately():
+
 	match team:
 		1:
 			modulate = Color(0.6, 0.6, 1.0)  # Azul claro para equipo 1

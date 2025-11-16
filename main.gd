@@ -162,7 +162,7 @@ func _ready():
 	login_button.pressed.connect(_on_login_pressed)
 	chat_send.pressed.connect(_on_chat_send_pressed)
 	button_ip.pressed.connect(_on_button_ip_pressed)
-	
+	Network.enemy_spawned_immediate.connect(_on_enemy_spawned_immediate)
 	# Conectar botones de clase
 	warrior_button.pressed.connect(_on_warrior_selected)
 	mage_button.pressed.connect(_on_mage_selected)
@@ -728,9 +728,13 @@ func _update_game_entities():
 				if data.has("team") and enemies[id].has_method("set_team"):
 					enemies[id].set_team(data.team)
 			else:
-				print("👹 SPAWNEANDO ENEMIGO - ID:", id, " Tipo:", data.type)
-				_spawn_enemy(id, data.type, Vector2(data.x, data.y))
-
+				 #✅ Pasar el equipo si está disponible en los datos
+				var enemy_team = data.get("team", 0)
+				if enemy_team == 0:
+					# Si no viene team en los datos, asignar basado en ID
+					enemy_team = 1 if id <= 3 else 2
+					print("⚠️ ENEMIGO SIN TEAM - Asignando por ID:", id, " -> Team:", enemy_team)
+				_spawn_enemy(id, data.type, Vector2(data.x, data.y), enemy_team)
 	# --- Verificar enemigos eliminados ---
 	_check_enemy_deaths()
 
@@ -786,7 +790,14 @@ func _process_enemy_death(enemy_id: int, enemy: Node):
 # -------------------------------
 # --- SPAWN DE ENEMIGOS
 # -------------------------------
-func _spawn_enemy(id: int, type: String, pos: Vector2):
+func _spawn_enemy(id: int, type: String, pos: Vector2, team: int = 0):
+	# ✅ VERIFICAR DUPLICADOS
+	if id in enemies:
+		print("❌ ENEMIGO DUPLICADO - ID:", id, " Ya existe!")
+		return
+	
+	print("✅ SPAWNEANDO ENEMIGO - ID:", id, " Tipo:", type, " Equipo:", team)
+	
 	var instance = EnemyScene.instantiate()
 	instance.position = pos
 	instance.name = str(id)
@@ -796,17 +807,23 @@ func _spawn_enemy(id: int, type: String, pos: Vector2):
 	if instance.has_method("set_enemy_type"):
 		instance.set_enemy_type(type)
 	
-	# ✅ NUEVO: Establecer equipo del enemigo
-	if instance.has_method("set_team"):
-		var enemy_data = Network.enemies.get(str(id))
-		if enemy_data and enemy_data.has("team"):
-			instance.set_team(enemy_data.team)
-			print("👹 ENEMIGO CREADO - ID:", id, " Tipo:", type, " Equipo:", enemy_data.team, " Pos:", pos)
-		else:
-			print("⚠️ ENEMIGO SIN DATOS DE EQUIPO - ID:", id)
+	if team != 0 && instance.has_method("set_team"):
+		instance.set_team(team)
 	
 	enemy_container.add_child(instance)
 	enemies[id] = instance
+	
+	print("👹 ENEMIGO CREADO - ID:", id, " Tipo:", type, " Equipo:", team, " Pos:", pos)
+func _on_enemy_spawned_immediate(enemy_data: Dictionary):
+	var id = enemy_data.id
+	var type = enemy_data.type
+	var pos = Vector2(enemy_data.x, enemy_data.y)
+	var team = enemy_data.team
+	
+	print("⚡ SPAWN INMEDIATO - Enemigo ID:", id, " Tipo:", type, " Equipo:", team)
+	
+	# Usar la función _spawn_enemy existente pero con el equipo
+	#_spawn_enemy(id, type, pos, team)
 
 
 

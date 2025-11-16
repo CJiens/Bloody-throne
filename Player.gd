@@ -307,6 +307,16 @@ func _process(delta):
 		if decision_time_remaining <= 0:
 			in_decision_period = false
 			hide_game_ui()
+	# ✅ ACTUALIZAR CONTADOR DE WAVE UI SI ESTÁ VISIBLE
+	if wave_ui and wave_ui.visible and not in_decision_period:
+		var current_enemy_count = get_tree().get_nodes_in_group("enemies").size()
+		if enemy_count_label and current_enemy_count != enemies_remaining:
+			enemy_count_label.text = "Enemigos: %d" % current_enemy_count
+			enemies_remaining = current_enemy_count
+			
+			# Debug ocasional
+			if Engine.get_frames_drawn() % 120 == 0:
+				print("🔢 PLAYER - Contador actualizado:", current_enemy_count)
 
 func _physics_process(delta):
 	if id == Network.player_id:
@@ -443,30 +453,22 @@ func add_currency_for_kill(enemy_type: String, amount: int = 0):
 
 func update_wave_ui(wave_number: int, enemy_count: int):
 	current_wave = wave_number
-	# ✅ NUEVO: Contar solo enemigos rivales (del equipo contrario)
-	var rival_enemies_count = 0
-	
-	# Obtener todos los enemigos de la escena
-	var all_enemies = get_tree().get_nodes_in_group("enemies")
-	for enemy in all_enemies:
-		# Solo contar enemigos de equipo contrario
-		if enemy.team != team:
-			rival_enemies_count += 1
-	
-	enemies_remaining = rival_enemies_count
+	# ✅ USAR EL CONTADOR REAL DE ENEMIGOS EN LA ESCENA
+	var actual_enemy_count = get_tree().get_nodes_in_group("enemies").size()
+	enemies_remaining = actual_enemy_count
 	in_decision_period = false
 	
 	if wave_label:
 		wave_label.text = "OLEADA %d" % wave_number
 	if enemy_count_label:
-		enemy_count_label.text = "Enemigos: %d" % rival_enemies_count
+		enemy_count_label.text = "Enemigos: %d" % actual_enemy_count
 	
 	if wave_ui:
 		wave_ui.visible = true
 	if decision_ui:
 		decision_ui.visible = false
 	
-	print("🌊 UI ACTUALIZADA - Oleada:", wave_number, " Enemigos Rivales:", rival_enemies_count, " (Total:", enemy_count, ")")
+	print("🌊 UI ACTUALIZADA - Oleada:", wave_number, " Enemigos en escena:", actual_enemy_count, " (Network:", enemy_count, ")")
 
 # -------------------------------
 # --- SISTEMA DE DECISIONES Y CARTAS

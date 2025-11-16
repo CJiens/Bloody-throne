@@ -25,6 +25,7 @@ var ws_ready := false
 # -------------------------------
 # --- SEÑALES
 # -------------------------------
+signal enemy_spawned_immediate(enemy_data)
 signal login_successful
 signal connection_successful
 signal connection_failed
@@ -144,7 +145,20 @@ func _receive_messages():
 				print("💀 Enemigo muerto - ID:", data.id, " Por:", data.killer_id)
 				if get_tree().current_scene.has_method("_on_enemy_killed"):
 					get_tree().current_scene._on_enemy_killed(data.id, data.killer_id, data.enemy_type)
-			
+			"enemy_spawned":
+				print("👹 ENEMIGO SPAWNEADO INMEDIATAMENTE - ID:", data.enemy.id, " Equipo:", data.enemy.team)
+				enemies[str(data.enemy.id)] = {
+					"x": data.enemy.x,
+					"y": data.enemy.y,
+					"type": data.enemy.type,
+					"hp": data.enemy.hp,
+					"max_hp": data.enemy.max_hp,
+					"team": data.enemy.team, # ✅ EQUIPO INCLUIDO INMEDIATAMENTE
+					"attack_damage": data.enemy.attack_damage,
+					"move_speed": data.enemy.move_speed
+					}
+				emit_signal("enemy_spawned_immediate", data.enemy)
+				print("✅ SEÑAL enemy_spawned_immediate EMITIDA")
 			"rogue_area_attack_effect":
 				print("💥 EFECTO DE ATAQUE DE ÁREA ROGUE RECIBIDO - Posición:", data.x, data.y, " Jugador:", data.player_id)
 				emit_signal("rogue_area_attack_effect", data.x, data.y, data.player_id)
