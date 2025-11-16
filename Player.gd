@@ -858,32 +858,8 @@ func _get_direction_animation(angle: float, action: String) -> String:
 	if not current_sprite:
 		return "Idle"
 	
-	# Convertir ángulo a grados y ajustar para que 0 sea este
-	var degrees = rad_to_deg(angle)
-	if degrees < 0:
-		degrees += 360
-	
-	# Determinar dirección basada en ángulos
-	var direction := ""
-	
-	if degrees >= 337.5 or degrees < 22.5:
-		direction = "E"      # Este
-	elif degrees >= 22.5 and degrees < 67.5:
-		direction = "SE"     # Sureste
-	elif degrees >= 67.5 and degrees < 112.5:
-		direction = "S"      # Sur
-	elif degrees >= 112.5 and degrees < 157.5:
-		direction = "SW"     # Suroeste
-	elif degrees >= 157.5 and degrees < 202.5:
-		direction = "W"      # Oeste
-	elif degrees >= 202.5 and degrees < 247.5:
-		direction = "NW"     # Noroeste
-	elif degrees >= 247.5 and degrees < 292.5:
-		direction = "N"      # Norte
-	else: # 292.5 a 337.5
-		direction = "NE"     # Noreste
-	
-	var anim_name = action + "_" + direction
+	var direction_suffix = _get_direction_suffix(angle)
+	var anim_name = action + "_" + direction_suffix
 	
 	# Verificar si la animación existe
 	if current_sprite.sprite_frames and current_sprite.sprite_frames.has_animation(anim_name):
@@ -1006,7 +982,7 @@ func execute_rogue_area_attack(mouse_pos: Vector2):
 	last_direction = direction
 	print("🧭 Dirección calculada: ", direction)
 	# Determinar la animación según la dirección
-	var anim_suffix = _get_rogue_area_direction_suffix(direction.angle())
+	var anim_suffix = _get_direction_suffix(direction.angle())
 	var anim_name = "attack_Area_" + anim_suffix
 
 	print("🎭 INTENTANDO ANIMACIÓN ROGUE AREA: ", anim_name)
@@ -1070,7 +1046,7 @@ func execute_mage_area_attack():
 	}))
 
 	# Reproducir animación de ataque de área
-	var anim_suffix = _get_mage_area_direction_suffix(direction.angle())
+	var anim_suffix = _get_direction_suffix(direction.angle())
 	var anim_name = "attack_Area_" + anim_suffix
 
 	print("🎭 INTENTANDO ANIMACIÓN MAGA AREA: ", anim_name)
@@ -1097,30 +1073,8 @@ func execute_mage_area_attack():
 	mage_area_attack_timer = mage_area_attack_cooldown
 
 	print("⏳ ATAQUE DE ÁREA MAGA EN COOLDOWN - Tiempo:", mage_area_attack_cooldown, "s")
-func _get_rogue_area_direction_suffix(angle: float) -> String:
-	# Convertir ángulo a grados y ajustar para que 0 sea este
-	var degrees = rad_to_deg(angle)
-	if degrees < 0:
-		degrees += 360
-
-	# Determinar dirección basada en ángulos
-	if degrees >= 337.5 or degrees < 22.5:
-		return "E"      # Este
-	elif degrees >= 22.5 and degrees < 67.5:
-		return "SE"     # Sureste
-	elif degrees >= 67.5 and degrees < 112.5:
-		return "S"      # Sur
-	elif degrees >= 112.5 and degrees < 157.5:
-		return "SW"     # Suroeste
-	elif degrees >= 157.5 and degrees < 202.5:
-		return "W"      # Oeste
-	elif degrees >= 202.5 and degrees < 247.5:
-		return "NW"     # Noroeste
-	elif degrees >= 247.5 and degrees < 292.5:
-		return "N"      # Norte
-	else: # 292.5 a 337.5
-		return "NE"     # Noreste
-func _get_mage_area_direction_suffix(angle: float) -> String:
+# FUNCIÓN UNIVERSAL PARA OBTENER SUFIJO DE DIRECCIÓN
+func _get_direction_suffix(angle: float) -> String:
 	# Convertir ángulo a grados y ajustar para que 0 sea este
 	var degrees = rad_to_deg(angle)
 	if degrees < 0:

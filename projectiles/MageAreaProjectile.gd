@@ -1,5 +1,5 @@
-#MageAreaProjectile.gd
 extends Area2D
+
 class_name MageAreaProjectile
 
 var damage: int = 10
@@ -7,38 +7,32 @@ var owner_id: int = -1
 var owner_team: int = 1
 var lifetime: float = 10.0
 var elapsed_time: float = 0.0
-var damage_interval: float = 0.5  # Daño cada 0.5 segundos
+var damage_interval: float = 0.5
 var last_damage_time: float = 0.0
 
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var timer: Timer = $Timer
-@onready var collision_shape: CollisionShape2D = $CollisionShape2D
 
 func _ready():
-	print("🔥 PROYECTIL ÁREA MAGA CREADO - Posición:", position, " Duración:", lifetime, "s")
+	print("🔥 PROYECTIL ÁREA MAGA CREADO - Posición:", position, " Duración:", lifetime, "s, Owner:", owner_id)
 	
-	# Configurar para que esté DEBAJO de los personajes
 	z_index = -1
 	
-	# Configurar colisiones SOLO para objetivos válidos
-	set_collision_layer_value(3, true)   # Layer 3: proyectiles
-	set_collision_mask_value(6, true)    # Mask 6: hitbox de jugadores
-	set_collision_mask_value(7, true)    # Mask 7: hitbox de enemigos
-	set_collision_mask_value(8, true)    # Mask 8: bases
+	# Configurar colisiones
+	set_collision_layer_value(3, true)
+	set_collision_mask_value(6, true)  # Jugadores
+	set_collision_mask_value(7, true)  # Enemigos
+	set_collision_mask_value(8, true)  # Bases
 	
 	# Conectar señales
 	area_entered.connect(_on_area_entered)
-
 	timer.timeout.connect(_on_timer_timeout)
 	
 	# Iniciar animación
 	if animated_sprite:
 		animated_sprite.play("start")
-		# Esperar a que termine la animación de inicio
 		await animated_sprite.animation_finished
 		animated_sprite.play("burn_loop")
-		
-		# Iniciar timer de duración
 		timer.start(lifetime)
 	else:
 		print("❌ ERROR: AnimatedSprite2D no encontrado")
@@ -46,16 +40,16 @@ func _ready():
 func _process(delta):
 	elapsed_time += delta
 	
-	# Aplicar daño periódicamente a todos los objetivos en el área
+	# Aplicar daño periódicamente
 	if elapsed_time - last_damage_time >= damage_interval:
 		last_damage_time = elapsed_time
-		_apply_damage_to_targets_in_area()
+		_apply_damage_to_all_targets()
 
 func initialize(dmg: int, owner: int, team: int):
 	damage = dmg
 	owner_id = owner
 	owner_team = team
-	print("💥 PROYECTIL ÁREA MAGA INICIALIZADO - Daño:", damage, " Equipo:", team)
+	print("💥 PROYECTIL ÁREA MAGA INICIALIZADO - Daño:", damage, " Owner:", owner_id, " Team:", team)
 
 func _on_timer_timeout():
 	print("🔥 PROYECTIL ÁREA MAGA DESAPARECIENDO...")
@@ -63,102 +57,121 @@ func _on_timer_timeout():
 
 func _start_disappear():
 	if animated_sprite:
-		# Reproducir animación de fin (inversa)
 		if animated_sprite.sprite_frames.has_animation("end"):
 			animated_sprite.play("end")
 			await animated_sprite.animation_finished
 		else:
-			# Fallback: fade out
 			var tween = create_tween()
 			tween.tween_property(animated_sprite, "modulate", Color(1, 1, 1, 0), 0.5)
 			await tween.finished
-	
 	queue_free()
 
-func _apply_damage_to_targets_in_area():
-	# Obtener todas las áreas que están dentro de la zona de daño
+func _apply_damage_to_all_targets():
 	var areas = get_overlapping_areas()
 	var hit_count = 0
 	
 	for area in areas:
-		if _should_damage_target(area):
+		if _can_damage_target(area):
 			hit_count += 1
 			_send_damage_to_target(area)
 	
 	if hit_count > 0:
 		print("🔥 PROYECTIL ÁREA MAGA - Aplicando daño a", hit_count, " objetivos")
 
-func _should_damage_target(area) -> bool:
-	# No dañar si el área no tiene un padre válido
+func _can_damage_target(area) -> bool:
 	if not area.get_parent():
 		return false
 	
-	# Verificar hitbox de jugadores (layer 6)
+	# JUGADORES (layer 6) - Dañar a TODOS menos al owner
 	if area.get_collision_layer_value(6):
 		var player = area.get_parent()
-		if player and player.has_method("get_player_id"):
-			var player_id = player.get_player_id()
-			var player_team = player.team if "team" in player else 0
-			# NO dañar al propio jugador ni aliados
-			return player_id != owner_id and player_team != owner_team
+		if player and (player.has_method("get_player_id") or "id" in player):
+			var player_id = -1
+			if player.has_method("get_player_id"):
+				player_id = player.get_player_id()
+			elif "id" in player:
+				player_id = player.id
+			
+			# ✅ SOLO EVITAR AL OWNER, los demás SÍ reciben daño
+			if player_id == owner_id:
+				print("🚫 EVITANDO AUTO-DAÑO - Owner:", owner_id)
+				return false
+			
+			print("🎯 JUGADOR PARA DAÑAR - ID:", player_id, " (Owner:", owner_id, ")")
+			return true
 	
-	# Verificar hitbox de enemigos (layer 7)
+	# ENEMIGOS (layer 7) - Dañar a TODOS
 	elif area.get_collision_layer_value(7):
 		var enemy = area.get_parent()
 		if enemy and enemy.has_method("get_enemy_id"):
-			var enemy_team = enemy.team if "team" in enemy else 0
-			# NO dañar enemigos aliados
-			return enemy_team != owner_team
+			print("🎯 ENEMIGO PARA DAÑAR - ID:", enemy.get_enemy_id())
+			return true
 	
-	# Verificar bases (layer 8)
+	# BASES (layer 8) - Dañar a TODAS
 	elif area.get_collision_layer_value(8):
 		var base = area.get_parent()
-		if base and base.has_method("get_team"):
-			var base_team = base.get_team()
-			# NO dañar bases aliadas
-			return base_team != owner_team
+		if base and (base.has_method("get_team") or "team" in base):
+			print("🎯 BASE PARA DAÑAR")
+			return true
 	
 	return false
 
 func _send_damage_to_target(area):
-	# Enviar mensaje al servidor para aplicar el daño
-	if area.get_collision_layer_value(6):  # Jugador
+	# JUGADORES
+	if area.get_collision_layer_value(6):
 		var player = area.get_parent()
-		if player and player.has_method("get_player_id"):
+		if player and (player.has_method("get_player_id") or "id" in player):
+			var player_id = -1
+			if player.has_method("get_player_id"):
+				player_id = player.get_player_id()
+			elif "id" in player:
+				player_id = player.id
+			
+			print("🔥 ENVIANDO DAÑO A JUGADOR - ID:", player_id, " Daño:", damage)
+			
 			Network.socket.send_text(JSON.stringify({
 				"type": "mage_area_damage_tick",
 				"target_type": "player",
-				"target_id": player.get_player_id(),
+				"target_id": player_id,
 				"damage": damage,
-				"owner_id": owner_id,
-				"owner_team": owner_team
+				"owner_id": owner_id
 			}))
 	
-	elif area.get_collision_layer_value(7):  # Enemigo
+	# ENEMIGOS
+	elif area.get_collision_layer_value(7):
 		var enemy = area.get_parent()
 		if enemy and enemy.has_method("get_enemy_id"):
+			print("🔥 ENVIANDO DAÑO A ENEMIGO - ID:", enemy.get_enemy_id())
+			
 			Network.socket.send_text(JSON.stringify({
 				"type": "mage_area_damage_tick",
 				"target_type": "enemy",
 				"target_id": enemy.get_enemy_id(),
 				"damage": damage,
-				"owner_id": owner_id,
-				"owner_team": owner_team
+				"owner_id": owner_id
 			}))
 	
-	elif area.get_collision_layer_value(8):  # Base
+	# BASES
+	elif area.get_collision_layer_value(8):
 		var base = area.get_parent()
+		var base_team = 0
+		
 		if base and base.has_method("get_team"):
-			Network.socket.send_text(JSON.stringify({
-				"type": "mage_area_damage_tick",
-				"target_type": "base",
-				"target_id": base.get_team(),
-				"damage": damage,
-				"owner_id": owner_id,
-				"owner_team": owner_team
-			}))
+			base_team = base.get_team()
+		elif "team" in base:
+			base_team = base.team
+		
+		print("🔥 ENVIANDO DAÑO A BASE - Team:", base_team)
+		
+		Network.socket.send_text(JSON.stringify({
+			"type": "mage_area_damage_tick",
+			"target_type": "base",
+			"target_id": base_team,
+			"damage": damage,
+			"owner_id": owner_id
+		}))
 
 func _on_area_entered(area):
-	# Aplicar daño inmediatamente cuando un objetivo entra al área
-	if _should_damage_target(area):
+	if _can_damage_target(area):
+		print("🎯 OBJETivo ENTRA EN ÁREA - Aplicando daño inmediato")
 		_send_damage_to_target(area)
