@@ -254,15 +254,8 @@ class WaveSystem {
 		this.waveInProgress = false;
 		this.enemiesRemaining = 0;
 		this.bossWaveInterval = 5; // Cada 5 oleadas aparece un jefe
-		this.waveConfigs = {
-			1: { enemies: 1, types: ['grunt'], reward: 50 },
-			2: { enemies: 12, types: ['grunt', 'archer'], reward: 60 },
-			3: { enemies: 15, types: ['grunt', 'archer'], reward: 70 },
-			4: { enemies: 18, types: ['grunt', 'archer', 'mage'], reward: 80 },
-			5: { enemies: 1, types: ['boss'], reward: 150 }, // Jefe
-			6: { enemies: 20, types: ['grunt', 'archer', 'mage'], reward: 90 },
-			// Continuar con más oleadas...
-		};
+		this.minEnemies = 4;  // Mínimo de enemigos (par)
+		this.maxEnemies = 12; // Máximo de enemigos (par)
 	}
 
 	getWaveConfig(waveNumber) {
@@ -276,12 +269,12 @@ class WaveSystem {
 			};
 		}*/
 
-		// Oleadas normales progresivas - NÚMEROS PARES PARA BALANCE
-		const baseEnemies = 2 + (waveNumber * 2); // Mínimo 2, siempre par
+	let numEnemies = this.minEnemies + Math.floor(Math.random() * ((this.maxEnemies - this.minEnemies) / 2 + 1)) * 2;
+		
 		const baseReward = 50 + (waveNumber * 10);
 
 		return {
-			enemies: 6,
+			enemies: numEnemies,
 			types: ['grunt', 'archer', 'mage'],
 			reward: baseReward,
 			isBossWave: false
@@ -294,7 +287,7 @@ class WaveSystem {
 		this.waveInProgress = true;
 		this.enemiesRemaining = 6;
 
-		console.log(`🌊 OLEADA ${this.currentWave} INICIADA - Enemigos: 6 (3 azules, 3 rojos), Recompensa: ${config.reward}`);
+		console.log(`🌊 OLEADA ${this.currentWave} INICIADA - Enemigos: ${config.enemies}, Recompensa: ${config.reward}`)
 
 		return config;
 	}
@@ -1114,25 +1107,41 @@ function spawnWaveEnemies(waveConfig) {
 		// Spawn del jefe de oleada (no confundir con el jefe permanente)
 		spawnBossWave();
 	} else {*/
-		// ✅ NUEVO: SPAWN BALANCEADO - MÍNIMO 2 POR EQUIPO
-		const totalEnemies = 6;
-		
-		// Calcular cuántos enemigos por equipo (mínimo 2)
-		const enemiesPerTeam = 3;
-		
-		console.log(`🎯 SPAWN FIJO - Total: ${totalEnemies}, Equipo 1: ${enemiesPerTeam}, Equipo 2: ${enemiesPerTeam}`);
-		
-		// Spawn enemigos equipo 1 (azul)
-		for (let i = 1; i <= enemiesPerTeam; i++) {
-			spawnEnemy(i, waveConfig.types, 1);
-		}
-		
-		// Spawn enemigos equipo 2 (rojo)  
-		for (let i = enemiesPerTeam + 1; i <= enemiesPerTeam * 2; i++) {
-			spawnEnemy(i, waveConfig.types, 2);
-		}
-		
-		 console.log(`✅ SPAWN COMPLETADO - Equipo 1: ${enemiesPerTeam}, Equipo 2: ${enemiesPerTeam}`);
+// ✅ SISTEMA MEZCLADO: Algunos enemigos por equipo, algunos neutrales
+	const totalEnemies = waveConfig.enemies;
+	
+	// Calcular distribución:
+	// - 60% enemigos por equipo (30% cada equipo)
+	// - 40% enemigos neutrales
+	const teamEnemies = Math.floor(totalEnemies * 0.6);
+	const neutralEnemies = totalEnemies - teamEnemies;
+	
+	// Asegurar que teamEnemies sea par para dividir entre equipos
+	const enemiesPerTeam = Math.floor(teamEnemies / 2);
+	
+	console.log(`🎯 SPAWN MEZCLADO - Total: ${totalEnemies}, Equipo 1: ${enemiesPerTeam}, Equipo 2: ${enemiesPerTeam}, Neutrales: ${neutralEnemies}`);
+	
+	let nextId = 1;
+
+	// Spawn enemigos equipo 1 (azul)
+	for (let i = 0; i < enemiesPerTeam; i++) {
+		spawnEnemy(nextId, waveConfig.types, 1);
+		nextId++;
+	}
+	
+	// Spawn enemigos equipo 2 (rojo)  
+	for (let i = 0; i < enemiesPerTeam; i++) {
+		spawnEnemy(nextId, waveConfig.types, 2);
+		nextId++;
+	}
+	
+	// Spawn enemigos neutrales (equipo 0 - blancos)
+	for (let i = 0; i < neutralEnemies; i++) {
+		spawnEnemy(nextId, waveConfig.types, 0);
+		nextId++;
+	}
+	
+	console.log(`✅ SPAWN COMPLETADO - Equipo 1: ${enemiesPerTeam}, Equipo 2: ${enemiesPerTeam}, Neutrales: ${neutralEnemies}`);
 	//}
 }
 
@@ -1151,14 +1160,19 @@ function spawnEnemy(id, availableTypes, forceTeam = null) {
 			x: -1600 + (Math.random() * 800 - 400),  // Entre -2000 y -1200
 			y: -800 + (Math.random() * 800 - 400)    // Entre -1200 y -400
 		};
-	} else {
+	} else if (fixedTeam === 2) {
 		// Área segura para equipo rojo (derecha del mapa)
 		spawnPos = {
 			x: 1400 + (Math.random() * 800 - 400),   // Entre 1000 y 1800
 			y: 400 + (Math.random() * 800 - 400)     // Entre 0 y 800
 		};
+	} else {
+		// ✅ ENEMIGOS NEUTRALES - spawn en el centro del mapa
+		spawnPos = {
+			x: -400 + (Math.random() * 800),         // Entre -400 y 400
+			y: -400 + (Math.random() * 800)          // Entre -400 y 400
+		};
 	}
-
 	const baseHp = enemyType === 'grunt' ? 50 : enemyType === 'archer' ? 40 : enemyType === 'mage' ? 30 : 100;
 
 	enemies[id] = {
@@ -1171,16 +1185,19 @@ function spawnEnemy(id, availableTypes, forceTeam = null) {
 		team: fixedTeam,
 		attack_damage: enemyType === 'grunt' ? 10 : enemyType === 'archer' ? 8 : enemyType === 'mage' ? 12 : 15,
 		move_speed: enemyType === 'grunt' ? 80 : enemyType === 'archer' ? 100 : enemyType === 'mage' ? 70 : 60,
-		spawn_area: fixedTeam
+		spawn_area: fixedTeam,
+		is_neutral: fixedTeam === 0,  // ✅ FLAG PARA IDENTIFICAR NEUTRALES
+		last_attack_time: 0,// ✅ COOLDOWN DE ATAQUE PARA NEUTRALES
+		attack_cooldown: 1000 // 1 segundo entre ataques
 	};
 
-	console.log(`👹 ENEMIGO SPAWNEADO - ID: ${id}, Equipo: ${fixedTeam}, Posición: (${spawnPos.x}, ${spawnPos.y})`);
-
-	// ✅ BROADCAST del enemigo con su equipo
+	console.log(`👹 ENEMIGO SPAWNEADO - ID: ${id}, Equipo: ${fixedTeam}${fixedTeam === 0 ? ' (NEUTRAL)' : ''}, Posición: (${spawnPos.x}, ${spawnPos.y})`);
+ //✅ BROADCAST del enemigo con su equipo
 	broadcast({
 		type: 'enemy_spawned',
 		enemy: enemies[id]
 	});
+
 }
 
 /*function spawnBossWave() {
@@ -1272,7 +1289,109 @@ function endCurrentWave() {
 
     }, 3000);
 }
+// ✅ FUNCIÓN MEJORADA PARA MOVIMIENTO DE ENEMIGOS NEUTRALES
+function _moveNeutralEnemy(enemy) {
+	// Buscar jugador más cercano
+	let closestPlayer = null;
+	let minDistance = Infinity;
+	
+	for (let playerId in players) {
+		const player = players[playerId];
+		if (player.is_alive) {
+			const distance = Math.sqrt(
+				Math.pow(player.x - enemy.x, 2) + Math.pow(player.y - enemy.y, 2)
+			);
+			
+			if (distance < minDistance && distance < 800) { // Radio de detección aumentado a 800
+				minDistance = distance;
+				closestPlayer = player;
+			}
+		}
+	}
+	
+	// Si encontramos un jugador, movernos DIRECTAMENTE hacia él
+	if (closestPlayer) {
+		const dx = closestPlayer.x - enemy.x;
+		const dy = closestPlayer.y - enemy.y;
+		const distance = Math.sqrt(dx * dx + dy * dy);
+		
+		if (distance > 0) {
+			// ✅ MOVIMIENTO MÁS DECIDIDO - Sin cambios de dirección aleatorios
+			const moveX = (dx / distance) * enemy.move_speed * 0.025; // Aumentada la velocidad
+			const moveY = (dy / distance) * enemy.move_speed * 0.025;
+			
+			enemy.x += moveX;
+			enemy.y += moveY;
+			
+			// ✅ VERIFICAR SI ESTÁ EN RANGO PARA ATACAR (distancia < 60)
+			if (distance <= 60) {
+				_attackPlayerWithNeutral(enemy, closestPlayer);
+			}
+		}
+	} else {
+		// Si no hay jugadores, movimiento aleatorio MÍNIMO
+		if (Math.random() < 0.02) { // Solo 2% de probabilidad de moverse aleatoriamente
+			const angle = Math.random() * Math.PI * 2;
+			const distance = enemy.move_speed * 0.016;
+			
+			enemy.x += Math.cos(angle) * distance;
+			enemy.y += Math.sin(angle) * distance;
+		}
+	}
+	
+	// Limitar el movimiento al área central del mapa
+	enemy.x = Math.max(-1200, Math.min(1200, enemy.x));
+	enemy.y = Math.max(-1000, Math.min(1000, enemy.y));
+}
 
+// ✅ FUNCIÓN MEJORADA CON COOLDOWN
+function _attackPlayerWithNeutral(enemy, player) {
+	const now = Date.now();
+	
+	// ✅ VERIFICAR COOLDOWN
+	if (now - enemy.last_attack_time < enemy.attack_cooldown) {
+		return; // Todavía en cooldown
+	}
+	
+	// ✅ DAÑO DEL 5% DE LA VIDA MÁXIMA DEL PLAYER
+	const damage = Math.floor(player.max_hp * 0.05);
+	
+	console.log(`💥 ENEMIGO NEUTRAL ${enemy.id} ATACA JUGADOR ${player.id} - Daño: ${damage} (5% de ${player.max_hp})`);
+	
+	// Aplicar daño al jugador
+	player.hp -= damage;
+	if (player.hp < 0) player.hp = 0;
+	
+	// Notificar a todos los clientes
+	broadcast({
+		type: 'player_hit',
+		id: parseInt(player.id),
+		hp: player.hp,
+		damage: damage,
+		attacker_id: enemy.id,
+		attacker_type: 'neutral_enemy'
+	});
+	
+	// Verificar si el jugador murió
+	if (player.hp <= 0) {
+		console.log(`💀 JUGADOR ${player.id} MUERTO POR ENEMIGO NEUTRAL ${enemy.id}`);
+		player.is_alive = false;
+		player.respawn_timer = 5;
+		
+		broadcast({
+			type: 'player_dead',
+			id: parseInt(player.id),
+			by: enemy.id,
+			respawn_time: 5,
+			killer_type: 'neutral_enemy'
+		});
+		
+		startRespawnTimer(player.id);
+	}
+	
+	// ✅ ACTUALIZAR COOLDOWN
+	enemy.last_attack_time = now;
+}
 // ----------------------------
 // GAME LOOP PRINCIPAL
 // ----------------------------
@@ -1286,9 +1405,13 @@ function startGameLoop() {
 
 			// Saltar el jefe permanente (ya tiene su propia IA)
 			if (enemy.is_permanent) continue;
-
+			
 			if (enemy.type === 'boss_wave') continue; // Jefe de oleada tiene comportamiento especial
-
+			if (enemy.team === 0) {
+				// Enemigos neutrales: movimiento aleatorio o buscar jugadores
+				_moveNeutralEnemy(enemy);
+				continue;
+			}
 			// 🎯 MOVIMIENTO MEJORADO HACIA LA BASE ENEMIGA
 			const targetBase = enemy.team === 1 ? bases[2] : bases[1];
 			const dx = targetBase.x - enemy.x;
@@ -1297,6 +1420,10 @@ function startGameLoop() {
 
 			// ✅ NUEVO: Verificar que el enemigo no esté cerca de su base aliada
 			const allyBase = bases[enemy.team];
+			if (!allyBase) {
+				console.log(`❌ BASE ALIADA NO ENCONTRADA para equipo ${enemy.team}`);
+				continue;
+			}
 			const distanceToAllyBase = Math.sqrt(
 				Math.pow(allyBase.x - enemy.x, 2) + Math.pow(allyBase.y - enemy.y, 2)
 			);

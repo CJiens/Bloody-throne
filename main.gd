@@ -801,19 +801,19 @@ func _spawn_enemy(id: int, type: String, pos: Vector2, team: int = 0):
 	var instance = EnemyScene.instantiate()
 	instance.position = pos
 	instance.name = str(id)
+	# ✅ ASIGNAR EQUIPO INMEDIATAMENTE - INCLUYENDO NEUTRALES (0)
+	if instance.has_method("set_team"):
+		instance.set_team(team)
+		print("🎨 COLOR ASIGNADO INMEDIATAMENTE - Enemigo:", id, " Equipo:", team)
 	
+	# ✅ ASIGNAR ID Y TIPO DESPUÉS DEL EQUIPO
 	if instance.has_method("set_enemy_id"):
 		instance.set_enemy_id(id)
 	if instance.has_method("set_enemy_type"):
 		instance.set_enemy_type(type)
 	
-	if team != 0 && instance.has_method("set_team"):
-		instance.set_team(team)
-	
 	enemy_container.add_child(instance)
 	enemies[id] = instance
-	
-	print("👹 ENEMIGO CREADO - ID:", id, " Tipo:", type, " Equipo:", team, " Pos:", pos)
 func _on_enemy_spawned_immediate(enemy_data: Dictionary):
 	var id = enemy_data.id
 	var type = enemy_data.type

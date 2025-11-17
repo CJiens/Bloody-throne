@@ -1123,3 +1123,6 @@ func _create_mage_area_effect(attack_pos: Vector2):
 		print("⚡ EFECTO MAGA INMEDIATO CREADO - Posición:", attack_pos, " Equipo:", team)
 	else:
 		print("❌ No se encontró ObjectContainer en la escena principal")
+# En Player.gd, agregar método para obtener vida máxima
+func get_max_hp() -> int:
+	return max_hp
