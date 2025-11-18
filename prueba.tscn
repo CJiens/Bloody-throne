@@ -1,0 +1,525 @@
+[gd_scene load_steps=29 format=3 uid="uid://co6cu8m427gqf"]
+
+[ext_resource type="Theme" uid="uid://df3w3w54o8cod" path="res://stats.tres" id="1_2n4ld"]
+[ext_resource type="Theme" uid="uid://bymdlcqxwbvg3" path="res://Cuadradito de Stats.tres" id="2_a8cc0"]
+[ext_resource type="Theme" uid="uid://t8tag5303032" path="res://Hero Stat-titulo.tres" id="3_yp0q4"]
+[ext_resource type="FontFile" uid="uid://ve2dpw8for1r" path="res://Interfaz de estadistica/Spectral_SC/SpectralSC-Bold.ttf" id="4_k31ow"]
+[ext_resource type="Texture2D" uid="uid://yujjp24n4aik" path="res://Interfaz de estadistica/Rotado.png" id="5_ec7i0"]
+[ext_resource type="Texture2D" uid="uid://dtxcmsn6adlo3" path="res://Interfaz de estadistica/Mini_background.png" id="6_2pljw"]
+[ext_resource type="Texture2D" uid="uid://3ay3y5vb6yst" path="res://Interfaz de estadistica/Mini_frame0.png" id="7_i7ldd"]
+[ext_resource type="Texture2D" uid="uid://l72vuxlgblno" path="res://Interfaz de estadistica/Iconos/skill_icon_04_nobg.png" id="8_gkbsn"]
+[ext_resource type="Texture2D" uid="uid://5pcwr5qw5af7" path="res://Interfaz de estadistica/Iconos/skill_icon_02_nobg.png" id="9_ih1lc"]
+[ext_resource type="Texture2D" uid="uid://p0flwy2gf5w0" path="res://Interfaz de estadistica/Iconos/skill_icon_01_nobg.png" id="10_o67f3"]
+[ext_resource type="Texture2D" uid="uid://bybgqe36fgq3i" path="res://Interfaz de estadistica/Iconos/weapon_icon.png" id="11_36xdq"]
+[ext_resource type="Texture2D" uid="uid://ccnvh8gjwqrub" path="res://Interfaz de estadistica/Caballero silueta.png" id="12_04saj"]
+
+[sub_resource type="Theme" id="Theme_nhlc6"]
+
+[sub_resource type="Theme" id="Theme_n7351"]
+Label/colors/font_color = Color(0.78431374, 0.64705884, 0.3764706, 1)
+Label/colors/font_outline_color = Color(0.16862746, 0.101960786, 0.05490196, 1)
+Label/constants/outline_size = 1
+Label/font_sizes/font_size = 18
+Label/fonts/font = ExtResource("4_k31ow")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_itxgx"]
+texture = ExtResource("5_ec7i0")
+
+[sub_resource type="Theme" id="Theme_pmwq3"]
+Panel/styles/panel = SubResource("StyleBoxTexture_itxgx")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cgsek"]
+texture = ExtResource("6_2pljw")
+
+[sub_resource type="Theme" id="Theme_ptikf"]
+Panel/styles/panel = SubResource("StyleBoxTexture_cgsek")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sg6sq"]
+texture = ExtResource("7_i7ldd")
+
+[sub_resource type="Theme" id="Theme_xru3o"]
+Panel/styles/panel = SubResource("StyleBoxTexture_sg6sq")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yt0h1"]
+texture = ExtResource("8_gkbsn")
+
+[sub_resource type="Theme" id="Theme_4c11n"]
+Panel/styles/panel = SubResource("StyleBoxTexture_yt0h1")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ictha"]
+texture = ExtResource("9_ih1lc")
+
+[sub_resource type="Theme" id="Theme_3tmio"]
+Panel/styles/panel = SubResource("StyleBoxTexture_ictha")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7wy67"]
+texture = ExtResource("10_o67f3")
+
+[sub_resource type="Theme" id="Theme_caauc"]
+Panel/styles/panel = SubResource("StyleBoxTexture_7wy67")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p01ps"]
+texture = ExtResource("11_36xdq")
+
+[sub_resource type="Theme" id="Theme_2xgey"]
+Panel/styles/panel = SubResource("StyleBoxTexture_p01ps")
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StatsUI" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -300.0
+offset_right = 179.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme = SubResource("Theme_nhlc6")
+
+[node name="Panel" type="Panel" parent="StatsUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.52000004
+anchor_top = 0.5
+anchor_right = 0.52000004
+anchor_bottom = 0.5
+offset_left = -187.83002
+offset_top = -292.5
+offset_right = 197.54495
+offset_bottom = 307.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_2n4ld")
+
+[node name="MarginContainer" type="MarginContainer" parent="StatsUI/Panel"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_2n4ld")
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="VBoxContainer" parent="StatsUI/Panel/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("1_2n4ld")
+theme_override_constants/separation = 3
+
+[node name="nombre" type="Label" parent="StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "JESUS"
+
+[node name="nivel" type="Label" parent="StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "12"
+
+[node name="HSeparator" type="HSeparator" parent="StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GridContainer" type="GridContainer" parent="StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StatsHPLabel" type="Label" parent="StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "12/12"
+
+[node name="Monedas" type="Label" parent="StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "213"
+
+[node name="ClassLabel" type="Label" parent="StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "warrior"
+
+[node name="HSeparator2" type="HSeparator" parent="StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+text = "DAMAGE"
+
+[node name="GridContainer2" type="GridContainer" parent="StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StatsCriticalLabel" type="Label" parent="StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "50%"
+
+[node name="StatsDamageLabel" type="Label" parent="StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "123"
+
+[node name="StatsAttackSpeedLabel" type="Label" parent="StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "2.2"
+
+[node name="StatsKillsLabel" type="Label" parent="StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "123"
+
+[node name="HSeparator3" type="HSeparator" parent="StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label2" type="Label" parent="StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="GridContainer3" type="GridContainer" parent="StatsUI/Panel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StatsSpeedLabel" type="Label" parent="StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "222"
+
+[node name="StatsGoldBonusLabel" type="Label" parent="StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "20%"
+
+[node name="Panel" type="Panel" parent="StatsUI/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.735
+anchor_right = 0.98300004
+anchor_bottom = 0.9850001
+offset_left = 9.125
+offset_top = 0.25
+offset_right = -0.22433472
+offset_bottom = 0.24993896
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("2_a8cc0")
+
+[node name="Label" type="Label" parent="StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.193
+anchor_right = 0.5
+anchor_bottom = 0.193
+offset_left = -66.19414
+offset_top = -9.950001
+offset_right = 66.19383
+offset_bottom = 10.049999
+grow_horizontal = 2
+theme = ExtResource("3_yp0q4")
+text = "Hero Stats"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label8" type="Label" parent="StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.32900003
+anchor_top = -0.165
+anchor_right = 0.32900003
+anchor_bottom = -0.165
+offset_left = -78.182045
+offset_top = -8.999998
+offset_right = 78.067955
+offset_bottom = 9.000002
+grow_horizontal = 2
+theme = ExtResource("3_yp0q4")
+theme_override_font_sizes/font_size = 17
+text = "Warrior"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label2" type="Label" parent="StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.27600002
+anchor_top = 0.41300002
+anchor_right = 0.27600002
+anchor_bottom = 0.41300002
+offset_left = -66.09991
+offset_top = -14.450001
+offset_right = 66.28806
+offset_bottom = 14.549999
+grow_horizontal = 2
+theme = SubResource("Theme_n7351")
+text = "HP : 100/100"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label5" type="Label" parent="StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.707
+anchor_top = 0.41300002
+anchor_right = 0.707
+anchor_bottom = 0.41300002
+offset_left = -78.34332
+offset_top = -14.450001
+offset_right = 78.65665
+offset_bottom = 14.549999
+grow_horizontal = 2
+theme = SubResource("Theme_n7351")
+text = "Gold : 100"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label3" type="Label" parent="StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.27600002
+anchor_top = 0.633
+anchor_right = 0.27600002
+anchor_bottom = 0.633
+offset_left = -66.09991
+offset_top = -14.450005
+offset_right = 66.28806
+offset_bottom = 14.549995
+grow_horizontal = 2
+theme = SubResource("Theme_n7351")
+text = "Damage : 10"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label6" type="Label" parent="StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.712
+anchor_top = 0.637
+anchor_right = 0.712
+anchor_bottom = 0.637
+offset_left = -66.190674
+offset_top = -15.050003
+offset_right = 66.19733
+offset_bottom = 14.949997
+grow_horizontal = 2
+theme = SubResource("Theme_n7351")
+text = "Killed: 20"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label4" type="Label" parent="StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.27600002
+anchor_top = 0.84000003
+anchor_right = 0.27600002
+anchor_bottom = 0.84000003
+offset_left = -66.09991
+offset_top = -14.500008
+offset_right = 66.28806
+offset_bottom = 14.499992
+grow_horizontal = 2
+theme = SubResource("Theme_n7351")
+text = "Speed : 200  "
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label7" type="Label" parent="StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.74200004
+anchor_top = 0.84000003
+anchor_right = 0.74200004
+anchor_bottom = 0.84000003
+offset_left = -66.27493
+offset_top = -14.500008
+offset_right = 66.11304
+offset_bottom = 14.499992
+grow_horizontal = 2
+theme = SubResource("Theme_n7351")
+text = "Vel.Atack : 5"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Barrita roja" type="Panel" parent="StatsUI/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.837
+anchor_top = 0.393
+anchor_right = 0.837
+anchor_bottom = 0.393
+offset_left = -72.18387
+offset_top = -210.8
+offset_right = 37.81607
+offset_bottom = 197.94994
+grow_horizontal = 0
+grow_vertical = 2
+theme = SubResource("Theme_pmwq3")
+
+[node name="Panel3" type="Panel" parent="StatsUI/Panel/Barrita roja"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.48900002
+anchor_top = 0.127
+anchor_right = 0.48900002
+anchor_bottom = 0.127
+offset_left = -42.539955
+offset_top = -38.161243
+offset_right = 43.117985
+offset_bottom = 40.58874
+theme = SubResource("Theme_ptikf")
+
+[node name="Panel" type="Panel" parent="StatsUI/Panel/Barrita roja/Panel3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_xru3o")
+
+[node name="Panel" type="Panel" parent="StatsUI/Panel/Barrita roja/Panel3/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_4c11n")
+
+[node name="Panel4" type="Panel" parent="StatsUI/Panel/Barrita roja"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.492
+anchor_top = 0.37
+anchor_right = 0.492
+anchor_bottom = 0.37
+offset_left = -42.869972
+offset_top = -39.487473
+offset_right = 42.78797
+offset_bottom = 39.262512
+theme = SubResource("Theme_ptikf")
+
+[node name="Panel" type="Panel" parent="StatsUI/Panel/Barrita roja/Panel4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_xru3o")
+
+[node name="Panel" type="Panel" parent="StatsUI/Panel/Barrita roja/Panel4/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_3tmio")
+
+[node name="Panel5" type="Panel" parent="StatsUI/Panel/Barrita roja"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.492
+anchor_top = 0.624
+anchor_right = 0.492
+anchor_bottom = 0.624
+offset_left = -42.869972
+offset_top = -39.309967
+offset_right = 42.78797
+offset_bottom = 39.440033
+theme = SubResource("Theme_ptikf")
+
+[node name="Panel" type="Panel" parent="StatsUI/Panel/Barrita roja/Panel5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_xru3o")
+
+[node name="Panel" type="Panel" parent="StatsUI/Panel/Barrita roja/Panel5/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_caauc")
+
+[node name="Panel6" type="Panel" parent="StatsUI/Panel/Barrita roja"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.492
+anchor_top = 0.87900007
+anchor_right = 0.492
+anchor_bottom = 0.87900007
+offset_left = -42.869972
+offset_top = -42.54123
+offset_right = 42.78797
+offset_bottom = 36.20877
+theme = SubResource("Theme_ptikf")
+
+[node name="Panel" type="Panel" parent="StatsUI/Panel/Barrita roja/Panel6"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_xru3o")
+
+[node name="Panel" type="Panel" parent="StatsUI/Panel/Barrita roja/Panel6/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_2xgey")
+
+[node name="TextureRect" type="TextureRect" parent="StatsUI/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.003
+anchor_top = 0.29700002
+anchor_right = 0.62
+anchor_bottom = 0.47100002
+offset_left = -2.4061246
+offset_top = -153.20001
+offset_right = -2.682495
+offset_bottom = 122.39993
+texture = ExtResource("12_04saj")
+expand_mode = 1

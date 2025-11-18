@@ -1,0 +1,12 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://t8tag5303032"]
+
+[ext_resource type="FontFile" uid="uid://yf2rrpnds2xy" path="res://Temas/TrajanPro-Bold.otf" id="1_ijbbx"]
+
+[resource]
+Label/colors/font_color = Color(0.83137256, 0.69803923, 0.40784314, 1)
+Label/colors/font_outline_color = Color(0.16862746, 0.101960786, 0.05490196, 1)
+Label/colors/font_shadow_color = Color(1, 0.9647059, 0.8156863, 1)
+Label/constants/outline_size = 3
+Label/constants/shadow_offset_x = 1
+Label/font_sizes/font_size = 20
+Label/fonts/font = ExtResource("1_ijbbx")
