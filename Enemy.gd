@@ -1,6 +1,6 @@
+#Enemy.gd
 extends CharacterBody2D
 class_name Enemy
-
 # -------------------------------
 # --- PROPIEDADES DEL ENEMIGO
 # -------------------------------
@@ -98,8 +98,11 @@ func _ready():
 	#Barra de vida
 	hp_bar.max_value = max_hp
 	vida_label.text = str(hp) + "/" + str(max_hp)
+	# ✅ APLICAR COLOR INMEDIATAMENTE SI EL EQUIPO YA ESTÁ ASIGNADO
+	if team != -1:
+		_apply_team_color_immediately()
 	
-	print("👹 ENEMIGO CREADO - ID:", enemy_id, " Tipo:", enemy_type, " HP:", hp)
+	print("👹 ENEMIGO CREADO - ID:", enemy_id, " Tipo:", enemy_type, " HP:", hp, " Equipo:", team)
 
 func setup_collisions():
 	# Configurar layers y masks
@@ -154,7 +157,6 @@ func set_enemy_type(type: String):
 	
 	# Configurar animaciones
 	setup_animations()
-
 func setup_animations():
 	if not sprite:
 		return
@@ -209,46 +211,122 @@ func _update_ai(delta):
 		_find_target()
 		return
 	
+	# Verificar que el objetivo siga siendo válido
+	if not _is_valid_target(aggro_target):
+		aggro_target = null
+		state = "moving"
+		return
+	
 	# Calcular distancia al objetivo
 	var distance_to_target = global_position.distance_to(aggro_target.global_position)
 	
-	# Determinar estado basado en la distancia
-	if distance_to_target <= attack_range:
-		state = "attacking"
-		_try_attack()
-	elif distance_to_target <= stats[enemy_type].chase_range:
-		state = "chasing"
+	# ✅ COMPORTAMIENTO MEJORADO PARA NEUTRALES
+	if team == 0:  # Enemigos neutrales
+		if distance_to_target <= attack_range:
+			state = "attacking"
+			_try_attack()
+		elif distance_to_target <= 800:  # Radio de persecución grande
+			state = "chasing"
+			# ✅ MOVIMIENTO MÁS DIRECTO HACIA EL JUGADOR
+			var direction = (aggro_target.global_position - global_position).normalized()
+			velocity = direction * move_speed
+		else:
+			# Si el jugador se aleja demasiado, buscar nuevo objetivo
+			aggro_target = null
+			state = "moving"
 	else:
-		state = "moving"
-		aggro_target = null
+		# Comportamiento original para enemigos con equipo
+		if distance_to_target <= attack_range:
+			state = "attacking"
+			_try_attack()
+		elif distance_to_target <= stats[enemy_type].chase_range:
+			state = "chasing"
+		else:
+			state = "moving"
+			aggro_target = null
 
 func _find_target():
-	# Buscar jugadores en el área de detección
+	# ✅ COMPORTAMIENTO DIFERENTE SEGÚN EQUIPO
+	if team == 0:
+		# ENEMIGOS NEUTRALES: Buscar jugadores cercanos
+		_find_player_target()
+	else:
+		# ENEMIGOS CON EQUIPO: Buscar jugadores enemigos o ir a base
+		_find_team_target()
+func _find_player_target():
+	# Buscar cualquier jugador vivo, sin importar equipo
+	var players = get_tree().get_nodes_in_group("players")
+	var closest_player = null
+	var min_distance = INF
+	
+	for player in players:
+		if _is_valid_player_target(player):
+			var distance = global_position.distance_to(player.global_position)
+			if distance < min_distance and distance <=  800:
+				min_distance = distance
+				closest_player = player
+	
+	if closest_player:
+		aggro_target = closest_player
+		# ✅ COMPORTAMIENTO MÁS AGRESIVO - Perseguir inmediatamente
+		state = "chasing"
+		print("🎯 ENEMIGO NEUTRAL ENCONTRÓ JUGADOR - ID:", enemy_id, " Jugador:", closest_player.name, " Distancia:", min_distance)
+	else:
+		# ✅ MOVIMIENTO MÁS DECIDIDO CUANDO NO HAY JUGADORES
+		_move_aggressive_random()
+func _is_valid_player_target(target: Node2D) -> bool:
+	# Para enemigos neutrales: cualquier jugador vivo
+	if target.is_in_group("players"):
+		var player_hp = target.hp if "hp" in target else 0
+		return player_hp > 0
+	return false
+
+func _is_valid_team_target(target: Node2D) -> bool:
+	# Para enemigos con equipo: solo jugadores del equipo opuesto
+	if target.is_in_group("players"):
+		var player_hp = target.hp if "hp" in target else 0
+		var player_team = target.team if "team" in target else 0
+		return player_hp > 0 and player_team != team
+	return false
+func _move_aggressive_random():
+	# Movimiento aleatorio más decidido para neutrales
+	var random_angle = randf() * 2 * PI
+	var random_distance = 300 + randf() * 200  # Distancias más largas
+	target_position = global_position + Vector2(cos(random_angle), sin(random_angle)) * random_distance
+	state = "moving"
+	
+	# ✅ TIMER PARA CAMBIO DE DIRECCIÓN MÁS LARGO
+	var timer = get_tree().create_timer(3.0 + randf() * 2.0)  # 3-5 segundos
+	await timer.timeout
+	if state == "moving" and not aggro_target:
+		_move_aggressive_random()
+func _find_team_target():
+	# Buscar jugadores enemigos en el área de detección
 	var players_in_range = detection_area.get_overlapping_bodies()
 	
 	for body in players_in_range:
-		if body.is_in_group("players") and _is_valid_target(body):
+		if body.is_in_group("players") and _is_valid_team_target(body):
 			aggro_target = body
-			print("🎯 ENEMIGO %d ENCONTRÓ OBJETIVO: %s" % [enemy_id, body.name])
 			return
 	
-	# Si no hay jugadores, moverse hacia la base enemiga
+	# Si no hay jugadores enemigos, moverse hacia la base enemiga
 	_move_to_base()
 
 func _is_valid_target(target: Node2D) -> bool:
-	# Verificar que el objetivo esté vivo
-	if target.has_method("get_player_id"):
+	# Verificar que el objetivo esté vivo y sea de equipo contrario
+	if target.is_in_group("players"):
 		var player_hp = target.hp if "hp" in target else 0
-		return player_hp > 0
+		var player_team = target.team if "team" in target else 0
+		return player_hp > 0 and player_team != team
 	return false
 
 func _move_to_base():
 	# Moverse hacia la base del equipo opuesto
 	var target_base_position = Vector2.ZERO
 	if team == 1:
-		target_base_position = Vector2(-1600, -800) # Base derecha
+		target_base_position = Vector2(1400, 400)  # Base del equipo 2
 	else:
-		target_base_position = Vector2(1400, 400) # Base izquierda
+		target_base_position = Vector2(-1600, -800) # Base del equipo 1
 	
 	target_position = target_base_position
 	state = "moving"
@@ -285,8 +363,13 @@ func _try_attack():
 	can_attack = false
 	attack_timer = attack_cooldown
 	
+	# ✅ DAÑO ESPECIAL PARA NEUTRALES (5% de vida máxima del jugador)
+	if team == 0 and aggro_target and aggro_target.has_method("get_max_hp"):
+		var player_max_hp = aggro_target.get_max_hp()
+		var neutral_damage = int(player_max_hp * 0.05)
+		print("💥 ENEMIGO NEUTRAL ATACA - Daño:", neutral_damage, " (5% de ", player_max_hp, ")")
+	
 	print("💥 ENEMIGO %d ATACA - Tipo: %s, Daño: %d" % [enemy_id, enemy_type, attack_damage])
-
 func _melee_attack():
 	# Verificar que el objetivo esté en rango
 	var bodies = attack_area.get_overlapping_bodies()
@@ -367,7 +450,6 @@ func take_damage(amount: int):
 
 func _create_hit_effect():
 	# Efecto visual de golpe
-	modulate = Color.RED
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.2)
 
@@ -447,7 +529,6 @@ func _on_detection_area_body_entered(body):
 	if body.is_in_group("players") and _is_valid_target(body):
 		if not aggro_target:
 			aggro_target = body
-			print("🎯 ENEMIGO %d DETECTÓ JUGADOR: %s" % [enemy_id, body.name])
 
 func _on_detection_area_body_exited(body):
 	if body == aggro_target:
@@ -534,3 +615,28 @@ func _debug_info():
 			max_hp,
 			aggro_target.name if aggro_target else "Ninguno"
 		])
+# -------------------------------
+# --- CONFIGURACIÓN DE EQUIPO
+# -------------------------------
+func set_team(new_team: int):
+	team = new_team
+	print("🎯 EQUIPO ASIGNADO - Enemigo:", enemy_id, " Equipo:", team)
+	
+	# ✅ APLICAR COLOR INMEDIATAMENTE, SIN ESPERAR
+	_apply_team_color_immediately()
+
+# -------------------------------
+# --- IDENTIFICADORES VISUALES POR EQUIPO
+# -------------------------------
+func _apply_team_color_immediately():
+
+	match team:
+		1:
+			modulate = Color(0.6, 0.6, 1.0)  # Azul claro para equipo 1
+		2:
+			modulate = Color(1.0, 0.6, 0.6)  # Rojo claro para equipo 2
+		0:
+			modulate = Color(1.0, 1.0, 1.0)  # Blanco para neutrales
+		_:
+			modulate = Color(1.0, 1.0, 1.0)  # Blanco por defecto
+	print("🎨 COLOR DE EQUIPO ASIGNADO - Enemigo:", enemy_id, " Equipo:", team, " Color:", modulate)

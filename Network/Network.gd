@@ -1,5 +1,5 @@
+#Network.gd
 extends Node
-
 # -------------------------------
 # --- VARIABLES CONFIGURACIÓN
 # -------------------------------
@@ -25,6 +25,7 @@ var ws_ready := false
 # -------------------------------
 # --- SEÑALES
 # -------------------------------
+signal enemy_spawned_immediate(enemy_data)
 signal login_successful
 signal connection_successful
 signal connection_failed
@@ -34,12 +35,9 @@ signal projectile_moved(projectile_data)
 signal player_joined(player_data)
 signal player_left(player_id)
 signal game_state_updated
-signal on_player_became_ghost(player_id)
-signal on_ghost_possession_started(player_id, object_id)
-signal on_ghost_possession_ended(player_id, object_id)
-signal on_object_thrown(object_id, direction)
-signal on_object_destroyed(object_id)
-
+signal rogue_area_attack_effect(x, y, player_id)
+# Señales para daño a bases
+signal base_hit(team, hp, max_hp)
 # SEÑALES NUEVAS PARA SISTEMA DE OLEADAS
 signal wave_started(wave_number, enemy_count)
 signal wave_ended()
@@ -52,7 +50,8 @@ signal game_session_started()
 signal card_purchased(card_data, new_balance)
 signal card_purchase_failed(reason)
 signal player_upgraded(player_id, upgrade_type)
-
+# Señal para efecto de ataque de área
+signal area_attack_effect(x, y, player_id)
 # SEÑALES NUEVAS PARA SISTEMA DE EQUIPOS Y VICTORIA
 signal team_update(team_counts, players)
 signal team_selected(team, position)
@@ -65,15 +64,15 @@ signal respawn_countdown(player_id, time_left)
 signal player_respawned(player_data)
 signal game_over(winning_team, reason)
 signal game_reset(players, bases)
-
+signal mage_area_attack_effect(x, y, player_id)
 # SEÑALES PARA JEFE PERMANENTE
-signal boss_phase_changed(boss_id, phase)
-signal boss_attacked(target_id, damage)
-signal boss_health_updated(hp, max_hp)
-signal boss_died(boss_id)
-
-# Añadir junto a las otras señales del boss
-signal boss_animation_updated(boss_id, animation_name)
+#signal boss_phase_changed(boss_id, phase)
+#signal boss_attacked(target_id, damage)
+#signal boss_health_updated(hp, max_hp)
+#signal boss_died(boss_id)
+#
+## Añadir junto a las otras señales del boss
+#signal boss_animation_updated(boss_id, animation_name)
 
 # -------------------------------
 # --- FUNCIÓN DE INICIO CON IP
@@ -146,7 +145,26 @@ func _receive_messages():
 				print("💀 Enemigo muerto - ID:", data.id, " Por:", data.killer_id)
 				if get_tree().current_scene.has_method("_on_enemy_killed"):
 					get_tree().current_scene._on_enemy_killed(data.id, data.killer_id, data.enemy_type)
-			
+			"enemy_spawned":
+				print("👹 ENEMIGO SPAWNEADO INMEDIATAMENTE - ID:", data.enemy.id, " Equipo:", data.enemy.team)
+				enemies[str(data.enemy.id)] = {
+					"x": data.enemy.x,
+					"y": data.enemy.y,
+					"type": data.enemy.type,
+					"hp": data.enemy.hp,
+					"max_hp": data.enemy.max_hp,
+					"team": data.enemy.team, # ✅ EQUIPO INCLUIDO INMEDIATAMENTE
+					"attack_damage": data.enemy.attack_damage,
+					"move_speed": data.enemy.move_speed
+					}
+				emit_signal("enemy_spawned_immediate", data.enemy)
+				print("✅ SEÑAL enemy_spawned_immediate EMITIDA")
+			"rogue_area_attack_effect":
+				print("💥 EFECTO DE ATAQUE DE ÁREA ROGUE RECIBIDO - Posición:", data.x, data.y, " Jugador:", data.player_id)
+				emit_signal("rogue_area_attack_effect", data.x, data.y, data.player_id)
+			"mage_area_attack_effect":
+				print("💥 EFECTO DE ATAQUE DE ÁREA MAGA RECIBIDO - Posición:", data.x, data.y, " Jugador:", data.player_id)
+				emit_signal("mage_area_attack_effect", data.x, data.y, data.player_id)
 			"auth_ok":
 				player_id = data.player.id
 				connected = true
@@ -154,13 +172,15 @@ func _receive_messages():
 				enemies = data.enemies
 				print("✅ Autenticado como:", data.player.username, " ID:", player_id, " Clase:", data.player.classe)
 				emit_signal("game_state_updated")
-
-			"object_destroyed":
-				print("💥 OBJETO DESTRUIDO RECIBIDO - ID:", data.object_name)
-				emit_signal("on_object_destroyed", data.object_name)
+			"area_attack_effect":
+				print("💥 EFECTO DE ATAQUE DE ÁREA RECIBIDO - Posición:", data.x, data.y, " Jugador:", data.player_id)
+				emit_signal("area_attack_effect", data.x, data.y, data.player_id)
 
 			"auth_error":
 				print("❌ Error de autenticación:", data.error)
+			"base_hit":
+				print("🏰 BASE GOLPEADA - Equipo:", data.team, " HP:", data.hp, "/", data.max_hp)
+				emit_signal("base_hit", data.team, data.hp, data.max_hp)
 
 			"join":
 				players[data.player.id] = {
@@ -323,24 +343,6 @@ func _receive_messages():
 			"all_players_ready":
 				print("🚀 TODOS LOS JUGADORES LISTOS - Iniciando juego...")
 
-			"player_became_ghost":
-				print("👻 Jugador se convirtió en fantasma - ID:", data.player_id)
-				emit_signal("on_player_became_ghost", data.player_id)
-			
-			"ghost_possession_started":
-				print("🎯 Fantasma poseyendo objeto - Player:", data.player_id, " Objeto:", data.object_name)
-				emit_signal("on_ghost_possession_started", data.player_id, data.object_name)
-			
-			"ghost_possession_ended":
-				print("🎯 Fantasma liberó objeto - Player:", data.player_id, " Objeto:", data.object_id)
-				emit_signal("on_ghost_possession_ended", data.player_id, data.object_id)
-
-			"object_thrown":
-				print("🚀 Objeto lanzado - Objeto:", data.object_name, " Dirección:", Vector2(data.direction_x, data.direction_y))
-				emit_signal("on_object_thrown", data.object_name, Vector2(data.direction_x, data.direction_y))
-			
-			"ghost_moved":
-				pass
 			
 			"wave_started":
 				print("🌊 OLEADA INICIADA - Número:", data.wave_number, " Enemigos:", data.enemy_count)
@@ -350,9 +352,9 @@ func _receive_messages():
 				print("✅ OLEADA TERMINADA")
 				emit_signal("wave_ended")
 			
-			"boss_spawned":
-				print("👹 JEFE INTERMEDIO APARECE")
-				emit_signal("boss_spawned", data.boss_data)
+			#"boss_spawned":
+				#print("👹 JEFE INTERMEDIO APARECE")
+				#emit_signal("boss_spawned", data.boss_data)
 			
 			# ✅ CORREGIDO: Manejar currency_updated con player_id
 			"currency_updated":
@@ -444,27 +446,27 @@ func _receive_messages():
 				print("🔄 JUEGO REINICIADO")
 				emit_signal("game_reset", data.players, data.bases)
 			
-			# MENSAJES PARA JEFE PERMANENTE
-			"boss_phase_changed":
-				print("🔥 JEFE CAMBIA FASE - ID:", data.boss_id, " Fase:", data.phase)
-				emit_signal("boss_phase_changed", data.boss_id, data.phase)
-			
-			"boss_attacked":
-				print("💥 JEFE ATACÓ - Target:", data.target_id, " Daño:", data.damage)
-				emit_signal("boss_attacked", data.target_id, data.damage)
-			
-			"boss_health_updated":
-				print("❤️  JEFE ACTUALIZA SALUD - HP:", data.hp, "/", data.max_hp)
-				emit_signal("boss_health_updated", data.hp, data.max_hp)
-			
-			"boss_died":
-				print("💀 JEFE MUERTO - ID:", data.boss_id)
-				emit_signal("boss_died", data.boss_id)
-				
-			"boss_animation_update":
-				print("🎭 ACTUALIZACIÓN ANIMACIÓN BOSS - ID:", data.boss_id, " Animación:", data.animation)
-				emit_signal("boss_animation_updated", data.boss_id, data.animation)
-		
+			## MENSAJES PARA JEFE PERMANENTE
+			#"boss_phase_changed":
+				#print("🔥 JEFE CAMBIA FASE - ID:", data.boss_id, " Fase:", data.phase)
+				#emit_signal("boss_phase_changed", data.boss_id, data.phase)
+			#
+			#"boss_attacked":
+				#print("💥 JEFE ATACÓ - Target:", data.target_id, " Daño:", data.damage)
+				#emit_signal("boss_attacked", data.target_id, data.damage)
+			#
+			#"boss_health_updated":
+				#print("❤️  JEFE ACTUALIZA SALUD - HP:", data.hp, "/", data.max_hp)
+				#emit_signal("boss_health_updated", data.hp, data.max_hp)
+			#
+			#"boss_died":
+				#print("💀 JEFE MUERTO - ID:", data.boss_id)
+				#emit_signal("boss_died", data.boss_id)
+				#
+			#"boss_animation_update":
+				#print("🎭 ACTUALIZACIÓN ANIMACIÓN BOSS - ID:", data.boss_id, " Animación:", data.animation)
+				#emit_signal("boss_animation_updated", data.boss_id, data.animation)
+		#
 			_:
 				print("📨 Mensaje no manejado:", data.type)
 				
@@ -615,64 +617,6 @@ func disconnect_from_server():
 func is_server_connected() -> bool:
 	return connected and ws_ready
 
-func player_became_ghost(player_id: int):
-	if connected and ws_ready:
-		print("👻 ENVIANDO CONVERSIÓN A FANTASMA - Player:", player_id)
-		socket.send_text(JSON.stringify({
-			"type": "player_became_ghost",
-			"player_id": player_id
-		}))
-	else:
-		print("❌ No conectado - No se puede enviar conversión a fantasma")
-
-func ghost_possession_started(player_id: int, object_name: String):
-	if connected and ws_ready:
-		print("🎯 ENVIANDO POSESIÓN INICIADA - Player:", player_id, " Object:", object_name)
-		socket.send_text(JSON.stringify({
-			"type": "ghost_possession_started",
-			"player_id": player_id,
-			"object_name": object_name
-			}))
-	else:
-		print("❌ No conectado - No se puede enviar posesión")
-
-func ghost_possession_ended(player_id: int, object_name: String):
-	if connected and ws_ready:
-		print("🎯 ENVIANDO POSESIÓN TERMINADA - Player:", player_id, " Object:", object_name)
-		socket.send_text(JSON.stringify({
-			"type": "ghost_possession_ended",
-			"player_id": player_id,
-			"object_name": object_name
-			}))
-	else:
-		print("❌ No conectado - No se puede enviar fin de posesión")
-
-func throw_object(object_name: String, direction: Vector2):
-	if connected and ws_ready:
-		print("🚀 ENVIANDO OBJETO LANZADO - Object:", object_name, " Direction:", direction)
-		socket.send_text(JSON.stringify({
-			"type": "object_thrown",
-			"object_name": object_name,
-			"direction_x": direction.x,
-			"direction_y": direction.y
-			}))
-	else:
-		print("❌ No conectado - No se puede enviar lanzamiento")
-
-func move_ghost(x: float, y: float):
-	if connected and ws_ready:
-		socket.send_text(JSON.stringify({
-			"type": "move",
-			"x": x,
-			"y": y
-		}))
-
-func sync_object_destruction(object_name: String):
-	if connected and ws_ready:
-		socket.send_text(JSON.stringify({
-			"type": "object_destroyed",
-			"object_name": object_name
-		}))
 
 func start_game_session():
 	if connected and ws_ready:

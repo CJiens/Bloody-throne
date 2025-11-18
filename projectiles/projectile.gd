@@ -1,5 +1,5 @@
+#projectile.gd
 extends Area2D
-
 class_name Projectile
 
 # Propiedades del proyectil

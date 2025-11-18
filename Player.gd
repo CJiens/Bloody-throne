@@ -1,6 +1,6 @@
+#Player.gd
 extends CharacterBody2D
 class_name Player
-
 # -------------------------------
 # --- PROPIEDADES DEL JUGADOR
 # -------------------------------
@@ -25,6 +25,25 @@ var attack_timer: float = 0.0
 var can_attack_var: bool = true
 var is_ranged: bool = false
 
+# Ataque de área para arquera
+var area_attack_cooldown: float = 3.0
+var area_attack_timer: float = 0.0
+var can_area_attack: bool = true
+var area_attack_range: float = 200.0
+var last_direction: Vector2 = Vector2.RIGHT
+# Escena del proyectil de área
+var area_projectile_scene: PackedScene = preload("res://projectiles/ArcherAreaProjectile.tscn")
+# Ataque de área del Rogue
+var rogue_area_attack_cooldown: float = 3.0
+var rogue_area_attack_timer: float = 0.0
+var can_rogue_area_attack: bool = true
+# Ataque de área para maga
+var mage_area_attack_cooldown: float = 8.0
+var mage_area_attack_timer: float = 0.0
+var can_mage_area_attack: bool = true
+var mage_area_attack_range: float = 150.0
+# Escena del proyectil de área de la maga
+var mage_area_projectile_scene: PackedScene = preload("res://projectiles/MageAreaProjectile.tscn")
 # Estadísticas mejoradas por cartas
 var gold_bonus: int = 0
 var attack_speed_bonus: int = 0
@@ -176,6 +195,11 @@ func _apply_class_config():
 	attack_cooldown = config.attack_cooldown
 	projectile_scene = config.projectile
 	
+	# CONFIGURACIÓN ESPECÍFICA PARA ARQUERA ← AGREGAR ESTO
+	if classe == "archer":
+		area_attack_cooldown = 3.0  # 3 segundos de cooldown
+		area_attack_range = 200.0   # 200 píxeles de rango
+		can_area_attack = true
 	_setup_class_sprite()
 	
 	if hp_bar:
@@ -259,7 +283,7 @@ func _ready():
 	
 	_setup_player_ui()
 	_setup_cards_ui()
-	
+
 	if not Network.card_purchased.is_connected(_on_card_purchased):
 		Network.card_purchased.connect(_on_card_purchased)
 
@@ -275,12 +299,24 @@ func _ready():
 func _process(delta):
 	print("Esta es la pocision de la x => " + str(get_local_mouse_position().x) + "Esta es la pocision de la y =>" + str(get_local_mouse_position().y))
 	_handle_cooldowns(delta)
-	
+	_handle_area_attack_cooldown(delta)
+	_handle_rogue_area_attack_cooldown(delta)
+	_handle_mage_area_attack_cooldown(delta)
 	if in_decision_period:
 		decision_time_remaining -= delta
 		if decision_time_remaining <= 0:
 			in_decision_period = false
 			hide_game_ui()
+	# ✅ ACTUALIZAR CONTADOR DE WAVE UI SI ESTÁ VISIBLE
+	if wave_ui and wave_ui.visible and not in_decision_period:
+		var current_enemy_count = get_tree().get_nodes_in_group("enemies").size()
+		if enemy_count_label and current_enemy_count != enemies_remaining:
+			enemy_count_label.text = "Enemigos: %d" % current_enemy_count
+			enemies_remaining = current_enemy_count
+			
+			# Debug ocasional
+			if Engine.get_frames_drawn() % 120 == 0:
+				print("🔢 PLAYER - Contador actualizado:", current_enemy_count)
 
 func _physics_process(delta):
 	if id == Network.player_id:
@@ -417,20 +453,22 @@ func add_currency_for_kill(enemy_type: String, amount: int = 0):
 
 func update_wave_ui(wave_number: int, enemy_count: int):
 	current_wave = wave_number
-	enemies_remaining = enemy_count
+	# ✅ USAR EL CONTADOR REAL DE ENEMIGOS EN LA ESCENA
+	var actual_enemy_count = get_tree().get_nodes_in_group("enemies").size()
+	enemies_remaining = actual_enemy_count
 	in_decision_period = false
 	
 	if wave_label:
 		wave_label.text = "OLEADA %d" % wave_number
 	if enemy_count_label:
-		enemy_count_label.text = "Enemigos: %d" % enemy_count
+		enemy_count_label.text = "Enemigos: %d" % actual_enemy_count
 	
 	if wave_ui:
 		wave_ui.visible = true
 	if decision_ui:
 		decision_ui.visible = false
 	
-	print("🌊 UI ACTUALIZADA - Oleada:", wave_number, " Enemigos:", enemy_count)
+	print("🌊 UI ACTUALIZADA - Oleada:", wave_number, " Enemigos en escena:", actual_enemy_count, " (Network:", enemy_count, ")")
 
 # -------------------------------
 # --- SISTEMA DE DECISIONES Y CARTAS
@@ -634,6 +672,9 @@ func _handle_local_movement(delta: float):
 		if move_dir != Vector2.ZERO:
 			move_dir = move_dir.normalized()
 			velocity = move_dir * speed * speed_multiplier
+			# GUARDAR ÚLTIMA DIRECCIÓN ← AGREGAR ESTO
+			last_direction = move_dir
+
 		else:
 			velocity = Vector2.ZERO
 
@@ -695,6 +736,84 @@ func execute_attack(mouse_pos: Vector2):
 func can_attack() -> bool:
 	return can_attack_var
 
+func execute_area_attack(mouse_pos: Vector2):
+	if not can_area_attack or classe != "archer":
+		print("❌ ATAQUE DE ÁREA NO DISPONIBLE - Cooldown:", area_attack_timer)
+		return
+	
+	print("🎯 ATAQUE DE ÁREA ACTIVADO - Arquera ID:", id)
+	
+	# Calcular la posición del ataque (200 píxeles en la dirección del mouse)
+	var direction = (mouse_pos - global_position).normalized()
+	
+	
+	# ORIENTAR AL JUGADOR EN LA DIRECCIÓN DEL ATAQUE ← NUEVO
+	last_direction = direction
+
+	# CREAR EFECTO VISUAL INMEDIATO EN CLIENTE ← NUEVO
+	var attack_pos = global_position + (direction * area_attack_range)
+	_create_immediate_area_effect(attack_pos, direction)
+	# Enviar mensaje al servidor
+	Network.socket.send_text(JSON.stringify({
+		"type": "area_attack",
+		"x": attack_pos.x,
+		"y": attack_pos.y,
+		"damage": attack_damage
+	}))
+	
+	# Reproducir animación de ataque de área ← CORREGIDO
+	if current_sprite and current_sprite.sprite_frames.has_animation("attack_Area"):
+		# FORZAR LA ANIMACIÓN Y ESPERAR A QUE TERMINE ← NUEVO
+		current_sprite.play("attack_Area")
+		# Deshabilitar movimiento durante el ataque
+		set_physics_process(false)
+		# Esperar a que termine la animación
+		await current_sprite.animation_finished
+		# Volver a habilitar movimiento
+		set_physics_process(true)
+		current_sprite.play("idle")
+		print("🎭 ANIMACIÓN attack_Area COMPLETADA")
+	else:
+		print("❌ Animación attack_Area no encontrada")
+	
+	# Activar cooldown
+	can_area_attack = false
+	area_attack_timer = area_attack_cooldown
+	
+	print("⏳ ATAQUE DE ÁREA EN COOLDOWN - Tiempo:", area_attack_cooldown, "s")
+# NUEVA FUNCIÓN PARA EFECTO INMEDIATO ← AGREGAR ESTA FUNCIÓN
+func _create_immediate_area_effect(attack_pos: Vector2, direction: Vector2):
+	if not area_projectile_scene:
+		print("❌ area_projectile_scene no asignada")
+		return
+	
+	var area_projectile = area_projectile_scene.instantiate()
+	if not area_projectile:
+		print("❌ No se pudo instanciar area_projectile")
+		return
+	
+	# Posicionar y orientar
+	area_projectile.position = attack_pos
+	if area_projectile.has_node("AnimatedSprite2D"):
+		var sprite = area_projectile.get_node("AnimatedSprite2D")
+		if direction.x > 0:
+			sprite.flip_h = false
+		elif direction.x < 0:
+			sprite.flip_h = true
+	
+	# Agregar a la escena del juego
+	# Buscar el contenedor de enemigos en la escena principal
+	var main_node = get_tree().current_scene
+	if main_node and main_node.has_node("EnemyContainer"):
+		main_node.get_node("EnemyContainer").add_child(area_projectile)
+		print("⚡ EFECTO INMEDIATO CREADO - Posición:", attack_pos)
+	else:
+		print("❌ No se encontró EnemyContainer en la escena principal")
+# NUEVA FUNCIÓN PARA ORIENTAR EL SPRITE ← AGREGAR ESTA FUNCIÓN
+
+# NUEVA FUNCIÓN PARA OBTENER DIRECCIÓN ← AGREGAR ESTA FUNCIÓN
+func get_last_direction() -> Vector2:
+	return last_direction
 # -------------------------------
 # --- SISTEMA DE ROLL
 # -------------------------------
@@ -741,29 +860,20 @@ func _get_direction_animation(angle: float, action: String) -> String:
 	if not current_sprite:
 		return "Idle"
 	
-	var direction := ""
+	var direction_suffix = _get_direction_suffix(angle)
+	var anim_name = action + "_" + direction_suffix
 	
-	if angle >= -PI / 8 and angle < PI / 8:
-		direction = "E"
-	elif angle >= PI / 8 and angle < 3 * PI / 8:
-		direction = "SE"
-	elif angle >= 3 * PI / 8 and angle < 5 * PI / 8:
-		direction = "S"
-	elif angle >= 5 * PI / 8 and angle < 7 * PI / 8:
-		direction = "SW"
-	elif angle >= 7 * PI / 8 or angle < -7 * PI / 8:
-		direction = "W"
-	elif angle >= -7 * PI / 8 and angle < -5 * PI / 8:
-		direction = "NW"
-	elif angle >= -5 * PI / 8 and angle < -3 * PI / 8:
-		direction = "N"
-	elif angle >= -3 * PI / 8 and angle < -PI / 8:
-		direction = "NE"
-	
-	if direction == "":
-		return action
+	# Verificar si la animación existe
+	if current_sprite.sprite_frames and current_sprite.sprite_frames.has_animation(anim_name):
+		print("🎯 ANIMACIÓN ENCONTRADA: ", anim_name)
+		return anim_name
 	else:
-		return action + "_" + direction
+		# Si no existe, usar una por defecto
+		print("❌ Animación no encontrada: ", anim_name, " - Usando ", action, "_S")
+		if current_sprite.sprite_frames and current_sprite.sprite_frames.has_animation(action + "_S"):
+			return action + "_S"
+		else:
+			return action
 
 # -------------------------------
 # --- SISTEMA DE VIDA (ACTUALIZADO)
@@ -790,8 +900,6 @@ func take_damage(amount: int):
 
 func play_death_animation():
 	if not current_sprite:
-		if id == Network.player_id:
-			_convert_to_ghost()
 		return
 
 	print("💀 JUGADOR MUERTO - ID:", id)
@@ -802,8 +910,7 @@ func play_death_animation():
 	
 	if id == Network.player_id:
 		Network.send_player_state("Die")
-		await current_sprite.animation_finished
-		_convert_to_ghost()
+		
 
 # -------------------------------
 # --- COOLDOWNS
@@ -823,6 +930,25 @@ func _handle_cooldowns(delta):
 	if roll_cooldown_timer > 0:
 		roll_cooldown_timer -= delta
 
+func _handle_area_attack_cooldown(delta):
+	if not can_area_attack:
+		area_attack_timer -= delta
+		if area_attack_timer <= 0:
+			can_area_attack = true
+			print("✅ ATAQUE DE ÁREA LISTO - Cooldown terminado")
+
+func _handle_rogue_area_attack_cooldown(delta):
+	if not can_rogue_area_attack:
+		rogue_area_attack_timer -= delta
+		if rogue_area_attack_timer <= 0:
+			can_rogue_area_attack = true
+			print("✅ ATAQUE DE ÁREA ROGUE LISTO - Cooldown terminado")
+func _handle_mage_area_attack_cooldown(delta):
+	if not can_mage_area_attack:
+		mage_area_attack_timer -= delta
+		if mage_area_attack_timer <= 0:
+			can_mage_area_attack = true
+			print("✅ ATAQUE DE ÁREA MAGA LISTO - Cooldown terminado")
 # -------------------------------
 # --- COLISIONES CON PROYECTILES
 # -------------------------------
@@ -845,15 +971,158 @@ func _create_hit_effect():
 	modulate = Color.RED
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.2)
+func execute_rogue_area_attack(mouse_pos: Vector2):
+	if not can_rogue_area_attack or classe != "rogue":
+		print("❌ ATAQUE DE ÁREA ROGUE NO DISPONIBLE - Cooldown:", rogue_area_attack_timer)
+		return
 
-# -------------------------------
-# --- CONVERSIÓN A FANTASMA AL MORIR
-# -------------------------------
-func _convert_to_ghost():
-	print("👻 CONVIRTIENDO JUGADOR EN FANTASMA - ID:", id)
+	print("🎯 ATAQUE DE ÁREA ROGUE ACTIVADO - Rogue ID:", id)
+	print("📍 Posición jugador: ", global_position)
+	print("🎯 Posición mouse: ", mouse_pos)
+	# Calcular dirección para la animación
+	var direction = (mouse_pos - global_position).normalized()
+	last_direction = direction
+	print("🧭 Dirección calculada: ", direction)
+	# Determinar la animación según la dirección
+	var anim_suffix = _get_direction_suffix(direction.angle())
+	var anim_name = "attack_Area_" + anim_suffix
+
+	print("🎭 INTENTANDO ANIMACIÓN ROGUE AREA: ", anim_name)
+
+	# Reproducir animación - SOLO USAMOS LAS ANIMACIONES DEL PLAYER
+	if current_sprite and current_sprite.sprite_frames.has_animation(anim_name):
+		current_sprite.play(anim_name)
+		print("✅ ANIMACIÓN ROGUE AREA ENCONTRADA Y REPRODUCIENDO: ", anim_name)
+		
+		# Esperar a que termine la animación
+		set_physics_process(false)
+		await current_sprite.animation_finished
+		set_physics_process(true)
+		
+	else:
+		print("❌ Animación Rogue Area no encontrada: ", anim_name)
+		# Fallback a animaciones básicas
+		if current_sprite and current_sprite.sprite_frames.has_animation("attack_Area_S"):
+			current_sprite.play("attack_Area_S")
+		elif current_sprite and current_sprite.sprite_frames.has_animation("attack_S"):
+			current_sprite.play("attack_S")
+
+	# Enviar mensaje al servidor - desde la posición del jugador con radio 150px
+	Network.socket.send_text(JSON.stringify({
+		"type": "rogue_area_attack",
+		"x": global_position.x,
+		"y": global_position.y,
+		"damage": attack_damage
+	}))
+
+	# Activar cooldown
+	can_rogue_area_attack = false
+	rogue_area_attack_timer = rogue_area_attack_cooldown
+
+	print("⏳ ATAQUE DE ÁREA ROGUE EN COOLDOWN - Tiempo:", rogue_area_attack_cooldown, "s")
+func execute_mage_area_attack():
+	if not can_mage_area_attack or classe != "mage":
+		print("❌ ATAQUE DE ÁREA MAGA NO DISPONIBLE - Cooldown:", mage_area_attack_timer)
+		return
+
+	print("🎯 ATAQUE DE ÁREA MAGA ACTIVADO - Maga ID:", id)
 	
-	if Network.connected and Network.ws_ready:
-		Network.player_became_ghost(id)
+	# Calcular la posición del ataque (en la posición actual de la maga)
+	var attack_pos = global_position
 	
-	if get_parent().has_method("replace_player_with_ghost"):
-		get_parent().replace_player_with_ghost(id)
+	# ORIENTAR AL JUGADOR EN LA DIRECCIÓN DEL ATAQUE
+	var mouse_pos = get_global_mouse_position()
+	var direction = (mouse_pos - global_position).normalized()
+	last_direction = direction
+
+	# CREAR EFECTO VISUAL INMEDIATO EN CLIENTE
+	_create_mage_area_effect(attack_pos)
+
+	# Enviar mensaje al servidor (INCLUYENDO EL EQUIPO para filtrado)
+	Network.socket.send_text(JSON.stringify({
+		"type": "mage_area_attack",
+		"x": attack_pos.x,
+		"y": attack_pos.y,
+		"damage": attack_damage,
+		"team": team  # ← IMPORTANTE: enviar equipo para filtrado en servidor
+	}))
+
+	# Reproducir animación de ataque de área
+	var anim_suffix = _get_direction_suffix(direction.angle())
+	var anim_name = "attack_Area_" + anim_suffix
+
+	print("🎭 INTENTANDO ANIMACIÓN MAGA AREA: ", anim_name)
+
+	if current_sprite and current_sprite.sprite_frames.has_animation(anim_name):
+		current_sprite.play(anim_name)
+		print("✅ ANIMACIÓN MAGA AREA ENCONTRADA Y REPRODUCIENDO: ", anim_name)
+		
+		# Esperar a que termine la animación
+		set_physics_process(false)
+		await current_sprite.animation_finished
+		set_physics_process(true)
+		
+	else:
+		print("❌ Animación Maga Area no encontrada: ", anim_name)
+		# Fallback a animaciones básicas
+		if current_sprite and current_sprite.sprite_frames.has_animation("attack_Area_S"):
+			current_sprite.play("attack_Area_S")
+		elif current_sprite and current_sprite.sprite_frames.has_animation("attack_S"):
+			current_sprite.play("attack_S")
+
+	# Activar cooldown
+	can_mage_area_attack = false
+	mage_area_attack_timer = mage_area_attack_cooldown
+
+	print("⏳ ATAQUE DE ÁREA MAGA EN COOLDOWN - Tiempo:", mage_area_attack_cooldown, "s")
+# FUNCIÓN UNIVERSAL PARA OBTENER SUFIJO DE DIRECCIÓN
+func _get_direction_suffix(angle: float) -> String:
+	# Convertir ángulo a grados y ajustar para que 0 sea este
+	var degrees = rad_to_deg(angle)
+	if degrees < 0:
+		degrees += 360
+
+	# Determinar dirección basada en ángulos
+	if degrees >= 337.5 or degrees < 22.5:
+		return "E"      # Este
+	elif degrees >= 22.5 and degrees < 67.5:
+		return "SE"     # Sureste
+	elif degrees >= 67.5 and degrees < 112.5:
+		return "S"      # Sur
+	elif degrees >= 112.5 and degrees < 157.5:
+		return "SW"     # Suroeste
+	elif degrees >= 157.5 and degrees < 202.5:
+		return "W"      # Oeste
+	elif degrees >= 202.5 and degrees < 247.5:
+		return "NW"     # Noroeste
+	elif degrees >= 247.5 and degrees < 292.5:
+		return "N"      # Norte
+	else: # 292.5 a 337.5
+		return "NE"     # Noreste
+func _create_mage_area_effect(attack_pos: Vector2):
+	if not mage_area_projectile_scene:
+		print("❌ mage_area_projectile_scene no asignada")
+		return
+	
+	var area_projectile = mage_area_projectile_scene.instantiate()
+	if not area_projectile:
+		print("❌ No se pudo instanciar mage_area_projectile")
+		return
+	
+	# Posicionar en la misma posición que la maga
+	area_projectile.position = attack_pos
+	
+	# Pasar información del equipo para filtrado local (opcional)
+	if area_projectile.has_method("initialize"):
+		area_projectile.initialize(attack_damage, id, team)
+	
+	# Agregar a la escena del juego - EN UN CONTENEDOR DEBAJO
+	var main_node = get_tree().current_scene
+	if main_node and main_node.has_node("ObjectContainer"):  # Usar ObjectContainer para efectos
+		main_node.get_node("ObjectContainer").add_child(area_projectile)
+		print("⚡ EFECTO MAGA INMEDIATO CREADO - Posición:", attack_pos, " Equipo:", team)
+	else:
+		print("❌ No se encontró ObjectContainer en la escena principal")
+# En Player.gd, agregar método para obtener vida máxima
+func get_max_hp() -> int:
+	return max_hp

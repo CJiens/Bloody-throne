@@ -1,0 +1,86 @@
+[gd_scene load_steps=9 format=3 uid="uid://b10u65yptvqxe"]
+
+[ext_resource type="Script" uid="uid://clm84ytie6xxr" path="res://projectiles/MageAreaProjectile.gd" id="1_km2n6"]
+[ext_resource type="Texture2D" uid="uid://dvwqu7fddqqg2" path="res://Sprites/mage/suelo agrietado/crater_04.png" id="2_12lmo"]
+[ext_resource type="Texture2D" uid="uid://dx36aj2l5hsir" path="res://Sprites/mage/suelo agrietado/crater_03.png" id="3_m1ham"]
+[ext_resource type="Texture2D" uid="uid://bk4jtiwmkwdub" path="res://Sprites/mage/suelo agrietado/crater_02.png" id="4_rrw74"]
+[ext_resource type="Texture2D" uid="uid://d271rr4a8bsmo" path="res://Sprites/mage/suelo agrietado/crater_01.png" id="5_hfyoy"]
+[ext_resource type="Texture2D" uid="uid://bh40ygymp20oy" path="res://Sprites/mage/suelo agrietado/crater_00.png" id="6_rqwm8"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_60qbk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_12lmo")
+}],
+"loop": true,
+"name": &"burn_loop",
+"speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_12lmo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_m1ham")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_rrw74")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_hfyoy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_rqwm8")
+}],
+"loop": false,
+"name": &"end",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_rqwm8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_hfyoy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_rrw74")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_m1ham")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_12lmo")
+}],
+"loop": false,
+"name": &"start",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_d760a"]
+radius = 150.0
+
+[node name="Area2D" type="Area2D"]
+collision_layer = 4
+collision_mask = 225
+script = ExtResource("1_km2n6")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = -1
+position = Vector2(0, 24.171867)
+scale = Vector2(0.28465608, 0.295232)
+sprite_frames = SubResource("SpriteFrames_60qbk")
+animation = &"start"
+frame = 4
+frame_progress = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_d760a")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

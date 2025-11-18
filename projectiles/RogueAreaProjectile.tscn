@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://csq1ujctqs4sr"]
+
+[ext_resource type="Script" uid="uid://dev0exbioclo1" path="res://projectiles/RogueAreaProjectile.gd" id="1_xi0ix"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_e2dra"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_57c6x"]
+radius = 150.0
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_xi0ix")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_e2dra")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_57c6x")

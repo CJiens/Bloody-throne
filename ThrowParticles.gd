@@ -1,3 +1,4 @@
+#ThrowParticles.gd
 extends GPUParticles2D
 
 func _ready():

@@ -1,5 +1,5 @@
+#boos_projectile.gd
 extends Area2D
-
 # -------------------------------
 # --- PROPIEDADES DEL PROYECTIL
 # -------------------------------
