@@ -21,7 +21,9 @@ Network="*res://Network/Network.gd"
 
 [display]
 
-window/stretch/aspect="expand"
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/stretch/mode="canvas_items"
 
 [global_group]
 

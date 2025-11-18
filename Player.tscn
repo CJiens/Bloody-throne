@@ -135,7 +135,7 @@ layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.52000004
 anchor_top = 0.5
-anchor_right = 0.53000003
+anchor_right = 0.58140916
 anchor_bottom = 0.5
 offset_left = -187.83002
 offset_top = -292.5
@@ -309,7 +309,7 @@ metadata/_edit_use_anchors_ = true
 [node name="Label9" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.30032343
+anchor_left = 0.3003234
 anchor_top = 0.8363874
 anchor_right = 0.3003234
 anchor_bottom = 0.8363874
