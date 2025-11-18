@@ -77,16 +77,16 @@ var class_projectiles := {
 
 # CONFIGURACIÓN DE SPAWN
 @export_group("Configuración de Spawn")
-@export var spawn_area_percentage: float = 0.4  # 40% del área central para spawn
-@export var base_positions: Dictionary = {      # Posiciones de las bases
+@export var spawn_area_percentage: float = 0.4 # 40% del área central para spawn
+@export var base_positions: Dictionary = { # Posiciones de las bases
 	1: Vector2(-1600, -800),
 	2: Vector2(1400, 400)
 }
 
 # CONFIGURACIÓN DE SALA DE ESPERA
 @export_group("Configuración de Sala de Espera")
-@export var minimum_wait_time: float = 10.0  # Mínimo 10 segundos para elegir clase
-@export var game_start_countdown_time: float = 5.0  # 5 segundos de countdown
+@export var minimum_wait_time: float = 10.0 # Mínimo 10 segundos para elegir clase
+@export var game_start_countdown_time: float = 5.0 # 5 segundos de countdown
 
 # CONFIGURACIÓN DE EQUIPOS
 @export_group("Configuración de Equipos")
@@ -605,6 +605,11 @@ func _get_or_create_node(node_name: String, node_type) -> Node:
 # --- PROCESO PRINCIPAL (CORREGIDO)
 # -------------------------------
 func _process(delta):
+	print("--------------------------------------------------------------")
+	print(enemy_container.get_children())
+	print("--------------------------------------------------------------")
+
+
 	if not Network.connected or Network.player_id == -1:
 		return
 
@@ -1089,22 +1094,12 @@ func _on_button_ip_pressed() -> void:
 # -------------------------------
 # --- SPAWN DE ENTIDADES
 # -------------------------------
+# En la función _spawn_player, puedes ajustar el área de spawn inicial:
 func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100, classe: String = "warrior"):
 	var instance = PlayerScene.instantiate()
 	
-	# Tamaño de la pantalla
-	var screen_size = get_viewport().get_visible_rect().size
-	var center = screen_size / 2
-	
-	# Definir área de spawn usando variable pública
-	var spawn_width = screen_size.x * spawn_area_percentage
-	var spawn_height = screen_size.y * spawn_area_percentage
-	
-	# Calcular posición aleatoria dentro del área central
-	var random_x = randf_range(center.x - spawn_width / 2, center.x + spawn_width / 2)
-	var random_y = randf_range(center.y - spawn_height / 2, center.y + spawn_height / 2)
-	
-	instance.position = Vector2(random_x, random_y)
+	# Usar la posición del servidor (que ahora será más alejada)
+	instance.position = pos
 	instance.name = str(id)
 	
 	# Asignar propiedades usando métodos
@@ -1114,7 +1109,7 @@ func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100, class
 	# ASIGNAR CLASE PRIMERO antes de agregar a la escena
 	if instance.has_method("set_classe"):
 		instance.set_classe(classe)
-		print("🎯 CLASE ASIGNADA AL JUGADOR - ID:", id, " Clase:", classe)
+		print("🎯 CLASE ASIGNADA AL JUGADOR - ID:", id, " Clase:", classe, " Posición:", pos)
 	
 	player_container.add_child(instance)
 	players[id] = instance
@@ -1129,7 +1124,7 @@ func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100, class
 			cam.make_current()
 		print("🎯 JUGADOR LOCAL CREADO - ID:", id, " Pos:", instance.position, " Clase:", classe)
 	else:
-		print("👤 JUGADOR REMOTO CREADO - ID:", id, " Clase:", classe)
+		print("👤 JUGADOR REMOTO CREADO - ID:", id, " Clase:", classe, " Pos:", instance.position)
 	
 	# Configurar barra de vida
 	_update_player_hp(instance, hp, id)
@@ -1641,9 +1636,11 @@ func _on_team_selected(team: int, position: Dictionary):
 	local_player_team = team
 	print("✅ EQUIPO LOCAL ASIGNADO - Equipo:", team, " Posición:", position)
 	
-	# Mover jugador local a la posición de la base
+	# Mover jugador local a la posición de SU base (no la posición del servidor)
 	if Network.player_id in players:
-		players[Network.player_id].position = Vector2(position.x, position.y)
+		var base_position = base_positions[team]
+		players[Network.player_id].position = base_position
+		print("🎯 JUGADOR MOVIDO A SU BASE - Equipo:", team, " Posición:", base_position)
 
 func _on_team_selection_failed(reason: String, team_counts: Dictionary):
 	print("❌ ERROR AL SELECCIONAR EQUIPO:", reason)
@@ -1749,7 +1746,7 @@ func _on_game_over(winning_team: int, reason: String):
 	
 	# Programar regreso a la sala de espera después de 5 segundos
 	await get_tree().create_timer(5.0).timeout
-	_return_to_waiting_room()
+	# _return_to_waiting_room()
 
 func _on_game_reset(players_data: Dictionary, bases_data: Dictionary):
 	print("🔄 JUEGO REINICIADO - Regresando a sala de espera")
@@ -1762,7 +1759,7 @@ func _on_game_reset(players_data: Dictionary, bases_data: Dictionary):
 	hide_game_over_screen()
 	
 	# Volver a la sala de espera
-	_return_to_waiting_room()
+	# _return_to_waiting_room()
 
 # NUEVAS FUNCIONES PARA LIMPIEZA Y REINICIO
 func _cleanup_all_entities():
@@ -1797,30 +1794,30 @@ func _cleanup_all_entities():
 	
 	print("✅ TODAS LAS ENTIDADES LIMPIADAS")
 
-func _return_to_waiting_room():
-	print("🚪 REGRESANDO A SALA DE ESPERA")
+# func _return_to_waiting_room():
+# 	print("🚪 REGRESANDO A SALA DE ESPERA")
 	
-	# Mostrar UI de sala de espera
-	waiting_room_ui.visible = true
-	waiting_room_ui.process_mode = Node.PROCESS_MODE_INHERIT
+# 	# Mostrar UI de sala de espera
+# 	waiting_room_ui.visible = true
+# 	waiting_room_ui.process_mode = Node.PROCESS_MODE_INHERIT
 	
-	# Ocultar canvas de juego
-	canvas_layer.visible = true
-	canvas_layer.process_mode = Node.PROCESS_MODE_INHERIT
+# 	# Ocultar canvas de juego
+# 	canvas_layer.visible = true
+# 	canvas_layer.process_mode = Node.PROCESS_MODE_INHERIT
 	
-	# Ocultar chat durante la espera
-	chat_ui.visible = false
+# 	# Ocultar chat durante la espera
+# 	chat_ui.visible = false
 	
-	# Resetear variables de juego
-	game_started = false
-	countdown_active = false
-	class_chosen = false
-	wait_timer = 0.0
+# 	# Resetear variables de juego
+# 	game_started = false
+# 	countdown_active = false
+# 	class_chosen = false
+# 	wait_timer = 0.0
 	
-	# Actualizar UI de sala de espera
-	_update_waiting_room()
+# 	# Actualizar UI de sala de espera
+# 	_update_waiting_room()
 	
-	print("✅ EN SALA DE ESPERA - Listo para nueva partida")
+# 	print("✅ EN SALA DE ESPERA - Listo para nueva partida")
 
 func show_game_over_screen(winning_team: int, reason: String):
 	# Ocultar el juego

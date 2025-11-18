@@ -11,7 +11,7 @@
 [ext_resource type="Theme" uid="uid://qkkblp6cijnh" path="res://Temas/Botones segunda parte.tres" id="6_kek77"]
 [ext_resource type="Theme" uid="uid://bc0ftxndqriis" path="res://Temas/main_menu.tres" id="7_5vw27"]
 [ext_resource type="PackedScene" uid="uid://cog04o3t2cbln" path="res://base.tscn" id="7_cegan"]
-[ext_resource type="PackedScene" uid="uid://c50dg0rerb3ol" path="res://enities/boss/boss.tscn" id="7_getpj"]
+[ext_resource type="PackedScene" uid="uid://b0uc464drdkqd" path="res://boss.tscn" id="7_getpj"]
 [ext_resource type="Theme" uid="uid://p6lafxv8viug" path="res://Temas/Input.tres" id="9_kek77"]
 [ext_resource type="AudioStream" uid="uid://kv8nhocsergj" path="res://Musica/Bloody-Throne-Preferida.ogg" id="10_4c57u"]
 [ext_resource type="Texture2D" uid="uid://btmllehlbkcto" path="res://Ui_Select_player/Fondo Select.png" id="10_vivmo"]
@@ -265,7 +265,7 @@ base_positions = {
 }
 
 [node name="Nivel1" parent="." instance=ExtResource("20_82xsv")]
-position = Vector2(-281, 39.000015)
+position = Vector2(-17148, -7737)
 scale = Vector2(2, 2)
 
 [node name="EnemyContainer" type="Node2D" parent="."]
@@ -836,10 +836,6 @@ layout_mode = 2
 position = Vector2(-2, 1)
 
 [node name="BaseContainer" type="Node2D" parent="."]
-
-[node name="Base" parent="." instance=ExtResource("7_cegan")]
-visible = false
-position = Vector2(1402, 407)
 
 [connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/Pantalla_Inicial/VBoxContainer/Button3" to="." method="_on_button_3_pressed"]

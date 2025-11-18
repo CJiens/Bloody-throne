@@ -1132,6 +1132,305 @@ horizontal_alignment = 1
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.735
+anchor_right = 0.98300004
+anchor_bottom = 0.9850001
+offset_left = 9.125
+offset_top = 0.25
+offset_right = -0.22433472
+offset_bottom = 0.24993896
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("3_d6rpx")
+
+[node name="Label" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.193
+anchor_right = 0.5
+anchor_bottom = 0.193
+offset_left = -66.19414
+offset_top = -9.950001
+offset_right = 66.19383
+offset_bottom = 10.049999
+grow_horizontal = 2
+theme = ExtResource("4_cgsek")
+text = "Hero Stats"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label8" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.32900003
+anchor_top = -0.165
+anchor_right = 0.32900003
+anchor_bottom = -0.165
+offset_left = -78.182045
+offset_top = -8.999998
+offset_right = 78.067955
+offset_bottom = 9.000002
+grow_horizontal = 2
+theme = ExtResource("4_cgsek")
+theme_override_font_sizes/font_size = 17
+text = "Warrior"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label2" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.27600002
+anchor_top = 0.41300002
+anchor_right = 0.27600002
+anchor_bottom = 0.41300002
+offset_left = -66.09991
+offset_top = -14.450001
+offset_right = 66.28806
+offset_bottom = 14.549999
+grow_horizontal = 2
+theme = ExtResource("5_cgsek")
+text = "HP : 100/100"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label5" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.707
+anchor_top = 0.41300002
+anchor_right = 0.707
+anchor_bottom = 0.41300002
+offset_left = -78.34332
+offset_top = -14.450001
+offset_right = 78.65665
+offset_bottom = 14.549999
+grow_horizontal = 2
+theme = ExtResource("5_cgsek")
+text = "Gold : 100"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label3" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.27600002
+anchor_top = 0.633
+anchor_right = 0.27600002
+anchor_bottom = 0.633
+offset_left = -66.09991
+offset_top = -14.450005
+offset_right = 66.28806
+offset_bottom = 14.549995
+grow_horizontal = 2
+theme = ExtResource("5_cgsek")
+text = "Damage : 10"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label6" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.712
+anchor_top = 0.637
+anchor_right = 0.712
+anchor_bottom = 0.637
+offset_left = -66.190674
+offset_top = -15.050003
+offset_right = 66.19733
+offset_bottom = 14.949997
+grow_horizontal = 2
+theme = ExtResource("5_cgsek")
+text = "Killed: 20"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label4" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.27600002
+anchor_top = 0.84000003
+anchor_right = 0.27600002
+anchor_bottom = 0.84000003
+offset_left = -66.09991
+offset_top = -14.500008
+offset_right = 66.28806
+offset_bottom = 14.499992
+grow_horizontal = 2
+theme = ExtResource("5_cgsek")
+text = "Speed : 200  "
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label7" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.74200004
+anchor_top = 0.84000003
+anchor_right = 0.74200004
+anchor_bottom = 0.84000003
+offset_left = -66.27493
+offset_top = -14.500008
+offset_right = 66.11304
+offset_bottom = 14.499992
+grow_horizontal = 2
+theme = ExtResource("5_cgsek")
+text = "Vel.Atack : 5"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Barrita roja" type="Panel" parent="Camera2D/StatsUI/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.837
+anchor_top = 0.393
+anchor_right = 0.837
+anchor_bottom = 0.393
+offset_left = -72.18387
+offset_top = -210.8
+offset_right = 37.81607
+offset_bottom = 197.94994
+grow_horizontal = 0
+grow_vertical = 2
+theme = SubResource("Theme_oudfo")
+
+[node name="Panel3" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.48900002
+anchor_top = 0.127
+anchor_right = 0.48900002
+anchor_bottom = 0.127
+offset_left = -42.539955
+offset_top = -38.161243
+offset_right = 43.117985
+offset_bottom = 40.58874
+theme = ExtResource("7_0pi4m")
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja/Panel3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja/Panel3/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("9_sg6sq")
+
+[node name="Panel4" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.492
+anchor_top = 0.37
+anchor_right = 0.492
+anchor_bottom = 0.37
+offset_left = -42.869972
+offset_top = -39.487473
+offset_right = 42.78797
+offset_bottom = 39.262512
+theme = ExtResource("7_0pi4m")
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja/Panel4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja/Panel4/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("10_h84ma")
+
+[node name="Panel5" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.492
+anchor_top = 0.624
+anchor_right = 0.492
+anchor_bottom = 0.624
+offset_left = -42.869972
+offset_top = -39.309967
+offset_right = 42.78797
+offset_bottom = 39.440033
+theme = ExtResource("7_0pi4m")
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja/Panel5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja/Panel5/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("11_47wu6")
+
+[node name="Panel6" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.492
+anchor_top = 0.87900007
+anchor_right = 0.492
+anchor_bottom = 0.87900007
+offset_left = -42.869972
+offset_top = -42.54123
+offset_right = 42.78797
+offset_bottom = 36.20877
+theme = ExtResource("7_0pi4m")
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja/Panel6"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja/Panel6/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("12_2n1s8")
+
+[node name="TextureRect" type="TextureRect" parent="Camera2D/StatsUI/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.003
+anchor_top = 0.29700002
+anchor_right = 0.62
+anchor_bottom = 0.47100002
+offset_left = -2.4061246
+offset_top = -153.20001
+offset_right = -2.682495
+offset_bottom = 122.39993
+expand_mode = 1
+
 [node name="WaveUI" type="Control" parent="Camera2D"]
 visible = false
 layout_mode = 3

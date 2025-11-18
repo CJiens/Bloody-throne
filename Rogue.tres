@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=267 format=3 uid="uid://ddrfrns38hs4k"]
+[gd_resource type="SpriteFrames" load_steps=255 format=3 uid="uid://ddrfrns38hs4k"]
 
 [ext_resource type="Texture2D" uid="uid://b4ncd8xwgifo4" path="res://Sprites/hero/idle/S/0001.png" id="1_4cgwv"]
 [ext_resource type="Texture2D" uid="uid://cww6a0tdvjaph" path="res://Sprites/hero/attack/E/0001.png" id="1_dcmxg"]
@@ -106,86 +106,24 @@
 [ext_resource type="Texture2D" uid="uid://tuxwd64qiwkw" path="res://Sprites/hero/attack/W/0037.png" id="94_ydyf7"]
 [ext_resource type="Texture2D" uid="uid://byarl244dai1" path="res://Sprites/hero/attack/W/0041.png" id="95_8sc2c"]
 [ext_resource type="Texture2D" uid="uid://cybhyglhb0x8o" path="res://Sprites/hero/attack/W/0045.png" id="96_aucjp"]
-[ext_resource type="Texture2D" uid="uid://dlg42j0x5vhxu" path="res://Sprites/hero/dodge/E/0001.png" id="97_8sc2c"]
-[ext_resource type="Texture2D" uid="uid://cioinskq67x6a" path="res://Sprites/hero/dodge/E/0006.png" id="98_aucjp"]
-[ext_resource type="Texture2D" uid="uid://cxifmsjyfawdd" path="res://Sprites/hero/dodge/E/0011.png" id="99_gfbfw"]
-[ext_resource type="Texture2D" uid="uid://l8gg4xgbtcam" path="res://Sprites/hero/dodge/E/0016.png" id="100_s382h"]
-[ext_resource type="Texture2D" uid="uid://dua4ji7nsv6rs" path="res://Sprites/hero/dodge/E/0021.png" id="101_xn8fa"]
-[ext_resource type="Texture2D" uid="uid://blqyo22ywnhf6" path="res://Sprites/hero/dodge/E/0026.png" id="102_4m0qy"]
-[ext_resource type="Texture2D" uid="uid://cfbhmykqxsg1k" path="res://Sprites/hero/dodge/E/0031.png" id="103_j86jx"]
-[ext_resource type="Texture2D" uid="uid://b7d4f2uwnjowe" path="res://Sprites/hero/dodge/E/0036.png" id="104_obamg"]
-[ext_resource type="Texture2D" uid="uid://dusna18jgtpq8" path="res://Sprites/hero/dodge/E/0041.png" id="105_wjshe"]
-[ext_resource type="Texture2D" uid="uid://dnwcmgw78sfcl" path="res://Sprites/hero/dodge/E/0046.png" id="106_yb4oy"]
-[ext_resource type="Texture2D" uid="uid://ffcxdcnufk5c" path="res://Sprites/hero/dodge/N/0001.png" id="107_ehbbl"]
-[ext_resource type="Texture2D" uid="uid://bpgrllbgmrnv8" path="res://Sprites/hero/dodge/N/0006.png" id="108_q8lxe"]
-[ext_resource type="Texture2D" uid="uid://dy4qsr25ek77n" path="res://Sprites/hero/dodge/N/0011.png" id="109_kn2nx"]
-[ext_resource type="Texture2D" uid="uid://bupj6wvq5oyrb" path="res://Sprites/hero/dodge/N/0016.png" id="110_mvogs"]
-[ext_resource type="Texture2D" uid="uid://xyhwjv0dwxje" path="res://Sprites/hero/dodge/N/0021.png" id="111_ujruc"]
-[ext_resource type="Texture2D" uid="uid://b25jg1atpwl54" path="res://Sprites/hero/dodge/N/0026.png" id="112_f6l85"]
-[ext_resource type="Texture2D" uid="uid://45xutyhywmlp" path="res://Sprites/hero/dodge/N/0031.png" id="113_tq4es"]
-[ext_resource type="Texture2D" uid="uid://b4mrqkv25ih17" path="res://Sprites/hero/dodge/N/0036.png" id="114_6mjjj"]
-[ext_resource type="Texture2D" uid="uid://bansl857i1vy" path="res://Sprites/hero/dodge/N/0041.png" id="115_6lbrj"]
-[ext_resource type="Texture2D" uid="uid://cix23a8tod7vm" path="res://Sprites/hero/dodge/N/0046.png" id="116_r384p"]
-[ext_resource type="Texture2D" uid="uid://dme4iql3hd070" path="res://Sprites/hero/dodge/NE/0001.png" id="117_aovoy"]
-[ext_resource type="Texture2D" uid="uid://b13f3fqmwo6uc" path="res://Sprites/hero/dodge/NE/0006.png" id="118_wsyvp"]
-[ext_resource type="Texture2D" uid="uid://cdphnlksykdbl" path="res://Sprites/hero/dodge/NE/0011.png" id="119_mbbeo"]
-[ext_resource type="Texture2D" uid="uid://cgrn04dcqa14b" path="res://Sprites/hero/dodge/NE/0016.png" id="120_220ut"]
-[ext_resource type="Texture2D" uid="uid://ocyg2aua5prd" path="res://Sprites/hero/dodge/NE/0021.png" id="121_cgs7g"]
-[ext_resource type="Texture2D" uid="uid://8sstlv5u5rrw" path="res://Sprites/hero/dodge/NE/0026.png" id="122_cyjyi"]
-[ext_resource type="Texture2D" uid="uid://dpyyncyvrb3kp" path="res://Sprites/hero/dodge/NE/0031.png" id="123_dn4ct"]
-[ext_resource type="Texture2D" uid="uid://cqdv3gebtkyt0" path="res://Sprites/hero/dodge/NE/0036.png" id="124_wxa3u"]
-[ext_resource type="Texture2D" uid="uid://dcm00h5c12yc3" path="res://Sprites/hero/dodge/NE/0041.png" id="125_64h0l"]
-[ext_resource type="Texture2D" uid="uid://yywxlwv0oqgl" path="res://Sprites/hero/dodge/NE/0046.png" id="126_ksv33"]
-[ext_resource type="Texture2D" uid="uid://hdkuxiuuwfe3" path="res://Sprites/hero/dodge/NW/0001.png" id="127_yiiwh"]
-[ext_resource type="Texture2D" uid="uid://cfcl1auto23up" path="res://Sprites/hero/dodge/NW/0006.png" id="128_owavo"]
-[ext_resource type="Texture2D" uid="uid://d2x0nx2xu2tta" path="res://Sprites/hero/dodge/NW/0011.png" id="129_0lple"]
-[ext_resource type="Texture2D" uid="uid://cs2a8mtiw2jyc" path="res://Sprites/hero/dodge/NW/0016.png" id="130_ux2pt"]
-[ext_resource type="Texture2D" uid="uid://6a316rwqd08u" path="res://Sprites/hero/dodge/NW/0021.png" id="131_0bb7x"]
-[ext_resource type="Texture2D" uid="uid://ytugultkktfm" path="res://Sprites/hero/dodge/NW/0026.png" id="132_4tmwx"]
-[ext_resource type="Texture2D" uid="uid://d0a3we8yxs13g" path="res://Sprites/hero/dodge/NW/0031.png" id="133_4dgbd"]
-[ext_resource type="Texture2D" uid="uid://dhisa1xvrltxk" path="res://Sprites/hero/dodge/NW/0036.png" id="134_a8wpl"]
-[ext_resource type="Texture2D" uid="uid://bwsieypykpnm5" path="res://Sprites/hero/dodge/NW/0041.png" id="135_e8bg0"]
-[ext_resource type="Texture2D" uid="uid://dsfhodp6s7pro" path="res://Sprites/hero/dodge/NW/0046.png" id="136_rpgot"]
-[ext_resource type="Texture2D" uid="uid://c8lmsj4bfx3c8" path="res://Sprites/hero/dodge/S/0001.png" id="137_efkxw"]
-[ext_resource type="Texture2D" uid="uid://v4g7bfygmbm2" path="res://Sprites/hero/dodge/S/0006.png" id="138_5afws"]
-[ext_resource type="Texture2D" uid="uid://c3iamvhr1nj68" path="res://Sprites/hero/dodge/S/0011.png" id="139_twf73"]
-[ext_resource type="Texture2D" uid="uid://x36c4d75eoeh" path="res://Sprites/hero/dodge/S/0016.png" id="140_nytck"]
-[ext_resource type="Texture2D" uid="uid://cdaf16gclu2w1" path="res://Sprites/hero/dodge/S/0021.png" id="141_orpl4"]
-[ext_resource type="Texture2D" uid="uid://bl0psbnuhiaun" path="res://Sprites/hero/dodge/S/0026.png" id="142_0lyy2"]
-[ext_resource type="Texture2D" uid="uid://b87d0w8tsv1qm" path="res://Sprites/hero/dodge/S/0031.png" id="143_08x6g"]
-[ext_resource type="Texture2D" uid="uid://cf2qmmtjdrbuy" path="res://Sprites/hero/dodge/S/0036.png" id="144_2amu2"]
-[ext_resource type="Texture2D" uid="uid://c16k0nrie8wdp" path="res://Sprites/hero/dodge/S/0041.png" id="145_532v0"]
-[ext_resource type="Texture2D" uid="uid://dankhk6b6e5l6" path="res://Sprites/hero/dodge/S/0046.png" id="146_wk5j6"]
-[ext_resource type="Texture2D" uid="uid://de8xjt8v7nqxs" path="res://Sprites/hero/dodge/SE/0001.png" id="147_w2epo"]
-[ext_resource type="Texture2D" uid="uid://cb5vb4l71km83" path="res://Sprites/hero/dodge/SE/0006.png" id="148_0kmv7"]
-[ext_resource type="Texture2D" uid="uid://co66namxr18wm" path="res://Sprites/hero/dodge/SE/0011.png" id="149_yvild"]
-[ext_resource type="Texture2D" uid="uid://b3wf1d0i5ad5o" path="res://Sprites/hero/dodge/SE/0016.png" id="150_gsa0t"]
-[ext_resource type="Texture2D" uid="uid://bwlxktipvxrqh" path="res://Sprites/hero/dodge/SE/0021.png" id="151_btmng"]
-[ext_resource type="Texture2D" uid="uid://cawaorml8b5h2" path="res://Sprites/hero/dodge/SE/0026.png" id="152_4u2eh"]
-[ext_resource type="Texture2D" uid="uid://cy1we0fqi6s7m" path="res://Sprites/hero/dodge/SE/0031.png" id="153_dfg67"]
-[ext_resource type="Texture2D" uid="uid://3cu1tmk77dp6" path="res://Sprites/hero/dodge/SE/0036.png" id="154_pkswo"]
-[ext_resource type="Texture2D" uid="uid://h7cssx03eohv" path="res://Sprites/hero/dodge/SE/0041.png" id="155_sh68j"]
-[ext_resource type="Texture2D" uid="uid://00goyvwh2exf" path="res://Sprites/hero/dodge/SE/0046.png" id="156_wvicf"]
-[ext_resource type="Texture2D" uid="uid://c3pxdd8jkxbgp" path="res://Sprites/hero/dodge/SW/0001.png" id="157_t2v2n"]
-[ext_resource type="Texture2D" uid="uid://p4ffk6lpbfu7" path="res://Sprites/hero/dodge/SW/0006.png" id="158_mlyja"]
-[ext_resource type="Texture2D" uid="uid://cbtxquirwpfw2" path="res://Sprites/hero/dodge/SW/0011.png" id="159_wsg6v"]
-[ext_resource type="Texture2D" uid="uid://cq0ejhqadm4xq" path="res://Sprites/hero/dodge/SW/0016.png" id="160_hpfca"]
-[ext_resource type="Texture2D" uid="uid://dn5y2fqks4l6" path="res://Sprites/hero/dodge/SW/0021.png" id="161_qg8m6"]
-[ext_resource type="Texture2D" uid="uid://c0yh401g74ktf" path="res://Sprites/hero/dodge/SW/0026.png" id="162_mn8b6"]
-[ext_resource type="Texture2D" uid="uid://b04tb64votkts" path="res://Sprites/hero/dodge/SW/0031.png" id="163_cl1n8"]
-[ext_resource type="Texture2D" uid="uid://ckvrhtmqjrmxb" path="res://Sprites/hero/dodge/SW/0036.png" id="164_ejx0h"]
-[ext_resource type="Texture2D" uid="uid://syq7ll1oba2g" path="res://Sprites/hero/dodge/SW/0041.png" id="165_31hk8"]
-[ext_resource type="Texture2D" uid="uid://booydlbgukvws" path="res://Sprites/hero/dodge/SW/0046.png" id="166_o3qq0"]
-[ext_resource type="Texture2D" uid="uid://dgjc682wd4hji" path="res://Sprites/hero/dodge/W/0001.png" id="167_8qf5i"]
-[ext_resource type="Texture2D" uid="uid://vxc18hm4ivvy" path="res://Sprites/hero/dodge/W/0006.png" id="168_vwccy"]
-[ext_resource type="Texture2D" uid="uid://c23k5pnf3m1bs" path="res://Sprites/hero/dodge/W/0011.png" id="169_kwsdu"]
-[ext_resource type="Texture2D" uid="uid://dxuhvd7tkeiaf" path="res://Sprites/hero/dodge/W/0016.png" id="170_xigug"]
-[ext_resource type="Texture2D" uid="uid://dln7bnbtoiq2e" path="res://Sprites/hero/dodge/W/0021.png" id="171_nfejb"]
-[ext_resource type="Texture2D" uid="uid://buhgqh4gxot18" path="res://Sprites/hero/dodge/W/0026.png" id="172_ekpdt"]
-[ext_resource type="Texture2D" uid="uid://bfyk5d2f0xl1l" path="res://Sprites/hero/dodge/W/0031.png" id="173_vn68k"]
-[ext_resource type="Texture2D" uid="uid://cs8hn3h52mngd" path="res://Sprites/hero/dodge/W/0036.png" id="174_pm2ev"]
-[ext_resource type="Texture2D" uid="uid://cq2wxlkdwnku3" path="res://Sprites/hero/dodge/W/0041.png" id="175_wl00c"]
-[ext_resource type="Texture2D" uid="uid://cgeb5x2vhjfmm" path="res://Sprites/hero/dodge/W/0046.png" id="176_06pws"]
+[ext_resource type="Texture2D" uid="uid://c5eqsjvjcukg2" path="res://Sprites/hero/dodge/E/0001.png" id="97_8sc2c"]
+[ext_resource type="Texture2D" uid="uid://caqstcyu2jwsv" path="res://Sprites/hero/dodge/E/0006.png" id="98_aucjp"]
+[ext_resource type="Texture2D" uid="uid://c2mqceaxhvxov" path="res://Sprites/hero/dodge/N/0001.png" id="107_ehbbl"]
+[ext_resource type="Texture2D" uid="uid://6ihhbc5iqw7s" path="res://Sprites/hero/dodge/E/0002.png" id="108_fvdew"]
+[ext_resource type="Texture2D" uid="uid://6pfrr87eb00x" path="res://Sprites/hero/dodge/N/0006.png" id="108_q8lxe"]
+[ext_resource type="Texture2D" uid="uid://dc5l30skb20t" path="res://Sprites/hero/dodge/E/0003.png" id="109_rk14i"]
+[ext_resource type="Texture2D" uid="uid://ctlkgaqce06am" path="res://Sprites/hero/dodge/E/0004.png" id="110_po0b4"]
+[ext_resource type="Texture2D" uid="uid://06uhgjutcmnp" path="res://Sprites/hero/dodge/E/0005.png" id="111_qyca5"]
+[ext_resource type="Texture2D" uid="uid://8yd63foj0o4d" path="res://Sprites/hero/dodge/N/0002.png" id="114_12cva"]
+[ext_resource type="Texture2D" uid="uid://dfp4o37cbjt1b" path="res://Sprites/hero/dodge/N/0003.png" id="115_v5b8b"]
+[ext_resource type="Texture2D" uid="uid://675yhayasibb" path="res://Sprites/hero/dodge/N/0004.png" id="116_esie2"]
+[ext_resource type="Texture2D" uid="uid://g8mlan18eapv" path="res://Sprites/hero/dodge/NE/0001.png" id="117_aovoy"]
+[ext_resource type="Texture2D" uid="uid://br54i80y3vd41" path="res://Sprites/hero/dodge/N/0005.png" id="117_brivb"]
+[ext_resource type="Texture2D" uid="uid://dhiakfooxtsi8" path="res://Sprites/hero/dodge/NE/0006.png" id="118_wsyvp"]
+[ext_resource type="Texture2D" uid="uid://c060k27qejton" path="res://Sprites/hero/dodge/NE/0002.png" id="120_qk07e"]
+[ext_resource type="Texture2D" uid="uid://dnh6m00psvol8" path="res://Sprites/hero/dodge/NE/0003.png" id="121_4kkxe"]
+[ext_resource type="Texture2D" uid="uid://buwgvrfnnpf1w" path="res://Sprites/hero/dodge/NE/0004.png" id="122_c5lrx"]
+[ext_resource type="Texture2D" uid="uid://ls3s4ijjpdol" path="res://Sprites/hero/dodge/NE/0005.png" id="123_d8hah"]
 [ext_resource type="Texture2D" uid="uid://dpxrrx0dy4ysv" path="res://Sprites/hero/run/E/0002.png" id="187_oj2pn"]
 [ext_resource type="Texture2D" uid="uid://c066ep65jxlmj" path="res://Sprites/hero/run/E/0004.png" id="188_o7upl"]
 [ext_resource type="Texture2D" uid="uid://dr7gg6qff17aj" path="res://Sprites/hero/run/E/0006.png" id="189_sxt53"]
@@ -266,6 +204,156 @@
 [ext_resource type="Texture2D" uid="uid://ty364jktmrsv" path="res://Sprites/hero/run/W/0015.png" id="264_nc11k"]
 [ext_resource type="Texture2D" uid="uid://2ur0wix2f4o7" path="res://Sprites/hero/run/W/0017.png" id="265_j2iws"]
 [ext_resource type="Texture2D" uid="uid://btljokjibfrlv" path="res://Sprites/hero/run/W/0019.png" id="266_h1mti"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ddn6d"]
+load_path = "res://.godot/imported/0001.png-4102ffac9a3cbc900cf1c63752866dc7.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_6txpy"]
+load_path = "res://.godot/imported/0006.png-e2cc4168954301a490061ec9c4b99df5.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_vok4d"]
+load_path = "res://.godot/imported/0011.png-38297aa89ca88a1d37ba1b28941f11ee.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_dkavx"]
+load_path = "res://.godot/imported/0016.png-48b71b46e49a7db66352c04c2786897e.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qm00o"]
+load_path = "res://.godot/imported/0021.png-6a71651bc507c1b81404d09387adc0b5.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0bh2u"]
+load_path = "res://.godot/imported/0026.png-d36ce41a04ce24112e5eaa1eb486ccab.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_q47mu"]
+load_path = "res://.godot/imported/0031.png-189597e830416ebeb55b22ed3dd8d1c5.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4hgpb"]
+load_path = "res://.godot/imported/0036.png-b2c627abd9705618f2a9a398238ad9f4.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ka7se"]
+load_path = "res://.godot/imported/0041.png-ba8974221b95d3f34289e6a1fae8093a.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_i2tfv"]
+load_path = "res://.godot/imported/0046.png-d250533d615b2a3939eeb292cd9f58cd.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_uyyyc"]
+load_path = "res://.godot/imported/0001.png-e67c4c7fb4d4d09988c0db7f3a78698d.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_3c4l0"]
+load_path = "res://.godot/imported/0006.png-dcfbb4b84f0a23afa95f08a90c453f00.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_no26k"]
+load_path = "res://.godot/imported/0011.png-431caedfd82be9eb64bfc70d9b36ff4c.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fiajo"]
+load_path = "res://.godot/imported/0016.png-950bd24c49be21c56ba31f6626248ed4.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7khkl"]
+load_path = "res://.godot/imported/0021.png-a7a20ff07b1f0228410eb0d2865f383c.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_6aw75"]
+load_path = "res://.godot/imported/0026.png-df3e3cbea9013383a1a863ace2c18d5e.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_rrhjn"]
+load_path = "res://.godot/imported/0031.png-f56b82dabc8257e83347e46210d21f6d.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ni8m6"]
+load_path = "res://.godot/imported/0036.png-7b4180f5542f275359ac3748b5517ea5.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_fow1k"]
+load_path = "res://.godot/imported/0041.png-f9f1825655c0125c448399f950d22b7a.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_2mvjj"]
+load_path = "res://.godot/imported/0046.png-6b6f7b49ff7322238494b63a4c170ff5.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_qvdst"]
+load_path = "res://.godot/imported/0001.png-1b4909cce0fc30f5448e063639766945.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_0nn0s"]
+load_path = "res://.godot/imported/0006.png-4fdde8e8584ad9549302127397ccad1f.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_pdmsh"]
+load_path = "res://.godot/imported/0011.png-ae76ceaa678ef581c72cf7f69620dc64.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_srgvs"]
+load_path = "res://.godot/imported/0016.png-88e0ed76ef43c5a85013172f615e69ba.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_5rqgj"]
+load_path = "res://.godot/imported/0021.png-6d683e94662c3953e781788e31916b4b.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hpifx"]
+load_path = "res://.godot/imported/0026.png-03e06b01e0a303fd2e469aff8d2552d6.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_u3nes"]
+load_path = "res://.godot/imported/0031.png-10654a487c9f0c56911d39f25ad48c05.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_gobay"]
+load_path = "res://.godot/imported/0036.png-a54cf2dba4267158cb4dbf2df0e7df82.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_yu1ui"]
+load_path = "res://.godot/imported/0041.png-3c5e0002e04a2af7dda6aae13896694b.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_wwa4o"]
+load_path = "res://.godot/imported/0046.png-d0988ae99f57c68fc6587d7c0eaa57e9.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4dyo8"]
+load_path = "res://.godot/imported/0001.png-fd1c2205237e9a7da106818b0c900b23.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_o0yxn"]
+load_path = "res://.godot/imported/0006.png-0ee9cee4c68d38e18f88b6f50d8634c6.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_2wd4w"]
+load_path = "res://.godot/imported/0011.png-6a1608ad01ab0392acd985e4df292cee.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_4oxwc"]
+load_path = "res://.godot/imported/0016.png-74cce9703b406ecee48d346abe4985e0.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ai4io"]
+load_path = "res://.godot/imported/0021.png-52ea8626af462513be0d180a8e02b6cd.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_3qwg3"]
+load_path = "res://.godot/imported/0026.png-61d23eed3e4ca8f8df8e66b523a84a3a.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_376h2"]
+load_path = "res://.godot/imported/0031.png-cc758496ce1a333c0bd4f5a289635388.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_53spb"]
+load_path = "res://.godot/imported/0036.png-bed8b82a92af846f28ed1196b2c3e964.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_piqxy"]
+load_path = "res://.godot/imported/0041.png-f0640243efcb8b0e0a3257e2a2109c8a.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_1h0uq"]
+load_path = "res://.godot/imported/0046.png-df2a497e93062f8a5b1c805c51a0888c.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_2v73n"]
+load_path = "res://.godot/imported/0001.png-7fdc7b378671544fee79d316a1dd0009.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_o3xl1"]
+load_path = "res://.godot/imported/0006.png-e6b073a03218ce99fe15ae409f696f0d.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jti1v"]
+load_path = "res://.godot/imported/0011.png-fcd5e50620aee0bafbe0152ff72dab33.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_kocd0"]
+load_path = "res://.godot/imported/0016.png-c65e14112630f96f37c9c5fba22782c3.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_axkbx"]
+load_path = "res://.godot/imported/0021.png-2c1e421f1618ad7be90092bef162e762.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_auytf"]
+load_path = "res://.godot/imported/0026.png-a43067d36471b99c5779c7438194df8f.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7pq52"]
+load_path = "res://.godot/imported/0031.png-e5958a271c51e5da6b9d14bf66180d02.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_q2lci"]
+load_path = "res://.godot/imported/0036.png-99ec742238de46891f9e36e19ee1bf1b.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ru5un"]
+load_path = "res://.godot/imported/0041.png-9159618f0b6f2e7a38be65555493905b.ctex"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_o1vns"]
+load_path = "res://.godot/imported/0046.png-d6e57c7f17e76c929c5cb05d65f176ba.ctex"
 
 [resource]
 animations = [{
@@ -642,101 +730,65 @@ animations = [{
 "texture": ExtResource("97_8sc2c")
 }, {
 "duration": 1.0,
+"texture": ExtResource("108_fvdew")
+}, {
+"duration": 1.0,
+"texture": ExtResource("109_rk14i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("110_po0b4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("111_qyca5")
+}, {
+"duration": 1.0,
 "texture": ExtResource("98_aucjp")
-}, {
-"duration": 1.0,
-"texture": ExtResource("99_gfbfw")
-}, {
-"duration": 1.0,
-"texture": ExtResource("100_s382h")
-}, {
-"duration": 1.0,
-"texture": ExtResource("101_xn8fa")
-}, {
-"duration": 1.0,
-"texture": ExtResource("102_4m0qy")
-}, {
-"duration": 1.0,
-"texture": ExtResource("103_j86jx")
-}, {
-"duration": 1.0,
-"texture": ExtResource("104_obamg")
-}, {
-"duration": 1.0,
-"texture": ExtResource("105_wjshe")
-}, {
-"duration": 1.0,
-"texture": ExtResource("106_yb4oy")
 }],
 "loop": false,
 "name": &"roll_E",
-"speed": 5.0
+"speed": 1.0
 }, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("107_ehbbl")
 }, {
 "duration": 1.0,
+"texture": ExtResource("114_12cva")
+}, {
+"duration": 1.0,
+"texture": ExtResource("115_v5b8b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("116_esie2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("117_brivb")
+}, {
+"duration": 1.0,
 "texture": ExtResource("108_q8lxe")
-}, {
-"duration": 1.0,
-"texture": ExtResource("109_kn2nx")
-}, {
-"duration": 1.0,
-"texture": ExtResource("110_mvogs")
-}, {
-"duration": 1.0,
-"texture": ExtResource("111_ujruc")
-}, {
-"duration": 1.0,
-"texture": ExtResource("112_f6l85")
-}, {
-"duration": 1.0,
-"texture": ExtResource("113_tq4es")
-}, {
-"duration": 1.0,
-"texture": ExtResource("114_6mjjj")
-}, {
-"duration": 1.0,
-"texture": ExtResource("115_6lbrj")
-}, {
-"duration": 1.0,
-"texture": ExtResource("116_r384p")
 }],
 "loop": false,
 "name": &"roll_N",
-"speed": 10.0
+"speed": 1.0
 }, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("117_aovoy")
 }, {
 "duration": 1.0,
+"texture": ExtResource("120_qk07e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("121_4kkxe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("122_c5lrx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("123_d8hah")
+}, {
+"duration": 1.0,
 "texture": ExtResource("118_wsyvp")
-}, {
-"duration": 1.0,
-"texture": ExtResource("119_mbbeo")
-}, {
-"duration": 1.0,
-"texture": ExtResource("120_220ut")
-}, {
-"duration": 1.0,
-"texture": ExtResource("121_cgs7g")
-}, {
-"duration": 1.0,
-"texture": ExtResource("122_cyjyi")
-}, {
-"duration": 1.0,
-"texture": ExtResource("123_dn4ct")
-}, {
-"duration": 1.0,
-"texture": ExtResource("124_wxa3u")
-}, {
-"duration": 1.0,
-"texture": ExtResource("125_64h0l")
-}, {
-"duration": 1.0,
-"texture": ExtResource("126_ksv33")
 }],
 "loop": false,
 "name": &"roll_NE",
@@ -744,34 +796,34 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("127_yiiwh")
+"texture": SubResource("CompressedTexture2D_ddn6d")
 }, {
 "duration": 1.0,
-"texture": ExtResource("128_owavo")
+"texture": SubResource("CompressedTexture2D_6txpy")
 }, {
 "duration": 1.0,
-"texture": ExtResource("129_0lple")
+"texture": SubResource("CompressedTexture2D_vok4d")
 }, {
 "duration": 1.0,
-"texture": ExtResource("130_ux2pt")
+"texture": SubResource("CompressedTexture2D_dkavx")
 }, {
 "duration": 1.0,
-"texture": ExtResource("131_0bb7x")
+"texture": SubResource("CompressedTexture2D_qm00o")
 }, {
 "duration": 1.0,
-"texture": ExtResource("132_4tmwx")
+"texture": SubResource("CompressedTexture2D_0bh2u")
 }, {
 "duration": 1.0,
-"texture": ExtResource("133_4dgbd")
+"texture": SubResource("CompressedTexture2D_q47mu")
 }, {
 "duration": 1.0,
-"texture": ExtResource("134_a8wpl")
+"texture": SubResource("CompressedTexture2D_4hgpb")
 }, {
 "duration": 1.0,
-"texture": ExtResource("135_e8bg0")
+"texture": SubResource("CompressedTexture2D_ka7se")
 }, {
 "duration": 1.0,
-"texture": ExtResource("136_rpgot")
+"texture": SubResource("CompressedTexture2D_i2tfv")
 }],
 "loop": false,
 "name": &"roll_NW",
@@ -779,34 +831,34 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("137_efkxw")
+"texture": SubResource("CompressedTexture2D_uyyyc")
 }, {
 "duration": 1.0,
-"texture": ExtResource("138_5afws")
+"texture": SubResource("CompressedTexture2D_3c4l0")
 }, {
 "duration": 1.0,
-"texture": ExtResource("139_twf73")
+"texture": SubResource("CompressedTexture2D_no26k")
 }, {
 "duration": 1.0,
-"texture": ExtResource("140_nytck")
+"texture": SubResource("CompressedTexture2D_fiajo")
 }, {
 "duration": 1.0,
-"texture": ExtResource("141_orpl4")
+"texture": SubResource("CompressedTexture2D_7khkl")
 }, {
 "duration": 1.0,
-"texture": ExtResource("142_0lyy2")
+"texture": SubResource("CompressedTexture2D_6aw75")
 }, {
 "duration": 1.0,
-"texture": ExtResource("143_08x6g")
+"texture": SubResource("CompressedTexture2D_rrhjn")
 }, {
 "duration": 1.0,
-"texture": ExtResource("144_2amu2")
+"texture": SubResource("CompressedTexture2D_ni8m6")
 }, {
 "duration": 1.0,
-"texture": ExtResource("145_532v0")
+"texture": SubResource("CompressedTexture2D_fow1k")
 }, {
 "duration": 1.0,
-"texture": ExtResource("146_wk5j6")
+"texture": SubResource("CompressedTexture2D_2mvjj")
 }],
 "loop": false,
 "name": &"roll_S",
@@ -814,34 +866,34 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("147_w2epo")
+"texture": SubResource("CompressedTexture2D_qvdst")
 }, {
 "duration": 1.0,
-"texture": ExtResource("148_0kmv7")
+"texture": SubResource("CompressedTexture2D_0nn0s")
 }, {
 "duration": 1.0,
-"texture": ExtResource("149_yvild")
+"texture": SubResource("CompressedTexture2D_pdmsh")
 }, {
 "duration": 1.0,
-"texture": ExtResource("150_gsa0t")
+"texture": SubResource("CompressedTexture2D_srgvs")
 }, {
 "duration": 1.0,
-"texture": ExtResource("151_btmng")
+"texture": SubResource("CompressedTexture2D_5rqgj")
 }, {
 "duration": 1.0,
-"texture": ExtResource("152_4u2eh")
+"texture": SubResource("CompressedTexture2D_hpifx")
 }, {
 "duration": 1.0,
-"texture": ExtResource("153_dfg67")
+"texture": SubResource("CompressedTexture2D_u3nes")
 }, {
 "duration": 1.0,
-"texture": ExtResource("154_pkswo")
+"texture": SubResource("CompressedTexture2D_gobay")
 }, {
 "duration": 1.0,
-"texture": ExtResource("155_sh68j")
+"texture": SubResource("CompressedTexture2D_yu1ui")
 }, {
 "duration": 1.0,
-"texture": ExtResource("156_wvicf")
+"texture": SubResource("CompressedTexture2D_wwa4o")
 }],
 "loop": false,
 "name": &"roll_SE",
@@ -849,34 +901,34 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("157_t2v2n")
+"texture": SubResource("CompressedTexture2D_4dyo8")
 }, {
 "duration": 1.0,
-"texture": ExtResource("158_mlyja")
+"texture": SubResource("CompressedTexture2D_o0yxn")
 }, {
 "duration": 1.0,
-"texture": ExtResource("159_wsg6v")
+"texture": SubResource("CompressedTexture2D_2wd4w")
 }, {
 "duration": 1.0,
-"texture": ExtResource("160_hpfca")
+"texture": SubResource("CompressedTexture2D_4oxwc")
 }, {
 "duration": 1.0,
-"texture": ExtResource("161_qg8m6")
+"texture": SubResource("CompressedTexture2D_ai4io")
 }, {
 "duration": 1.0,
-"texture": ExtResource("162_mn8b6")
+"texture": SubResource("CompressedTexture2D_3qwg3")
 }, {
 "duration": 1.0,
-"texture": ExtResource("163_cl1n8")
+"texture": SubResource("CompressedTexture2D_376h2")
 }, {
 "duration": 1.0,
-"texture": ExtResource("164_ejx0h")
+"texture": SubResource("CompressedTexture2D_53spb")
 }, {
 "duration": 1.0,
-"texture": ExtResource("165_31hk8")
+"texture": SubResource("CompressedTexture2D_piqxy")
 }, {
 "duration": 1.0,
-"texture": ExtResource("166_o3qq0")
+"texture": SubResource("CompressedTexture2D_1h0uq")
 }],
 "loop": false,
 "name": &"roll_SW",
@@ -884,34 +936,34 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("167_8qf5i")
+"texture": SubResource("CompressedTexture2D_2v73n")
 }, {
 "duration": 1.0,
-"texture": ExtResource("168_vwccy")
+"texture": SubResource("CompressedTexture2D_o3xl1")
 }, {
 "duration": 1.0,
-"texture": ExtResource("169_kwsdu")
+"texture": SubResource("CompressedTexture2D_jti1v")
 }, {
 "duration": 1.0,
-"texture": ExtResource("170_xigug")
+"texture": SubResource("CompressedTexture2D_kocd0")
 }, {
 "duration": 1.0,
-"texture": ExtResource("171_nfejb")
+"texture": SubResource("CompressedTexture2D_axkbx")
 }, {
 "duration": 1.0,
-"texture": ExtResource("172_ekpdt")
+"texture": SubResource("CompressedTexture2D_auytf")
 }, {
 "duration": 1.0,
-"texture": ExtResource("173_vn68k")
+"texture": SubResource("CompressedTexture2D_7pq52")
 }, {
 "duration": 1.0,
-"texture": ExtResource("174_pm2ev")
+"texture": SubResource("CompressedTexture2D_q2lci")
 }, {
 "duration": 1.0,
-"texture": ExtResource("175_wl00c")
+"texture": SubResource("CompressedTexture2D_ru5un")
 }, {
 "duration": 1.0,
-"texture": ExtResource("176_06pws")
+"texture": SubResource("CompressedTexture2D_o1vns")
 }],
 "loop": false,
 "name": &"roll_W",
