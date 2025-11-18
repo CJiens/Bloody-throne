@@ -148,12 +148,6 @@ func _on_body_entered(body):
 # Efecto visual opcional al golpear
 func _create_hit_effect():
 	print("✨ CREANDO EFECTO VISUAL DE IMPACTO - Proyectil:", projectile_id)
-	
-	# Ejemplo: Podrías instanciar una escena de partículas aquí
-	# var hit_effect = preload("res://Effects/HitEffect.tscn").instantiate()
-	# get_parent().add_child(hit_effect)
-	# hit_effect.global_position = global_position
-
 # Inicializar el proyectil
 func initialize(id: int, dir: Vector2, dmg: int, owner: int, remote: bool = false):
 	projectile_id = id
