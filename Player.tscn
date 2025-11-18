@@ -1,13 +1,21 @@
-[gd_scene load_steps=15 format=3 uid="uid://xsdjfolg3h1m"]
+[gd_scene load_steps=26 format=3 uid="uid://xsdjfolg3h1m"]
 
 [ext_resource type="Script" uid="uid://cet0c5gh0dp4l" path="res://Player.gd" id="1_xhfnw"]
 [ext_resource type="SpriteFrames" uid="uid://ddrfrns38hs4k" path="res://Rogue.tres" id="2_cxr5p"]
 [ext_resource type="SpriteFrames" uid="uid://ccgibxgs3r40s" path="res://Warrior.tres" id="2_kne1u"]
 [ext_resource type="Texture2D" uid="uid://corh6kuqtn6v3" path="res://mapa/coin_icon_129365.png" id="3_5ncpa"]
+[ext_resource type="Theme" uid="uid://bymdlcqxwbvg3" path="res://Cuadradito de Stats.tres" id="3_d6rpx"]
 [ext_resource type="SpriteFrames" uid="uid://bo604nekfqts0" path="res://Knight.tres" id="3_tdg3f"]
 [ext_resource type="Theme" uid="uid://ch3brqsl47v7o" path="res://enities/boss/cards.tres" id="3_wi0c6"]
+[ext_resource type="Theme" uid="uid://t8tag5303032" path="res://Hero Stat-titulo.tres" id="4_cgsek"]
 [ext_resource type="SpriteFrames" uid="uid://dqyik6patsouj" path="res://Archer.tres" id="4_e80uo"]
+[ext_resource type="Theme" uid="uid://db6qnstwk4guc" path="res://Texto largo.tres" id="5_cgsek"]
 [ext_resource type="Theme" uid="uid://df3w3w54o8cod" path="res://stats.tres" id="5_hp6x6"]
+[ext_resource type="Theme" uid="uid://7uox4r772qaq" path="res://Cuadrado.tres" id="7_0pi4m"]
+[ext_resource type="Theme" uid="uid://boy37vd7itcx0" path="res://tem martillo.tres" id="9_sg6sq"]
+[ext_resource type="Theme" uid="uid://wka42h70vjsf" path="res://Tema segundo poder.tres" id="10_h84ma"]
+[ext_resource type="Theme" uid="uid://p0f5p5avd8yr" path="res://Tema tercer poder.tres" id="11_47wu6"]
+[ext_resource type="Theme" uid="uid://dadh75t3ystec" path="res://Tema cuarto poder.tres" id="12_2n1s8"]
 [ext_resource type="SpriteFrames" uid="uid://dxopahsk2cn8a" path="res://Mague.tres" id="150_5tdsq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_erspt"]
@@ -26,6 +34,13 @@ ProgressBar/constants/outline_size = 1
 ProgressBar/font_sizes/font_size = 5
 ProgressBar/styles/background = SubResource("StyleBoxFlat_dtqjt")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_1jgrc")
+
+[sub_resource type="Theme" id="Theme_wi0c6"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_itxgx"]
+
+[sub_resource type="Theme" id="Theme_oudfo"]
+Panel/styles/panel = SubResource("StyleBoxTexture_itxgx")
 
 [node name="Node2D" type="CharacterBody2D"]
 z_index = 1
@@ -83,30 +98,38 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -300.0
 offset_top = -300.0
-offset_right = 300.0
+offset_right = 179.0
 offset_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
-theme = ExtResource("5_hp6x6")
+theme = SubResource("Theme_wi0c6")
 
 [node name="Panel" type="Panel" parent="Camera2D/StatsUI"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = -1
+anchor_left = 0.52000004
+anchor_top = 0.5
+anchor_right = 0.52000004
+anchor_bottom = 0.5
+offset_left = -187.83002
+offset_top = -292.5
+offset_right = 197.54495
+offset_bottom = 307.5
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("5_hp6x6")
 
 [node name="MarginContainer" type="MarginContainer" parent="Camera2D/StatsUI/Panel"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("5_hp6x6")
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
@@ -114,6 +137,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="HBoxContainer" type="VBoxContainer" parent="Camera2D/StatsUI/Panel/MarginContainer"]
 layout_mode = 2
+theme = ExtResource("5_hp6x6")
 theme_override_constants/separation = 3
 
 [node name="nombre" type="Label" parent="Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer"]
@@ -212,6 +236,305 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 6
 text = "20%"
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.735
+anchor_right = 0.98300004
+anchor_bottom = 0.9850001
+offset_left = 9.125
+offset_top = 0.25
+offset_right = -0.22433472
+offset_bottom = 0.24993896
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("3_d6rpx")
+
+[node name="Label" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.193
+anchor_right = 0.5
+anchor_bottom = 0.193
+offset_left = -66.19414
+offset_top = -9.950001
+offset_right = 66.19383
+offset_bottom = 10.049999
+grow_horizontal = 2
+theme = ExtResource("4_cgsek")
+text = "Hero Stats"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label8" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.32900003
+anchor_top = -0.165
+anchor_right = 0.32900003
+anchor_bottom = -0.165
+offset_left = -78.182045
+offset_top = -8.999998
+offset_right = 78.067955
+offset_bottom = 9.000002
+grow_horizontal = 2
+theme = ExtResource("4_cgsek")
+theme_override_font_sizes/font_size = 17
+text = "Warrior"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label2" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.27600002
+anchor_top = 0.41300002
+anchor_right = 0.27600002
+anchor_bottom = 0.41300002
+offset_left = -66.09991
+offset_top = -14.450001
+offset_right = 66.28806
+offset_bottom = 14.549999
+grow_horizontal = 2
+theme = ExtResource("5_cgsek")
+text = "HP : 100/100"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label5" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.707
+anchor_top = 0.41300002
+anchor_right = 0.707
+anchor_bottom = 0.41300002
+offset_left = -78.34332
+offset_top = -14.450001
+offset_right = 78.65665
+offset_bottom = 14.549999
+grow_horizontal = 2
+theme = ExtResource("5_cgsek")
+text = "Gold : 100"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label3" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.27600002
+anchor_top = 0.633
+anchor_right = 0.27600002
+anchor_bottom = 0.633
+offset_left = -66.09991
+offset_top = -14.450005
+offset_right = 66.28806
+offset_bottom = 14.549995
+grow_horizontal = 2
+theme = ExtResource("5_cgsek")
+text = "Damage : 10"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label6" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.712
+anchor_top = 0.637
+anchor_right = 0.712
+anchor_bottom = 0.637
+offset_left = -66.190674
+offset_top = -15.050003
+offset_right = 66.19733
+offset_bottom = 14.949997
+grow_horizontal = 2
+theme = ExtResource("5_cgsek")
+text = "Killed: 20"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label4" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.27600002
+anchor_top = 0.84000003
+anchor_right = 0.27600002
+anchor_bottom = 0.84000003
+offset_left = -66.09991
+offset_top = -14.500008
+offset_right = 66.28806
+offset_bottom = 14.499992
+grow_horizontal = 2
+theme = ExtResource("5_cgsek")
+text = "Speed : 200  "
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Label7" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.74200004
+anchor_top = 0.84000003
+anchor_right = 0.74200004
+anchor_bottom = 0.84000003
+offset_left = -66.27493
+offset_top = -14.500008
+offset_right = 66.11304
+offset_bottom = 14.499992
+grow_horizontal = 2
+theme = ExtResource("5_cgsek")
+text = "Vel.Atack : 5"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="Barrita roja" type="Panel" parent="Camera2D/StatsUI/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.837
+anchor_top = 0.393
+anchor_right = 0.837
+anchor_bottom = 0.393
+offset_left = -72.18387
+offset_top = -210.8
+offset_right = 37.81607
+offset_bottom = 197.94994
+grow_horizontal = 0
+grow_vertical = 2
+theme = SubResource("Theme_oudfo")
+
+[node name="Panel3" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.48900002
+anchor_top = 0.127
+anchor_right = 0.48900002
+anchor_bottom = 0.127
+offset_left = -42.539955
+offset_top = -38.161243
+offset_right = 43.117985
+offset_bottom = 40.58874
+theme = ExtResource("7_0pi4m")
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja/Panel3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja/Panel3/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("9_sg6sq")
+
+[node name="Panel4" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.492
+anchor_top = 0.37
+anchor_right = 0.492
+anchor_bottom = 0.37
+offset_left = -42.869972
+offset_top = -39.487473
+offset_right = 42.78797
+offset_bottom = 39.262512
+theme = ExtResource("7_0pi4m")
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja/Panel4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja/Panel4/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("10_h84ma")
+
+[node name="Panel5" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.492
+anchor_top = 0.624
+anchor_right = 0.492
+anchor_bottom = 0.624
+offset_left = -42.869972
+offset_top = -39.309967
+offset_right = 42.78797
+offset_bottom = 39.440033
+theme = ExtResource("7_0pi4m")
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja/Panel5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja/Panel5/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("11_47wu6")
+
+[node name="Panel6" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.492
+anchor_top = 0.87900007
+anchor_right = 0.492
+anchor_bottom = 0.87900007
+offset_left = -42.869972
+offset_top = -42.54123
+offset_right = 42.78797
+offset_bottom = 36.20877
+theme = ExtResource("7_0pi4m")
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja/Panel6"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel/Barrita roja/Panel6/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("12_2n1s8")
+
+[node name="TextureRect" type="TextureRect" parent="Camera2D/StatsUI/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.003
+anchor_top = 0.29700002
+anchor_right = 0.62
+anchor_bottom = 0.47100002
+offset_left = -2.4061246
+offset_top = -153.20001
+offset_right = -2.682495
+offset_bottom = 122.39993
+expand_mode = 1
 
 [node name="WaveUI" type="Control" parent="Camera2D"]
 visible = false
@@ -382,6 +705,7 @@ size_flags_horizontal = 3
 text = "buy"
 
 [node name="Card1" type="Control" parent="Camera2D/DecisionUI/HBoxContainer2"]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("3_wi0c6")

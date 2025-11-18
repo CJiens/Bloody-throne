@@ -1,0 +1,43 @@
+[gd_scene load_steps=4 format=3 uid="uid://b0uc464drdkqd"]
+
+[ext_resource type="Script" uid="uid://dmc0y2jme2bfi" path="res://boss.gd" id="1_6xxrv"]
+[ext_resource type="SpriteFrames" uid="uid://df1okf4gl2wjh" path="res://enities/boss/boss.tres" id="2_skx2t"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6xxrv"]
+
+[node name="Boss" type="CharacterBody2D"]
+script = ExtResource("1_6xxrv")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_skx2t")
+animation = &"patrol"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1, 26)
+scale = Vector2(9.53539, 12.779365)
+shape = SubResource("RectangleShape2D_6xxrv")
+
+[node name="HPBarContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -21.0
+offset_top = 126.0
+offset_right = 79.0
+offset_bottom = 166.0
+metadata/_edit_use_anchors_ = true
+
+[node name="HPBar" type="ProgressBar" parent="HPBarContainer"]
+layout_mode = 0
+offset_right = 95.055
+offset_bottom = 27.0
+show_percentage = false
+
+[node name="HPText" type="Label" parent="HPBarContainer"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[node name="HealthBar" type="ProgressBar" parent="HPBarContainer"]
+layout_mode = 0
+offset_right = 4.0
+offset_bottom = 27.0
