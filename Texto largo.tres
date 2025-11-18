@@ -5,4 +5,4 @@ Label/colors/font_color = Color(0.78431374, 0.64705884, 0.3764706, 1)
 Label/colors/font_outline_color = Color(0.16862746, 0.101960786, 0.05490196, 1)
 Label/constants/outline_size = 1
 Label/font_sizes/font_size = 18
-Label/fonts/font = null
+Label/fonts/font = ExtResource("1_ajap8")

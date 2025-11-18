@@ -1,6 +1,9 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://dadh75t3ystec"]
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://dadh75t3ystec"]
+
+[ext_resource type="Texture2D" uid="uid://bybgqe36fgq3i" path="res://Interfaz de estadistica/Iconos/weapon_icon.png" id="1_1reqy"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_p01ps"]
+texture = ExtResource("1_1reqy")
 
 [resource]
 Panel/styles/panel = SubResource("StyleBoxTexture_p01ps")
