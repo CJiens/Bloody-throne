@@ -259,16 +259,6 @@ class WaveSystem {
 	}
 
 	getWaveConfig(waveNumber) {
-		/*// Si es oleada de jefe
-		if (waveNumber % this.bossWaveInterval === 0) {
-			return {
-				enemies: 1,
-				types: ['boss'],
-				reward: 100 + (waveNumber * 10),
-				isBossWave: true
-			};
-		}*/
-
 	let numEnemies = this.minEnemies + Math.floor(Math.random() * ((this.maxEnemies - this.minEnemies) / 2 + 1)) * 2;
 		
 		const baseReward = 50 + (waveNumber * 10);
@@ -301,409 +291,6 @@ class WaveSystem {
 		return this.currentWave % this.bossWaveInterval === 0;
 	}
 }
-
-// ----------------------------
-// SISTEMA DE JEFE PERMANENTE
-// ----------------------------
-/*class BossAI {
-	constructor(bossId) {
-		this.bossId = bossId;
-		this.currentAction = 'patrol';
-		this.actionCooldown = 0;
-		this.targetPlayerId = null;
-		this.phase = 1;
-
-		// ÁREA ENTRE LAS DOS BASES NUEVAS (coordenadas actualizadas)
-		this.patrolArea = {
-			minX: -600,   // Entre base 1 (x: -1600) y base 2 (x: 1400)
-			maxX: 400,
-			minY: -200,   // Entre base 1 (y: -800) y base 2 (y: 400)
-			maxY: 0
-		};
-
-		this.patrolCenter = { x: -100, y: -200 }; // Punto medio entre las bases
-		this.patrolRadius = 500; // Radio más grande para cubrir la distancia
-		this.lastActionTime = Date.now();
-	}
-
-	// En el método executePatrol, actualiza para usar las nuevas coordenadas:
-	executePatrol(boss) {
-		// Movimiento aleatorio dentro del área ENTRE LAS NUEVAS BASES
-		const angle = Math.random() * Math.PI * 2;
-		const distance = Math.random() * this.patrolRadius;
-
-		let newX = this.patrolCenter.x + Math.cos(angle) * distance;
-		let newY = this.patrolCenter.y + Math.sin(angle) * distance;
-
-		// Asegurar que se mantenga en el área de vigilancia entre bases
-		newX = Math.max(this.patrolArea.minX, Math.min(this.patrolArea.maxX, newX));
-		newY = Math.max(this.patrolArea.minY, Math.min(this.patrolArea.maxY, newY));
-
-		boss.x = newX;
-		boss.y = newY;
-
-		console.log(`🦹 JEFE PATRULLANDO - Posición: (${boss.x}, ${boss.y})`);
-	}
-
-	decideAction(boss, players) {
-		const playersInRange = this.getPlayersInRange(boss, players, 500);
-
-		if (playersInRange.length === 0) {
-			// No hay jugadores - patrullar
-			return { action: 'patrol', duration: 4 };
-		}
-
-		// Elegir jugador más cercano
-		this.targetPlayerId = this.getClosestPlayer(boss, playersInRange);
-		const target = players[this.targetPlayerId];
-		const distance = this.getDistance(boss, target);
-
-		// ✅ SIMPLIFICADO: Lógica de decisión sin teletransporte
-		if (distance <= 200 && this.actionCooldown <= 0) {
-			return this.chooseAttack(boss);
-		} else if (distance > 200 && distance <= 400) {
-			return { action: 'chase', duration: 2, target: this.targetPlayerId };
-		} else {
-			// En lugar de teletransporte, simplemente perseguir
-			return { action: 'chase', duration: 3, target: this.targetPlayerId };
-		}
-	}
-
-	chooseAttack(boss) {
-		// ✅ ELIMINADO: 'teleport' de los tipos de ataque
-		const attackTypes = ['attack_melee', 'attack_ranged', 'attack_special'];
-		const weights = this.getAttackWeights(boss);
-
-		let random = Math.random();
-		let cumulativeWeight = 0;
-
-		for (let i = 0; i < attackTypes.length; i++) {
-			cumulativeWeight += weights[i];
-			if (random <= cumulativeWeight) {
-				return {
-					action: attackTypes[i],
-					duration: this.getAttackDuration(attackTypes[i])
-				};
-			}
-		}
-
-		return { action: 'attack_melee', duration: 1.5 };
-	}
-
-	getAttackWeights(boss) {
-		switch (boss.current_phase) {
-			case 1:
-				return [0.7, 0.3, 0.0]; // 70% melee, 30% ranged, 0% special
-			case 2:
-				return [0.5, 0.3, 0.2]; // 50% melee, 30% ranged, 20% special
-			case 3:
-				return [0.4, 0.3, 0.3]; // 40% melee, 30% ranged, 30% special
-			default:
-				return [0.6, 0.3, 0.1];
-		}
-	}
-
-	getAttackDuration(attackType) {
-		const durations = {
-			'attack_melee': 1.5,
-			'attack_ranged': 1.2,
-			'attack_special': 2.0
-			// ✅ ELIMINADO: 'teleport': 3.0
-		};
-		return durations[attackType] || 1.5;
-	}
-
-	executeAction(boss, players, enemies, projectiles) {
-		const action = this.decideAction(boss, players);
-
-		// ✅ ACTUALIZAR ANIMACIÓN SIN TELETRANSPORTE
-		if (boss.animation_state !== action.action) {
-			boss.animation_state = action.action;
-			console.log(`🎭 BOSS ANIMACIÓN CAMBIADA: ${action.action} para boss ${boss.id}`);
-
-			broadcast({
-				type: 'boss_animation_update',
-				boss_id: boss.id,
-				animation: action.action
-			});
-		}
-
-		// Si el jefe está muerto, no hacer nada
-		if (boss.hp <= 0) {
-			return action;
-		}
-
-		switch (action.action) {
-			case 'patrol':
-				this.executePatrol(boss);
-				break;
-
-			case 'chase':
-				this.executeChase(boss, players);
-				break;
-
-			case 'attack_melee':
-				this.executeMeleeAttack(boss, players);
-				this.actionCooldown = this.getAttackDuration('attack_melee');
-				break;
-
-			case 'attack_ranged':
-				this.executeRangedAttack(boss, projectiles);
-				this.actionCooldown = this.getAttackDuration('attack_ranged');
-				break;
-
-			case 'attack_special':
-				this.executeSpecialAttack(boss, players);
-				this.actionCooldown = this.getAttackDuration('attack_special');
-				break;
-
-			// ✅ ELIMINADO: case 'teleport'
-		}
-
-		// Actualizar cooldown
-		if (this.actionCooldown > 0) {
-			this.actionCooldown -= 0.016; // 60 FPS
-		}
-
-		// Verificar cambio de fase
-		this.checkPhaseTransition(boss);
-
-		return action;
-	}
-
-	executeChase(boss, players) {
-		if (this.targetPlayerId && players[this.targetPlayerId]) {
-			const target = players[this.targetPlayerId];
-			const dx = target.x - boss.x;
-			const dy = target.y - boss.y;
-			const distance = Math.sqrt(dx * dx + dy * dy);
-
-			if (distance > 0) {
-				boss.x += (dx / distance) * boss.move_speed * 0.016;
-				boss.y += (dy / distance) * boss.move_speed * 0.016;
-			}
-		}
-	}
-
-	executeMeleeAttack(boss, players) {
-		if (this.targetPlayerId && players[this.targetPlayerId]) {
-			const target = players[this.targetPlayerId];
-			const distance = this.getDistance(boss, target);
-
-			if (distance <= 200) {
-				let damage = boss.attack_damage;
-
-				// Aumentar daño en fases superiores
-				if (boss.current_phase >= 2) damage *= 1.2;
-				if (boss.current_phase >= 3) damage *= 1.5;
-
-				target.hp -= damage;
-
-				console.log(`💥 JEFE ATACA - Daño: ${damage} a jugador ${this.targetPlayerId}`);
-
-				broadcast({
-					type: 'player_hit',
-					id: parseInt(this.targetPlayerId),
-					hp: target.hp
-				});
-
-				broadcast({
-					type: 'boss_attacked',
-					target_id: parseInt(this.targetPlayerId),
-					damage: damage
-				});
-
-				if (target.hp <= 0) {
-					this.handlePlayerDeath(this.targetPlayerId);
-				}
-			}
-		}
-	}
-
-	executeRangedAttack(boss, projectiles) {
-		const projectileId = nextProjectileId++;
-
-		// Dirección hacia el jugador o aleatoria
-		let direction;
-		if (this.targetPlayerId && players[this.targetPlayerId]) {
-			const target = players[this.targetPlayerId];
-			const dx = target.x - boss.x;
-			const dy = target.y - boss.y;
-			const distance = Math.sqrt(dx * dx + dy * dy);
-			direction = {
-				x: dx / distance,
-				y: dy / distance
-			};
-		} else {
-			const angle = Math.random() * Math.PI * 2;
-			direction = {
-				x: Math.cos(angle),
-				y: Math.sin(angle)
-			};
-		}
-
-		let damage = boss.attack_damage;
-		if (boss.current_phase >= 2) damage *= 1.1;
-		if (boss.current_phase >= 3) damage *= 1.3;
-
-		projectiles[projectileId] = {
-			id: projectileId,
-			x: boss.x,
-			y: boss.y,
-			direction_x: direction.x,
-			direction_y: direction.y,
-			damage: damage,
-			owner_id: this.bossId,
-			speed: 250.0,
-			classe: 'boss'
-		};
-
-		broadcast({
-			type: 'projectile_created',
-			id: projectileId,
-			x: boss.x,
-			y: boss.y,
-			direction_x: direction.x,
-			direction_y: direction.y,
-			damage: damage,
-			owner_id: this.bossId,
-			speed: 250.0,
-			classe: 'boss'
-		});
-
-		broadcast({
-			type: 'boss_attacked',
-			target_id: -1, // Ataque de área
-			damage: damage
-		});
-	}
-
-	executeSpecialAttack(boss, players) {
-		// Ataque especial que afecta a múltiples jugadores
-		const playersInRange = this.getPlayersInRange(boss, players, 300);
-		let totalDamage = 0;
-
-		for (let playerId of playersInRange) {
-			const player = players[playerId];
-			let damage = boss.attack_damage * 1.5;
-
-			if (boss.current_phase >= 2) damage *= 1.2;
-			if (boss.current_phase >= 3) damage *= 1.5;
-
-			player.hp -= damage;
-			totalDamage += damage;
-
-			broadcast({
-				type: 'player_hit',
-				id: parseInt(playerId),
-				hp: player.hp
-			});
-
-			broadcast({
-				type: 'boss_attacked',
-				target_id: parseInt(playerId),
-				damage: damage
-			});
-
-			if (player.hp <= 0) {
-				this.handlePlayerDeath(playerId);
-			}
-		}
-
-		console.log(`🌀 JEFE ATAQUE ESPECIAL - Daño total: ${totalDamage} a ${playersInRange.length} jugadores`);
-	}
-
-	handlePlayerDeath(playerId) {
-		players[playerId].is_alive = false;
-		players[playerId].respawn_timer = 5;
-
-		broadcast({
-			type: 'player_dead',
-			id: parseInt(playerId),
-			by: this.bossId,
-			respawn_time: 5
-		});
-
-		startRespawnTimer(playerId);
-	}
-
-	checkPhaseTransition(boss) {
-		const healthPercent = boss.hp / boss.max_hp;
-
-		if (this.phase === 1 && healthPercent <= 0.66) {
-			this.transitionToPhase(boss, 2);
-		} else if (this.phase === 2 && healthPercent <= 0.33) {
-			this.transitionToPhase(boss, 3);
-		}
-	}
-
-	transitionToPhase(boss, newPhase) {
-		console.log(`🔥 JEFE PERMANENTE CAMBIA A FASE ${newPhase}`);
-		this.phase = newPhase;
-		boss.current_phase = newPhase;
-
-		// Mejoras por fase
-		switch (newPhase) {
-			case 2:
-				boss.move_speed *= 1.2;
-				boss.attack_damage = Math.floor(boss.attack_damage * 1.3);
-				broadcast({
-					type: 'boss_health_updated',
-					hp: boss.hp,
-					max_hp: boss.max_hp
-				});
-				break;
-			case 3:
-				boss.move_speed *= 1.3;
-				boss.attack_damage = Math.floor(boss.attack_damage * 1.5);
-				broadcast({
-					type: 'boss_health_updated',
-					hp: boss.hp,
-					max_hp: boss.max_hp
-				});
-				break;
-		}
-
-		broadcast({
-			type: 'boss_phase_changed',
-			boss_id: boss.id,
-			phase: newPhase
-		});
-	}
-
-	getPlayersInRange(boss, players, range) {
-		const playersInRange = [];
-		for (let playerId in players) {
-			const player = players[playerId];
-			if (player.is_alive && this.getDistance(boss, player) <= range) {
-				playersInRange.push(playerId);
-			}
-		}
-		return playersInRange;
-	}
-
-	getClosestPlayer(boss, playerIds) {
-		let closestId = null;
-		let minDistance = Infinity;
-
-		for (let playerId of playerIds) {
-			const player = players[playerId];
-			const distance = this.getDistance(boss, player);
-			if (distance < minDistance) {
-				minDistance = distance;
-				closestId = playerId;
-			}
-		}
-
-		return closestId;
-	}
-
-	getDistance(obj1, obj2) {
-		const dx = obj1.x - obj2.x;
-		const dy = obj1.y - obj2.y;
-		return Math.sqrt(dx * dx + dy * dy);
-	}
-}*/
 
 // ----------------------------
 // SERVIDOR HTTP + WEBSOCKETS
@@ -741,10 +328,6 @@ let bases = {
 	}
 };
 
-// JEFE PERMANENTE
-//let permanentBoss = null;
-//let bossRespawnTimer = null;
-
 // Variables de estado del juego
 let gameState = 'waiting'; // waiting, starting, playing, finished
 let winningTeam = null;
@@ -781,99 +364,6 @@ function sendToPlayer(playerId, data) {
 	}
 	return false;
 }
-
-// ----------------------------
-// FUNCIONES DEL JEFE PERMANENTE
-// ----------------------------
-/*function spawnPermanentBoss() {
-	const bossId = 999;
-
-	// Limpiar boss existente si hay uno
-	if (permanentBoss) {
-		delete enemies[permanentBoss.id];
-		console.log("🗑️ Boss anterior eliminado");
-	}
-
-	const bossAI = new BossAI(bossId);
-
-	permanentBoss = {
-		id: bossId, // ✅ Asegurar que siempre tenga ID
-		x: 0,
-		y: 0,
-		hp: 1000,
-		max_hp: 1000,
-		type: 'final_boss',
-		team: 0,
-		attack_damage: 35,
-		move_speed: 60,
-		phases: 3,
-		current_phase: 1,
-		ai: bossAI,
-		is_permanent: true,
-		respawn_time: 60,
-		animation_state: "idle"
-	};
-
-	// ✅ Asegurar que el boss se agregue a enemies
-	enemies[bossId] = permanentBoss;
-
-	console.log(`👹 JEFE PERMANENTE SPAWNEADO - ID: ${bossId}, HP: 1000, Posición: (0, 0)`);
-	console.log(`📊 Enemigos activos: ${Object.keys(enemies).length}`);
-
-	// ✅ Broadcast inmediato del spawn
-	broadcast({
-		type: 'boss_spawned',
-		boss_data: permanentBoss
-	});
-
-	// ✅ Broadcast inicial del estado de animación
-	broadcast({
-		type: 'boss_animation_update',
-		boss_id: bossId,
-		animation: "idle"
-	});
-
-	// ✅ Forzar envío de estado actualizado
-	setTimeout(() => {
-		broadcast({
-			type: 'state',
-			players,
-			enemies,
-			projectiles,
-			bases,
-			timestamp: Date.now()
-		});
-	}, 100);
-}*/
-
-/*function handleBossDeath(bossId) {
-	if (permanentBoss && permanentBoss.id === bossId) {
-		console.log(`💀 JEFE PERMANENTE DERROTADO - ID: ${bossId}`);
-
-		// Eliminar de enemigos activos
-		delete enemies[bossId];
-
-		broadcast({
-			type: 'boss_died',
-			boss_id: bossId
-		});
-
-		// Programar respawn
-		bossRespawnTimer = setTimeout(() => {
-			console.log("🔄 RESPawNEANDO JEFE PERMANENTE");
-			spawnPermanentBoss();
-		}, permanentBoss.respawn_time * 1000);
-
-		console.log(`⏰ JEFE RESPawNEARÁ EN ${permanentBoss.respawn_time} SEGUNDOS`);
-	}
-}*/
-
-/*function handleBossRespawn() {
-	if (permanentBoss && permanentBoss.hp <= 0) {
-		console.log("🔄 RESPawNEANDO JEFE PERMANENTE POR SOLICITUD");
-		spawnPermanentBoss();
-	}
-}*/
 
 // ----------------------------
 // SISTEMA DE EQUIPOS
@@ -1102,11 +592,6 @@ function resetGame() {
 // ----------------------------
 function spawnWaveEnemies(waveConfig) {
 	enemies = {}; // Limpiar enemigos anteriores
-
-	/*if (waveConfig.isBossWave) {
-		// Spawn del jefe de oleada (no confundir con el jefe permanente)
-		spawnBossWave();
-	} else {*/
 // ✅ SISTEMA MEZCLADO: Algunos enemigos por equipo, algunos neutrales
 	const totalEnemies = waveConfig.enemies;
 	
@@ -1376,13 +861,13 @@ function _attackPlayerWithNeutral(enemy, player) {
 	if (player.hp <= 0) {
 		console.log(`💀 JUGADOR ${player.id} MUERTO POR ENEMIGO NEUTRAL ${enemy.id}`);
 		player.is_alive = false;
-		player.respawn_timer = 5;
+		player.respawn_timer = 10;
 		
 		broadcast({
 			type: 'player_dead',
 			id: parseInt(player.id),
 			by: enemy.id,
-			respawn_time: 5,
+			respawn_time: 10,
 			killer_type: 'neutral_enemy'
 		});
 		
@@ -1462,31 +947,6 @@ function startGameLoop() {
 				}
 			}
 		}
-
-		// IA DEL JEFE PERMANENTE
-		/*if (permanentBoss && permanentBoss.hp > 0 && permanentBoss.ai) {
-			const action = permanentBoss.ai.executeAction(permanentBoss, players, enemies, projectiles);
-
-			// ✅ ACTUALIZAR ANIMACIÓN SEGÚN LA ACCIÓN
-			if (permanentBoss.animation_state !== action.action) {
-				permanentBoss.animation_state = action.action;
-				broadcast({
-					type: 'boss_animation_update',
-					boss_id: permanentBoss.id,
-					animation: action.action
-				});
-			}
-
-			// Broadcast salud del jefe periódicamente
-			if (Math.random() < 0.1) { // 10% de chance cada frame
-				broadcast({
-					type: 'boss_health_updated',
-					hp: permanentBoss.hp,
-					max_hp: permanentBoss.max_hp
-				});
-			}
-		}*/
-
 		// Verificar fin de oleada
 		if (waveSystem.waveInProgress && Object.keys(enemies).length === 0) {
 			endCurrentWave();
@@ -1690,10 +1150,6 @@ wss.on('connection', (ws) => {
 			}
 		}
 
-		// --- SELECCIÓN DE EQUIPO ---
-		// En la sección de selección de equipo, actualiza el spawn:
-		// En la sección de selección de equipo, busca esta parte:
-		// En la sección de selección de equipo, busca esta parte:
 		else if (msg.type === 'select_team') {
 			console.log("🎯 SELECCIÓN DE EQUIPO - User:", userId, " Equipo:", msg.team);
 
@@ -1879,13 +1335,13 @@ wss.on('connection', (ws) => {
 				} else if (msg.targetType === 'player') {
 					// Marcar jugador como muerto
 					players[msg.targetId].is_alive = false;
-					players[msg.targetId].respawn_timer = 5; // 5 segundos para respawn
+					players[msg.targetId].respawn_timer = 10; // 5 segundos para respawn
 
 					broadcast({
 						type: 'player_dead',
 						id: parseInt(msg.targetId),
 						by: userId,
-						respawn_time: 5
+						respawn_time: 10
 					});
 
 					// Iniciar timer de respawn
@@ -2080,13 +1536,13 @@ wss.on('connection', (ws) => {
 							console.log(`💀 JUGADOR RIVAL ${playerId} MUERTO POR ATAQUE DE ÁREA`);
 							
 							player.is_alive = false;
-							player.respawn_timer = 5;
+							player.respawn_timer = 10;
 
 							broadcast({
 								type: 'player_dead',
 								id: parseInt(playerId),
 								by: userId,
-								respawn_time: 5
+								respawn_time: 10
 							});
 
 							startRespawnTimer(playerId);
@@ -2259,13 +1715,13 @@ wss.on('connection', (ws) => {
 							console.log(`💀 JUGADOR RIVAL ${playerId} MUERTO POR ATAQUE DE ÁREA ROGUE`);
 
 							player.is_alive = false;
-							player.respawn_timer = 5;
+							 player.respawn_timer= 10;
 
 							broadcast({
 								type: 'player_dead',
 								id: parseInt(playerId),
 								by: userId,
-								respawn_time: 5
+								respawn_time: 10
 							});
 
 							startRespawnTimer(playerId);
@@ -2359,13 +1815,13 @@ wss.on('connection', (ws) => {
 
 				// Marcar jugador como muerto
 				players[msg.player_id].is_alive = false;
-				players[msg.player_id].respawn_timer = 5;
+				players[msg.player_id].respawn_timer = 10;
 
 				broadcast({
 					type: 'player_dead',
 					id: parseInt(msg.player_id),
 					by: projectile.owner_id,
-					respawn_time: 5
+					respawn_time: 10
 				});
 
 				// Iniciar timer de respawn
@@ -2684,13 +2140,13 @@ function _applyMageDamageToPlayer(playerId, damage, ownerId) {
 		console.log(`💀 JUGADOR ${playerId} MUERTO POR ATAQUE DE ÁREA MAGA`);
 		
 		target.is_alive = false;
-		target.respawn_timer = 5;
+		target.respawn_timer = 10;
 
 		broadcast({
 			type: 'player_dead',
 			id: parseInt(playerId),
 			by: ownerId,
-			respawn_time: 5
+			respawn_time: 10
 		});
 
 		startRespawnTimer(playerId);

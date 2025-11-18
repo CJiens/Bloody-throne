@@ -1044,9 +1044,12 @@ func update_player_hp(id: int, hp_value: int):
 			bar.value = clamp(hp_value, 0, max_hp)
 			bar.queue_redraw()
 			
+	#if id == Network.player_id and hp_value <= 0:
+		#print("[GAME OVER] Jugador muerto. Cerrando juego...")
+		#get_tree().quit()
+# ✅ EN SU LUGAR, solo mostrar un mensaje informativo
 	if id == Network.player_id and hp_value <= 0:
-		print("[GAME OVER] Jugador muerto. Cerrando juego...")
-		get_tree().quit()
+		print("[MUERTE] Jugador local muerto - Esperando respawn...")
 
 func _update_player_hp(player: Node2D, hp_value: int, id: int):
 	update_player_hp(id, hp_value)
@@ -1124,6 +1127,11 @@ func destroy_projectile(projectile_id: int):
 # --- INPUT (CORREGIDO PARA ATAQUES)
 # -------------------------------
 func _unhandled_input(event):
+	# Verificar si el jugador local está en estado de respawn
+	if Network.player_id in respawn_timers and respawn_timers[Network.player_id] > 0:
+		print("🚫 INPUT BLOQUEADO - Jugador en respawn")
+		return  # Ignorar todo input durante respawn
+	
 	if not Network.connected or Network.player_id == -1 or not game_started:
 		return
 
@@ -1481,16 +1489,30 @@ func _on_game_started():
 		team_selection_ui.visible = false
 
 # FUNCIONES PARA SISTEMA DE RESPAWN
+# MODIFICAR la función _on_player_dead para deshabilitar controles
 func _on_player_dead(player_id: int, killer_id: int, respawn_time: int):
 	print("💀 JUGADOR MUERTO - ID:", player_id, " Respawn en:", respawn_time, "s")
 	
 	if player_id == Network.player_id:
 		# Mostrar UI de respawn para jugador local
 		show_respawn_ui(respawn_time)
+		
+		# Deshabilitar movimiento y ataques del jugador local
+		var player = players.get(Network.player_id)
+		if player:
+			# Deshabilitar el procesamiento de física (movimiento)
+			player.set_physics_process(false)
+			
+			# También podemos deshabilitar el procesamiento normal por si acaso
+			player.set_process(false)
+			
+			# Cambiar apariencia del jugador para indicar que está muerto
+			player.modulate = Color(0.5, 0.5, 0.5, 0.7)
+			
+			print("🔒 CONTROLES DESHABILITADOS - Jugador en estado de respawn")
 	
 	# Iniciar timer de respawn
 	respawn_timers[player_id] = respawn_time
-
 func _on_respawn_countdown(player_id: int, time_left: int):
 	respawn_timers[player_id] = time_left
 	
@@ -1504,14 +1526,47 @@ func _on_player_respawned(player_data: Dictionary):
 	
 	if player_id in players:
 		# Actualizar posición y estado del jugador
-		players[player_id].position = Vector2(player_data.x, player_data.y)
-		players[player_id].hp = player_data.hp
+		var player = players[player_id]
+		player.position = Vector2(player_data.x, player_data.y)
+		
+		if player.has_method("update_hp"):
+			player.update_hp(player_data.hp)
 		
 		if player_id == Network.player_id:
 			# Ocultar UI de respawn
 			hide_respawn_ui()
+			
+			# Habilitar movimiento y ataques
+			player.set_physics_process(true)
+			player.set_process(true)
+			
+			# Restaurar apariencia normal del jugador
+			player.modulate = Color.WHITE
+			
+			# Mostrar efecto visual de respawn
+			_create_respawn_effect(player.position)
+			
+			print("🔓 CONTROLES HABILITADOS - Jugador ha reaparecido")
 
-# FUNCIONES PARA FIN DEL JUEGO - CORREGIDAS
+# AÑADIR función para crear efecto visual de respawn
+func _create_respawn_effect(position: Vector2):
+	# Podemos crear un efecto visual simple para indicar el respawn
+	# Por ejemplo, un flash blanco o partículas
+	print("✨ EFECTO DE RESPawN EN POSICIÓN:", position)
+	
+	# Crear un nodo temporal para el efecto
+	var effect = ColorRect.new()
+	effect.color = Color(1, 1, 1, 0.3)
+	effect.size = Vector2(100, 100)
+	effect.position = position - Vector2(50, 50)
+	effect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	add_child(effect)
+	
+	# Animación de desvanecimiento
+	var tween = create_tween()
+	tween.tween_property(effect, "color", Color(1, 1, 1, 0), 1.0)
+	tween.tween_callback(effect.queue_free)
 func _on_game_over(winning_team: int, reason: String):
 	print("🎯 JUEGO TERMINADO - Ganador: Equipo", winning_team, " Razón:", reason)
 	game_started = false
@@ -1663,39 +1718,101 @@ func hide_game_over_screen():
 		game_over_ui.queue_free()
 
 # FUNCIONES DE UI AUXILIARES
+
 func show_respawn_ui(time: int):
-	# Crear o mostrar UI de respawn
+	print("🔄 MOSTRANDO UI DE RESPawN - Tiempo:", time, "s")
+	
+	# Buscar si ya existe la UI de respawn
 	var respawn_ui = get_node_or_null("CanvasLayer/RespawnUI")
 	if not respawn_ui:
+		# Crear nueva UI de respawn
 		respawn_ui = Panel.new()
 		respawn_ui.name = "RespawnUI"
-		respawn_ui.size = Vector2(300, 100)
-		respawn_ui.position = Vector2(200, 200)
+		respawn_ui.size = Vector2(400, 200)
+		respawn_ui.position = get_viewport().get_visible_rect().size / 2 - Vector2(200, 100)
 		
-		var label = Label.new()
-		label.name = "CountdownLabel"
-		label.text = "Reapareciendo en: %d" % time
-		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		respawn_ui.add_child(label)
+		# Estilo del panel
+		var style_box = StyleBoxFlat.new()
+		style_box.bg_color = Color(0, 0, 0, 0.8)  # Fondo semi-transparente
+		style_box.border_color = Color.RED
+		style_box.border_width_left = 4
+		style_box.border_width_right = 4
+		style_box.border_width_top = 4
+		style_box.border_width_bottom = 4
+		style_box.corner_radius_top_left = 10
+		style_box.corner_radius_top_right = 10
+		style_box.corner_radius_bottom_right = 10
+		style_box.corner_radius_bottom_left = 10
+		respawn_ui.add_theme_stylebox_override("panel", style_box)
+		
+		var vbox = VBoxContainer.new()
+		vbox.size = Vector2(380, 180)
+		vbox.position = Vector2(10, 10)
+		vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+		
+		var title = Label.new()
+		title.name = "Title"
+		title.text = "¡HAS MUERTO!"
+		title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		title.add_theme_font_size_override("font_size", 24)
+		title.add_theme_color_override("font_color", Color.RED)
+		
+		var countdown_label = Label.new()
+		countdown_label.name = "CountdownLabel"
+		countdown_label.text = "Reapareciendo en: %d segundos" % time
+		countdown_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		countdown_label.add_theme_font_size_override("font_size", 20)
+		countdown_label.add_theme_color_override("font_color", Color.WHITE)
+		
+		var message = Label.new()
+		message.name = "Message"
+		message.text = "Serás teletransportado cerca de tu base"
+		message.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		message.add_theme_font_size_override("font_size", 16)
+		message.add_theme_color_override("font_color", Color.LIGHT_GRAY)
+		
+		var warning = Label.new()
+		warning.name = "Warning"
+		warning.text = "No podrás moverte ni atacar hasta que reaparezcas"
+		warning.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		warning.add_theme_font_size_override("font_size", 14)
+		warning.add_theme_color_override("font_color", Color.YELLOW)
+		
+		vbox.add_child(title)
+		vbox.add_child(countdown_label)
+		vbox.add_spacer(false)
+		vbox.add_child(message)
+		vbox.add_child(warning)
+		respawn_ui.add_child(vbox)
 		
 		canvas_layer.add_child(respawn_ui)
+	else:
+		# Si ya existe, solo actualizar el texto inicial
+		var countdown_label = respawn_ui.get_node_or_null("VBoxContainer/CountdownLabel")
+		if countdown_label:
+			countdown_label.text = "Reapareciendo en: %d segundos" % time
 	
 	respawn_ui.visible = true
+	print("✅ UI DE RESPawN ACTIVADA")
 
 func update_respawn_ui(time_left: int):
 	var respawn_ui = get_node_or_null("CanvasLayer/RespawnUI")
-	if respawn_ui:
-		# Actualizar texto del countdown
-		var label = respawn_ui.get_node_or_null("CountdownLabel")
-		if label:
-			label.text = "Reapareciendo en: %d" % time_left
+	if respawn_ui and respawn_ui.visible:
+		var countdown_label = respawn_ui.get_node_or_null("VBoxContainer/CountdownLabel")
+		if countdown_label:
+			countdown_label.text = "Reapareciendo en: %d segundos" % time_left
+			
+			# Cambiar color cuando queden pocos segundos
+			if time_left <= 3:
+				countdown_label.add_theme_color_override("font_color", Color.GREEN)
+			elif time_left <= 5:
+				countdown_label.add_theme_color_override("font_color", Color.YELLOW)
 
 func hide_respawn_ui():
 	var respawn_ui = get_node_or_null("CanvasLayer/RespawnUI")
 	if respawn_ui:
 		respawn_ui.visible = false
-
+		print("✅ UI DE RESPawN OCULTADA")
 func show_error_message(message: String):
 	# Implementación básica de mensaje de error
 	print("❌ ERROR:", message)
