@@ -10,7 +10,12 @@ var max_hp: int = 100
 var animation_state: String = "Idle"
 var classe: String = "warrior"
 var team: int = 1
-
+# -------------------------------
+# --- VARIABLES DE RESPawN
+# -------------------------------
+var is_respawning: bool = false
+var respawn_timer: float = 0.0
+var respawn_cooldown: float = 10.0  # 10 segundos de espera
 # Movimiento
 var move_dir := Vector2.ZERO
 var speed := 200.0
@@ -292,16 +297,35 @@ func _ready():
 	if not Network.currency_updated.is_connected(_on_currency_updated):
 		Network.currency_updated.connect(_on_currency_updated)
 	
+	# ✅ NUEVO: Conectar señales de respawn
+	if not Network.respawn_countdown.is_connected(_on_respawn_countdown):
+		Network.respawn_countdown.connect(_on_respawn_countdown)
+	
+	if not Network.player_respawned.is_connected(_on_player_respawned):
+		Network.player_respawned.connect(_on_player_respawned)
 	_apply_class_config()
 	print("👤 JUGADOR LISTO - ID:", id, " Clase:", classe, " Hitbox: ACTIVADO")
 	
-
+func force_respawn():
+	"""Forzar el respawn inmediato (útil para debugging o casos especiales)"""
+	if is_respawning:
+		print("⚡ RESPawN FORZADO - Jugador:", id)
+		finish_respawn()
 func _process(delta):
 	print("Esta es la pocision de la x => " + str(get_local_mouse_position().x) + "Esta es la pocision de la y =>" + str(get_local_mouse_position().y))
 	_handle_cooldowns(delta)
 	_handle_area_attack_cooldown(delta)
 	_handle_rogue_area_attack_cooldown(delta)
 	_handle_mage_area_attack_cooldown(delta)
+	# ✅ NUEVO: Manejar timer de respawn
+	if is_respawning:
+		respawn_timer -= delta
+		# Debug cada segundo
+		if Engine.get_frames_drawn() % 60 == 0:
+			print("⏳ RESPawN - Tiempo restante: %.1f segundos" % respawn_timer)
+		
+		if respawn_timer <= 0:
+			finish_respawn()
 	if in_decision_period:
 		decision_time_remaining -= delta
 		if decision_time_remaining <= 0:
@@ -317,7 +341,17 @@ func _process(delta):
 			# Debug ocasional
 			if Engine.get_frames_drawn() % 120 == 0:
 				print("🔢 PLAYER - Contador actualizado:", current_enemy_count)
-
+# ✅ NUEVA FUNCIÓN: Sincronizar con el servidor durante el respawn
+func _on_respawn_countdown(player_id: int, time_left: int):
+	if player_id == id:
+		print("⏰ ACTUALIZACIÓN DE RESPawN RECIBIDA - Tiempo:", time_left, "s")
+		if time_left > 0 and not is_respawning:
+			start_respawn()
+		respawn_timer = time_left
+func _on_player_respawned(player_data: Dictionary):
+	if player_data.id == id:
+		print("✅ RESPawN DEL SERVIDOR RECIBIDO - Jugador:", id)
+		finish_respawn()
 func _physics_process(delta):
 	if id == Network.player_id:
 		_handle_local_movement(delta)
@@ -656,6 +690,13 @@ func _update_card_buttons_state():
 # --- MOVIMIENTO LOCAL
 # -------------------------------
 func _handle_local_movement(delta: float):
+	if is_respawning:
+		# Durante respawn, el jugador no se puede mover
+		velocity = Vector2.ZERO
+		set_velocity(velocity)
+		move_and_slide()
+		return  # Salir de la función inmediatamente
+
 	if is_rolling:
 		velocity = move_dir * roll_speed * speed_multiplier
 	else:
@@ -672,7 +713,7 @@ func _handle_local_movement(delta: float):
 		if move_dir != Vector2.ZERO:
 			move_dir = move_dir.normalized()
 			velocity = move_dir * speed * speed_multiplier
-			# GUARDAR ÚLTIMA DIRECCIÓN ← AGREGAR ESTO
+			# GUARDAR ÚLTIMA DIRECCIÓN
 			last_direction = move_dir
 
 		else:
@@ -693,14 +734,12 @@ func _handle_local_movement(delta: float):
 		Network.move_player(position.x, position.y)
 
 	update_animation(move_dir, false, is_rolling)
-
-# -------------------------------
 # --- SISTEMA DE ATAQUE UNIFICADO
 # -------------------------------
 func execute_attack(mouse_pos: Vector2):
-	if not can_attack_var:
+	if not can_attack_var or is_respawning:
+		print("🚫 ATAQUE BLOQUEADO - Jugador en respawn")
 		return
-
 	print("🎯 ATAQUE EJECUTADO - Jugador:", id, " Clase:", classe, " Ranged:", is_ranged)
 	
 	can_attack_var = false
@@ -732,13 +771,16 @@ func execute_attack(mouse_pos: Vector2):
 		current_sprite.play()
 	else:
 		print("❌ Animación no encontrada: ", anim_name, " en sprite:", current_sprite.name)
-
+# MODIFICAR can_attack para incluir verificación de respawn
+# ✅ NUEVA FUNCIÓN: Verificar si el jugador puede realizar acciones
+func can_perform_actions() -> bool:
+	return not is_respawning and hp > 0
 func can_attack() -> bool:
-	return can_attack_var
+	return can_attack_var and not is_respawning
 
 func execute_area_attack(mouse_pos: Vector2):
-	if not can_area_attack or classe != "archer":
-		print("❌ ATAQUE DE ÁREA NO DISPONIBLE - Cooldown:", area_attack_timer)
+	if not can_area_attack or classe != "archer" or is_respawning:
+		print("🚫 ATAQUE DE ÁREA BLOQUEADO - Jugador en respawn")
 		return
 	
 	print("🎯 ATAQUE DE ÁREA ACTIVADO - Arquera ID:", id)
@@ -746,13 +788,13 @@ func execute_area_attack(mouse_pos: Vector2):
 	# Calcular la posición del ataque (200 píxeles en la dirección del mouse)
 	var direction = (mouse_pos - global_position).normalized()
 	
-	
-	# ORIENTAR AL JUGADOR EN LA DIRECCIÓN DEL ATAQUE ← NUEVO
+	# ORIENTAR AL JUGADOR EN LA DIRECCIÓN DEL ATAQUE
 	last_direction = direction
 
-	# CREAR EFECTO VISUAL INMEDIATO EN CLIENTE ← NUEVO
+	# CREAR EFECTO VISUAL INMEDIATO EN CLIENTE
 	var attack_pos = global_position + (direction * area_attack_range)
 	_create_immediate_area_effect(attack_pos, direction)
+	
 	# Enviar mensaje al servidor
 	Network.socket.send_text(JSON.stringify({
 		"type": "area_attack",
@@ -761,9 +803,9 @@ func execute_area_attack(mouse_pos: Vector2):
 		"damage": attack_damage
 	}))
 	
-	# Reproducir animación de ataque de área ← CORREGIDO
+	# Reproducir animación de ataque de área
 	if current_sprite and current_sprite.sprite_frames.has_animation("attack_Area"):
-		# FORZAR LA ANIMACIÓN Y ESPERAR A QUE TERMINE ← NUEVO
+		# FORZAR LA ANIMACIÓN Y ESPERAR A QUE TERMINE
 		current_sprite.play("attack_Area")
 		# Deshabilitar movimiento durante el ataque
 		set_physics_process(false)
@@ -781,7 +823,6 @@ func execute_area_attack(mouse_pos: Vector2):
 	area_attack_timer = area_attack_cooldown
 	
 	print("⏳ ATAQUE DE ÁREA EN COOLDOWN - Tiempo:", area_attack_cooldown, "s")
-# NUEVA FUNCIÓN PARA EFECTO INMEDIATO ← AGREGAR ESTA FUNCIÓN
 func _create_immediate_area_effect(attack_pos: Vector2, direction: Vector2):
 	if not area_projectile_scene:
 		print("❌ area_projectile_scene no asignada")
@@ -817,11 +858,15 @@ func get_last_direction() -> Vector2:
 # -------------------------------
 # --- SISTEMA DE ROLL
 # -------------------------------
+# MODIFICAR try_roll para verificar respawn
 func try_roll():
-	if not is_rolling and roll_cooldown_timer <= 0:
+	if not is_rolling and roll_cooldown_timer <= 0 and not is_respawning:
 		is_rolling = true
 		roll_timer = roll_duration
 		print("🎯 ROLL EJECUTADO - Jugador:", id)
+	else:
+		print("🚫 ROLL BLOQUEADO - Jugador en respawn")
+# ✅ NUEVA FUNCIÓN: Verificar si el jugador puede realizar acciones
 
 # -------------------------------
 # --- ANIMACIONES
@@ -889,11 +934,114 @@ func update_hp(new_hp: int):
 	if show_detailed_stats:
 		_update_detailed_stats()
 	
-	print("❤️  ACTUALIZANDO HP - Jugador:", id, " HP:", hp, "/", max_hp)
+	print("❤️ ACTUALIZANDO HP - Jugador:", id, " HP:", hp, "/", max_hp)
 	
-	if hp <= 0:
-		play_death_animation()
+	# ✅ NUEVO: Manejar muerte del jugador
+	if hp <= 0 and not is_respawning:
+		start_respawn()
+# ✅ NUEVA FUNCIÓN: Iniciar proceso de respawn
+func start_respawn():
+	print("💀 INICIANDO RESPawN - Jugador:", id)
+	is_respawning = true
+	respawn_timer = respawn_cooldown
+	
+	# Deshabilitar movimiento y ataques
+	set_physics_process(false)
+	can_attack_var = false
+	can_area_attack = false
+	can_rogue_area_attack = false
+	can_mage_area_attack = false
+	
+	# Cambiar apariencia para indicar estado muerto
+	modulate = Color(0.3, 0.3, 0.3, 0.5)
+		# Deshabilitar colisiones temporalmente
+	if $CollisionShape2D:
+		$CollisionShape2D.disabled = true
+	if $HitboxArea/CollisionShape2D:
+		$HitboxArea/CollisionShape2D.disabled = true
+	
+	# Reproducir animación de muerte si existe
+	play_death_animation()
+	
+	# Mostrar efecto visual de muerte
+	_create_death_effect()
+	
+	print("🔒 JUGADOR EN ESTADO DE RESPawN - Movimiento y ataques deshabilitados")
 
+# ✅ NUEVA FUNCIÓN: Finalizar respawn y restaurar controles
+func finish_respawn():
+	if not is_respawning:
+		print("⚠️ NO ESTABA EN RESPawN - Ignorando finalización")
+		return
+		
+	print("🔁 FINALIZANDO RESPawN - Jugador:", id)
+	is_respawning = false
+	respawn_timer = 0.0
+	
+	# Restaurar vida completamente
+	hp = max_hp
+	if hp_bar:
+		hp_bar.value = hp
+		hplabel.text = str(hp) + "/" + str(max_hp)
+	
+	# Habilitar movimiento y ataques
+	set_physics_process(true)
+	set_process(true)
+	can_attack_var = true
+	can_area_attack = true
+	can_rogue_area_attack = true
+	can_mage_area_attack = true
+	
+	# Restaurar colisiones
+	if $CollisionShape2D:
+		$CollisionShape2D.disabled = false
+	if $HitboxArea/CollisionShape2D:
+		$HitboxArea/CollisionShape2D.disabled = false
+	
+	# Restaurar apariencia normal
+	modulate = Color.WHITE
+	
+	# Mostrar efecto visual de respawn
+	_create_respawn_effect()
+	
+	# Reproducir animación de respawn si existe
+	if current_sprite and current_sprite.sprite_frames and current_sprite.sprite_frames.has_animation("respawn"):
+		current_sprite.play("respawn")
+	elif current_sprite:
+		current_sprite.play("Idle")
+	
+	print("🔓 JUGADOR COMPLETAMENTE REACTIVADO")
+
+# ✅ NUEVA FUNCIÓN: Efecto visual de muerte
+func _create_death_effect():
+	# Crear partículas o efecto visual de muerte
+	var death_effect = ColorRect.new()
+	death_effect.color = Color(1, 0, 0, 0.2)
+	death_effect.size = Vector2(80, 80)
+	death_effect.position = Vector2(-40, -40)
+	death_effect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	add_child(death_effect)
+	
+	var tween = create_tween()
+	tween.tween_property(death_effect, "color", Color(1, 0, 0, 0), 1.0)
+	tween.tween_callback(death_effect.queue_free)
+
+# ✅ NUEVA FUNCIÓN: Efecto visual de respawn
+func _create_respawn_effect():
+	# Crear efecto visual de respawn (flash blanco)
+	var respawn_effect = ColorRect.new()
+	respawn_effect.color = Color(1, 1, 1, 0.4)
+	respawn_effect.size = Vector2(100, 100)
+	respawn_effect.position = Vector2(-50, -50)
+	respawn_effect.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	add_child(respawn_effect)
+	
+	var tween = create_tween()
+	tween.parallel().tween_property(respawn_effect, "color", Color(1, 1, 1, 0), 1.0)
+	tween.parallel().tween_property(respawn_effect, "scale", Vector2(1.5, 1.5), 1.0)
+	tween.tween_callback(respawn_effect.queue_free)
 func take_damage(amount: int):
 	print("💥 JUGADOR RECIBIÓ DAÑO - ID:", id, " Cantidad:", amount, " HP Antes:", hp)
 	update_hp(hp - amount)
@@ -953,6 +1101,10 @@ func _handle_mage_area_attack_cooldown(delta):
 # --- COLISIONES CON PROYECTILES
 # -------------------------------
 func _on_hitbox_area_entered(area):
+	if is_respawning:
+		print("🚫 DAÑO IGNORADO - Jugador en respawn")
+		return  # Ignorar todo daño durante respawn
+	
 	if area is Projectile:
 		var projectile = area as Projectile
 		print("🎯 PROYECTIL GOLPEÓ JUGADOR - Proyectil:", projectile.projectile_id, " Jugador:", id)
@@ -966,23 +1118,24 @@ func _on_hitbox_area_entered(area):
 		take_damage(projectile.projectile_damage)
 		
 		_create_hit_effect()
-
 func _create_hit_effect():
 	modulate = Color.RED
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.2)
 func execute_rogue_area_attack(mouse_pos: Vector2):
-	if not can_rogue_area_attack or classe != "rogue":
-		print("❌ ATAQUE DE ÁREA ROGUE NO DISPONIBLE - Cooldown:", rogue_area_attack_timer)
+	if not can_rogue_area_attack or classe != "rogue" or is_respawning:
+		print("🚫 ATAQUE DE ÁREA ROGUE BLOQUEADO - Jugador en respawn")
 		return
 
 	print("🎯 ATAQUE DE ÁREA ROGUE ACTIVADO - Rogue ID:", id)
 	print("📍 Posición jugador: ", global_position)
 	print("🎯 Posición mouse: ", mouse_pos)
+	
 	# Calcular dirección para la animación
 	var direction = (mouse_pos - global_position).normalized()
 	last_direction = direction
 	print("🧭 Dirección calculada: ", direction)
+	
 	# Determinar la animación según la dirección
 	var anim_suffix = _get_direction_suffix(direction.angle())
 	var anim_name = "attack_Area_" + anim_suffix
@@ -1020,9 +1173,11 @@ func execute_rogue_area_attack(mouse_pos: Vector2):
 	rogue_area_attack_timer = rogue_area_attack_cooldown
 
 	print("⏳ ATAQUE DE ÁREA ROGUE EN COOLDOWN - Tiempo:", rogue_area_attack_cooldown, "s")
+
+# MODIFICAR execute_mage_area_attack para verificar respawn
 func execute_mage_area_attack():
-	if not can_mage_area_attack or classe != "mage":
-		print("❌ ATAQUE DE ÁREA MAGA NO DISPONIBLE - Cooldown:", mage_area_attack_timer)
+	if not can_mage_area_attack or classe != "mage" or is_respawning:
+		print("🚫 ATAQUE DE ÁREA MAGA BLOQUEADO - Jugador en respawn")
 		return
 
 	print("🎯 ATAQUE DE ÁREA MAGA ACTIVADO - Maga ID:", id)
@@ -1075,7 +1230,6 @@ func execute_mage_area_attack():
 	mage_area_attack_timer = mage_area_attack_cooldown
 
 	print("⏳ ATAQUE DE ÁREA MAGA EN COOLDOWN - Tiempo:", mage_area_attack_cooldown, "s")
-# FUNCIÓN UNIVERSAL PARA OBTENER SUFIJO DE DIRECCIÓN
 func _get_direction_suffix(angle: float) -> String:
 	# Convertir ángulo a grados y ajustar para que 0 sea este
 	var degrees = rad_to_deg(angle)
