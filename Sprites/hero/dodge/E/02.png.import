@@ -2,13 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-<<<<<<< HEAD:Sprites/hero/dodge/S/0006.png.import
-uid="uid://b21jwhaitjm7m"
-path="res://.godot/imported/0006.png-dcfbb4b84f0a23afa95f08a90c453f00.ctex"
-=======
-uid="uid://dajqpvkudly87"
+uid="uid://c6k5wbdxu6hms"
 path="res://.godot/imported/02.png-bc5be59185bd7e5d4a0f49ad744de906.ctex"
->>>>>>> Ramon2:Sprites/hero/dodge/E/02.png.import
 metadata={
 "vram_texture": false
 }

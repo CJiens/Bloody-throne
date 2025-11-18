@@ -2,26 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-<<<<<<<< HEAD:Sprites/hero/dodge/E/0004.png.import
-uid="uid://ctlkgaqce06am"
+uid="uid://6xbqbhkpcdae"
 path="res://.godot/imported/0004.png-cca8b56eaaceebaece9e4897ba08bf07.ctex"
-========
-uid="uid://sbpom6s3kdxg"
-path="res://.godot/imported/0011.png-8515b85858abe705088ba85ac17b62dd.ctex"
->>>>>>>> Ramon2:Sprites/mage/m_area_attack_animation/m_area_attack_W/0011.png.import
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-<<<<<<<< HEAD:Sprites/hero/dodge/E/0004.png.import
 source_file="res://Sprites/hero/dodge/E/0004.png"
 dest_files=["res://.godot/imported/0004.png-cca8b56eaaceebaece9e4897ba08bf07.ctex"]
-========
-source_file="res://Sprites/mage/m_area_attack_animation/m_area_attack_W/0011.png"
-dest_files=["res://.godot/imported/0011.png-8515b85858abe705088ba85ac17b62dd.ctex"]
->>>>>>>> Ramon2:Sprites/mage/m_area_attack_animation/m_area_attack_W/0011.png.import
 
 [params]
 

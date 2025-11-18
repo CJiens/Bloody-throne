@@ -2,26 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-<<<<<<<< HEAD:Interfaz de estadistica/button2.png.import
-uid="uid://yt1pgx0vubqs"
+uid="uid://byuwx5mdp15pc"
 path="res://.godot/imported/button2.png-5684bd3d0844b220f0d6001b39e6164a.ctex"
-========
-uid="uid://ci2f056iakxyw"
-path="res://.godot/imported/18.png-920fe5a1f9553a1cd3685794b94b9eca.ctex"
->>>>>>>> Ramon2:Sprites/hero/attack2/N/18.png.import
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-<<<<<<<< HEAD:Interfaz de estadistica/button2.png.import
 source_file="res://Interfaz de estadistica/button2.png"
 dest_files=["res://.godot/imported/button2.png-5684bd3d0844b220f0d6001b39e6164a.ctex"]
-========
-source_file="res://Sprites/hero/attack2/N/18.png"
-dest_files=["res://.godot/imported/18.png-920fe5a1f9553a1cd3685794b94b9eca.ctex"]
->>>>>>>> Ramon2:Sprites/hero/attack2/N/18.png.import
 
 [params]
 

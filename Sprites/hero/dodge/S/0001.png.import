@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://13w7x0fnxily"
-path="res://.godot/imported/01.png-2510f88874def0592e653cc65947f6fc.ctex"
+uid="uid://cs4n5cqlpxqvm"
+path="res://.godot/imported/0001.png-e67c4c7fb4d4d09988c0db7f3a78698d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/hero/dodge/E/01.png"
-dest_files=["res://.godot/imported/01.png-2510f88874def0592e653cc65947f6fc.ctex"]
+source_file="res://Sprites/hero/dodge/S/0001.png"
+dest_files=["res://.godot/imported/0001.png-e67c4c7fb4d4d09988c0db7f3a78698d.ctex"]
 
 [params]
 

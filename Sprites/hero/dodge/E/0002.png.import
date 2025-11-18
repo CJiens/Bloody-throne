@@ -2,26 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-<<<<<<<< HEAD:Sprites/hero/dodge/E/0002.png.import
-uid="uid://6ihhbc5iqw7s"
+uid="uid://dgp7kl5kqibyc"
 path="res://.godot/imported/0002.png-3a14e31511760d5af0a454723311349a.ctex"
-========
-uid="uid://4s5ie8qyomiu"
-path="res://.godot/imported/A_Roll0016.png-605e35e1f74fbeb84b540c4ab61f61c5.ctex"
->>>>>>>> Ramon2:Sprites/Arquera/A_Roll/S/A_Roll0016.png.import
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-<<<<<<<< HEAD:Sprites/hero/dodge/E/0002.png.import
 source_file="res://Sprites/hero/dodge/E/0002.png"
 dest_files=["res://.godot/imported/0002.png-3a14e31511760d5af0a454723311349a.ctex"]
-========
-source_file="res://Sprites/Arquera/A_Roll/S/A_Roll0016.png"
-dest_files=["res://.godot/imported/A_Roll0016.png-605e35e1f74fbeb84b540c4ab61f61c5.ctex"]
->>>>>>>> Ramon2:Sprites/Arquera/A_Roll/S/A_Roll0016.png.import
 
 [params]
 
