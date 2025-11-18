@@ -1,11 +1,13 @@
-[gd_scene load_steps=38 format=3 uid="uid://xsdjfolg3h1m"]
+[gd_scene load_steps=40 format=3 uid="uid://xsdjfolg3h1m"]
 
 [ext_resource type="Script" uid="uid://cet0c5gh0dp4l" path="res://Player.gd" id="1_xhfnw"]
 [ext_resource type="Theme" uid="uid://kma7buoxg2lv" path="res://Cuadradito del heroe.tres" id="2_47wu6"]
 [ext_resource type="SpriteFrames" uid="uid://ddrfrns38hs4k" path="res://Rogue.tres" id="2_cxr5p"]
 [ext_resource type="SpriteFrames" uid="uid://ccgibxgs3r40s" path="res://Warrior.tres" id="2_kne1u"]
+[ext_resource type="Texture2D" uid="uid://corh6kuqtn6v3" path="res://mapa/coin_icon_129365.png" id="3_5ncpa"]
 [ext_resource type="Theme" uid="uid://bb7bavby4542p" path="res://Cuadradito de Stats.tres" id="3_d6rpx"]
 [ext_resource type="SpriteFrames" uid="uid://bo604nekfqts0" path="res://Knight.tres" id="3_tdg3f"]
+[ext_resource type="Theme" uid="uid://ch3brqsl47v7o" path="res://enities/boss/cards.tres" id="3_wi0c6"]
 [ext_resource type="Theme" path="res://Hero Stat-titulo.tres" id="4_cgsek"]
 [ext_resource type="SpriteFrames" uid="uid://dqyik6patsouj" path="res://Archer.tres" id="4_e80uo"]
 [ext_resource type="Texture2D" uid="uid://yujjp24n4aik" path="res://Interfaz de estadistica/Rotado.png" id="4_r3kul"]
@@ -304,22 +306,6 @@ horizontal_alignment = 1
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="gold_bonus" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
-layout_mode = 0
-offset_left = 12.124995
-offset_top = 8.749999
-offset_right = 52.124996
-offset_bottom = 31.75
-text = "theme"
-
-[node name="critical_label" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
-layout_mode = 0
-offset_left = 288.37497
-offset_top = 13.749999
-offset_right = 356.37497
-offset_bottom = 36.75
-text = "sadasdw"
-
 [node name="Barrita roja" type="Panel" parent="Camera2D/StatsUI/Panel"]
 layout_mode = 1
 anchors_preset = -1
@@ -487,6 +473,665 @@ texture = ExtResource("7_efikj")
 expand_mode = 1
 metadata/_edit_use_anchors_ = true
 
+[node name="Panel2" type="Panel" parent="Camera2D/StatsUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.52000004
+anchor_top = 0.5
+anchor_right = 0.52000004
+anchor_bottom = 0.5
+offset_left = 276.16998
+offset_top = -292.5
+offset_right = 661.545
+offset_bottom = 307.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_47wu6")
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.024
+anchor_top = 0.76000005
+anchor_right = 0.98200005
+anchor_bottom = 0.9850001
+offset_left = -0.12400055
+offset_top = 3.9999695
+offset_right = 0.16104126
+offset_bottom = 0.24993896
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("3_d6rpx")
+metadata/_edit_use_anchors_ = true
+
+[node name="CardName" type="Label" parent="Camera2D/StatsUI/Panel2/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.201
+anchor_right = 0.5
+anchor_bottom = 0.201
+offset_left = -108.15215
+offset_top = -9.989
+offset_right = 108.151794
+offset_bottom = 10.011
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_cgsek")
+text = "Aggressive Nova"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CardDescription" type="Label" parent="Camera2D/StatsUI/Panel2/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.62
+anchor_right = 0.5
+anchor_bottom = 0.62
+offset_left = -154.87515
+offset_top = -35.602997
+offset_right = 154.87479
+offset_bottom = 31.70575
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_cgsek")
+text = "Bursts with fury, harming everything nearby."
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CardCost" type="Label" parent="Camera2D/StatsUI/Panel2/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.83900005
+anchor_top = 0.86100006
+anchor_right = 0.83900005
+anchor_bottom = 0.86100006
+offset_left = -40.613983
+offset_top = -12.485008
+offset_right = 40.636047
+offset_bottom = 12.514992
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("5_cgsek")
+theme_override_font_sizes/font_size = 16
+text = "buy: 300"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="BuyButton" type="Button" parent="Camera2D/StatsUI/Panel2/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_47wu6")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_2n1s8")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3vjad")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_yt0h1")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_vd78s")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ictha")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_1jgrc")
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel2" type="Panel" parent="Camera2D/StatsUI/Panel2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.024
+anchor_top = 0.545
+anchor_right = 0.98200005
+anchor_bottom = 0.76400006
+offset_left = -0.12400055
+offset_right = 0.16104126
+offset_bottom = -0.15002441
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("3_d6rpx")
+metadata/_edit_use_anchors_ = true
+
+[node name="CardName" type="Label" parent="Camera2D/StatsUI/Panel2/Panel2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.201
+anchor_right = 0.5
+anchor_bottom = 0.201
+offset_left = -108.15215
+offset_top = -9.989
+offset_right = 108.151794
+offset_bottom = 10.011
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_cgsek")
+text = "Aggressive Nova"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CardDescription" type="Label" parent="Camera2D/StatsUI/Panel2/Panel2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.62
+anchor_right = 0.5
+anchor_bottom = 0.62
+offset_left = -154.87515
+offset_top = -35.602997
+offset_right = 154.87479
+offset_bottom = 31.70575
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_cgsek")
+text = "Bursts with fury, harming everything nearby."
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CardCost" type="Label" parent="Camera2D/StatsUI/Panel2/Panel2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.83900005
+anchor_top = 0.86100006
+anchor_right = 0.83900005
+anchor_bottom = 0.86100006
+offset_left = -40.613983
+offset_top = -12.485008
+offset_right = 40.636047
+offset_bottom = 12.514992
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("5_cgsek")
+theme_override_font_sizes/font_size = 16
+text = "buy: 300"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="BuyButton" type="Button" parent="Camera2D/StatsUI/Panel2/Panel2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_47wu6")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_2n1s8")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3vjad")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_yt0h1")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_vd78s")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ictha")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_1jgrc")
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel3" type="Panel" parent="Camera2D/StatsUI/Panel2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.024
+anchor_top = 0.32200003
+anchor_right = 1.0
+anchor_bottom = 0.54
+offset_left = -0.12400055
+offset_top = -0.2000122
+offset_right = -6.775696
+offset_bottom = 0.25
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("3_d6rpx")
+metadata/_edit_use_anchors_ = true
+
+[node name="CardName" type="Label" parent="Camera2D/StatsUI/Panel2/Panel3"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.201
+anchor_right = 0.5
+anchor_bottom = 0.201
+offset_left = -108.15215
+offset_top = -9.989
+offset_right = 108.151794
+offset_bottom = 10.011
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_cgsek")
+text = "Aggressive Nova"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CardDescription" type="Label" parent="Camera2D/StatsUI/Panel2/Panel3"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.62
+anchor_right = 0.5
+anchor_bottom = 0.62
+offset_left = -154.87515
+offset_top = -35.602997
+offset_right = 154.87479
+offset_bottom = 31.70575
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_cgsek")
+text = "Bursts with fury, harming everything nearby."
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CardCost" type="Label" parent="Camera2D/StatsUI/Panel2/Panel3"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.83900005
+anchor_top = 0.86100006
+anchor_right = 0.83900005
+anchor_bottom = 0.86100006
+offset_left = -40.613983
+offset_top = -12.485008
+offset_right = 40.636047
+offset_bottom = 12.514992
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("5_cgsek")
+theme_override_font_sizes/font_size = 16
+text = "buy: 300"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="BuyButton" type="Button" parent="Camera2D/StatsUI/Panel2/Panel3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_47wu6")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_2n1s8")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3vjad")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_yt0h1")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_vd78s")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ictha")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_1jgrc")
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="Camera2D/StatsUI/Panel2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.21000001
+anchor_right = 0.5
+anchor_bottom = 0.21000001
+offset_left = -69.3745
+offset_top = -69.37501
+offset_right = 69.37549
+offset_bottom = 69.37499
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_h84ma")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Label3" type="Label" parent="Camera2D/StatsUI/Panel2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.08800001
+anchor_right = 0.5
+anchor_bottom = 0.08800001
+offset_left = -112.4995
+offset_top = -22.300003
+offset_right = 112.50043
+offset_bottom = 22.699997
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_cgsek")
+theme_override_font_sizes/font_size = 29
+text = "upgrade hero"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel3" type="Panel" parent="Camera2D/StatsUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.52000004
+anchor_top = 0.5
+anchor_right = 0.52000004
+anchor_bottom = 0.5
+offset_left = 743.17
+offset_top = -292.5
+offset_right = 1128.5449
+offset_bottom = 307.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("15_2n1s8")
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="Camera2D/StatsUI/Panel3"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.024
+anchor_top = 0.76000005
+anchor_right = 0.98200005
+anchor_bottom = 0.9850001
+offset_left = -0.12400055
+offset_top = 3.9999695
+offset_right = 0.16104126
+offset_bottom = 0.24993896
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("16_3vjad")
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Camera2D/StatsUI/Panel3/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.201
+anchor_right = 0.5
+anchor_bottom = 0.201
+offset_left = -108.15215
+offset_top = -9.989
+offset_right = 108.151794
+offset_bottom = 10.011
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_cgsek")
+theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
+theme_override_colors/font_shadow_color = Color(0.007843138, 0, 0.015686275, 1)
+text = "Aggressive Nova"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Label2" type="Label" parent="Camera2D/StatsUI/Panel3/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.62
+anchor_right = 0.5
+anchor_bottom = 0.62
+offset_left = -154.87515
+offset_top = -35.602997
+offset_right = 154.87479
+offset_bottom = 31.70575
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_cgsek")
+theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
+text = "Bursts with fury, harming everything nearby."
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Label9" type="Label" parent="Camera2D/StatsUI/Panel3/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.83900005
+anchor_top = 0.86100006
+anchor_right = 0.83900005
+anchor_bottom = 0.86100006
+offset_left = -40.613983
+offset_top = -12.485008
+offset_right = 40.636047
+offset_bottom = 12.514992
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("5_cgsek")
+theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
+theme_override_font_sizes/font_size = 16
+text = "buy: 300"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Button" type="Button" parent="Camera2D/StatsUI/Panel3/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_47wu6")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_2n1s8")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3vjad")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_yt0h1")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_vd78s")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ictha")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_1jgrc")
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel2" type="Panel" parent="Camera2D/StatsUI/Panel3"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.024
+anchor_top = 0.545
+anchor_right = 0.98200005
+anchor_bottom = 0.76400006
+offset_left = -0.12400055
+offset_right = 0.16104126
+offset_bottom = -0.15002441
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("16_3vjad")
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Camera2D/StatsUI/Panel3/Panel2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.201
+anchor_right = 0.5
+anchor_bottom = 0.201
+offset_left = -108.15215
+offset_top = -9.989
+offset_right = 108.151794
+offset_bottom = 10.011
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_cgsek")
+theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
+theme_override_colors/font_shadow_color = Color(0.007843138, 0, 0.015686275, 1)
+theme_override_colors/font_outline_color = Color(0.16862746, 0.101960786, 0.05490196, 1)
+text = "Aggressive Nova"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Label2" type="Label" parent="Camera2D/StatsUI/Panel3/Panel2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.62
+anchor_right = 0.5
+anchor_bottom = 0.62
+offset_left = -154.87515
+offset_top = -35.602997
+offset_right = 154.87479
+offset_bottom = 31.70575
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_cgsek")
+theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
+text = "Bursts with fury, harming everything nearby."
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Label9" type="Label" parent="Camera2D/StatsUI/Panel3/Panel2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.83900005
+anchor_top = 0.86100006
+anchor_right = 0.83900005
+anchor_bottom = 0.86100006
+offset_left = -40.613983
+offset_top = -12.485008
+offset_right = 40.636047
+offset_bottom = 12.514992
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("5_cgsek")
+theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
+theme_override_font_sizes/font_size = 16
+text = "buy: 300"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Button" type="Button" parent="Camera2D/StatsUI/Panel3/Panel2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_47wu6")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_2n1s8")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3vjad")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_yt0h1")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_vd78s")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ictha")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_1jgrc")
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel3" type="Panel" parent="Camera2D/StatsUI/Panel3"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.024
+anchor_top = 0.32200003
+anchor_right = 0.98200005
+anchor_bottom = 0.54
+offset_left = -0.12400055
+offset_top = -0.2000122
+offset_right = 0.16104126
+offset_bottom = 0.25
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("16_3vjad")
+metadata/_edit_use_anchors_ = true
+
+[node name="Label" type="Label" parent="Camera2D/StatsUI/Panel3/Panel3"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.201
+anchor_right = 0.5
+anchor_bottom = 0.201
+offset_left = -108.15215
+offset_top = -9.989
+offset_right = 108.151794
+offset_bottom = 10.011
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("4_cgsek")
+theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
+theme_override_colors/font_shadow_color = Color(0.0077763516, 4.482928e-06, 0.016387673, 1)
+theme_override_colors/font_outline_color = Color(0.16862746, 0.101960786, 0.05490196, 1)
+text = "Aggressive Nova"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Label2" type="Label" parent="Camera2D/StatsUI/Panel3/Panel3"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.62
+anchor_right = 0.5
+anchor_bottom = 0.62
+offset_left = -154.87515
+offset_top = -35.602997
+offset_right = 154.87479
+offset_bottom = 31.70575
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_cgsek")
+theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
+text = "Bursts with fury, harming everything nearby."
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Label9" type="Label" parent="Camera2D/StatsUI/Panel3/Panel3"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.83900005
+anchor_top = 0.86100006
+anchor_right = 0.83900005
+anchor_bottom = 0.86100006
+offset_left = -40.613983
+offset_top = -12.485008
+offset_right = 40.636047
+offset_bottom = 12.514992
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("5_cgsek")
+theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
+theme_override_font_sizes/font_size = 16
+text = "buy: 300"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Button" type="Button" parent="Camera2D/StatsUI/Panel3/Panel3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_47wu6")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_2n1s8")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3vjad")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_yt0h1")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_vd78s")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ictha")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_1jgrc")
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="Camera2D/StatsUI/Panel3"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.21000001
+anchor_right = 0.5
+anchor_bottom = 0.21000001
+offset_left = -69.3745
+offset_top = -69.37501
+offset_right = 69.37549
+offset_bottom = 69.37499
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("15_sg6sq")
+expand_mode = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Label3" type="Label" parent="Camera2D/StatsUI/Panel3"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.08800001
+anchor_right = 0.5
+anchor_bottom = 0.08800001
+offset_left = -128.1555
+offset_top = -22.300003
+offset_right = 128.15643
+offset_bottom = 22.699997
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("5_cgsek")
+theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
+theme_override_font_sizes/font_size = 29
+text = "upgrade enemy"
+horizontal_alignment = 1
+autowrap_mode = 2
+metadata/_edit_use_anchors_ = true
+
 [node name="WaveUI" type="Control" parent="Camera2D"]
 visible = false
 layout_mode = 3
@@ -519,6 +1164,7 @@ scale = Vector2(0.6315881, 1.0243223)
 text = "ENEMY COUNT"
 
 [node name="DecisionUI" type="Control" parent="Camera2D"]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -533,662 +1179,175 @@ scale = Vector2(0.37766635, 0.6431528)
 size_flags_horizontal = 6
 size_flags_vertical = 3
 
-[node name="Panel2" type="Panel" parent="Camera2D/DecisionUI"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/DecisionUI"]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.52000004
-anchor_top = 0.5
-anchor_right = 0.52000004
-anchor_bottom = 0.5
-offset_left = 542.38464
-offset_top = -509.71774
-offset_right = 927.7594
-offset_bottom = 90.28223
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("2_47wu6")
+offset_left = 33.097996
+offset_top = 5.8306518
+offset_right = 1083.098
+offset_bottom = 517.8306
+scale = Vector2(0.561129, 0.285583)
 
-[node name="Panel" type="Panel" parent="Camera2D/DecisionUI/Panel2"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.024
-anchor_top = 0.76000005
-anchor_right = 0.98200005
-anchor_bottom = 0.9850001
-offset_left = -0.12400055
-offset_top = 3.9999695
-offset_right = 0.16104126
-offset_bottom = 0.24993896
-grow_horizontal = 2
-grow_vertical = 0
-theme = ExtResource("3_d6rpx")
-metadata/_edit_use_anchors_ = true
+[node name="TextureRect" type="TextureRect" parent="Camera2D/DecisionUI/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("3_5ncpa")
 
-[node name="CardName" type="Label" parent="Camera2D/DecisionUI/Panel2/Panel"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.201
-anchor_right = 0.5
-anchor_bottom = 0.201
-offset_left = -108.15215
-offset_top = -9.989
-offset_right = 108.151794
-offset_bottom = 10.011
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("4_cgsek")
-text = "Aggressive Nova"
+[node name="CurrencyLabel" type="Label" parent="Camera2D/DecisionUI/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 300
+text = "213"
 horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
 
-[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/Panel2/Panel"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.62
-anchor_right = 0.5
-anchor_bottom = 0.62
-offset_left = -154.87515
-offset_top = -35.602997
-offset_right = 154.87479
-offset_bottom = 31.70575
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("5_cgsek")
-text = "Bursts with fury, harming everything nearby."
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
+[node name="HBoxContainer2" type="HBoxContainer" parent="Camera2D/DecisionUI"]
+layout_mode = 0
+offset_left = 36.40776
+offset_top = 229.33896
+offset_right = 2528.8777
+offset_bottom = 579.339
+theme_override_constants/separation = 225
 
-[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/Panel2/Panel"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.83900005
-anchor_top = 0.86100006
-anchor_right = 0.83900005
-anchor_bottom = 0.86100006
-offset_left = -40.613983
-offset_top = -12.485008
-offset_right = 40.636047
-offset_bottom = 12.514992
-grow_horizontal = 0
-grow_vertical = 0
-theme = ExtResource("5_cgsek")
-theme_override_font_sizes/font_size = 16
-text = "buy: 300"
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
+[node name="Card3" type="Control" parent="Camera2D/DecisionUI/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_wi0c6")
 
-[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/Panel2/Panel"]
+[node name="Panel" type="Panel" parent="Camera2D/DecisionUI/HBoxContainer2/Card3"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_47wu6")
-theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_2n1s8")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_3vjad")
-theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_yt0h1")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_vd78s")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_ictha")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_1jgrc")
-metadata/_edit_use_anchors_ = true
 
-[node name="Panel2" type="Panel" parent="Camera2D/DecisionUI/Panel2"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.024
-anchor_top = 0.545
-anchor_right = 0.98200005
-anchor_bottom = 0.76400006
-offset_left = -0.12400055
-offset_right = 0.16104126
-offset_bottom = -0.15002441
-grow_horizontal = 2
-grow_vertical = 0
-theme = ExtResource("3_d6rpx")
-metadata/_edit_use_anchors_ = true
-
-[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/Panel2/Panel2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/DecisionUI/HBoxContainer2/Card3/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_47wu6")
-theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_2n1s8")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_3vjad")
-theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_yt0h1")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_vd78s")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_ictha")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_1jgrc")
-metadata/_edit_use_anchors_ = true
 
-[node name="CardName" type="Label" parent="Camera2D/DecisionUI/Panel2/Panel2"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.201
-anchor_right = 0.5
-anchor_bottom = 0.201
-offset_left = -108.15215
-offset_top = -9.989
-offset_right = 108.151794
-offset_bottom = 10.011
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("4_cgsek")
-text = "Aggressive Nova"
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
+[node name="CardName" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card3/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Card1"
 
-[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/Panel2/Panel2"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.62
-anchor_right = 0.5
-anchor_bottom = 0.62
-offset_left = -154.87515
-offset_top = -35.602997
-offset_right = 154.87479
-offset_bottom = 31.70575
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("5_cgsek")
-text = "Bursts with fury, harming everything nearby."
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
+[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card3/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "desc"
 
-[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/Panel2/Panel2"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.83900005
-anchor_top = 0.86100006
-anchor_right = 0.83900005
-anchor_bottom = 0.86100006
-offset_left = -40.613983
-offset_top = -12.485008
-offset_right = 40.636047
-offset_bottom = 12.514992
-grow_horizontal = 0
-grow_vertical = 0
-theme = ExtResource("5_cgsek")
-theme_override_font_sizes/font_size = 16
-text = "buy: 300"
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
+[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card3/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.02874092, 0.061595596, 0.07940511, 1)
+text = "$price"
 
-[node name="Panel3" type="Panel" parent="Camera2D/DecisionUI/Panel2"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.024
-anchor_top = 0.32200003
-anchor_right = 1.0
-anchor_bottom = 0.54
-offset_left = -0.12400055
-offset_top = -0.2000122
-offset_right = -6.775696
-offset_bottom = 0.25
-grow_horizontal = 2
-grow_vertical = 0
-theme = ExtResource("3_d6rpx")
-metadata/_edit_use_anchors_ = true
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/DecisionUI/HBoxContainer2/Card3/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
 
-[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/Panel2/Panel3"]
+[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/HBoxContainer2/Card3/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "buy"
+
+[node name="Card2" type="Control" parent="Camera2D/DecisionUI/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_wi0c6")
+
+[node name="Panel" type="Panel" parent="Camera2D/DecisionUI/HBoxContainer2/Card2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_47wu6")
-theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_2n1s8")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_3vjad")
-theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_yt0h1")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_vd78s")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_ictha")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_1jgrc")
-metadata/_edit_use_anchors_ = true
 
-[node name="CardName" type="Label" parent="Camera2D/DecisionUI/Panel2/Panel3"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.201
-anchor_right = 0.5
-anchor_bottom = 0.201
-offset_left = -108.15215
-offset_top = -9.989
-offset_right = 108.151794
-offset_bottom = 10.011
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("4_cgsek")
-text = "Aggressive Nova"
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/Panel2/Panel3"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.62
-anchor_right = 0.5
-anchor_bottom = 0.62
-offset_left = -154.87515
-offset_top = -35.602997
-offset_right = 154.87479
-offset_bottom = 31.70575
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("5_cgsek")
-text = "Bursts with fury, harming everything nearby."
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/Panel2/Panel3"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.83900005
-anchor_top = 0.86100006
-anchor_right = 0.83900005
-anchor_bottom = 0.86100006
-offset_left = -40.613983
-offset_top = -12.485008
-offset_right = 40.636047
-offset_bottom = 12.514992
-grow_horizontal = 0
-grow_vertical = 0
-theme = ExtResource("5_cgsek")
-theme_override_font_sizes/font_size = 16
-text = "buy: 300"
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="TextureRect" type="TextureRect" parent="Camera2D/DecisionUI/Panel2"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.21000001
-anchor_right = 0.5
-anchor_bottom = 0.21000001
-offset_left = -69.3745
-offset_top = -69.37501
-offset_right = 69.37549
-offset_bottom = 69.37499
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("15_h84ma")
-expand_mode = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="Label3" type="Label" parent="Camera2D/DecisionUI/Panel2"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.08800001
-anchor_right = 0.5
-anchor_bottom = 0.08800001
-offset_left = -112.4995
-offset_top = -22.300003
-offset_right = 112.50043
-offset_bottom = 22.699997
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("5_cgsek")
-theme_override_font_sizes/font_size = 29
-text = "upgrade hero"
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="Panel3" type="Panel" parent="Camera2D/DecisionUI"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.37127984
-anchor_top = 0.5038871
-anchor_right = 0.37127978
-anchor_bottom = 0.5038871
-offset_left = 1778.9257
-offset_top = -509.71774
-offset_right = 2164.3003
-offset_bottom = 90.28223
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("15_2n1s8")
-
-[node name="Panel" type="Panel" parent="Camera2D/DecisionUI/Panel3"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.024
-anchor_top = 0.76000005
-anchor_right = 0.98200005
-anchor_bottom = 0.9850001
-offset_left = -0.12400055
-offset_top = 3.9999695
-offset_right = 0.16104126
-offset_bottom = 0.24993896
-grow_horizontal = 2
-grow_vertical = 0
-theme = ExtResource("16_3vjad")
-metadata/_edit_use_anchors_ = true
-
-[node name="Button" type="Button" parent="Camera2D/DecisionUI/Panel3/Panel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/DecisionUI/HBoxContainer2/Card2/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_47wu6")
-theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_2n1s8")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_3vjad")
-theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_yt0h1")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_vd78s")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_ictha")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_1jgrc")
-metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel"]
+[node name="CardName" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card2/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Card1"
+
+[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card2/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "desc"
+
+[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card2/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.02874092, 0.061595596, 0.07940511, 1)
+text = "$price"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/DecisionUI/HBoxContainer2/Card2/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/HBoxContainer2/Card2/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "buy"
+
+[node name="Card1" type="Control" parent="Camera2D/DecisionUI/HBoxContainer2"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_wi0c6")
+
+[node name="Panel" type="Panel" parent="Camera2D/DecisionUI/HBoxContainer2/Card1"]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.201
-anchor_right = 0.5
-anchor_bottom = 0.201
-offset_left = -108.15215
-offset_top = -9.989
-offset_right = 108.151794
-offset_bottom = 10.011
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -0.34002686
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("4_cgsek")
-theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
-theme_override_colors/font_shadow_color = Color(0.007843138, 0, 0.015686275, 1)
-text = "Aggressive Nova"
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
 
-[node name="Label2" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.62
-anchor_right = 0.5
-anchor_bottom = 0.62
-offset_left = -154.87515
-offset_top = -35.602997
-offset_right = 154.87479
-offset_bottom = 31.70575
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("5_cgsek")
-theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
-text = "Bursts with fury, harming everything nearby."
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="Label9" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.83900005
-anchor_top = 0.86100006
-anchor_right = 0.83900005
-anchor_bottom = 0.86100006
-offset_left = -40.613983
-offset_top = -12.485008
-offset_right = 40.636047
-offset_bottom = 12.514992
-grow_horizontal = 0
-grow_vertical = 0
-theme = ExtResource("5_cgsek")
-theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
-theme_override_font_sizes/font_size = 16
-text = "buy: 300"
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="Panel2" type="Panel" parent="Camera2D/DecisionUI/Panel3"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.024
-anchor_top = 0.545
-anchor_right = 0.98200005
-anchor_bottom = 0.76400006
-offset_left = -0.12400055
-offset_right = 0.16104126
-offset_bottom = -0.15002441
-grow_horizontal = 2
-grow_vertical = 0
-theme = ExtResource("16_3vjad")
-metadata/_edit_use_anchors_ = true
-
-[node name="Button" type="Button" parent="Camera2D/DecisionUI/Panel3/Panel2"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera2D/DecisionUI/HBoxContainer2/Card1"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_47wu6")
-theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_2n1s8")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_3vjad")
-theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_yt0h1")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_vd78s")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_ictha")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_1jgrc")
-metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel2"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.201
-anchor_right = 0.5
-anchor_bottom = 0.201
-offset_left = -108.15215
-offset_top = -9.989
-offset_right = 108.151794
-offset_bottom = 10.011
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("4_cgsek")
-theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
-theme_override_colors/font_shadow_color = Color(0.007843138, 0, 0.015686275, 1)
-theme_override_colors/font_outline_color = Color(0.16862746, 0.101960786, 0.05490196, 1)
-text = "Aggressive Nova"
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
+[node name="CardName" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card1/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Card1"
 
-[node name="Label2" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel2"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.62
-anchor_right = 0.5
-anchor_bottom = 0.62
-offset_left = -154.87515
-offset_top = -35.602997
-offset_right = 154.87479
-offset_bottom = 31.70575
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("5_cgsek")
-theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
-text = "Bursts with fury, harming everything nearby."
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
+[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card1/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "desc"
 
-[node name="Label9" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel2"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.83900005
-anchor_top = 0.86100006
-anchor_right = 0.83900005
-anchor_bottom = 0.86100006
-offset_left = -40.613983
-offset_top = -12.485008
-offset_right = 40.636047
-offset_bottom = 12.514992
-grow_horizontal = 0
-grow_vertical = 0
-theme = ExtResource("5_cgsek")
-theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
-theme_override_font_sizes/font_size = 16
-text = "buy: 300"
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
+[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/HBoxContainer2/Card1/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.02874092, 0.061595596, 0.07940511, 1)
+text = "$price"
 
-[node name="Panel3" type="Panel" parent="Camera2D/DecisionUI/Panel3"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.024
-anchor_top = 0.32200003
-anchor_right = 0.98200005
-anchor_bottom = 0.54
-offset_left = -0.12400055
-offset_top = -0.2000122
-offset_right = 0.16104126
-offset_bottom = 0.25
-grow_horizontal = 2
-grow_vertical = 0
-theme = ExtResource("16_3vjad")
-metadata/_edit_use_anchors_ = true
+[node name="HBoxContainer" type="HBoxContainer" parent="Camera2D/DecisionUI/HBoxContainer2/Card1/VBoxContainer"]
+layout_mode = 2
 
-[node name="Button" type="Button" parent="Camera2D/DecisionUI/Panel3/Panel3"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_47wu6")
-theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_2n1s8")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_3vjad")
-theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_yt0h1")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_vd78s")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_ictha")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_1jgrc")
-metadata/_edit_use_anchors_ = true
-
-[node name="Label" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel3"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.201
-anchor_right = 0.5
-anchor_bottom = 0.201
-offset_left = -108.15215
-offset_top = -9.989
-offset_right = 108.151794
-offset_bottom = 10.011
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("4_cgsek")
-theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
-theme_override_colors/font_shadow_color = Color(0.0077763516, 4.482928e-06, 0.016387673, 1)
-theme_override_colors/font_outline_color = Color(0.16862746, 0.101960786, 0.05490196, 1)
-text = "Aggressive Nova"
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="Label2" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel3"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.62
-anchor_right = 0.5
-anchor_bottom = 0.62
-offset_left = -154.87515
-offset_top = -35.602997
-offset_right = 154.87479
-offset_bottom = 31.70575
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("5_cgsek")
-theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
-text = "Bursts with fury, harming everything nearby."
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="Label9" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel3"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.83900005
-anchor_top = 0.86100006
-anchor_right = 0.83900005
-anchor_bottom = 0.86100006
-offset_left = -40.613983
-offset_top = -12.485008
-offset_right = 40.636047
-offset_bottom = 12.514992
-grow_horizontal = 0
-grow_vertical = 0
-theme = ExtResource("5_cgsek")
-theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
-theme_override_font_sizes/font_size = 16
-text = "buy: 300"
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="TextureRect" type="TextureRect" parent="Camera2D/DecisionUI/Panel3"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.21000001
-anchor_right = 0.5
-anchor_bottom = 0.21000001
-offset_left = -69.3745
-offset_top = -69.37501
-offset_right = 69.37549
-offset_bottom = 69.37499
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("15_sg6sq")
-expand_mode = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="Label3" type="Label" parent="Camera2D/DecisionUI/Panel3"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.08800001
-anchor_right = 0.5
-anchor_bottom = 0.08800001
-offset_left = -128.1555
-offset_top = -22.300003
-offset_right = 128.15643
-offset_bottom = 22.699997
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("5_cgsek")
-theme_override_colors/font_color = Color(0.78431374, 0.15686275, 0.078431375, 1)
-theme_override_font_sizes/font_size = 29
-text = "upgrade enemy"
-horizontal_alignment = 1
-autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
+[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/HBoxContainer2/Card1/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "buy"
 
 [node name="PlayerInfoUI" type="Control" parent="Camera2D"]
 visible = false

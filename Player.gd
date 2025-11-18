@@ -127,26 +127,26 @@ var class_configs := {
 @onready var stats_ui: Control = $Camera2D/StatsUI
 @onready var wave_label: Label = $Camera2D/WaveUI/WaveLabel
 @onready var enemy_count_label: Label = $Camera2D/WaveUI/EnemyCountLabel
-@onready var currency_label: Label = $Camera2D/DecisionUI/HBoxContainer/CurrencyLabel
+@onready var currency_label: Label = $Camera2D/StatsUI/Panel/Panel/oro_label
 
 # NUEVO: Elementos del PlayerInfoUI básico
-@onready var player_currency_label: Label = $Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer/Monedas
-@onready var player_hp_label: Label = $Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer/Monedas
-@onready var player_class_label: Label = $Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer/ClassLabel
+@onready var player_currency_label: Label = $Camera2D/StatsUI/Panel/Panel/oro_label
+@onready var player_hp_label: Label = $Camera2D/StatsUI/Panel/Panel/hp_label
+@onready var player_class_label: Label = $Camera2D/StatsUI/Panel/Panel/classe_label
 
 # NUEVO: Elementos del StatsUI (detallado)
-@onready var stats_hp_label: Label = $Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer/StatsHPLabel
-@onready var stats_damage_label: Label = $Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer2/StatsDamageLabel
-@onready var stats_speed_label: Label = $Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer3/StatsSpeedLabel
-@onready var stats_attack_speed_label: Label = $Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer2/StatsAttackSpeedLabel
-@onready var stats_critical_label: Label = $Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer2/StatsCriticalLabel
-@onready var stats_gold_bonus_label: Label = $Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer3/StatsGoldBonusLabel
-@onready var stats_kills_label: Label = $Camera2D/StatsUI/Panel/MarginContainer/HBoxContainer/GridContainer2/StatsKillsLabel
+@onready var stats_hp_label: Label = $Camera2D/StatsUI/Panel/Panel/hp_label
+@onready var stats_damage_label: Label = $Camera2D/StatsUI/Panel/Panel/damage_label
+@onready var stats_speed_label: Label = $Camera2D/StatsUI/Panel/Panel/kill_label
+@onready var stats_attack_speed_label: Label = $Camera2D/StatsUI/Panel/Panel/atack_speed_label
+@onready var stats_critical_label: Label = $Camera2D/StatsUI/Panel/Panel/critical_label
+@onready var stats_gold_bonus_label: Label = $Camera2D/StatsUI/Panel/Panel/gold_bonus
+@onready var stats_kills_label: Label = $Camera2D/StatsUI/Panel/Panel/kill_label
 
 # NUEVO: Nodos para las tarjetas
-@onready var card_1: Control = $Camera2D/DecisionUI/HBoxContainer2/Card1
-@onready var card_2: Control = $Camera2D/DecisionUI/HBoxContainer2/Card2
-@onready var card_3: Control = $Camera2D/DecisionUI/HBoxContainer2/Card3
+@onready var card_1: Control = $Camera2D/DecisionUI/Panel2/Panel
+@onready var card_2: Control = $Camera2D/DecisionUI/Panel2/Panel2
+@onready var card_3: Control = $Camera2D/DecisionUI/Panel2/Panel3
 
 # Variables para controlar UI
 var current_wave: int = 0
@@ -197,8 +197,8 @@ func _apply_class_config():
 	
 	# CONFIGURACIÓN ESPECÍFICA PARA ARQUERA ← AGREGAR ESTO
 	if classe == "archer":
-		area_attack_cooldown = 3.0  # 3 segundos de cooldown
-		area_attack_range = 200.0   # 200 píxeles de rango
+		area_attack_cooldown = 3.0 # 3 segundos de cooldown
+		area_attack_range = 200.0 # 200 píxeles de rango
 		can_area_attack = true
 	_setup_class_sprite()
 	
@@ -366,7 +366,7 @@ func _setup_cards_ui():
 	for card_ui in card_ui_nodes:
 		if card_ui:
 			card_ui.visible = false
-			var buy_button = card_ui.get_node_or_null("Panel/VBoxContainer/HBoxContainer/BuyButton")
+			var buy_button = card_ui.get_node_or_null("BuyButton")
 			if buy_button and not buy_button.pressed.is_connected(_on_card_buy_pressed):
 				buy_button.pressed.connect(_on_card_buy_pressed.bind(card_ui))
 
@@ -514,10 +514,10 @@ func _display_available_cards():
 			card_ui.visible = false
 
 func _setup_card_ui(card_ui: Control, card_data: Dictionary):
-	var name_label = card_ui.get_node_or_null("Panel/VBoxContainer/CardName")
-	var desc_label = card_ui.get_node_or_null("Panel/VBoxContainer/CardDescription")
-	var cost_label = card_ui.get_node_or_null("Panel/VBoxContainer/CardCost")
-	var buy_button = card_ui.get_node_or_null("Panel/HBoxContainer/HBoxContainer/BuyButton")
+	var name_label = card_ui.get_node_or_null("CardName")
+	var desc_label = card_ui.get_node_or_null("CardDescription")
+	var cost_label = card_ui.get_node_or_null("CardCost")
+	var buy_button = card_ui.get_node_or_null("BuyButton")
 	
 	if name_label:
 		name_label.text = card_data.get("name", "Carta Sin Nombre")
@@ -1044,7 +1044,7 @@ func execute_mage_area_attack():
 		"x": attack_pos.x,
 		"y": attack_pos.y,
 		"damage": attack_damage,
-		"team": team  # ← IMPORTANTE: enviar equipo para filtrado en servidor
+		"team": team # ← IMPORTANTE: enviar equipo para filtrado en servidor
 	}))
 
 	# Reproducir animación de ataque de área
@@ -1084,21 +1084,21 @@ func _get_direction_suffix(angle: float) -> String:
 
 	# Determinar dirección basada en ángulos
 	if degrees >= 337.5 or degrees < 22.5:
-		return "E"      # Este
+		return "E" # Este
 	elif degrees >= 22.5 and degrees < 67.5:
-		return "SE"     # Sureste
+		return "SE" # Sureste
 	elif degrees >= 67.5 and degrees < 112.5:
-		return "S"      # Sur
+		return "S" # Sur
 	elif degrees >= 112.5 and degrees < 157.5:
-		return "SW"     # Suroeste
+		return "SW" # Suroeste
 	elif degrees >= 157.5 and degrees < 202.5:
-		return "W"      # Oeste
+		return "W" # Oeste
 	elif degrees >= 202.5 and degrees < 247.5:
-		return "NW"     # Noroeste
+		return "NW" # Noroeste
 	elif degrees >= 247.5 and degrees < 292.5:
-		return "N"      # Norte
+		return "N" # Norte
 	else: # 292.5 a 337.5
-		return "NE"     # Noreste
+		return "NE" # Noreste
 func _create_mage_area_effect(attack_pos: Vector2):
 	if not mage_area_projectile_scene:
 		print("❌ mage_area_projectile_scene no asignada")
@@ -1118,7 +1118,7 @@ func _create_mage_area_effect(attack_pos: Vector2):
 	
 	# Agregar a la escena del juego - EN UN CONTENEDOR DEBAJO
 	var main_node = get_tree().current_scene
-	if main_node and main_node.has_node("ObjectContainer"):  # Usar ObjectContainer para efectos
+	if main_node and main_node.has_node("ObjectContainer"): # Usar ObjectContainer para efectos
 		main_node.get_node("ObjectContainer").add_child(area_projectile)
 		print("⚡ EFECTO MAGA INMEDIATO CREADO - Posición:", attack_pos, " Equipo:", team)
 	else:
