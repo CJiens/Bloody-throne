@@ -1,8 +1,8 @@
 [gd_resource type="SpriteFrames" load_steps=5 format=3 uid="uid://p1oxkqfwowoh"]
 
-[ext_resource type="Texture2D" uid="uid://dkcml4olm8t4w" path="res://Sprites/mage/proyectile/0001.png" id="1_gtr0k"]
+[ext_resource type="Texture2D" uid="uid://470wg58677to" path="res://Sprites/mage/proyectile/0001.png" id="1_gtr0k"]
 [ext_resource type="Texture2D" uid="uid://bvtpnyotk01le" path="res://icon.svg" id="1_mdyec"]
-[ext_resource type="Texture2D" uid="uid://ci62umq20ddb" path="res://Sprites/mage/proyectile/0012.png" id="3_k27d7"]
+[ext_resource type="Texture2D" uid="uid://c5x6mt060hn75" path="res://Sprites/mage/proyectile/0012.png" id="3_k27d7"]
 [ext_resource type="Texture2D" uid="uid://dj7mwcrx34ctx" path="res://Sprites/Knight/atack/Attack_E/0020.png" id="4_u1oab"]
 
 [resource]

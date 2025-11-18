@@ -1,0 +1,9 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://bd87rrvodt0bb"]
+
+[ext_resource type="Texture2D" uid="uid://bvpav8u704wu2" path="res://Interfaz de estadistica/Iconos/Azul background.png" id="1_qxrnj"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kfxo7"]
+texture = ExtResource("1_qxrnj")
+
+[resource]
+Label/styles/normal = SubResource("StyleBoxTexture_kfxo7")
