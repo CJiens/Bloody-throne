@@ -348,9 +348,20 @@ func _on_respawn_countdown(player_id: int, time_left: int):
 		if time_left > 0 and not is_respawning:
 			start_respawn()
 		respawn_timer = time_left
+# MODIFICAR la función _on_player_respawned en Player.gd
 func _on_player_respawned(player_data: Dictionary):
 	if player_data.id == id:
-		print("✅ RESPawN DEL SERVIDOR RECIBIDO - Jugador:", id)
+		print("✅ RESPawN DEL SERVIDOR RECIBIDO - Jugador:", id, " Posición:", Vector2(player_data.x, player_data.y))
+		
+		# ✅ FORZAR LA POSICIÓN DEL SERVIDOR
+		position = Vector2(player_data.x, player_data.y)
+		
+		# ✅ ACTUALIZAR VIDA CON DATOS DEL SERVIDOR
+		hp = player_data.hp
+		if hp_bar:
+			hp_bar.value = hp
+			hplabel.text = str(hp) + "/" + str(max_hp)
+		
 		finish_respawn()
 func _physics_process(delta):
 	if id == Network.player_id:
@@ -974,12 +985,13 @@ func finish_respawn():
 		print("⚠️ NO ESTABA EN RESPawN - Ignorando finalización")
 		return
 		
-	print("🔁 FINALIZANDO RESPawN - Jugador:", id)
+	print("🔁 FINALIZANDO RESPawN - Jugador:", id, " Posición actual:", position)
 	is_respawning = false
 	respawn_timer = 0.0
 	
-	# Restaurar vida completamente
-	hp = max_hp
+	# ✅ NO RESTAURAR VIDA AQUÍ - ya lo hizo el servidor
+	# hp = max_hp  # ← ELIMINAR esta línea
+	
 	if hp_bar:
 		hp_bar.value = hp
 		hplabel.text = str(hp) + "/" + str(max_hp)
@@ -1011,7 +1023,6 @@ func finish_respawn():
 		current_sprite.play("Idle")
 	
 	print("🔓 JUGADOR COMPLETAMENTE REACTIVADO")
-
 # ✅ NUEVA FUNCIÓN: Efecto visual de muerte
 func _create_death_effect():
 	# Crear partículas o efecto visual de muerte

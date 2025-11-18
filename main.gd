@@ -451,9 +451,10 @@ func _process(delta):
 	if not Network.connected or Network.player_id == -1:
 		return
 
-	# Debug del estado del juego
 	if Engine.get_frames_drawn() % 180 == 0:
-		print("🎮 DEBUG - Game Started:", game_started, " Canvas Visible:", canvas_layer.visible, " Canvas Process:", canvas_layer.process_mode)
+		if Network.player_id in players:
+			var player = players[Network.player_id]
+			print("📍 DEBUG POSICIÓN - Jugador:", Network.player_id, " Posición:", player.position)
 
 	# Manejar countdown si está activo
 	if countdown_active:
@@ -498,7 +499,10 @@ func _update_game_entities():
 	for key in Network.players.keys():
 		var id = int(key)
 		var data = Network.players[key]
-
+		
+		# ✅ NO ACTUALIZAR POSICIÓN DURANTE RESPawN
+		if id in respawn_timers and respawn_timers[id] > 0:
+			continue  # Saltar actualización de posición durante respawn
 		if id in players:
 			var player_node = players[id]
 			
@@ -1520,38 +1524,38 @@ func _on_respawn_countdown(player_id: int, time_left: int):
 		# Actualizar UI de respawn
 		update_respawn_ui(time_left)
 
+# MODIFICAR la función _on_player_respawned en main.gd
 func _on_player_respawned(player_data: Dictionary):
 	var player_id = player_data.id
 	respawn_timers.erase(player_id)
 	
 	if player_id in players:
-		# Actualizar posición y estado del jugador
 		var player = players[player_id]
-		player.position = Vector2(player_data.x, player_data.y)
 		
+		# ✅ FORZAR LA POSICIÓN ENVIADA POR EL SERVIDOR
+		var new_position = Vector2(player_data.x, player_data.y)
+		player.position = new_position
+		print("📍 POSICIÓN DE RESPawN ASIGNADA - Jugador:", player_id, " Posición:", new_position)
+		
+		# ✅ ACTUALIZAR VIDA CON LOS DATOS DEL SERVIDOR
 		if player.has_method("update_hp"):
 			player.update_hp(player_data.hp)
+		
+		# ✅ LLAMAR AL SISTEMA DE RESPawN DEL PLAYER
+		if player.has_method("finish_respawn"):
+			player.finish_respawn()
 		
 		if player_id == Network.player_id:
 			# Ocultar UI de respawn
 			hide_respawn_ui()
 			
-			# Habilitar movimiento y ataques
-			player.set_physics_process(true)
-			player.set_process(true)
+			# Mostrar efecto visual de respawn en la nueva posición
+			_create_respawn_effect(new_position)
 			
-			# Restaurar apariencia normal del jugador
-			player.modulate = Color.WHITE
-			
-			# Mostrar efecto visual de respawn
-			_create_respawn_effect(player.position)
-			
-			print("🔓 CONTROLES HABILITADOS - Jugador ha reaparecido")
+			print("✅ RESPawN COMPLETADO - Jugador local en base")
 
-# AÑADIR función para crear efecto visual de respawn
+# MODIFICAR la función _create_respawn_effect para usar la posición correcta
 func _create_respawn_effect(position: Vector2):
-	# Podemos crear un efecto visual simple para indicar el respawn
-	# Por ejemplo, un flash blanco o partículas
 	print("✨ EFECTO DE RESPawN EN POSICIÓN:", position)
 	
 	# Crear un nodo temporal para el efecto
