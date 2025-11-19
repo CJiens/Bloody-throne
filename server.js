@@ -632,81 +632,57 @@ function spawnWaveEnemies(waveConfig) {
 
 
 function spawnEnemy(id, availableTypes, forceTeam = null) {
-	const enemyType = availableTypes[Math.floor(Math.random() * availableTypes.length)];
+    const enemyType = availableTypes[Math.floor(Math.random() * availableTypes.length)];
+    let fixedTeam = forceTeam;
+    
+    let spawnPos;
+    if (fixedTeam === 1) {
+        // EQUIPO AZUL - Spawn EXCLUSIVAMENTE AL FRENTE de la base
+        const basePos = bases[1];
+        spawnPos = {
+            x: basePos.x + 400 + (Math.random() * 400),  // Entre 400-800 unidades AL FRENTE (derecha)
+            y: basePos.y + (Math.random() * 400 - 200)   // Entre -200 y +200 en Y (arriba/abajo del centro)
+        };
+        console.log(`👹 ENEMIGO AZUL SPAWNEADO AL FRENTE - Pos: (${spawnPos.x}, ${spawnPos.y})`);
+    } else if (fixedTeam === 2) {
+        // EQUIPO ROJO - Spawn EXCLUSIVAMENTE AL FRENTE de la base  
+        const basePos = bases[2];
+        spawnPos = {
+            x: basePos.x - 400 - (Math.random() * 400),  // Entre 400-800 unidades AL FRENTE (izquierda)
+            y: basePos.y + (Math.random() * 400 - 200)   // Entre -200 y +200 en Y (arriba/abajo del centro)
+        };
+        console.log(`👹 ENEMIGO ROJO SPAWNEADO AL FRENTE - Pos: (${spawnPos.x}, ${spawnPos.y})`);
+    } else {
+        // ENEMIGOS NEUTRALES - spawn en el centro del mapa
+        spawnPos = {
+            x: -400 + (Math.random() * 800),
+            y: -400 + (Math.random() * 800)
+        };
+    }
 
-	// ✅ FIJO: Usar equipo forzado
-	let fixedTeam = forceTeam;
+    const baseHp = enemyType === 'grunt' ? 50 : enemyType === 'archer' ? 40 : enemyType === 'mage' ? 30 : 100;
 
-	// ✅ SPAWN ALEATORIO EN ÁREA SEGURA PARA CADA EQUIPO
-	let spawnPos;
-	if (fixedTeam === 1) {
-		// Área segura para equipo azul (izquierda del mapa)
-		spawnPos = {
-			x: -1600,  // Entre -2000 y -1200
-			y: -800    // Entre -1200 y -400
-		};
-	} else if (fixedTeam === 2) {
-		// Área segura para equipo rojo (derecha del mapa)
-		spawnPos = {
-			x: 1400,   // Entre 1000 y 1800
-			y: 400    // Entre 0 y 800
-		};
-	} else {
-		// ✅ ENEMIGOS NEUTRALES - spawn en el centro del mapa
-		spawnPos = {
-			x: -400 + (Math.random() * 800),         // Entre -400 y 400
-			y: -400 + (Math.random() * 800)          // Entre -400 y 400
-		};
-	}
-	const baseHp = enemyType === 'grunt' ? 50 : enemyType === 'archer' ? 40 : enemyType === 'mage' ? 30 : 100;
+    enemies[id] = {
+        id: id,
+        x: spawnPos.x,
+        y: spawnPos.y,
+        hp: baseHp,
+        max_hp: baseHp,
+        type: enemyType,
+        team: fixedTeam,
+        attack_damage: enemyType === 'grunt' ? 10 : enemyType === 'archer' ? 8 : enemyType === 'mage' ? 12 : 15,
+        move_speed: enemyType === 'grunt' ? 80 : enemyType === 'archer' ? 100 : enemyType === 'mage' ? 70 : 60,
+        spawn_area: fixedTeam,
+        is_neutral: fixedTeam === 0,
+        last_attack_time: 0,
+        attack_cooldown: 1000
+    };
 
-	enemies[id] = {
-		id: id,
-		x: spawnPos.x,
-		y: spawnPos.y,
-		hp: baseHp,
-		max_hp: baseHp,
-		type: enemyType,
-		team: fixedTeam,
-		attack_damage: enemyType === 'grunt' ? 10 : enemyType === 'archer' ? 8 : enemyType === 'mage' ? 12 : 15,
-		move_speed: enemyType === 'grunt' ? 200 : enemyType === 'archer' ? 150 : enemyType === 'mage' ? 200 : 150,
-		spawn_area: fixedTeam,
-		is_neutral: fixedTeam === 0,  // ✅ FLAG PARA IDENTIFICAR NEUTRALES
-		last_attack_time: 0,// ✅ COOLDOWN DE ATAQUE PARA NEUTRALES
-		attack_cooldown: 1000 // 1 segundo entre ataques
-	};
-
-	console.log(`👹 ENEMIGO SPAWNEADO - ID: ${id}, Equipo: ${fixedTeam}${fixedTeam === 0 ? ' (NEUTRAL)' : ''}, Posición: (${spawnPos.x}, ${spawnPos.y})`);
-	//✅ BROADCAST del enemigo con su equipo
-	broadcast({
-		type: 'enemy_spawned',
-		enemy: enemies[id]
-	});
-
+    /*broadcast({
+        type: 'enemy_spawned',
+        enemy: enemies[id]
+    });*/
 }
-
-/*function spawnBossWave() {
-	const bossId = 999; // ID diferente al jefe permanente
-	enemies[bossId] = {
-		id: bossId,
-		x: 0,
-		y: 0,
-		hp: 300,
-		max_hp: 300,
-		type: 'boss_wave',
-		team: 0, // Jefe neutral
-		attack_damage: 20,
-		move_speed: 50
-	};
-
-	console.log(`👹 JEFE PERMANENTE SPAWNEADO - ID: ${bossId}, Enviando a clientes`);
-
-	broadcast({
-		type: 'boss_spawned',
-		boss_data: permanentBoss
-	});
-}*/
-
 function startWave() {
 	const waveConfig = waveSystem.startNextWave();
 	spawnWaveEnemies(waveConfig);
@@ -964,7 +940,7 @@ function startGameLoop() {
 			bases,
 			timestamp: Date.now()
 		});
-	}, 50); // 20 FPS para optimizar
+	}, 20); // 20 FPS para optimizar
 }
 
 // Inicializar juego
@@ -1780,8 +1756,8 @@ wss.on('connection', (ws) => {
 					_applyMageDamageToEnemy(msg.target_id, msg.damage, msg.owner_id, msg.owner_team);
 					break;
 				case 'base':
-					_applyMageDamageToBase(msg.target_id, msg.damage, msg.owner_id, msg.owner_team);
-					break;
+            _applyMageDamageToBase(msg.target_id, msg.damage, msg.owner_id);
+            break;
 			}
 		}
 
@@ -2123,11 +2099,11 @@ function _applyMageDamageToPlayer(playerId, damage, ownerId) {
 
 	console.log("✅ DAÑO PERMITIDO - Aplicando daño a jugador:", playerId);
 
-	// Aplicar daño
-	target.hp -= damage;
+	const reducedDamage = 1;
+	target.hp -= reducedDamage;
 	if (target.hp < 0) target.hp = 0;
 
-	console.log(`💥 MAGA DAÑA JUGADOR - ${damage} a ${playerId}, HP restante: ${target.hp}`);
+	console.log(`💥 MAGA DAÑA JUGADOR - ${reducedDamage} a ${playerId}, HP restante: ${target.hp}`);
 
 	broadcast({
 		type: 'player_hit',
@@ -2163,11 +2139,11 @@ function _applyMageDamageToEnemy(enemyId, damage, ownerId) {
 
 	console.log("✅ DAÑO PERMITIDO - Aplicando daño a enemigo:", enemyId);
 
-	// Aplicar daño
-	target.hp -= damage;
+	const reducedDamage = 1;
+	target.hp -= reducedDamage;
 	if (target.hp < 0) target.hp = 0;
 
-	console.log(`💥 MAGA DAÑA ENEMIGO - ${damage} a ${enemyId}, HP restante: ${target.hp}`);
+	console.log(`💥 MAGA DAÑA ENEMIGO - ${reducedDamage} a ${enemyId}, HP restante: ${target.hp}`);
 
 	broadcast({
 		type: 'enemy_hit',
@@ -2220,37 +2196,32 @@ function _applyMageDamageToEnemy(enemyId, damage, ownerId) {
 		});
 	}
 }
-
-// Función para aplicar daño de maga a base (SIMPLIFICADA)
 function _applyMageDamageToBase(baseTeam, damage, ownerId) {
-	const base = bases[baseTeam];
-	if (!base) {
-		console.log("❌ BASE OBJETIVO NO ENCONTRADO");
-		return;
-	}
+    const base = bases[baseTeam];
+    if (!base) {
+        console.log("❌ BASE OBJETIVO NO ENCONTRADO");
+        return;
+    }
 
-	console.log("✅ DAÑO PERMITIDO - Aplicando daño a base:", baseTeam);
+    console.log("✅ DAÑO PERMITIDO - Aplicando daño a base:", baseTeam);
+	 const reducedDamage = 1;
+    base.hp -=reducedDamage;
+    if (base.hp < 0) base.hp = 0;
 
-	// Aplicar daño
-	base.hp -= damage;
-	if (base.hp < 0) base.hp = 0;
+    console.log(`💥 MAGA DAÑA BASE - ${0.5} (reducido de ${reducedDamage}) a base ${baseTeam}, HP restante: ${base.hp}`);
 
-	console.log(`💥 MAGA DAÑA BASE - ${damage} a base ${baseTeam}, HP restante: ${base.hp}`);
+    broadcast({
+        type: 'base_hit',
+        team: parseInt(baseTeam),
+        hp: base.hp,
+        max_hp: base.maxHp
+    });
 
-	broadcast({
-		type: 'base_hit',
-		team: parseInt(baseTeam),
-		hp: base.hp,
-		max_hp: base.maxHp
-	});
-
-	// Verificar si la base fue destruida
-	if (base.hp <= 0) {
-		console.log(`💀 BASE ${baseTeam} DESTRUIDA POR ATAQUE DE ÁREA MAGA!`);
-		checkBaseDestruction();
-	}
+    if (base.hp <= 0) {
+        console.log(`💀 BASE ${baseTeam} DESTRUIDA POR ATAQUE DE ÁREA MAGA!`);
+        checkBaseDestruction();
+    }
 }
-
 // ----------------------------
 // INICIAR SERVIDOR CON BÚSQUEDA AUTOMÁTICA DE PUERTOS
 // ----------------------------
