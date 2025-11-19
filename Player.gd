@@ -145,7 +145,7 @@ var class_configs := {
 @onready var stats_speed_label: Label = $Camera2D/StatsUI/Panel/Panel/kill_label
 @onready var stats_attack_speed_label: Label = $Camera2D/StatsUI/Panel/Panel/atack_speed_label
 @onready var stats_critical_label: Label = $Camera2D/StatsUI/Panel/Panel/critical_label
-@onready var stats_gold_bonus_label: Label = $Camera2D/StatsUI/Panel/Panel/gold_bonus
+@onready var stats_gold_bonus_label: Label = $Camera2D/StatsUI/Panel/Panel/gold_label
 @onready var stats_kills_label: Label = $Camera2D/StatsUI/Panel/Panel/kill_label
 
 # NUEVO: Nodos para las tarjetas
