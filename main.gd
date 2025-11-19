@@ -27,7 +27,7 @@ extends Node2D
 @onready var vbox_container_2: VBoxContainer = $CanvasLayer/Pantalla_Inicial/VBoxContainer2
 @onready var button: Button = $CanvasLayer/Pantalla_Inicial/VBoxContainer/Button
 @onready var vbox_container: VBoxContainer = $CanvasLayer/Pantalla_Inicial/VBoxContainer
-@onready var video_stream_player: VideoStreamPlayer = $CanvasLayer/Pantalla_Inicial/VideoStreamPlayer
+# @onready var video_stream_player: VideoStreamPlayer = $CanvasLayer/Pantalla_Inicial/VideoStreamPlayer
 @onready var label: Label = $CanvasLayer/Pantalla_Inicial/Label
 @onready var canvas_layer: CanvasLayer = $CanvasLayer
 @onready var vbox_container_3: VBoxContainer = $CanvasLayer/Pantalla_Inicial/VBoxContainer3
@@ -807,20 +807,20 @@ func _start_game():
 func _play_intro_video():
 	print("🎬 Reproduciendo video de introducción...")
 	
-	# ✅ CORREGIDO: Configurar y mostrar el video correctamente
-	video_stream_player.stop()
-	video_stream_player.stream = load("res://Segunda-Parte-video-por-frame.ogv")
-	video_stream_player.loop = false
-	video_stream_player.autoplay = false
-	video_stream_player.visible = true
+	# # ✅ CORREGIDO: Configurar y mostrar el video correctamente
+	# video_stream_player.stop()
+	# video_stream_player.stream = load("res://Segunda-Parte-video-por-frame.ogv")
+	# video_stream_player.loop = false
+	# video_stream_player.autoplay = false
+	# video_stream_player.visible = true
 	
-	# Ocultar otros elementos de UI
-	label.visible = false
-	login_ui.visible = false
-	waiting_room_ui.visible = false
+	# # Ocultar otros elementos de UI
+	# label.visible = false
+	# login_ui.visible = false
+	# waiting_room_ui.visible = false
 	
-	# Reproducir video
-	video_stream_player.play()
+	# # Reproducir video
+	# video_stream_player.play()
 	# ✅ CORREGIDO: Ocultar el canvas layer COMPLETAMENTE después del video
 	canvas_layer.visible = false
 	canvas_layer.process_mode = Node.PROCESS_MODE_DISABLED

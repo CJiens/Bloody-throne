@@ -259,8 +259,8 @@ class WaveSystem {
 	}
 
 	getWaveConfig(waveNumber) {
-	let numEnemies = this.minEnemies + Math.floor(Math.random() * ((this.maxEnemies - this.minEnemies) / 2 + 1)) * 2;
-		
+		let numEnemies = this.minEnemies + Math.floor(Math.random() * ((this.maxEnemies - this.minEnemies) / 2 + 1)) * 2;
+
 		const baseReward = 50 + (waveNumber * 10);
 
 		return {
@@ -592,20 +592,20 @@ function resetGame() {
 // ----------------------------
 function spawnWaveEnemies(waveConfig) {
 	enemies = {}; // Limpiar enemigos anteriores
-// ✅ SISTEMA MEZCLADO: Algunos enemigos por equipo, algunos neutrales
+	// ✅ SISTEMA MEZCLADO: Algunos enemigos por equipo, algunos neutrales
 	const totalEnemies = waveConfig.enemies;
-	
+
 	// Calcular distribución:
 	// - 60% enemigos por equipo (30% cada equipo)
 	// - 40% enemigos neutrales
 	const teamEnemies = Math.floor(totalEnemies * 0.6);
 	const neutralEnemies = totalEnemies - teamEnemies;
-	
+
 	// Asegurar que teamEnemies sea par para dividir entre equipos
 	const enemiesPerTeam = Math.floor(teamEnemies / 2);
-	
+
 	console.log(`🎯 SPAWN MEZCLADO - Total: ${totalEnemies}, Equipo 1: ${enemiesPerTeam}, Equipo 2: ${enemiesPerTeam}, Neutrales: ${neutralEnemies}`);
-	
+
 	let nextId = 1;
 
 	// Spawn enemigos equipo 1 (azul)
@@ -613,19 +613,19 @@ function spawnWaveEnemies(waveConfig) {
 		spawnEnemy(nextId, waveConfig.types, 1);
 		nextId++;
 	}
-	
+
 	// Spawn enemigos equipo 2 (rojo)  
 	for (let i = 0; i < enemiesPerTeam; i++) {
 		spawnEnemy(nextId, waveConfig.types, 2);
 		nextId++;
 	}
-	
+
 	// Spawn enemigos neutrales (equipo 0 - blancos)
 	for (let i = 0; i < neutralEnemies; i++) {
 		spawnEnemy(nextId, waveConfig.types, 0);
 		nextId++;
 	}
-	
+
 	console.log(`✅ SPAWN COMPLETADO - Equipo 1: ${enemiesPerTeam}, Equipo 2: ${enemiesPerTeam}, Neutrales: ${neutralEnemies}`);
 	//}
 }
@@ -636,20 +636,20 @@ function spawnEnemy(id, availableTypes, forceTeam = null) {
 
 	// ✅ FIJO: Usar equipo forzado
 	let fixedTeam = forceTeam;
-	
+
 	// ✅ SPAWN ALEATORIO EN ÁREA SEGURA PARA CADA EQUIPO
 	let spawnPos;
 	if (fixedTeam === 1) {
 		// Área segura para equipo azul (izquierda del mapa)
 		spawnPos = {
-			x: -1600 + (Math.random() * 800 - 400),  // Entre -2000 y -1200
-			y: -800 + (Math.random() * 800 - 400)    // Entre -1200 y -400
+			x: -1600,  // Entre -2000 y -1200
+			y: -800    // Entre -1200 y -400
 		};
 	} else if (fixedTeam === 2) {
 		// Área segura para equipo rojo (derecha del mapa)
 		spawnPos = {
-			x: 1400 + (Math.random() * 800 - 400),   // Entre 1000 y 1800
-			y: 400 + (Math.random() * 800 - 400)     // Entre 0 y 800
+			x: 1400,   // Entre 1000 y 1800
+			y: 400    // Entre 0 y 800
 		};
 	} else {
 		// ✅ ENEMIGOS NEUTRALES - spawn en el centro del mapa
@@ -669,7 +669,7 @@ function spawnEnemy(id, availableTypes, forceTeam = null) {
 		type: enemyType,
 		team: fixedTeam,
 		attack_damage: enemyType === 'grunt' ? 10 : enemyType === 'archer' ? 8 : enemyType === 'mage' ? 12 : 15,
-		move_speed: enemyType === 'grunt' ? 80 : enemyType === 'archer' ? 100 : enemyType === 'mage' ? 70 : 60,
+		move_speed: enemyType === 'grunt' ? 200 : enemyType === 'archer' ? 150 : enemyType === 'mage' ? 200 : 150,
 		spawn_area: fixedTeam,
 		is_neutral: fixedTeam === 0,  // ✅ FLAG PARA IDENTIFICAR NEUTRALES
 		last_attack_time: 0,// ✅ COOLDOWN DE ATAQUE PARA NEUTRALES
@@ -677,7 +677,7 @@ function spawnEnemy(id, availableTypes, forceTeam = null) {
 	};
 
 	console.log(`👹 ENEMIGO SPAWNEADO - ID: ${id}, Equipo: ${fixedTeam}${fixedTeam === 0 ? ' (NEUTRAL)' : ''}, Posición: (${spawnPos.x}, ${spawnPos.y})`);
- //✅ BROADCAST del enemigo con su equipo
+	//✅ BROADCAST del enemigo con su equipo
 	broadcast({
 		type: 'enemy_spawned',
 		enemy: enemies[id]
@@ -722,92 +722,92 @@ function startWave() {
 }
 
 function endCurrentWave() {
-    console.log(`🔚 TERMINANDO OLEADA ${waveSystem.currentWave}`);
-    waveSystem.waveInProgress = false;
-    const waveConfig = waveSystem.getWaveConfig(waveSystem.currentWave);
+	console.log(`🔚 TERMINANDO OLEADA ${waveSystem.currentWave}`);
+	waveSystem.waveInProgress = false;
+	const waveConfig = waveSystem.getWaveConfig(waveSystem.currentWave);
 
-    // Recompensa fija por oleada completada
-    const reward = waveConfig.reward;
-    console.log(`💰 RECOMPENSA DE OLEADA: ${reward} monedas para todos los jugadores`);
+	// Recompensa fija por oleada completada
+	const reward = waveConfig.reward;
+	console.log(`💰 RECOMPENSA DE OLEADA: ${reward} monedas para todos los jugadores`);
 
-    for (let playerId in players) {
-        const player = players[playerId];
-        const newAmount = economySystem.addCurrency(playerId, reward, player);
-        console.log(`💰 JUGADOR ${playerId} RECIBE +${reward} MONEDAS - Total: ${newAmount}`);
+	for (let playerId in players) {
+		const player = players[playerId];
+		const newAmount = economySystem.addCurrency(playerId, reward, player);
+		console.log(`💰 JUGADOR ${playerId} RECIBE +${reward} MONEDAS - Total: ${newAmount}`);
 
-        sendToPlayer(playerId, {
-            type: 'currency_updated',
-            player_id: parseInt(playerId),
-            amount: newAmount
-        });
-    }
+		sendToPlayer(playerId, {
+			type: 'currency_updated',
+			player_id: parseInt(playerId),
+			amount: newAmount
+		});
+	}
 
-    broadcast({ type: 'wave_ended' });
-    console.log(`📨 SEÑAL wave_ended ENVIADA`);
+	broadcast({ type: 'wave_ended' });
+	console.log(`📨 SEÑAL wave_ended ENVIADA`);
 
-    // Período de decisiones
-    setTimeout(() => {
-        console.log(`⏰ INICIANDO PERIODO DE DECISIONES para oleada ${waveSystem.currentWave + 1}`);
+	// Período de decisiones
+	setTimeout(() => {
+		console.log(`⏰ INICIANDO PERIODO DE DECISIONES para oleada ${waveSystem.currentWave + 1}`);
 
-        for (let playerId in players) {
-            const player = players[playerId];
-            const playerCurrency = economySystem.getCurrency(playerId);
-            const randomCards = CardSystem.getRandomCards(3);
+		for (let playerId in players) {
+			const player = players[playerId];
+			const playerCurrency = economySystem.getCurrency(playerId);
+			const randomCards = CardSystem.getRandomCards(3);
 
-            player.current_cards = randomCards;
+			player.current_cards = randomCards;
 
-            sendToPlayer(playerId, {
-                type: 'decision_period_started',
-                duration: 30.0,
-                currency: playerCurrency,
-                cards: randomCards
-            });
-        }
+			sendToPlayer(playerId, {
+				type: 'decision_period_started',
+				duration: 30.0,
+				currency: playerCurrency,
+				cards: randomCards
+			});
+		}
 
-        console.log(`🎯 PERIODO DE DECISIONES INICIADO PARA ${Object.keys(players).length} JUGADORES`);
+		console.log(`🎯 PERIODO DE DECISIONES INICIADO PARA ${Object.keys(players).length} JUGADORES`);
 
-        // Iniciar siguiente oleada después del período
-        setTimeout(() => {
-            console.log(`🌊 INICIANDO OLEADA ${waveSystem.currentWave + 1} automáticamente`);
-            startWave();
-        }, 30000);
+		// Iniciar siguiente oleada después del período
+		setTimeout(() => {
+			console.log(`🌊 INICIANDO OLEADA ${waveSystem.currentWave + 1} automáticamente`);
+			startWave();
+		}, 30000);
 
-    }, 3000);
+	}, 3000);
 }
 // ✅ FUNCIÓN MEJORADA PARA MOVIMIENTO DE ENEMIGOS NEUTRALES
 function _moveNeutralEnemy(enemy) {
 	// Buscar jugador más cercano
 	let closestPlayer = null;
 	let minDistance = Infinity;
-	
+
 	for (let playerId in players) {
 		const player = players[playerId];
 		if (player.is_alive) {
 			const distance = Math.sqrt(
 				Math.pow(player.x - enemy.x, 2) + Math.pow(player.y - enemy.y, 2)
 			);
-			
+
 			if (distance < minDistance && distance < 800) { // Radio de detección aumentado a 800
 				minDistance = distance;
 				closestPlayer = player;
 			}
 		}
 	}
-	
+
 	// Si encontramos un jugador, movernos DIRECTAMENTE hacia él
 	if (closestPlayer) {
 		const dx = closestPlayer.x - enemy.x;
 		const dy = closestPlayer.y - enemy.y;
 		const distance = Math.sqrt(dx * dx + dy * dy);
-		
+
 		if (distance > 0) {
 			// ✅ MOVIMIENTO MÁS DECIDIDO - Sin cambios de dirección aleatorios
 			const moveX = (dx / distance) * enemy.move_speed * 0.025; // Aumentada la velocidad
 			const moveY = (dy / distance) * enemy.move_speed * 0.025;
-			
+
 			enemy.x += moveX;
 			enemy.y += moveY;
-			
+
 			// ✅ VERIFICAR SI ESTÁ EN RANGO PARA ATACAR (distancia < 60)
 			if (distance <= 60) {
 				_attackPlayerWithNeutral(enemy, closestPlayer);
@@ -818,12 +818,12 @@ function _moveNeutralEnemy(enemy) {
 		if (Math.random() < 0.02) { // Solo 2% de probabilidad de moverse aleatoriamente
 			const angle = Math.random() * Math.PI * 2;
 			const distance = enemy.move_speed * 0.016;
-			
+
 			enemy.x += Math.cos(angle) * distance;
 			enemy.y += Math.sin(angle) * distance;
 		}
 	}
-	
+
 	// Limitar el movimiento al área central del mapa
 	enemy.x = Math.max(-1200, Math.min(1200, enemy.x));
 	enemy.y = Math.max(-1000, Math.min(1000, enemy.y));
@@ -832,21 +832,21 @@ function _moveNeutralEnemy(enemy) {
 // ✅ FUNCIÓN MEJORADA CON COOLDOWN
 function _attackPlayerWithNeutral(enemy, player) {
 	const now = Date.now();
-	
+
 	// ✅ VERIFICAR COOLDOWN
 	if (now - enemy.last_attack_time < enemy.attack_cooldown) {
 		return; // Todavía en cooldown
 	}
-	
+
 	// ✅ DAÑO DEL 5% DE LA VIDA MÁXIMA DEL PLAYER
 	const damage = Math.floor(player.max_hp * 0.05);
-	
+
 	console.log(`💥 ENEMIGO NEUTRAL ${enemy.id} ATACA JUGADOR ${player.id} - Daño: ${damage} (5% de ${player.max_hp})`);
-	
+
 	// Aplicar daño al jugador
 	player.hp -= damage;
 	if (player.hp < 0) player.hp = 0;
-	
+
 	// Notificar a todos los clientes
 	broadcast({
 		type: 'player_hit',
@@ -856,13 +856,13 @@ function _attackPlayerWithNeutral(enemy, player) {
 		attacker_id: enemy.id,
 		attacker_type: 'neutral_enemy'
 	});
-	
+
 	// Verificar si el jugador murió
 	if (player.hp <= 0) {
 		console.log(`💀 JUGADOR ${player.id} MUERTO POR ENEMIGO NEUTRAL ${enemy.id}`);
 		player.is_alive = false;
 		player.respawn_timer = 10;
-		
+
 		broadcast({
 			type: 'player_dead',
 			id: parseInt(player.id),
@@ -870,10 +870,10 @@ function _attackPlayerWithNeutral(enemy, player) {
 			respawn_time: 10,
 			killer_type: 'neutral_enemy'
 		});
-		
+
 		startRespawnTimer(player.id);
 	}
-	
+
 	// ✅ ACTUALIZAR COOLDOWN
 	enemy.last_attack_time = now;
 }
@@ -890,7 +890,7 @@ function startGameLoop() {
 
 			// Saltar el jefe permanente (ya tiene su propia IA)
 			if (enemy.is_permanent) continue;
-			
+
 			if (enemy.type === 'boss_wave') continue; // Jefe de oleada tiene comportamiento especial
 			if (enemy.team === 0) {
 				// Enemigos neutrales: movimiento aleatorio o buscar jugadores
@@ -917,10 +917,10 @@ function startGameLoop() {
 			if (distanceToAllyBase < 300) {
 				const awayFromAllyBaseX = (enemy.x - allyBase.x) / distanceToAllyBase;
 				const awayFromAllyBaseY = (enemy.y - allyBase.y) / distanceToAllyBase;
-				
+
 				enemy.x += awayFromAllyBaseX * enemy.move_speed * 0.016;
 				enemy.y += awayFromAllyBaseY * enemy.move_speed * 0.016;
-				
+
 				console.log(`🚫 ENEMIGO ${enemyId} ALEJÁNDOSE DE BASE ALIADA - Equipo: ${enemy.team}`);
 			}
 			// Si el enemigo está muy lejos de la base enemiga, moverse hacia ella
@@ -928,13 +928,13 @@ function startGameLoop() {
 				// Movimiento suave hacia el objetivo
 				const moveX = (dx / distance) * enemy.move_speed * 0.016;
 				const moveY = (dy / distance) * enemy.move_speed * 0.016;
-				
+
 				enemy.x += moveX;
 				enemy.y += moveY;
 			} else {
 				// Si está en rango de ataque, ATACAR PERO NO ACERCARSE MÁS
 				targetBase.hp -= enemy.attack_damage * 0.016;
-				
+
 				// Debug del ataque ocasionalmente
 				if (Math.random() < 0.02) { // 2% de chance cada frame
 					console.log(`💥 ENEMIGO ${enemyId} ATACANDO BASE ENEMIGA ${targetBase.team} - HP restante: ${Math.round(targetBase.hp)}`);
@@ -1395,15 +1395,15 @@ wss.on('connection', (ws) => {
 
 				if (distance <= areaRange) {
 					console.log(`🎯 ${enemy.is_permanent ? 'JEFE' : 'ENEMIGO'} ${enemyId} EN ÁREA - Distancia: ${distance}, Aplicando daño: ${areaDamage}`);
-					
+
 					enemy.hp -= areaDamage;
 					if (enemy.hp < 0) enemy.hp = 0;
 
 					// Notificar que el enemigo fue golpeado
-					broadcast({ 
-						type: 'enemy_hit', 
-						id: enemyId, 
-						hp: enemy.hp 
+					broadcast({
+						type: 'enemy_hit',
+						id: enemyId,
+						hp: enemy.hp
 					});
 
 					hits++;
@@ -1411,11 +1411,11 @@ wss.on('connection', (ws) => {
 					// Manejar muerte del enemigo
 					if (enemy.hp <= 0) {
 						console.log(`💀 ${enemy.is_permanent ? 'JEFE' : 'ENEMIGO'} ${enemyId} MUERTO POR ATAQUE DE ÁREA`);
-						
+
 						// Dar recompensa al atacante
 						const enemyType = enemy.type;
 						let killReward = 0;
-						
+
 						// ✅ CORREGIDO: Incluir recompensa para el jefe permanente
 						switch (enemyType) {
 							case 'grunt': killReward = 5; break;
@@ -1473,11 +1473,11 @@ wss.on('connection', (ws) => {
 
 				if (distance <= areaRange) {
 					console.log(`🏰 BASE ${team} EN ÁREA - Distancia: ${distance}, Aplicando daño: ${areaDamage}`);
-					
+
 					// ✅ CORREGIDO: Verificar correctamente el equipo del atacante
 					const attackerTeam = attacker.team || 0;
 					const baseTeam = parseInt(team);
-					
+
 					if (baseTeam !== attackerTeam) {
 						base.hp -= areaDamage;
 						if (base.hp < 0) base.hp = 0;
@@ -1506,11 +1506,11 @@ wss.on('connection', (ws) => {
 			// 3. ✅ NUEVO: APLICAR DAÑO A JUGADORES RIVALES
 			for (let playerId in players) {
 				const player = players[playerId];
-				
+
 				// ✅ CORREGIDO: Verificar correctamente el equipo
 				const playerTeam = player.team || 0;
 				const attackerTeam = attacker.team || 0;
-				
+
 				// Solo jugadores vivos del equipo contrario
 				if (player.is_alive && playerTeam !== attackerTeam) {
 					const distance = Math.sqrt(
@@ -1519,14 +1519,14 @@ wss.on('connection', (ws) => {
 
 					if (distance <= areaRange) {
 						console.log(`🎯 JUGADOR RIVAL ${playerId} EN ÁREA - Distancia: ${distance}, Aplicando daño: ${areaDamage}`);
-						
+
 						player.hp -= areaDamage;
 						if (player.hp < 0) player.hp = 0;
 
-						broadcast({ 
-							type: 'player_hit', 
-							id: parseInt(playerId), 
-							hp: player.hp 
+						broadcast({
+							type: 'player_hit',
+							id: parseInt(playerId),
+							hp: player.hp
 						});
 
 						hits++;
@@ -1534,7 +1534,7 @@ wss.on('connection', (ws) => {
 						// Manejar muerte del jugador
 						if (player.hp <= 0) {
 							console.log(`💀 JUGADOR RIVAL ${playerId} MUERTO POR ATAQUE DE ÁREA`);
-							
+
 							player.is_alive = false;
 							player.respawn_timer = 10;
 
@@ -1715,7 +1715,7 @@ wss.on('connection', (ws) => {
 							console.log(`💀 JUGADOR RIVAL ${playerId} MUERTO POR ATAQUE DE ÁREA ROGUE`);
 
 							player.is_alive = false;
-							 player.respawn_timer= 10;
+							player.respawn_timer = 10;
 
 							broadcast({
 								type: 'player_dead',
@@ -1832,7 +1832,7 @@ wss.on('connection', (ws) => {
 			broadcast({ type: 'projectile_removed', id: msg.projectile_id });
 			delete projectiles[msg.projectile_id];
 		}
-		
+
 		// --- CHAT ---
 		else if (msg.type === 'chat') {
 			console.log("💬 CHAT - De:", userId, " Texto:", msg.text);
@@ -2108,7 +2108,7 @@ setInterval(() => {
 // Función para aplicar daño de maga a jugador (SIMPLIFICADA)
 function _applyMageDamageToPlayer(playerId, damage, ownerId) {
 	console.log("🔥 _applyMageDamageToPlayer - playerId:", playerId, "ownerId:", ownerId);
-	
+
 	const target = players[playerId];
 	if (!target) {
 		console.log("❌ JUGADOR OBJETIVO NO ENCONTRADO - ID:", playerId);
@@ -2129,16 +2129,16 @@ function _applyMageDamageToPlayer(playerId, damage, ownerId) {
 
 	console.log(`💥 MAGA DAÑA JUGADOR - ${damage} a ${playerId}, HP restante: ${target.hp}`);
 
-	broadcast({ 
-		type: 'player_hit', 
-		id: parseInt(playerId), 
-		hp: target.hp 
+	broadcast({
+		type: 'player_hit',
+		id: parseInt(playerId),
+		hp: target.hp
 	});
 
 	// Manejar muerte del jugador
 	if (target.hp <= 0) {
 		console.log(`💀 JUGADOR ${playerId} MUERTO POR ATAQUE DE ÁREA MAGA`);
-		
+
 		target.is_alive = false;
 		target.respawn_timer = 10;
 
@@ -2169,19 +2169,19 @@ function _applyMageDamageToEnemy(enemyId, damage, ownerId) {
 
 	console.log(`💥 MAGA DAÑA ENEMIGO - ${damage} a ${enemyId}, HP restante: ${target.hp}`);
 
-	broadcast({ 
-		type: 'enemy_hit', 
-		id: enemyId, 
-		hp: target.hp 
+	broadcast({
+		type: 'enemy_hit',
+		id: enemyId,
+		hp: target.hp
 	});
 
 	// Manejar muerte del enemigo
 	if (target.hp <= 0) {
 		console.log(`💀 ENEMIGO ${enemyId} MUERTO POR ATAQUE DE ÁREA MAGA`);
-		
+
 		const enemyType = target.type;
 		let killReward = 0;
-		
+
 		switch (enemyType) {
 			case 'grunt': killReward = 5; break;
 			case 'archer': killReward = 8; break;

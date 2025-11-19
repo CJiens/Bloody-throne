@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://m5llmhoblgp6" path="res://projectiles/MageProjectile.tscn" id="4_2cqfq"]
 [ext_resource type="Theme" uid="uid://qkkblp6cijnh" path="res://Temas/Botones segunda parte.tres" id="6_kek77"]
 [ext_resource type="Theme" uid="uid://bc0ftxndqriis" path="res://Temas/main_menu.tres" id="7_5vw27"]
-[ext_resource type="PackedScene" path="res://base.tscn" id="7_cegan"]
+[ext_resource type="PackedScene" uid="uid://cog04o3t2cbln" path="res://base.tscn" id="7_cegan"]
 [ext_resource type="PackedScene" uid="uid://c50dg0rerb3ol" path="res://enities/boss/boss.tscn" id="7_getpj"]
 [ext_resource type="Theme" uid="uid://p6lafxv8viug" path="res://Temas/Input.tres" id="9_kek77"]
 [ext_resource type="AudioStream" uid="uid://kv8nhocsergj" path="res://Musica/Bloody-Throne-Preferida.ogg" id="10_4c57u"]
@@ -18,7 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://csyo6qyx8vktx" path="res://Ui_Select_player/Assasin.png" id="13_074og"]
 [ext_resource type="Texture2D" uid="uid://bjnljqymy58am" path="res://Ui_Select_player/Caballero.png" id="14_cegan"]
 [ext_resource type="Animation" uid="uid://cggh7b3rqmfak" path="res://Titulo_intro.res" id="15_82xsv"]
-[ext_resource type="PackedScene" path="res://Nivel1.tscn" id="20_82xsv"]
+[ext_resource type="PackedScene" uid="uid://b6gqm85kbtrsp" path="res://Nivel1.tscn" id="20_82xsv"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cegan"]
 

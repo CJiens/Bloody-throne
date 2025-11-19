@@ -6,10 +6,10 @@
 [ext_resource type="SpriteFrames" uid="uid://ccgibxgs3r40s" path="res://Warrior.tres" id="2_kne1u"]
 [ext_resource type="Theme" uid="uid://bb7bavby4542p" path="res://Cuadradito de Stats.tres" id="3_d6rpx"]
 [ext_resource type="SpriteFrames" uid="uid://bo604nekfqts0" path="res://Knight.tres" id="3_tdg3f"]
-[ext_resource type="Theme" path="res://Hero Stat-titulo.tres" id="4_cgsek"]
+[ext_resource type="Theme" uid="uid://t8tag5303032" path="res://Hero Stat-titulo.tres" id="4_cgsek"]
 [ext_resource type="SpriteFrames" uid="uid://dqyik6patsouj" path="res://Archer.tres" id="4_e80uo"]
 [ext_resource type="Texture2D" uid="uid://yujjp24n4aik" path="res://Interfaz de estadistica/Rotado.png" id="4_r3kul"]
-[ext_resource type="Theme" path="res://Texto largo.tres" id="5_cgsek"]
+[ext_resource type="Theme" uid="uid://db6qnstwk4guc" path="res://Texto largo.tres" id="5_cgsek"]
 [ext_resource type="Theme" uid="uid://ykrxwwxjsmk" path="res://Cuadrado.tres" id="7_0pi4m"]
 [ext_resource type="Texture2D" uid="uid://ccnvh8gjwqrub" path="res://Interfaz de estadistica/Caballero silueta.png" id="7_efikj"]
 [ext_resource type="Theme" uid="uid://dqdwbp4n0owan" path="res://theme_stat.tres" id="8_cgsek"]
@@ -304,7 +304,7 @@ horizontal_alignment = 1
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Label9" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+[node name="critical_label" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.3003234
@@ -322,7 +322,7 @@ horizontal_alignment = 1
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Label10" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
+[node name="gold_label" type="Label" parent="Camera2D/StatsUI/Panel/Panel"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.7553234
@@ -877,7 +877,7 @@ metadata/_edit_use_anchors_ = true
 [node name="Panel3" type="Panel" parent="Camera2D/DecisionUI"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.37127984
+anchor_left = 0.37127978
 anchor_top = 0.5038871
 anchor_right = 0.37127978
 anchor_bottom = 0.5038871
