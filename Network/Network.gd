@@ -25,6 +25,11 @@ var ws_ready := false
 # -------------------------------
 # --- SEÑALES
 # -------------------------------
+# Señales para mejoras de enemigos
+# -------------------------------
+# --- SEÑALES (AGREGAR ESTA)
+# -------------------------------
+signal enemy_buff_applied(card_name, applied_by, buff_type)
 signal enemy_spawned_immediate(enemy_data)
 signal login_successful
 signal connection_successful

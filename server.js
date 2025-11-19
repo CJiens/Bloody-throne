@@ -309,6 +309,9 @@ let gameLoop;
 const waveSystem = new WaveSystem();
 const economySystem = new EconomySystem();
 
+
+
+
 // Bases del juego
 // Busca esta sección y actualiza las coordenadas:
 let bases = {

@@ -148,6 +148,7 @@ var bosses := {} # id:int -> Node2D
 # --- INICIO
 # -------------------------------
 func _ready():
+	Network.enemy_buff_applied.connect(_on_enemy_buff_applied)
 	# Agregar este nodo al grupo "main" para que los fantasmas puedan encontrarlo
 	add_to_group("main")
 	
@@ -1993,3 +1994,31 @@ func _on_base_hit(team: int, hp: int, max_hp: int):
 			base_node.update_hp(hp)
 func _on_rogue_area_attack_effect(x: float, y: float, player_id: int):
 	print("💥 EFECTO DE ATAQUE DE ÁREA ROGUE - Jugador:", player_id, " Posición:", Vector2(x, y))
+
+
+# -------------------------------
+# --- MANEJO DE MEJORAS A ENEMIGOS
+# -------------------------------
+# -------------------------------
+# --- MANEJO DE MEJORAS A ENEMIGOS
+# -------------------------------
+func _on_enemy_buff_applied(card_name: String, applied_by: String, buff_type: String):
+	print("☠️ MEJORA APLICADA A ENEMIGOS - Carta:", card_name, " Por:", applied_by, " Tipo:", buff_type)
+	show_enemy_buff_notification(card_name, applied_by)
+
+func show_enemy_buff_notification(card_name: String, player_name: String):
+	var notification = Label.new()
+	notification.text = "☠️ %s usó: %s" % [player_name, card_name]
+	notification.add_theme_font_size_override("font_size", 18)
+	notification.add_theme_color_override("font_color", Color.RED)
+	notification.position = Vector2(get_viewport().size.x / 2 - 150, 200)
+    
+	canvas_layer.add_child(notification)
+    
+	var tween = create_tween()
+	tween.parallel().tween_property(notification, "position:y", notification.position.y - 50, 2.0)
+	tween.parallel().tween_property(notification, "modulate", Color(1, 1, 1, 0), 2.0)
+	tween.tween_callback(notification.queue_free)
+
+
+

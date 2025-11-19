@@ -15,7 +15,7 @@ var team: int = 1
 # -------------------------------
 var is_respawning: bool = false
 var respawn_timer: float = 0.0
-var respawn_cooldown: float = 10.0  # 10 segundos de espera
+var respawn_cooldown: float = 10.0 # 10 segundos de espera
 # Movimiento
 var move_dir := Vector2.ZERO
 var speed := 200.0
@@ -152,6 +152,9 @@ var class_configs := {
 @onready var card_1: Control = $Camera2D/DecisionUI/Panel2/Panel
 @onready var card_2: Control = $Camera2D/DecisionUI/Panel2/Panel2
 @onready var card_3: Control = $Camera2D/DecisionUI/Panel2/Panel3
+@onready var card_4: Control = $Camera2D/DecisionUI/Panel3/Panel
+@onready var card_5: Control = $Camera2D/DecisionUI/Panel3/Panel2
+@onready var card_6: Control = $Camera2D/DecisionUI/Panel3/Panel3
 
 # Variables para controlar UI
 var current_wave: int = 0
@@ -200,7 +203,7 @@ func _apply_class_config():
 	attack_cooldown = config.attack_cooldown
 	projectile_scene = config.projectile
 	
-	# CONFIGURACIÓN ESPECÍFICA PARA ARQUERA ← AGREGAR ESTO
+	# CONFIGURACIÓN ESPECÍFICA PARA ARQUERA
 	if classe == "archer":
 		area_attack_cooldown = 3.0 # 3 segundos de cooldown
 		area_attack_range = 200.0 # 200 píxeles de rango
@@ -289,20 +292,24 @@ func _ready():
 	_setup_player_ui()
 	_setup_cards_ui()
 
+	# Conectar señales de cartas
 	if not Network.card_purchased.is_connected(_on_card_purchased):
 		Network.card_purchased.connect(_on_card_purchased)
-
 	
-	# ✅ CORREGIDO: Conectar señal currency_updated con player_id
+	if not Network.card_purchase_failed.is_connected(_on_card_purchase_failed):
+		Network.card_purchase_failed.connect(_on_card_purchase_failed)
+	
+	# Conectar señal currency_updated con player_id
 	if not Network.currency_updated.is_connected(_on_currency_updated):
 		Network.currency_updated.connect(_on_currency_updated)
 	
-	# ✅ NUEVO: Conectar señales de respawn
+	# Conectar señales de respawn
 	if not Network.respawn_countdown.is_connected(_on_respawn_countdown):
 		Network.respawn_countdown.connect(_on_respawn_countdown)
 	
 	if not Network.player_respawned.is_connected(_on_player_respawned):
 		Network.player_respawned.connect(_on_player_respawned)
+		
 	_apply_class_config()
 	print("👤 JUGADOR LISTO - ID:", id, " Clase:", classe, " Hitbox: ACTIVADO")
 	
@@ -311,13 +318,13 @@ func force_respawn():
 	if is_respawning:
 		print("⚡ RESPawN FORZADO - Jugador:", id)
 		finish_respawn()
+
 func _process(delta):
-	print("Esta es la pocision de la x => " + str(get_local_mouse_position().x) + "Esta es la pocision de la y =>" + str(get_local_mouse_position().y))
 	_handle_cooldowns(delta)
 	_handle_area_attack_cooldown(delta)
 	_handle_rogue_area_attack_cooldown(delta)
 	_handle_mage_area_attack_cooldown(delta)
-	# ✅ NUEVO: Manejar timer de respawn
+	# Manejar timer de respawn
 	if is_respawning:
 		respawn_timer -= delta
 		# Debug cada segundo
@@ -331,7 +338,7 @@ func _process(delta):
 		if decision_time_remaining <= 0:
 			in_decision_period = false
 			hide_game_ui()
-	# ✅ ACTUALIZAR CONTADOR DE WAVE UI SI ESTÁ VISIBLE
+	# ACTUALIZAR CONTADOR DE WAVE UI SI ESTÁ VISIBLE
 	if wave_ui and wave_ui.visible and not in_decision_period:
 		var current_enemy_count = get_tree().get_nodes_in_group("enemies").size()
 		if enemy_count_label and current_enemy_count != enemies_remaining:
@@ -341,28 +348,67 @@ func _process(delta):
 			# Debug ocasional
 			if Engine.get_frames_drawn() % 120 == 0:
 				print("🔢 PLAYER - Contador actualizado:", current_enemy_count)
-# ✅ NUEVA FUNCIÓN: Sincronizar con el servidor durante el respawn
+
+# -------------------------------
+# --- MANEJO DE COMPRA DE CARTAS
+# -------------------------------
+func _on_card_buy_pressed(card_ui: Control):
+	if not in_decision_period:
+		print("❌ PERIODO DE DECISIONES TERMINADO - No se puede comprar")
+		return
+		
+	var card_index = card_ui_nodes.find(card_ui)
+	if card_index == -1 or card_index >= available_cards.size():
+		print("❌ CARTA NO ENCONTRADA - Índice:", card_index, " Cartas disponibles:", available_cards.size())
+		return
+		
+	var card_data = available_cards[card_index]
+	
+	if player_currency >= card_data.get("cost", 0) and id == Network.player_id:
+		print("🃏 COMPRANDO CARTA:", card_data.get("name", "Sin nombre"), " Costo:", card_data.get("cost", 0))
+		Network.purchase_card(card_data.get("id", ""))
+	else:
+		if id != Network.player_id:
+			print("❌ NO ES JUGADOR LOCAL - No puede comprar")
+		else:
+			print("❌ FONDOS INSUFICIENTES - Necesita:", card_data.get("cost", 0), " Tiene:", player_currency)
+
+func _on_card_purchase_failed(reason: String):
+	print("❌ ERROR EN COMPRA DE CARTA:", reason)
+	
+	# Efecto visual de error
+	modulate = Color(1, 0.5, 0.5)
+	var tween = create_tween()
+	tween.tween_property(self, "modulate", Color.WHITE, 0.3)
+	
+	# Mostrar mensaje de error
+	_show_floating_text("Error: " + reason, Color.RED)
+
+# -------------------------------
+# --- SISTEMA DE RESPawN
+# -------------------------------
 func _on_respawn_countdown(player_id: int, time_left: int):
 	if player_id == id:
 		print("⏰ ACTUALIZACIÓN DE RESPawN RECIBIDA - Tiempo:", time_left, "s")
 		if time_left > 0 and not is_respawning:
 			start_respawn()
 		respawn_timer = time_left
-# MODIFICAR la función _on_player_respawned en Player.gd
+
 func _on_player_respawned(player_data: Dictionary):
 	if player_data.id == id:
 		print("✅ RESPawN DEL SERVIDOR RECIBIDO - Jugador:", id, " Posición:", Vector2(player_data.x, player_data.y))
 		
-		# ✅ FORZAR LA POSICIÓN DEL SERVIDOR
+		# FORZAR LA POSICIÓN DEL SERVIDOR
 		position = Vector2(player_data.x, player_data.y)
 		
-		# ✅ ACTUALIZAR VIDA CON DATOS DEL SERVIDOR
+		# ACTUALIZAR VIDA CON DATOS DEL SERVIDOR
 		hp = player_data.hp
 		if hp_bar:
 			hp_bar.value = hp
 			hplabel.text = str(hp) + "/" + str(max_hp)
 		
 		finish_respawn()
+
 func _physics_process(delta):
 	if id == Network.player_id:
 		_handle_local_movement(delta)
@@ -407,7 +453,7 @@ func _setup_player_ui():
 	_update_player_info()
 
 func _setup_cards_ui():
-	card_ui_nodes = [card_1, card_2, card_3]
+	card_ui_nodes = [card_1, card_2, card_3, card_4, card_5, card_6]
 	for card_ui in card_ui_nodes:
 		if card_ui:
 			card_ui.visible = false
@@ -415,7 +461,23 @@ func _setup_cards_ui():
 			if buy_button and not buy_button.pressed.is_connected(_on_card_buy_pressed):
 				buy_button.pressed.connect(_on_card_buy_pressed.bind(card_ui))
 
-# NUEVO: Actualizar información básica del jugador
+func _setup_card_ui(card_ui: Control, card_data: Dictionary):
+	var name_label = card_ui.get_node_or_null("CardName")
+	var desc_label = card_ui.get_node_or_null("CardDescription")
+	var cost_label = card_ui.get_node_or_null("CardCost")
+	var buy_button = card_ui.get_node_or_null("BuyButton")
+    
+	if name_label:
+		name_label.text = card_data.get("name", "Carta Sin Nombre")
+	if desc_label:
+		desc_label.text = card_data.get("description", "Sin descripción")
+	if cost_label:
+		cost_label.text = "Costo: %d" % card_data.get("cost", 0)
+	if buy_button:
+		buy_button.disabled = player_currency < card_data.get("cost", 0)
+		buy_button.text = "Comprar (%d)" % card_data.get("cost", 0)
+
+# Actualizar información básica del jugador
 func _update_player_info():
 	if player_info_ui:
 		if player_currency_label:
@@ -425,7 +487,7 @@ func _update_player_info():
 		if player_class_label:
 			player_class_label.text = "Clase: %s" % classe.capitalize()
 
-# NUEVO: Actualizar estadísticas detalladas
+# Actualizar estadísticas detalladas
 func _update_detailed_stats():
 	if not stats_ui or not show_detailed_stats:
 		return
@@ -498,7 +560,7 @@ func add_currency_for_kill(enemy_type: String, amount: int = 0):
 
 func update_wave_ui(wave_number: int, enemy_count: int):
 	current_wave = wave_number
-	# ✅ USAR EL CONTADOR REAL DE ENEMIGOS EN LA ESCENA
+	# USAR EL CONTADOR REAL DE ENEMIGOS EN LA ESCENA
 	var actual_enemy_count = get_tree().get_nodes_in_group("enemies").size()
 	enemies_remaining = actual_enemy_count
 	in_decision_period = false
@@ -548,6 +610,7 @@ func show_decision_period(duration: float, currency: int = 0, cards: Array = [])
 	
 	print("⏰ PERIODO DE DECISIONES - Duración:", duration, "s, Monedas:", currency, " Cartas:", cards.size())
 
+# En la función que muestra las cartas, asegurar que se muestren correctamente:
 func _display_available_cards():
 	for i in range(card_ui_nodes.size()):
 		var card_ui = card_ui_nodes[i]
@@ -555,40 +618,18 @@ func _display_available_cards():
 			var card_data = available_cards[i]
 			_setup_card_ui(card_ui, card_data)
 			card_ui.visible = true
+            
+			# Cambiar color según el target de la carta
+			var panel = card_ui.get_node_or_null("Panel")
+			if panel:
+				if card_data.get("target", "player") == "enemy":
+					# Color rojizo para cartas de enemigos
+					panel.modulate = Color(1, 0.8, 0.8)
+				else:
+					# Color verdoso para cartas de jugador
+					panel.modulate = Color(0.8, 1, 0.8)
 		elif card_ui:
 			card_ui.visible = false
-
-func _setup_card_ui(card_ui: Control, card_data: Dictionary):
-	var name_label = card_ui.get_node_or_null("CardName")
-	var desc_label = card_ui.get_node_or_null("CardDescription")
-	var cost_label = card_ui.get_node_or_null("CardCost")
-	var buy_button = card_ui.get_node_or_null("BuyButton")
-	
-	if name_label:
-		name_label.text = card_data.get("name", "Carta Sin Nombre")
-	if desc_label:
-		desc_label.text = card_data.get("description", "Sin descripción")
-	if cost_label:
-		cost_label.text = "Costo: %d" % card_data.get("cost", 0)
-	if buy_button:
-		buy_button.disabled = player_currency < card_data.get("cost", 0)
-		buy_button.text = "Comprar (%d)" % card_data.get("cost", 0)
-
-func _on_card_buy_pressed(card_ui: Control):
-	if not in_decision_period:
-		return
-		
-	var card_index = card_ui_nodes.find(card_ui)
-	if card_index == -1 or card_index >= available_cards.size():
-		return
-		
-	var card_data = available_cards[card_index]
-	
-	if player_currency >= card_data.get("cost", 0) and id == Network.player_id:
-		print("🃏 COMPRANDO CARTA:", card_data.get("name", "Sin nombre"))
-		Network.purchase_card(card_data.get("id", ""))
-	else:
-		print("❌ NO SE PUEDE COMPRAR CARTA - Fondos insuficientes o no es jugador local")
 
 func _on_card_purchased(card_data: Dictionary, new_balance: int):
 	print("✅ CARTA COMPRADA EXITOSAMENTE:", card_data.get("name", "Sin nombre"))
@@ -603,44 +644,84 @@ func _on_card_purchased(card_data: Dictionary, new_balance: int):
 	
 	_show_card_purchase_effect(card_data)
 	
+	# Remover la carta comprada de la UI
 	for i in range(available_cards.size()):
 		if available_cards[i].get("id", "") == card_data.get("id", ""):
 			if i < card_ui_nodes.size() and card_ui_nodes[i]:
 				card_ui_nodes[i].visible = false
+			# Remover de la lista de cartas disponibles
+			available_cards.remove_at(i)
 			break
+	
+	# Actualizar estado de los botones
+	_update_card_buttons_state()
 
-# ✅ CORREGIDO: Nueva función para manejar actualización de monedas con player_id
+# Nueva función para manejar actualización de monedas con player_id
 func _on_currency_updated(target_player_id: int, amount: int):
 	# Solo actualizar si es para este jugador
 	if target_player_id == id:
 		print("💰 ACTUALIZANDO MONEDAS LOCALES - Jugador:", id, " Cantidad:", amount)
 		update_currency(amount)
 
-# NUEVO: Aplicar efecto de carta localmente
+# Aplicar efecto de carta localmente
 func _apply_card_effect(card_data: Dictionary):
 	var card_type = card_data.get("type", "")
 	var card_value = card_data.get("value", 0)
-	
-	match card_type:
-		"damage":
-			attack_damage += card_value
-			print("⚔️ DAÑO AUMENTADO: %d -> %d" % [attack_damage - card_value, attack_damage])
-		"health":
-			max_hp += card_value
-			hp += card_value
-			print("❤️ VIDA AUMENTADA: %d -> %d" % [max_hp - card_value, max_hp])
-		"gold_bonus":
-			gold_bonus += card_value
-			print("💰 BONUS ORO: +%d%%" % gold_bonus)
-		"speed":
-			speed_multiplier += card_value / 100.0
-			print("🏃 VELOCIDAD AUMENTADA: x%.2f" % speed_multiplier)
-		"attack_speed":
-			attack_speed_bonus += card_value
-			print("⚡ VEL. ATAQUE AUMENTADA: -%d%%" % attack_speed_bonus)
-		"critical":
-			critical_chance += card_value
-			print("🎯 PROB. CRÍTICO: %d%%" % critical_chance)
+	var card_target = card_data.get("target", "player")
+    
+	if card_target == "player":
+		# Cartas para el jugador
+		match card_type:
+			"damage":
+				attack_damage += card_value
+				print("⚔️ DAÑO AUMENTADO: %d -> %d" % [attack_damage - card_value, attack_damage])
+			"health":
+				max_hp += card_value
+				hp += card_value
+				print("❤️ VIDA AUMENTADA: %d -> %d" % [max_hp - card_value, max_hp])
+			"gold_bonus":
+				gold_bonus += card_value
+				print("💰 BONUS ORO: +%d%%" % gold_bonus)
+			"speed":
+				speed_multiplier += card_value / 100.0
+				print("🏃 VELOCIDAD AUMENTADA: x%.2f" % speed_multiplier)
+			"attack_speed":
+				attack_speed_bonus += card_value
+				print("⚡ VEL. ATAQUE AUMENTADA: -%d%%" % attack_speed_bonus)
+			"critical":
+				critical_chance += card_value
+				print("🎯 PROB. CRÍTICO: %d%%" % critical_chance)
+    
+	else:
+		# Cartas para enemigos
+		match card_type:
+			"enemy_damage":
+				print("☠️ ENEMIGOS MÁS FUERTES: +%d daño" % card_value)
+			"enemy_health":
+				print("💀 ENEMIGOS MÁS RESISTENTES: +%d HP" % card_value)
+			"enemy_speed":
+				print("👹 ENEMIGOS MÁS RÁPIDOS: +%d%% velocidad" % card_value)
+			"enemy_spawn":
+				print("🔻 MÁS ENEMIGOS: +%d en oleadas" % card_value)
+			"enemy_elite":
+				print("🎭 ENEMIGOS DE ÉLITE: %d%% chance" % card_value)
+			"enemy_boss":
+				print("👹 JEFE MEJORADO: +HP y daño")
+        
+		_show_enemy_buff_notification(card_data.get("name", "Mejora Enemigos"))
+
+func _show_enemy_buff_notification(card_name: String):
+	var floating_text = Label.new()
+	floating_text.text = "☠️ " + card_name
+	floating_text.add_theme_color_override("font_color", Color.RED)
+	floating_text.add_theme_font_size_override("font_size", 16)
+	floating_text.position = Vector2(-30, -50)
+	add_child(floating_text)
+    
+	var tween = create_tween()
+	tween.parallel().tween_property(floating_text, "position", Vector2(-30, -100), 1.5)
+	tween.parallel().tween_property(floating_text, "modulate", Color(1, 1, 1, 0), 1.5)
+	tween.tween_callback(floating_text.queue_free)
 
 func _show_card_purchase_effect(card_data: Dictionary):
 	modulate = Color(0.5, 1, 0.5)
@@ -692,10 +773,12 @@ func _update_card_buttons_state():
 	for i in range(card_ui_nodes.size()):
 		var card_ui = card_ui_nodes[i]
 		if card_ui and card_ui.visible and i < available_cards.size():
-			var buy_button = card_ui.get_node_or_null("Panel/HBoxContainer/HBoxContainer/BuyButton")
+			var buy_button = card_ui.get_node_or_null("BuyButton")
 			var card_data = available_cards[i]
 			if buy_button and card_data:
 				buy_button.disabled = player_currency < card_data.get("cost", 0)
+				# Actualizar texto del botón
+				buy_button.text = "Comprar (%d)" % card_data.get("cost", 0)
 
 # -------------------------------
 # --- MOVIMIENTO LOCAL
@@ -706,7 +789,7 @@ func _handle_local_movement(delta: float):
 		velocity = Vector2.ZERO
 		set_velocity(velocity)
 		move_and_slide()
-		return  # Salir de la función inmediatamente
+		return # Salir de la función inmediatamente
 
 	if is_rolling:
 		velocity = move_dir * roll_speed * speed_multiplier
@@ -745,6 +828,8 @@ func _handle_local_movement(delta: float):
 		Network.move_player(position.x, position.y)
 
 	update_animation(move_dir, false, is_rolling)
+
+# -------------------------------
 # --- SISTEMA DE ATAQUE UNIFICADO
 # -------------------------------
 func execute_attack(mouse_pos: Vector2):
@@ -782,10 +867,11 @@ func execute_attack(mouse_pos: Vector2):
 		current_sprite.play()
 	else:
 		print("❌ Animación no encontrada: ", anim_name, " en sprite:", current_sprite.name)
-# MODIFICAR can_attack para incluir verificación de respawn
-# ✅ NUEVA FUNCIÓN: Verificar si el jugador puede realizar acciones
+
+# Verificar si el jugador puede realizar acciones
 func can_perform_actions() -> bool:
 	return not is_respawning and hp > 0
+
 func can_attack() -> bool:
 	return can_attack_var and not is_respawning
 
@@ -824,7 +910,7 @@ func execute_area_attack(mouse_pos: Vector2):
 		await current_sprite.animation_finished
 		# Volver a habilitar movimiento
 		set_physics_process(true)
-		current_sprite.play("idle")
+		current_sprite.play("Idle")
 		print("🎭 ANIMACIÓN attack_Area COMPLETADA")
 	else:
 		print("❌ Animación attack_Area no encontrada")
@@ -834,6 +920,7 @@ func execute_area_attack(mouse_pos: Vector2):
 	area_attack_timer = area_attack_cooldown
 	
 	print("⏳ ATAQUE DE ÁREA EN COOLDOWN - Tiempo:", area_attack_cooldown, "s")
+
 func _create_immediate_area_effect(attack_pos: Vector2, direction: Vector2):
 	if not area_projectile_scene:
 		print("❌ area_projectile_scene no asignada")
@@ -861,15 +948,14 @@ func _create_immediate_area_effect(attack_pos: Vector2, direction: Vector2):
 		print("⚡ EFECTO INMEDIATO CREADO - Posición:", attack_pos)
 	else:
 		print("❌ No se encontró EnemyContainer en la escena principal")
-# NUEVA FUNCIÓN PARA ORIENTAR EL SPRITE ← AGREGAR ESTA FUNCIÓN
 
-# NUEVA FUNCIÓN PARA OBTENER DIRECCIÓN ← AGREGAR ESTA FUNCIÓN
+# Función para obtener dirección
 func get_last_direction() -> Vector2:
 	return last_direction
+
 # -------------------------------
 # --- SISTEMA DE ROLL
 # -------------------------------
-# MODIFICAR try_roll para verificar respawn
 func try_roll():
 	if not is_rolling and roll_cooldown_timer <= 0 and not is_respawning:
 		is_rolling = true
@@ -877,7 +963,6 @@ func try_roll():
 		print("🎯 ROLL EJECUTADO - Jugador:", id)
 	else:
 		print("🚫 ROLL BLOQUEADO - Jugador en respawn")
-# ✅ NUEVA FUNCIÓN: Verificar si el jugador puede realizar acciones
 
 # -------------------------------
 # --- ANIMACIONES
@@ -947,10 +1032,11 @@ func update_hp(new_hp: int):
 	
 	print("❤️ ACTUALIZANDO HP - Jugador:", id, " HP:", hp, "/", max_hp)
 	
-	# ✅ NUEVO: Manejar muerte del jugador
+	# NUEVO: Manejar muerte del jugador
 	if hp <= 0 and not is_respawning:
 		start_respawn()
-# ✅ NUEVA FUNCIÓN: Iniciar proceso de respawn
+
+# NUEVA FUNCIÓN: Iniciar proceso de respawn
 func start_respawn():
 	print("💀 INICIANDO RESPawN - Jugador:", id)
 	is_respawning = true
@@ -965,7 +1051,7 @@ func start_respawn():
 	
 	# Cambiar apariencia para indicar estado muerto
 	modulate = Color(0.3, 0.3, 0.3, 0.5)
-		# Deshabilitar colisiones temporalmente
+	# Deshabilitar colisiones temporalmente
 	if $CollisionShape2D:
 		$CollisionShape2D.disabled = true
 	if $HitboxArea/CollisionShape2D:
@@ -979,7 +1065,7 @@ func start_respawn():
 	
 	print("🔒 JUGADOR EN ESTADO DE RESPawN - Movimiento y ataques deshabilitados")
 
-# ✅ NUEVA FUNCIÓN: Finalizar respawn y restaurar controles
+# NUEVA FUNCIÓN: Finalizar respawn y restaurar controles
 func finish_respawn():
 	if not is_respawning:
 		print("⚠️ NO ESTABA EN RESPawN - Ignorando finalización")
@@ -989,7 +1075,7 @@ func finish_respawn():
 	is_respawning = false
 	respawn_timer = 0.0
 	
-	# ✅ NO RESTAURAR VIDA AQUÍ - ya lo hizo el servidor
+	# NO RESTAURAR VIDA AQUÍ - ya lo hizo el servidor
 	# hp = max_hp  # ← ELIMINAR esta línea
 	
 	if hp_bar:
@@ -1023,7 +1109,8 @@ func finish_respawn():
 		current_sprite.play("Idle")
 	
 	print("🔓 JUGADOR COMPLETAMENTE REACTIVADO")
-# ✅ NUEVA FUNCIÓN: Efecto visual de muerte
+
+# NUEVA FUNCIÓN: Efecto visual de muerte
 func _create_death_effect():
 	# Crear partículas o efecto visual de muerte
 	var death_effect = ColorRect.new()
@@ -1038,7 +1125,7 @@ func _create_death_effect():
 	tween.tween_property(death_effect, "color", Color(1, 0, 0, 0), 1.0)
 	tween.tween_callback(death_effect.queue_free)
 
-# ✅ NUEVA FUNCIÓN: Efecto visual de respawn
+# NUEVA FUNCIÓN: Efecto visual de respawn
 func _create_respawn_effect():
 	# Crear efecto visual de respawn (flash blanco)
 	var respawn_effect = ColorRect.new()
@@ -1053,6 +1140,7 @@ func _create_respawn_effect():
 	tween.parallel().tween_property(respawn_effect, "color", Color(1, 1, 1, 0), 1.0)
 	tween.parallel().tween_property(respawn_effect, "scale", Vector2(1.5, 1.5), 1.0)
 	tween.tween_callback(respawn_effect.queue_free)
+
 func take_damage(amount: int):
 	print("💥 JUGADOR RECIBIÓ DAÑO - ID:", id, " Cantidad:", amount, " HP Antes:", hp)
 	update_hp(hp - amount)
@@ -1069,7 +1157,6 @@ func play_death_animation():
 	
 	if id == Network.player_id:
 		Network.send_player_state("Die")
-		
 
 # -------------------------------
 # --- COOLDOWNS
@@ -1102,19 +1189,21 @@ func _handle_rogue_area_attack_cooldown(delta):
 		if rogue_area_attack_timer <= 0:
 			can_rogue_area_attack = true
 			print("✅ ATAQUE DE ÁREA ROGUE LISTO - Cooldown terminado")
+
 func _handle_mage_area_attack_cooldown(delta):
 	if not can_mage_area_attack:
 		mage_area_attack_timer -= delta
 		if mage_area_attack_timer <= 0:
 			can_mage_area_attack = true
 			print("✅ ATAQUE DE ÁREA MAGA LISTO - Cooldown terminado")
+
 # -------------------------------
 # --- COLISIONES CON PROYECTILES
 # -------------------------------
 func _on_hitbox_area_entered(area):
 	if is_respawning:
 		print("🚫 DAÑO IGNORADO - Jugador en respawn")
-		return  # Ignorar todo daño durante respawn
+		return # Ignorar todo daño durante respawn
 	
 	if area is Projectile:
 		var projectile = area as Projectile
@@ -1129,10 +1218,12 @@ func _on_hitbox_area_entered(area):
 		take_damage(projectile.projectile_damage)
 		
 		_create_hit_effect()
+
 func _create_hit_effect():
 	modulate = Color.RED
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.2)
+
 func execute_rogue_area_attack(mouse_pos: Vector2):
 	if not can_rogue_area_attack or classe != "rogue" or is_respawning:
 		print("🚫 ATAQUE DE ÁREA ROGUE BLOQUEADO - Jugador en respawn")
@@ -1185,7 +1276,6 @@ func execute_rogue_area_attack(mouse_pos: Vector2):
 
 	print("⏳ ATAQUE DE ÁREA ROGUE EN COOLDOWN - Tiempo:", rogue_area_attack_cooldown, "s")
 
-# MODIFICAR execute_mage_area_attack para verificar respawn
 func execute_mage_area_attack():
 	if not can_mage_area_attack or classe != "mage" or is_respawning:
 		print("🚫 ATAQUE DE ÁREA MAGA BLOQUEADO - Jugador en respawn")
@@ -1241,6 +1331,7 @@ func execute_mage_area_attack():
 	mage_area_attack_timer = mage_area_attack_cooldown
 
 	print("⏳ ATAQUE DE ÁREA MAGA EN COOLDOWN - Tiempo:", mage_area_attack_cooldown, "s")
+
 func _get_direction_suffix(angle: float) -> String:
 	# Convertir ángulo a grados y ajustar para que 0 sea este
 	var degrees = rad_to_deg(angle)
@@ -1264,6 +1355,7 @@ func _get_direction_suffix(angle: float) -> String:
 		return "N" # Norte
 	else: # 292.5 a 337.5
 		return "NE" # Noreste
+
 func _create_mage_area_effect(attack_pos: Vector2):
 	if not mage_area_projectile_scene:
 		print("❌ mage_area_projectile_scene no asignada")
@@ -1288,6 +1380,7 @@ func _create_mage_area_effect(attack_pos: Vector2):
 		print("⚡ EFECTO MAGA INMEDIATO CREADO - Posición:", attack_pos, " Equipo:", team)
 	else:
 		print("❌ No se encontró ObjectContainer en la escena principal")
+
 # En Player.gd, agregar método para obtener vida máxima
 func get_max_hp() -> int:
 	return max_hp

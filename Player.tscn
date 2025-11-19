@@ -129,7 +129,6 @@ theme = SubResource("Theme_wi0c6")
 metadata/_edit_use_anchors_ = true
 
 [node name="Panel" type="Panel" parent="Camera2D/StatsUI"]
-visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.52000004
@@ -909,7 +908,7 @@ grow_vertical = 0
 theme = ExtResource("16_3vjad")
 metadata/_edit_use_anchors_ = true
 
-[node name="Button" type="Button" parent="Camera2D/DecisionUI/Panel3/Panel"]
+[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/Panel3/Panel"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -926,7 +925,7 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_ictha")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_1jgrc")
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel"]
+[node name="CardName" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.489921
@@ -948,7 +947,7 @@ horizontal_alignment = 1
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Label2" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel"]
+[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.517
@@ -969,7 +968,7 @@ horizontal_alignment = 1
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Label9" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel"]
+[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.878
@@ -1005,7 +1004,7 @@ grow_vertical = 0
 theme = ExtResource("16_3vjad")
 metadata/_edit_use_anchors_ = true
 
-[node name="Button" type="Button" parent="Camera2D/DecisionUI/Panel3/Panel2"]
+[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/Panel3/Panel2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1021,7 +1020,7 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_ictha")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_1jgrc")
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel2"]
+[node name="CardName" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel2"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.526
@@ -1044,7 +1043,7 @@ horizontal_alignment = 1
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Label2" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel2"]
+[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel2"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.50100005
@@ -1065,7 +1064,7 @@ horizontal_alignment = 1
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Label9" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel2"]
+[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel2"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.878
@@ -1102,7 +1101,7 @@ grow_vertical = 0
 theme = ExtResource("16_3vjad")
 metadata/_edit_use_anchors_ = true
 
-[node name="Button" type="Button" parent="Camera2D/DecisionUI/Panel3/Panel3"]
+[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/Panel3/Panel3"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -1118,7 +1117,7 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_ictha")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_1jgrc")
 metadata/_edit_use_anchors_ = true
 
-[node name="Label" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel3"]
+[node name="CardName" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel3"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.53300005
@@ -1140,7 +1139,7 @@ text = "Aggressive Nova"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="Label2" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel3"]
+[node name="CardDescription" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel3"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.4999999
@@ -1161,7 +1160,7 @@ horizontal_alignment = 1
 autowrap_mode = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="Label9" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel3"]
+[node name="CardCost" type="Label" parent="Camera2D/DecisionUI/Panel3/Panel3"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.8723098
@@ -1242,9 +1241,7 @@ visible = false
 position = Vector2(5, 27.5)
 scale = Vector2(0.311, 0.29)
 sprite_frames = ExtResource("2_cxr5p")
-animation = &"attack_E"
-frame = 11
-frame_progress = 1.0
+animation = &"Idle"
 speed_scale = 6.8
 
 [node name="KnightSprite" type="AnimatedSprite2D" parent="."]
@@ -1252,9 +1249,7 @@ visible = false
 position = Vector2(5.000001, -23.749998)
 scale = Vector2(0.515, 0.515)
 sprite_frames = ExtResource("3_tdg3f")
-animation = &"attack_S"
-frame = 17
-frame_progress = 1.0
+animation = &"Idle"
 speed_scale = 6.8
 
 [node name="MageSprite" type="AnimatedSprite2D" parent="."]
