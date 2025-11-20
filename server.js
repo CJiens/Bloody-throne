@@ -61,7 +61,7 @@ class ClassSystem {
 			},
 			"rogue": {
 				"hp": 90,
-				"speed": 220,
+				"speed": 300,
 				"attack_damage": 12,
 				"attack_range": 45,
 				"is_ranged": false,
@@ -76,116 +76,260 @@ class ClassSystem {
 // ----------------------------
 // SISTEMA DE TARJETAS ALEATORIAS
 // ----------------------------
+// ----------------------------
+// SISTEMA DE TARJETAS ALEATORIAS (ACTUALIZADO)
+// ----------------------------
+// ----------------------------
+// SISTEMA DE TARJETAS ALEATORIAS (ACTUALIZADO)
+// ----------------------------
+// ----------------------------
+// SISTEMA DE TARJETAS ALEATORIAS (ACTUALIZADO - 3+3)
+// ----------------------------
+// ----------------------------
+// SISTEMA DE TARJETAS ALEATORIAS (3 JUGADOR + 3 ENEMIGO)
+// ----------------------------
 class CardSystem {
-	static getRandomCards(count = 3) {
-		const allCards = [
-			{
-				id: "damage_up",
-				name: "Aumentar Daño",
-				description: "+5 de daño permanente",
-				cost: 30,
-				type: "damage",
-				value: 5
-			},
-			{
-				id: "health_up",
-				name: "Aumentar Vida",
-				description: "+20 HP máximo permanente",
-				cost: 25,
-				type: "health",
-				value: 20
-			},
-			{
-				id: "gold_bonus",
-				name: "Bonus de Oro",
-				description: "+10% más oro por kills",
-				cost: 35,
-				type: "gold_bonus",
-				value: 10
-			},
-			{
-				id: "speed_up",
-				name: "Aumentar Velocidad",
-				description: "+10% de velocidad de movimiento",
-				cost: 20,
-				type: "speed",
-				value: 10
-			},
-			{
-				id: "attack_speed",
-				name: "Velocidad de Ataque",
-				description: "-15% de cooldown de ataque",
-				cost: 40,
-				type: "attack_speed",
-				value: 15
-			},
-			{
-				id: "critical_chance",
-				name: "Golpe Crítico",
-				description: "10% de chance de crítico (x2 daño)",
-				cost: 45,
-				type: "critical",
-				value: 10
-			}
-		];
+    static getRandomCards() {
+        const playerCards = [
+            {
+                id: "damage_up",
+                name: "Aumentar Daño",
+                description: "+5 de daño permanente",
+                cost: 30,
+                type: "damage",
+                value: 5,
+                target: "player"
+            },
+            {
+                id: "health_up",
+                name: "Aumentar Vida",
+                description: "+20 HP máximo permanente",
+                cost: 25,
+                type: "health",
+                value: 20,
+                target: "player"
+            },
+            {
+                id: "gold_bonus",
+                name: "Bonus de Oro",
+                description: "+10% más oro por kills",
+                cost: 35,
+                type: "gold_bonus",
+                value: 10,
+                target: "player"
+            },
+            {
+                id: "speed_up",
+                name: "Aumentar Velocidad",
+                description: "+10% de velocidad de movimiento",
+                cost: 20,
+                type: "speed",
+                value: 10,
+                target: "player"
+            },
+            {
+                id: "attack_speed",
+                name: "Velocidad de Ataque",
+                description: "-15% de cooldown de ataque",
+                cost: 40,
+                type: "attack_speed",
+                value: 15,
+                target: "player"
+            },
+            {
+                id: "critical_chance",
+                name: "Golpe Crítico",
+                description: "10% de chance de crítico (x2 daño)",
+                cost: 45,
+                type: "critical",
+                value: 10,
+                target: "player"
+            }
+        ];
 
-		// Mezclar y seleccionar 'count' cartas aleatorias
-		const shuffled = [...allCards].sort(() => Math.random() - 0.5);
-		const selected = shuffled.slice(0, count);
+        const enemyCards = [
+            {
+                id: "enemy_damage_up",
+                name: "Enemigos Más Fuertes",
+                description: "+5 daño a TODOS los enemigos",
+                cost: 25,
+                type: "enemy_damage",
+                value: 5,
+                target: "enemy"
+            },
+            {
+                id: "enemy_health_up",
+                name: "Enemigos Más Resistentes",
+                description: "+20 HP a TODOS los enemigos",
+                cost: 30,
+                type: "enemy_health",
+                value: 20,
+                target: "enemy"
+            },
+            {
+                id: "enemy_speed_up",
+                name: "Enemigos Más Rápidos",
+                description: "+15% velocidad a TODOS los enemigos",
+                cost: 35,
+                type: "enemy_speed",
+                value: 15,
+                target: "enemy"
+            },
+            {
+                id: "enemy_spawn_more",
+                name: "Más Enemigos",
+                description: "+2 enemigos extra en cada oleada",
+                cost: 40,
+                type: "enemy_spawn",
+                value: 2,
+                target: "enemy"
+            },
+            {
+                id: "enemy_elite",
+                name: "Enemigos de Élite",
+                description: "10% de enemigos son de tipo élite",
+                cost: 50,
+                type: "enemy_elite",
+                value: 10,
+                target: "enemy"
+            },
+            {
+                id: "enemy_boss_buff",
+                name: "Jefe Mejorado",
+                description: "+50 HP y +10 daño al jefe",
+                cost: 45,
+                type: "enemy_boss",
+                value: { hp: 50, damage: 10 },
+                target: "enemy"
+            }
+        ];
 
-		console.log("🎯 CARTAS ALEATORIAS GENERADAS (objetos completos):");
-		selected.forEach(card => {
-			console.log(`  - ${card.name} (ID: ${card.id}, Costo: ${card.cost}, Tipo: ${card.type})`);
-		});
+        // Seleccionar 3 cartas aleatorias de jugador
+        const shuffledPlayerCards = [...playerCards].sort(() => Math.random() - 0.5);
+        const selectedPlayerCards = shuffledPlayerCards.slice(0, 3);
 
-		return selected;
-	}
+        // Seleccionar 3 cartas aleatorias de enemigos
+        const shuffledEnemyCards = [...enemyCards].sort(() => Math.random() - 0.5);
+        const selectedEnemyCards = shuffledEnemyCards.slice(0, 3);
 
-	static applyCardEffect(player, card, economySystem) {
-		console.log(`🃏 APLICANDO CARTA - Jugador: ${player.id}, Carta: ${card.name}`);
+        // Combinar ambas selecciones
+        const selected = [...selectedPlayerCards, ...selectedEnemyCards];
 
-		switch (card.type) {
-			case "damage":
-				player.attack_damage += card.value;
-				console.log(`⚔️ DAÑO AUMENTADO - Jugador ${player.id}: ${player.attack_damage - card.value} -> ${player.attack_damage}`);
-				break;
+        console.log("🎯 CARTAS ALEATORIAS GENERADAS (3 jugador + 3 enemigo):");
+        console.log("  🎮 CARTAS DE JUGADOR:");
+        selectedPlayerCards.forEach(card => {
+            console.log(`    - ${card.name} (ID: ${card.id}, Costo: ${card.cost})`);
+        });
+        console.log("  ☠️ CARTAS DE ENEMIGOS:");
+        selectedEnemyCards.forEach(card => {
+            console.log(`    - ${card.name} (ID: ${card.id}, Costo: ${card.cost})`);
+        });
 
-			case "health":
-				player.max_hp += card.value;
-				player.hp += card.value; // También curar la vida extra
-				console.log(`❤️ VIDA AUMENTADA - Jugador ${player.id}: ${player.max_hp - card.value} -> ${player.max_hp}`);
-				break;
+        return selected;
+    }
 
-			case "gold_bonus":
-				// Se maneja en el economy system
-				if (!player.gold_bonus) player.gold_bonus = 0;
-				player.gold_bonus += card.value;
-				console.log(`💰 BONUS DE ORO - Jugador ${player.id}: +${player.gold_bonus}% oro`);
-				break;
+    static applyCardEffect(player, card, economySystem, enemies = null) {
+        console.log(`🃏 APLICANDO CARTA - Jugador: ${player.id}, Carta: ${card.name}, Target: ${card.target}`);
 
-			case "speed":
-				if (!player.speed_multiplier) player.speed_multiplier = 1;
-				player.speed_multiplier += card.value / 100;
-				console.log(`🏃 VELOCIDAD AUMENTADA - Jugador ${player.id}: ${((player.speed_multiplier - card.value / 100) * 100).toFixed(0)}% -> ${(player.speed_multiplier * 100).toFixed(0)}%`);
-				break;
+        switch (card.type) {
+            // Cartas para el jugador
+            case "damage":
+                player.attack_damage += card.value;
+                console.log(`⚔️ DAÑO AUMENTADO - Jugador ${player.id}: ${player.attack_damage - card.value} -> ${player.attack_damage}`);
+                break;
 
-			case "attack_speed":
-				if (!player.attack_speed_bonus) player.attack_speed_bonus = 0;
-				player.attack_speed_bonus += card.value;
-				console.log(`⚡ VEL. ATAQUE AUMENTADA - Jugador ${player.id}: +${player.attack_speed_bonus}%`);
-				break;
+            case "health":
+                player.max_hp += card.value;
+                player.hp += card.value;
+                console.log(`❤️ VIDA AUMENTADA - Jugador ${player.id}: ${player.max_hp - card.value} -> ${player.max_hp}`);
+                break;
 
-			case "critical":
-				if (!player.critical_chance) player.critical_chance = 0;
-				player.critical_chance += card.value;
-				console.log(`🎯 PROB. CRÍTICO - Jugador ${player.id}: ${player.critical_chance}%`);
-				break;
-		}
+            case "gold_bonus":
+                if (!player.gold_bonus) player.gold_bonus = 0;
+                player.gold_bonus += card.value;
+                console.log(`💰 BONUS DE ORO - Jugador ${player.id}: +${player.gold_bonus}% oro`);
+                break;
 
-		return player;
-	}
+            case "speed":
+                if (!player.speed_multiplier) player.speed_multiplier = 1;
+                player.speed_multiplier += card.value / 100;
+                console.log(`🏃 VELOCIDAD AUMENTADA - Jugador ${player.id}: ${((player.speed_multiplier - card.value / 100) * 100).toFixed(0)}% -> ${(player.speed_multiplier * 100).toFixed(0)}%`);
+                break;
+
+            case "attack_speed":
+                if (!player.attack_speed_bonus) player.attack_speed_bonus = 0;
+                player.attack_speed_bonus += card.value;
+                console.log(`⚡ VEL. ATAQUE AUMENTADA - Jugador ${player.id}: +${player.attack_speed_bonus}%`);
+                break;
+
+            case "critical":
+                if (!player.critical_chance) player.critical_chance = 0;
+                player.critical_chance += card.value;
+                console.log(`🎯 PROB. CRÍTICO - Jugador ${player.id}: ${player.critical_chance}%`);
+                break;
+
+            // Cartas para enemigos
+            case "enemy_damage":
+                if (enemies) {
+                    for (let enemyId in enemies) {
+                        enemies[enemyId].attack_damage += card.value;
+                    }
+                    console.log(`☠️ DAÑO DE ENEMIGOS AUMENTADO - +${card.value} a todos los enemigos`);
+                }
+                break;
+
+            case "enemy_health":
+                if (enemies) {
+                    for (let enemyId in enemies) {
+                        enemies[enemyId].max_hp += card.value;
+                        enemies[enemyId].hp += card.value;
+                    }
+                    console.log(`💀 VIDA DE ENEMIGOS AUMENTADA - +${card.value} HP a todos los enemigos`);
+                }
+                break;
+
+            case "enemy_speed":
+                if (enemies) {
+                    for (let enemyId in enemies) {
+                        enemies[enemyId].move_speed += Math.floor(enemies[enemyId].move_speed * (card.value / 100));
+                    }
+                    console.log(`👹 VELOCIDAD DE ENEMIGOS AUMENTADA - +${card.value}% a todos los enemigos`);
+                }
+                break;
+
+            case "enemy_spawn":
+                // Esta carta afecta la siguiente oleada - se maneja globalmente
+                if (!global.enemy_spawn_bonus) global.enemy_spawn_bonus = 0;
+                global.enemy_spawn_bonus += card.value;
+                console.log(`🔻 MÁS ENEMIGOS EN OLEADAS - +${card.value} enemigos extra`);
+                break;
+
+            case "enemy_elite":
+                // Marcar para spawnear enemigos élite en la siguiente oleada - global
+                if (!global.enemy_elite_chance) global.enemy_elite_chance = 0;
+                global.enemy_elite_chance += card.value;
+                console.log(`🎭 ENEMIGOS DE ÉLITE - ${card.value}% de chance de spawn élite`);
+                break;
+
+            case "enemy_boss":
+                if (enemies) {
+                    // Buscar y mejorar el jefe si existe
+                    for (let enemyId in enemies) {
+                        if (enemies[enemyId].is_permanent || enemies[enemyId].type === 'boss_wave') {
+                            enemies[enemyId].max_hp += card.value.hp;
+                            enemies[enemyId].hp += card.value.hp;
+                            enemies[enemyId].attack_damage += card.value.damage;
+                            console.log(`👹 JEFE MEJORADO - +${card.value.hp} HP, +${card.value.damage} daño`);
+                            break;
+                        }
+                    }
+                }
+                break;
+        }
+
+        return player;
+    }
 }
-
 // ----------------------------
 // SISTEMA ECONÓMICO (CORREGIDO)
 // ----------------------------
@@ -310,6 +454,50 @@ const waveSystem = new WaveSystem();
 const economySystem = new EconomySystem();
 
 
+
+// ----------------------------
+// SISTEMA DE RECOMPENSAS DE ENEMIGOS
+// ----------------------------
+function getEnemyKillReward(enemy) {
+	if (!enemy) return 0;
+
+	const enemyType = enemy.type;
+	let reward = 0;
+
+	switch (enemyType) {
+		case 'grunt': reward = 5; break;
+		case 'archer': reward = 8; break;
+		case 'mage': reward = 10; break;
+		case 'boss_wave': reward = 30; break;
+		case 'final_boss': reward = 50; break;
+		default: reward = 5; break;
+	}
+
+	// Jefe permanente: prioridad sobre el tipo
+	if (enemy.is_permanent) {
+		reward = 50;
+		console.log(`💰 RECOMPENSA POR JEFE PERMANENTE - +${reward} monedas`);
+	}
+
+	return reward;
+}
+
+function giveEnemyKillReward(killerId, enemy, logContext = "RECOMPENSA POR KILL") {
+	if (!enemy) return;
+	const player = players[killerId];
+	if (!player) return;
+
+	const reward = getEnemyKillReward(enemy);
+	const newAmount = economySystem.addCurrency(killerId, reward, player);
+
+	console.log(`💰 ${logContext} - Jugador ${killerId} recibe +${reward} por matar ${enemy.type} - Total: ${newAmount}`);
+
+	sendToPlayer(killerId, {
+		type: 'currency_updated',
+		player_id: parseInt(killerId),
+		amount: newAmount
+	});
+}
 
 
 // Bases del juego
@@ -488,6 +676,24 @@ function startRespawnTimer(playerId) {
 		}
 	}, 1000);
 }
+// ----------------------------
+// MANEJO DE MUERTE DE JUGADOR
+// ----------------------------
+function handlePlayerDeath(playerId, killerId, respawnTime = 10) {
+	const player = players[playerId];
+	if (!player) {
+		console.log(`⚠️ handlePlayerDeath: jugador ${playerId} no encontrado`);
+		return;
+	}
+
+	player.is_alive = false;
+	player.respawn_timer = respawnTime;
+
+	console.log(`💀 JUGADOR MUERTO - ID: ${playerId} Por: ${killerId}, Respawn en ${respawnTime}s`);
+
+	// Iniciar countdown de respawn (mensajes respawn_countdown + respawn final)
+	startRespawnTimer(playerId);
+}
 
 function respawnPlayer(playerId) {
 	if (players[playerId] && players[playerId].team > 0) {
@@ -516,6 +722,25 @@ function respawnPlayer(playerId) {
 		}
 	}
 }
+// ----------------------------
+// MANEJO DE MUERTE DE JUGADOR
+// ----------------------------
+function handlePlayerDeath(playerId, killerId, respawnTime = 10) {
+	const player = players[playerId];
+	if (!player) {
+		console.log(`⚠️ handlePlayerDeath: jugador ${playerId} no encontrado`);
+		return;
+	}
+
+	player.is_alive = false;
+	player.respawn_timer = respawnTime;
+
+	console.log(`💀 JUGADOR MUERTO - ID: ${playerId} Por: ${killerId}, Respawn en ${respawnTime}s`);
+
+	// Iniciar countdown de respawn (mensajes respawn_countdown + respawn final)
+	startRespawnTimer(playerId);
+}
+
 
 // ----------------------------
 // SISTEMA DE VICTORIA
@@ -594,76 +819,75 @@ function resetGame() {
 // SISTEMA DE OLEADAS
 // ----------------------------
 function spawnWaveEnemies(waveConfig) {
-	enemies = {}; // Limpiar enemigos anteriores
-	// ✅ SISTEMA MEZCLADO: Algunos enemigos por equipo, algunos neutrales
-	const totalEnemies = waveConfig.enemies;
+    enemies = {};
+    
+    // ✅ APLICAR BONUS GLOBAL DE CARTAS DE ENEMIGOS
+    let extraEnemies = global.enemy_spawn_bonus || 0;
+    let eliteChance = global.enemy_elite_chance || 0;
+    
+    const finalEnemyCount = waveConfig.enemies + extraEnemies;
+    
+    // Calcular distribución
+    const teamEnemies = Math.floor(finalEnemyCount * 0.6);
+    const neutralEnemies = finalEnemyCount - teamEnemies;
+    const enemiesPerTeam = Math.floor(teamEnemies / 2);
 
-	// Calcular distribución:
-	// - 60% enemigos por equipo (30% cada equipo)
-	// - 40% enemigos neutrales
-	const teamEnemies = Math.floor(totalEnemies * 0.6);
-	const neutralEnemies = totalEnemies - teamEnemies;
+    console.log(`🎯 SPAWN MEZCLADO CON BONUS - Total: ${finalEnemyCount} (base: ${waveConfig.enemies} + bonus: ${extraEnemies}), Élite: ${eliteChance}%`);
 
-	// Asegurar que teamEnemies sea par para dividir entre equipos
-	const enemiesPerTeam = Math.floor(teamEnemies / 2);
+    let nextId = 1;
 
-	console.log(`🎯 SPAWN MEZCLADO - Total: ${totalEnemies}, Equipo 1: ${enemiesPerTeam}, Equipo 2: ${enemiesPerTeam}, Neutrales: ${neutralEnemies}`);
+    // Spawn enemigos equipo 1
+    for (let i = 0; i < enemiesPerTeam; i++) {
+        spawnEnemy(nextId, waveConfig.types, 1, eliteChance);
+        nextId++;
+    }
 
-	let nextId = 1;
+    // Spawn enemigos equipo 2  
+    for (let i = 0; i < enemiesPerTeam; i++) {
+        spawnEnemy(nextId, waveConfig.types, 2, eliteChance);
+        nextId++;
+    }
 
-	// Spawn enemigos equipo 1 (azul)
-	for (let i = 0; i < enemiesPerTeam; i++) {
-		spawnEnemy(nextId, waveConfig.types, 1);
-		nextId++;
-	}
+    // Spawn enemigos neutrales
+    for (let i = 0; i < neutralEnemies; i++) {
+        spawnEnemy(nextId, waveConfig.types, 0, eliteChance);
+        nextId++;
+    }
 
-	// Spawn enemigos equipo 2 (rojo)  
-	for (let i = 0; i < enemiesPerTeam; i++) {
-		spawnEnemy(nextId, waveConfig.types, 2);
-		nextId++;
-	}
-
-	// Spawn enemigos neutrales (equipo 0 - blancos)
-	for (let i = 0; i < neutralEnemies; i++) {
-		spawnEnemy(nextId, waveConfig.types, 0);
-		nextId++;
-	}
-
-	console.log(`✅ SPAWN COMPLETADO - Equipo 1: ${enemiesPerTeam}, Equipo 2: ${enemiesPerTeam}, Neutrales: ${neutralEnemies}`);
-	//}
+    console.log(`✅ SPAWN COMPLETADO - Equipo 1: ${enemiesPerTeam}, Equipo 2: ${enemiesPerTeam}, Neutrales: ${neutralEnemies}, Élites: ${eliteChance}%`);
 }
-
-
-function spawnEnemy(id, availableTypes, forceTeam = null) {
-    const enemyType = availableTypes[Math.floor(Math.random() * availableTypes.length)];
-    let fixedTeam = forceTeam;
+function spawnEnemy(id, availableTypes, forceTeam = null, eliteChance = 0) {
+    let enemyType = availableTypes[Math.floor(Math.random() * availableTypes.length)];
+    
+    // Verificar si spawn como élite
+    let isElite = false;
+    if (eliteChance > 0 && Math.random() * 100 < eliteChance) {
+        isElite = true;
+        enemyType = 'elite_' + enemyType;
+    }
     
     let spawnPos;
-    if (fixedTeam === 1) {
-        // EQUIPO AZUL - Spawn EXCLUSIVAMENTE AL FRENTE de la base
+    if (forceTeam === 1) {
         const basePos = bases[1];
         spawnPos = {
-            x: basePos.x + 400 + (Math.random() * 400),  // Entre 400-800 unidades AL FRENTE (derecha)
-            y: basePos.y + (Math.random() * 400 - 200)   // Entre -200 y +200 en Y (arriba/abajo del centro)
+            x: basePos.x + 400 + (Math.random() * 400),
+            y: basePos.y + (Math.random() * 400 - 200)
         };
-        console.log(`👹 ENEMIGO AZUL SPAWNEADO AL FRENTE - Pos: (${spawnPos.x}, ${spawnPos.y})`);
-    } else if (fixedTeam === 2) {
-        // EQUIPO ROJO - Spawn EXCLUSIVAMENTE AL FRENTE de la base  
+    } else if (forceTeam === 2) {
         const basePos = bases[2];
         spawnPos = {
-            x: basePos.x - 400 - (Math.random() * 400),  // Entre 400-800 unidades AL FRENTE (izquierda)
-            y: basePos.y + (Math.random() * 400 - 200)   // Entre -200 y +200 en Y (arriba/abajo del centro)
+            x: basePos.x - 400 - (Math.random() * 400),
+            y: basePos.y + (Math.random() * 400 - 200)
         };
-        console.log(`👹 ENEMIGO ROJO SPAWNEADO AL FRENTE - Pos: (${spawnPos.x}, ${spawnPos.y})`);
     } else {
-        // ENEMIGOS NEUTRALES - spawn en el centro del mapa
         spawnPos = {
             x: -400 + (Math.random() * 800),
             y: -400 + (Math.random() * 800)
         };
     }
 
-    const baseHp = enemyType === 'grunt' ? 50 : enemyType === 'archer' ? 40 : enemyType === 'mage' ? 30 : 100;
+    const baseHp = enemyType === 'grunt' ? 50 : enemyType === 'archer' ? 40 : enemyType === 'mage' ? 30 : 
+                  enemyType === 'elite_grunt' ? 80 : enemyType === 'elite_archer' ? 60 : enemyType === 'elite_mage' ? 50 : 100;
 
     enemies[id] = {
         id: id,
@@ -672,19 +896,19 @@ function spawnEnemy(id, availableTypes, forceTeam = null) {
         hp: baseHp,
         max_hp: baseHp,
         type: enemyType,
-        team: fixedTeam,
-        attack_damage: enemyType === 'grunt' ? 10 : enemyType === 'archer' ? 8 : enemyType === 'mage' ? 12 : 15,
-        move_speed: enemyType === 'grunt' ? 80 : enemyType === 'archer' ? 100 : enemyType === 'mage' ? 70 : 60,
-        spawn_area: fixedTeam,
-        is_neutral: fixedTeam === 0,
+        team: forceTeam,
+        attack_damage: enemyType === 'grunt' ? 10 : enemyType === 'archer' ? 8 : enemyType === 'mage' ? 12 : 
+                      enemyType === 'elite_grunt' ? 15 : enemyType === 'elite_archer' ? 12 : enemyType === 'elite_mage' ? 18 : 15,
+        move_speed: enemyType === 'grunt' ? 80 : enemyType === 'archer' ? 100 : enemyType === 'mage' ? 70 : 
+                   enemyType === 'elite_grunt' ? 100 : enemyType === 'elite_archer' ? 120 : enemyType === 'elite_mage' ? 90 : 60,
+        spawn_area: forceTeam,
+        is_neutral: forceTeam === 0,
+        is_elite: isElite,
         last_attack_time: 0,
         attack_cooldown: 1000
     };
 
-    /*broadcast({
-        type: 'enemy_spawned',
-        enemy: enemies[id]
-    });*/
+    console.log(`👹 ${isElite ? 'ÉLITE ' : ''}ENEMIGO SPAWNEADO - Tipo: ${enemyType}, Equipo: ${forceTeam}, HP: ${baseHp}`);
 }
 function startWave() {
 	const waveConfig = waveSystem.startNextWave();
@@ -753,6 +977,30 @@ function endCurrentWave() {
 
 	}, 3000);
 }
+
+
+// ----------------------------
+// MANEJO DE MUERTE DEL JEFE PERMANENTE / FINAL
+// ----------------------------
+function handleBossDeath(enemyId) {
+	const boss = enemies[enemyId];
+	if (!boss) {
+		console.log(`⚠️ handleBossDeath: enemigo ${enemyId} no encontrado`);
+		return;
+	}
+
+	console.log(`💀 JEFE PERMANENTE / FINAL MUERTO - ID: ${enemyId}, Tipo: ${boss.type}`);
+
+	// Eliminar del diccionario de enemigos
+	delete enemies[enemyId];
+
+	// Aquí, en el futuro, puedes:
+	//  - Dar recompensas extra a todos los jugadores
+	//  - Cambiar estado del juego
+	//  - Programar un respawn del jefe, etc.
+}
+
+
 // ✅ FUNCIÓN MEJORADA PARA MOVIMIENTO DE ENEMIGOS NEUTRALES
 function _moveNeutralEnemy(enemy) {
 	// Buscar jugador más cercano
@@ -1277,28 +1525,9 @@ wss.on('connection', (ws) => {
 				// ✅ CORREGIDO: Dar recompensa SOLO al jugador que mató
 				if (msg.targetType === 'enemy') {
 					const enemyType = target.type;
-					let killReward = 0;
 
-					// Determinar recompensa por tipo de enemigo
-					switch (enemyType) {
-						case 'grunt': killReward = 5; break;
-						case 'archer': killReward = 8; break;
-						case 'mage': killReward = 10; break;
-						case 'boss_wave': killReward = 30; break;
-						case 'final_boss': killReward = 50; break; // Jefe permanente
-						default: killReward = 5;
-					}
-
-					// ✅ Dar recompensa SOLO al asesino
-					const newAmount = economySystem.addCurrency(userId, killReward, players[userId]);
-					console.log(`💰 RECOMPENSA POR KILL - Jugador ${userId} recibe +${killReward} por matar ${enemyType} - Total: ${newAmount}`);
-
-					// ✅ CORREGIDO: Notificar SOLO al asesino de su nueva cantidad
-					sendToPlayer(userId, {
-						type: 'currency_updated',
-						player_id: parseInt(userId),
-						amount: newAmount
-					});
+					// Recompensa usando helper
+					giveEnemyKillReward(userId, target, "RECOMPENSA POR KILL");
 
 					// Manejar muerte del jefe permanente
 					if (enemyType === 'final_boss') {
@@ -1311,6 +1540,7 @@ wss.on('connection', (ws) => {
 					if (Object.keys(enemies).length === 0 && waveSystem.waveInProgress) {
 						endCurrentWave();
 					}
+
 				} else if (msg.targetType === 'player') {
 					// Marcar jugador como muerto
 					players[msg.targetId].is_alive = false;
@@ -1584,30 +1814,9 @@ wss.on('connection', (ws) => {
 						console.log(`💀 ENEMIGO ${enemyId} MUERTO POR ATAQUE DE ÁREA ROGUE`);
 
 						const enemyType = enemy.type;
-						let killReward = 0;
 
-						switch (enemyType) {
-							case 'grunt': killReward = 5; break;
-							case 'archer': killReward = 8; break;
-							case 'mage': killReward = 10; break;
-							case 'boss_wave': killReward = 30; break;
-							case 'final_boss': killReward = 50; break;
-							default: killReward = 5;
-						}
-
-						if (enemy.is_permanent) {
-							killReward = 50;
-							console.log(`💰 RECOMPENSA POR JEFE PERMANENTE - +${killReward} monedas`);
-						}
-
-						const newAmount = economySystem.addCurrency(userId, killReward, attacker);
-						console.log(`💰 RECOMPENSA POR KILL DE ÁREA ROGUE - +${killReward} monedas`);
-
-						sendToPlayer(userId, {
-							type: 'currency_updated',
-							player_id: parseInt(userId),
-							amount: newAmount
-						});
+						// Recompensa usando helper
+						giveEnemyKillReward(userId, enemy, "RECOMPENSA POR KILL DE ÁREA ROGUE");
 
 						if (enemy.is_permanent) {
 							handleBossDeath(enemyId);
@@ -1623,6 +1832,8 @@ wss.on('connection', (ws) => {
 							enemy_type: enemyType
 						});
 					}
+
+
 				}
 			}
 
@@ -1759,8 +1970,8 @@ wss.on('connection', (ws) => {
 					_applyMageDamageToEnemy(msg.target_id, msg.damage, msg.owner_id, msg.owner_team);
 					break;
 				case 'base':
-            _applyMageDamageToBase(msg.target_id, msg.damage, msg.owner_id);
-            break;
+					_applyMageDamageToBase(msg.target_id, msg.damage, msg.owner_id);
+					break;
 			}
 		}
 
@@ -1879,76 +2090,88 @@ wss.on('connection', (ws) => {
 		}
 
 		// --- COMPRA DE CARTAS ---
-		else if (msg.type === 'purchase_card') {
-			console.log("🃏 COMPRA DE CARTA - User:", userId, " Carta:", msg.card_id);
+// --- COMPRA DE CARTAS ---
+// --- COMPRA DE CARTAS ---
+// --- COMPRA DE CARTAS ---
+else if (msg.type === 'purchase_card') {
+    console.log("🃏 COMPRA DE CARTA - User:", userId, " Carta:", msg.card_id);
 
-			const player = players[userId];
-			if (!player) {
-				console.log("❌ JUGADOR NO ENCONTRADO");
-				ws.send(JSON.stringify({
-					type: 'card_purchase_failed',
-					reason: 'player_not_found'
-				}));
-				return;
-			}
+    const player = players[userId];
+    if (!player) {
+        console.log("❌ JUGADOR NO ENCONTRADO");
+        ws.send(JSON.stringify({
+            type: 'card_purchase_failed',
+            reason: 'player_not_found'
+        }));
+        return;
+    }
 
-			// ✅ CORREGIDO: Usar las cartas guardadas en el jugador
-			const availableCards = player.current_cards || [];
-			const card = availableCards.find(c => c.id === msg.card_id);
+    const availableCards = player.current_cards || [];
+    const card = availableCards.find(c => c.id === msg.card_id);
 
-			if (!card) {
-				console.log("❌ CARTA NO DISPONIBLE - ID:", msg.card_id, "Cartas disponibles:", availableCards.map(c => c.id));
-				ws.send(JSON.stringify({
-					type: 'card_purchase_failed',
-					reason: 'card_not_available'
-				}));
-				return;
-			}
+    if (!card) {
+        console.log("❌ CARTA NO DISPONIBLE - ID:", msg.card_id);
+        ws.send(JSON.stringify({
+            type: 'card_purchase_failed',
+            reason: 'card_not_available'
+        }));
+        return;
+    }
 
-			// Verificar si tiene suficiente dinero
-			if (!economySystem.canAfford(userId, card.cost)) {
-				console.log("❌ FONDOS INSUFICIENTES para carta - Necesita:", card.cost, "Tiene:", economySystem.getCurrency(userId));
-				ws.send(JSON.stringify({
-					type: 'card_purchase_failed',
-					reason: 'insufficient_funds'
-				}));
-				return;
-			}
+    if (!economySystem.canAfford(userId, card.cost)) {
+        console.log("❌ FONDOS INSUFICIENTES para carta");
+        ws.send(JSON.stringify({
+            type: 'card_purchase_failed',
+            reason: 'insufficient_funds'
+        }));
+        return;
+    }
 
-			// Aplicar efecto de la carta
-			CardSystem.applyCardEffect(player, card, economySystem);
+    // Aplicar efecto de la carta
+    CardSystem.applyCardEffect(player, card, economySystem, enemies);
 
-			// Gastar el dinero
-			economySystem.spendCurrency(userId, card.cost);
-			const newBalance = economySystem.getCurrency(userId);
+    // Gastar el dinero
+    economySystem.spendCurrency(userId, card.cost);
+    const newBalance = economySystem.getCurrency(userId);
 
-			console.log(`✅ CARTA COMPRADA - ${card.name} por ${card.cost} monedas. Balance restante: ${newBalance}`);
+    console.log(`✅ CARTA COMPRADA - ${card.name} por ${card.cost} monedas. Balance restante: ${newBalance}`);
 
-			// ✅ CORREGIDO: Remover la carta comprada de las disponibles
-			player.current_cards = player.current_cards.filter(c => c.id !== msg.card_id);
+    // Remover carta comprada
+    player.current_cards = player.current_cards.filter(c => c.id !== msg.card_id);
 
-			// Notificar al jugador
-			ws.send(JSON.stringify({
-				type: 'card_purchased',
-				card: card,
-				new_balance: newBalance
-			}));
+    // Notificar al jugador
+    ws.send(JSON.stringify({
+        type: 'card_purchased',
+        card: card,
+        new_balance: newBalance
+    }));
 
-			// ✅ CORREGIDO: Actualizar monedas SOLO al jugador específico
-			sendToPlayer(userId, {
-				type: 'currency_updated',
-				player_id: parseInt(userId),
-				amount: newBalance
-			});
+    // Actualizar monedas del jugador
+    sendToPlayer(userId, {
+        type: 'currency_updated',
+        player_id: parseInt(userId),
+        amount: newBalance
+    });
 
-			// Notificar a otros jugadores sobre la mejora (opcional)
-			broadcastExcept(ws, {
-				type: 'player_upgraded',
-				player_id: parseInt(userId),
-				upgrade_type: card.type,
-				card_name: card.name
-			});
-		}
+    // Notificar a otros jugadores
+    broadcastExcept(ws, {
+        type: 'player_upgraded',
+        player_id: parseInt(userId),
+        upgrade_type: card.type,
+        card_name: card.name,
+        card_target: card.target
+    });
+
+    // Si la carta es para enemigos, notificar a todos
+    if (card.target === 'enemy') {
+        broadcast({
+            type: 'enemy_buff_applied',
+            card_name: card.name,
+            applied_by: player.username,
+            buff_type: card.type
+        });
+    }
+}
 
 		// --- SISTEMA DE DECISIONES ECONÓMICAS ---
 		else if (msg.type === 'player_decision') {
@@ -2159,30 +2382,9 @@ function _applyMageDamageToEnemy(enemyId, damage, ownerId) {
 		console.log(`💀 ENEMIGO ${enemyId} MUERTO POR ATAQUE DE ÁREA MAGA`);
 
 		const enemyType = target.type;
-		let killReward = 0;
 
-		switch (enemyType) {
-			case 'grunt': killReward = 5; break;
-			case 'archer': killReward = 8; break;
-			case 'mage': killReward = 10; break;
-			case 'boss_wave': killReward = 30; break;
-			case 'final_boss': killReward = 50; break;
-			default: killReward = 5;
-		}
-
-		if (target.is_permanent) {
-			killReward = 50;
-			console.log(`💰 RECOMPENSA POR JEFE PERMANENTE - +${killReward} monedas`);
-		}
-
-		const newAmount = economySystem.addCurrency(ownerId, killReward, players[ownerId]);
-		console.log(`💰 RECOMPENSA POR KILL DE ÁREA MAGA - +${killReward} monedas`);
-
-		sendToPlayer(ownerId, {
-			type: 'currency_updated',
-			player_id: parseInt(ownerId),
-			amount: newAmount
-		});
+		// Recompensa usando helper
+		giveEnemyKillReward(ownerId, target, "RECOMPENSA POR KILL DE ÁREA MAGA");
 
 		if (target.is_permanent) {
 			handleBossDeath(enemyId);
@@ -2198,32 +2400,33 @@ function _applyMageDamageToEnemy(enemyId, damage, ownerId) {
 			enemy_type: enemyType
 		});
 	}
+
 }
 function _applyMageDamageToBase(baseTeam, damage, ownerId) {
-    const base = bases[baseTeam];
-    if (!base) {
-        console.log("❌ BASE OBJETIVO NO ENCONTRADO");
-        return;
-    }
+	const base = bases[baseTeam];
+	if (!base) {
+		console.log("❌ BASE OBJETIVO NO ENCONTRADO");
+		return;
+	}
 
-    console.log("✅ DAÑO PERMITIDO - Aplicando daño a base:", baseTeam);
-	 const reducedDamage = 1;
-    base.hp -=reducedDamage;
-    if (base.hp < 0) base.hp = 0;
+	console.log("✅ DAÑO PERMITIDO - Aplicando daño a base:", baseTeam);
+	const reducedDamage = 1;
+	base.hp -= reducedDamage;
+	if (base.hp < 0) base.hp = 0;
 
-    console.log(`💥 MAGA DAÑA BASE - ${0.5} (reducido de ${reducedDamage}) a base ${baseTeam}, HP restante: ${base.hp}`);
+	console.log(`💥 MAGA DAÑA BASE - ${0.5} (reducido de ${reducedDamage}) a base ${baseTeam}, HP restante: ${base.hp}`);
 
-    broadcast({
-        type: 'base_hit',
-        team: parseInt(baseTeam),
-        hp: base.hp,
-        max_hp: base.maxHp
-    });
+	broadcast({
+		type: 'base_hit',
+		team: parseInt(baseTeam),
+		hp: base.hp,
+		max_hp: base.maxHp
+	});
 
-    if (base.hp <= 0) {
-        console.log(`💀 BASE ${baseTeam} DESTRUIDA POR ATAQUE DE ÁREA MAGA!`);
-        checkBaseDestruction();
-    }
+	if (base.hp <= 0) {
+		console.log(`💀 BASE ${baseTeam} DESTRUIDA POR ATAQUE DE ÁREA MAGA!`);
+		checkBaseDestruction();
+	}
 }
 // ----------------------------
 // INICIAR SERVIDOR CON BÚSQUEDA AUTOMÁTICA DE PUERTOS
