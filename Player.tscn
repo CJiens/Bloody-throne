@@ -584,6 +584,22 @@ grow_vertical = 0
 theme = ExtResource("3_d6rpx")
 metadata/_edit_use_anchors_ = true
 
+[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/Panel2/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_47wu6")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_2n1s8")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_3vjad")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_yt0h1")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_vd78s")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_ictha")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_1jgrc")
+metadata/_edit_use_anchors_ = true
+
 [node name="CardName" type="Label" parent="Camera2D/DecisionUI/Panel2/Panel"]
 layout_mode = 1
 anchors_preset = -1
@@ -642,23 +658,6 @@ theme_override_font_sizes/font_size = 40
 text = "buy: 300"
 horizontal_alignment = 1
 autowrap_mode = 2
-metadata/_edit_use_anchors_ = true
-
-[node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/Panel2/Panel"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_47wu6")
-theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_2n1s8")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_3vjad")
-theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_yt0h1")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_vd78s")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_ictha")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_1jgrc")
 metadata/_edit_use_anchors_ = true
 
 [node name="Panel2" type="Panel" parent="Camera2D/DecisionUI/Panel2"]
@@ -909,7 +908,6 @@ theme = ExtResource("16_3vjad")
 metadata/_edit_use_anchors_ = true
 
 [node name="BuyButton" type="Button" parent="Camera2D/DecisionUI/Panel3/Panel"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
