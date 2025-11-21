@@ -1,8 +1,7 @@
-[gd_scene load_steps=466 format=3 uid="uid://dftgxtk6badua"]
+[gd_scene load_steps=465 format=3 uid="uid://dftgxtk6badua"]
 
 [ext_resource type="Script" uid="uid://ctkncisqt3gv6" path="res://Enemy.gd" id="1_7k104"]
 [ext_resource type="Theme" uid="uid://bri7bopivwxvd" path="res://bars.tres" id="2_2hac7"]
-[ext_resource type="SpriteFrames" uid="uid://p1oxkqfwowoh" path="res://Enemy.tres" id="2_s7bn3"]
 [ext_resource type="Texture2D" uid="uid://bchuwtwsln1rk" path="res://Sprites/Enemy/MonstruoPistolera/MP_Atack/E/MP_Atack0001.png" id="4_e6uxr"]
 [ext_resource type="Texture2D" uid="uid://b4jo8wq3fueg7" path="res://Sprites/Enemy/MonstruoPistolera/MP_Atack/E/MP_Atack0005.png" id="5_7p4n1"]
 [ext_resource type="Texture2D" uid="uid://cnqdj6bw2q13l" path="res://Sprites/Enemy/MonstruoPistolera/MP_Atack/E/MP_Atack0009.png" id="6_ejgrc"]
@@ -2071,10 +2070,10 @@ scale = Vector2(11.29791, 10.69197)
 shape = SubResource("RectangleShape2D_e6d4v")
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
-offset_left = -88.0
-offset_top = 134.0
-offset_right = 112.0
-offset_bottom = 174.0
+offset_left = -98.0
+offset_top = 106.0
+offset_right = 102.0
+offset_bottom = 146.0
 theme = ExtResource("2_2hac7")
 max_value = 0.0
 show_percentage = false
@@ -2099,17 +2098,8 @@ visible = false
 scale = Vector2(17.68638, 13.792406)
 shape = SubResource("RectangleShape2D_qp131")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-visible = false
-light_mask = 2
-visibility_layer = 4
-scale = Vector2(1.0068027, 1)
-sprite_frames = ExtResource("2_s7bn3")
-animation = &"walk"
-
 [node name="MonstruoPistolera" type="AnimatedSprite2D" parent="."]
-visible = false
-position = Vector2(18, 57)
+position = Vector2(7, 19)
 scale = Vector2(0.488, 0.5)
 sprite_frames = SubResource("SpriteFrames_k82e5")
 animation = &"Attack_SW"

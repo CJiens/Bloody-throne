@@ -5,54 +5,22 @@ class_name Enemy
 # --- PROPIEDADES DEL ENEMIGO
 # -------------------------------
 var enemy_id: int
-var enemy_type: String = "grunt" # grunt, archer, mage, boss
+var enemy_type: String = "pistolera"
 var hp: int = 50
 var max_hp: int = 50
 var team: int = 1 # 1 o 2 para equipos, 0 para neutral (jefe)
 
 # Estadísticas por tipo
 var stats := {
-	"grunt": {
+	"pistolera": {
 		"hp": 50,
-		"speed": 300,
-		"attack_damage": 200,
-		"attack_range": 40,
-		"attack_cooldown": 1.5,
-		"is_ranged": false,
-		"aggro_range": 150,
-		"chase_range": 200
-	},
-	"archer": {
-		"hp": 40,
 		"speed": 100,
-		"attack_damage": 8,
-		"attack_range": 120,
+		"attack_damage": 10,
+		"attack_range": 300,  # Rango de ataque a distancia
 		"attack_cooldown": 2.0,
 		"is_ranged": true,
-		"aggro_range": 180,
-		"chase_range": 250
-	},
-	"mage": {
-		"hp": 30,
-		"speed": 70,
-		"attack_damage": 12,
-		"attack_range": 100,
-		"attack_cooldown": 3.0,
-		"is_ranged": true,
-		"aggro_range": 160,
-		"chase_range": 220
-	},
-	"boss": {
-		"hp": 500,
-		"speed": 50,
-		"attack_damage": 25,
-		"attack_range": 80,
-		"attack_cooldown": 2.0,
-		"is_ranged": false,
-		"aggro_range": 200,
-		"chase_range": 300,
-		"phases": 2,
-		"current_phase": 1
+		"aggro_range": 350,
+		"chase_range": 400
 	}
 }
 
@@ -61,19 +29,19 @@ var target_position: Vector2 = Vector2.ZERO
 var current_target: Node2D = null
 var aggro_target: Node2D = null
 var state: String = "idle" # idle, moving, chasing, attacking, dead
-var move_speed: float = 80.0
+var move_speed: float = 100.0
 
-# Ataque
+# Ataque (SOLO ranged ahora)
 var attack_timer: float = 0.0
 var can_attack: bool = true
-var attack_range: float = 40.0
+var attack_range: float = 300.0  # Rango para ataque a distancia
 var attack_damage: int = 10
-var attack_cooldown: float = 1.5
-var is_ranged: bool = false
+var attack_cooldown: float = 2.0
+var is_ranged: bool = true  # Siempre true ahora
 
 # Nodos
 @onready var hp_bar: ProgressBar = $ProgressBar
-@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var sprite: AnimatedSprite2D = $MonstruoPistolera
 @onready var hitbox_area: Area2D = $HitboxArea
 @onready var attack_area: Area2D = $AttackArea
 @onready var detection_area: Area2D = $DetectionArea
@@ -95,15 +63,16 @@ func _ready():
 	# Configurar estado inicial
 	state = "moving"
 
-	#Barra de vida
+	# Barra de vida
 	hp_bar.max_value = max_hp
 	vida_label.text = str(hp) + "/" + str(max_hp)
-	# ✅ APLICAR COLOR INMEDIATAMENTE SI EL EQUIPO YA ESTÁ ASIGNADO
-	if team != -1:
-		_apply_team_color_immediately()
 	
-	print("👹 ENEMIGO CREADO - ID:", enemy_id, " Tipo:", enemy_type, " HP:", hp, " Equipo:", team)
-
+	# ✅ Cargar proyectil por defecto si no está asignado
+	if projectile_scene == null:
+		projectile_scene = preload("res://projectiles/PistoleraProjectile.tscn")
+		print("✅ PROYECTIL PISTOLERA ASIGNADO POR DEFECTO")
+	
+	print("👹 ENEMIGO PISTOLERA CREADO - ID:", enemy_id, " HP:", hp, " Equipo:", team)
 func setup_collisions():
 	# Configurar layers y masks
 	set_collision_layer_value(2, true) # Layer de enemigos
@@ -134,8 +103,9 @@ func set_enemy_id(id: int):
 	name = str(id)
 
 func set_enemy_type(type: String):
-	enemy_type = type
-	var config = stats.get(type, stats["grunt"])
+	# SOLO tipo pistolera ahora
+	enemy_type = "pistolera"
+	var config = stats["pistolera"]
 	
 	# Aplicar configuración
 	hp = config.hp
@@ -151,29 +121,18 @@ func set_enemy_type(type: String):
 		hp_bar.max_value = max_hp
 		hp_bar.value = hp
 
-	#label de vida
+	# Label de vida
 	if vida_label:
 		vida_label.text = str(hp) + "/" + str(max_hp)
 	
 	# Configurar animaciones
 	setup_animations()
+
 func setup_animations():
 	if not sprite:
 		return
+	sprite.animation = "Run_S"  # Animación inicial
 	
-	# Configurar animaciones según el tipo
-	match enemy_type:
-		"grunt":
-			sprite.sprite_frames = load("res://assets/animations/enemies/grunt.tres")
-		"archer":
-			sprite.sprite_frames = load("res://assets/animations/enemies/archer.tres")
-		"mage":
-			sprite.sprite_frames = load("res://assets/animations/enemies/mage.tres")
-		"boss":
-			sprite.sprite_frames = load("res://assets/animations/enemies/boss.tres")
-	
-	sprite.animation = "idle"
-	sprite.play()
 
 # -------------------------------
 # --- PROCESO PRINCIPAL
@@ -205,7 +164,16 @@ func _physics_process(delta):
 # -------------------------------
 # --- IA Y COMPORTAMIENTO
 # -------------------------------
+# -------------------------------
+# --- IA MEJORADA PARA RANGED
+# -------------------------------
 func _update_ai(delta):
+	if state == "dead":
+		return
+	
+	# Actualizar cooldown de ataque
+	_handle_attack_cooldown(delta)
+	
 	# Buscar objetivos si no hay uno
 	if not aggro_target:
 		_find_target()
@@ -220,14 +188,14 @@ func _update_ai(delta):
 	# Calcular distancia al objetivo
 	var distance_to_target = global_position.distance_to(aggro_target.global_position)
 	
-	# ✅ COMPORTAMIENTO MEJORADO PARA NEUTRALES
+	# ✅ COMPORTAMIENTO MEJORADO PARA ATAQUE A DISTANCIA
 	if team == 0:  # Enemigos neutrales
 		if distance_to_target <= attack_range:
 			state = "attacking"
 			_try_attack()
-		elif distance_to_target <= 800:  # Radio de persecución grande
+		elif distance_to_target <= 500:  # Radio de persecución
 			state = "chasing"
-			# ✅ MOVIMIENTO MÁS DIRECTO HACIA EL JUGADOR
+			# Moverse hacia el objetivo pero mantener distancia
 			var direction = (aggro_target.global_position - global_position).normalized()
 			velocity = direction * move_speed
 		else:
@@ -235,24 +203,24 @@ func _update_ai(delta):
 			aggro_target = null
 			state = "moving"
 	else:
-		# Comportamiento original para enemigos con equipo
+		# Enemigos con equipo
 		if distance_to_target <= attack_range:
 			state = "attacking"
 			_try_attack()
-		elif distance_to_target <= stats[enemy_type].chase_range:
+		elif distance_to_target <= stats["pistolera"].chase_range:
 			state = "chasing"
 		else:
 			state = "moving"
 			aggro_target = null
 
 func _find_target():
-	# ✅ COMPORTAMIENTO DIFERENTE SEGÚN EQUIPO
 	if team == 0:
 		# ENEMIGOS NEUTRALES: Buscar jugadores cercanos
 		_find_player_target()
 	else:
-		# ENEMIGOS CON EQUIPO: Buscar jugadores enemigos o ir a base
+		# ENEMIGOS CON EQUIPO: Buscar jugadores enemigos o bases
 		_find_team_target()
+
 func _find_player_target():
 	# Buscar cualquier jugador vivo, sin importar equipo
 	var players = get_tree().get_nodes_in_group("players")
@@ -313,13 +281,14 @@ func _find_team_target():
 	_move_to_base()
 
 func _is_valid_target(target: Node2D) -> bool:
-	# Verificar que el objetivo esté vivo y sea de equipo contrario
 	if target.is_in_group("players"):
 		var player_hp = target.hp if "hp" in target else 0
 		var player_team = target.team if "team" in target else 0
 		return player_hp > 0 and player_team != team
+	elif target.is_in_group("bases"):
+		var base_team = target.team if "team" in target else 0
+		return base_team != team
 	return false
-
 func _move_to_base():
 	# Moverse hacia la base del equipo opuesto
 	var target_base_position = Vector2.ZERO
@@ -351,51 +320,37 @@ func _face_target():
 	
 	velocity = Vector2.ZERO
 
+# -------------------------------
+# --- ATAQUE A DISTANCIA (REEMPLAZA MELEE)
+# -------------------------------
 func _try_attack():
 	if not can_attack or not aggro_target:
 		return
 	
-	if is_ranged:
-		_ranged_attack()
-	else:
-		_melee_attack()
+	# SOLO ataque a distancia ahora
+	_ranged_attack()
 	
 	can_attack = false
 	attack_timer = attack_cooldown
 	
-	# ✅ DAÑO ESPECIAL PARA NEUTRALES (5% de vida máxima del jugador)
-	if team == 0 and aggro_target and aggro_target.has_method("get_max_hp"):
-		var player_max_hp = aggro_target.get_max_hp()
-		var neutral_damage = int(player_max_hp * 0.05)
-		print("💥 ENEMIGO NEUTRAL ATACA - Daño:", neutral_damage, " (5% de ", player_max_hp, ")")
-	
-	print("💥 ENEMIGO %d ATACA - Tipo: %s, Daño: %d" % [enemy_id, enemy_type, attack_damage])
-func _melee_attack():
-	# Verificar que el objetivo esté en rango
-	var bodies = attack_area.get_overlapping_bodies()
-	for body in bodies:
-		if body.is_in_group("players"):
-			# Aplicar daño al jugador
-			if body.has_method("take_damage"):
-				body.take_damage(attack_damage)
-			
-			# Reproducir animación de ataque
-			if sprite:
-				sprite.animation = "attack"
-				sprite.play()
-			
-			break
+	print("💥 ENEMIGO PISTOLERA DISPARA - ID:", enemy_id)
 
 func _ranged_attack():
 	if not projectile_scene:
-		print("❌ ENEMIGO RANGED SIN PROYECTIL ASIGNADO")
+		print("❌ ENEMIGO PISTOLERA SIN PROYECTIL ASIGNADO")
 		return
+	
+	# Calcular dirección hacia el objetivo
+	var direction = (aggro_target.global_position - global_position).normalized()
+	var suffix = _get_animation_suffix(direction)
+	
+	# Reproducir animación de ataque en la dirección correcta
+	sprite.animation = "Attack_" + suffix
+	sprite.play()
 	
 	# Crear proyectil
 	var projectile = projectile_scene.instantiate()
 	projectile.position = global_position
-	
-	var direction = (aggro_target.global_position - global_position).normalized()
 	
 	# Configurar proyectil
 	if projectile.has_method("initialize"):
@@ -404,14 +359,27 @@ func _ranged_attack():
 		projectile.set("projectile_direction", direction)
 		projectile.set("projectile_damage", attack_damage)
 		projectile.set("projectile_owner_id", -enemy_id)
-	
+		projectile.set("enemy_team", team)  # Pasar team al proyectil
 	get_parent().add_child(projectile)
 	
-	# Reproducir animación de ataque
-	if sprite:
-		sprite.animation = "attack"
-		sprite.play()
+	print("🎯 PROYECTIL PISTOLERA CREADO - Dirección:", direction)
 
+#
+#func _melee_attack():
+	## Verificar que el objetivo esté en rango
+	#var bodies = attack_area.get_overlapping_bodies()
+	#for body in bodies:
+		#if body.is_in_group("players"):
+			## Aplicar daño al jugador
+			#if body.has_method("take_damage"):
+				#body.take_damage(attack_damage)
+			#
+			## Reproducir animación de ataque
+			#if sprite:
+				#sprite.animation = "attack"
+				#sprite.play()
+			#
+			#break
 # -------------------------------
 # --- SISTEMA DE VIDA
 # -------------------------------
@@ -486,33 +454,54 @@ func die():
 # -------------------------------
 # --- ANIMACIONES
 # -------------------------------
+# -------------------------------
+# --- SISTEMA DE ANIMACIONES DIRECCIONALES
+# -------------------------------
+func _get_animation_suffix(direction: Vector2) -> String:
+	# Normalizar la dirección
+	var norm_direction = direction.normalized()
+	
+	# Calcular ángulos para las 8 direcciones
+	var angle = rad_to_deg(norm_direction.angle())
+	
+	# Mapear ángulo a sufijo de animación
+	if angle >= -22.5 and angle < 22.5:
+		return "E"    # Este
+	elif angle >= 22.5 and angle < 67.5:
+		return "SE"   # Sureste
+	elif angle >= 67.5 and angle < 112.5:
+		return "S"    # Sur
+	elif angle >= 112.5 and angle < 157.5:
+		return "SW"   # Suroeste
+	elif angle >= 157.5 or angle < -157.5:
+		return "W"    # Oeste
+	elif angle >= -157.5 and angle < -112.5:
+		return "NW"   # Noroeste
+	elif angle >= -112.5 and angle < -67.5:
+		return "N"    # Norte
+	elif angle >= -67.5 and angle < -22.5:
+		return "NE"   # Noreste
+	
+	return "S"  # Por defecto
+
 func _update_animation(direction: Vector2):
 	if not sprite or state == "attacking":
 		return
 	
-	var anim_name = "idle"
+	var anim_name = "Idle"
+	var suffix = _get_animation_suffix(direction)
 	
 	if velocity.length() > 0:
-		anim_name = "walk"
-		
-		# Determinar dirección para el sprite
-		if abs(direction.x) > abs(direction.y):
-			if direction.x > 0:
-				sprite.flip_h = false
-			else:
-				sprite.flip_h = true
-		else:
-			if direction.y > 0:
-				# Hacia abajo
-				pass
-			else:
-				# Hacia arriba
-				pass
+		anim_name = "Run"
+	else:
+		anim_name = "Idle"
 	
-	if sprite.animation != anim_name:
-		sprite.animation = anim_name
+	# Aplicar animación con sufijo direccional
+	var full_anim_name = anim_name + "_" + suffix
+	
+	if sprite.animation != full_anim_name:
+		sprite.animation = full_anim_name
 		sprite.play()
-
 # -------------------------------
 # --- COOLDOWNS
 # -------------------------------

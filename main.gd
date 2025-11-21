@@ -195,7 +195,8 @@ func _ready():
 	Network.projectile_created.connect(_on_projectile_created)
 	Network.projectile_moved.connect(_on_projectile_moved)
 	Network.projectile_removed.connect(_on_projectile_removed)
-
+	Network.enemy_ranged_attack.connect(_on_enemy_ranged_attack)
+	Network.enemy_animation_update.connect(_on_enemy_animation_update)
 	# NUEVAS CONEXIONES PARA SISTEMA DE EQUIPOS Y VICTORIA
 	Network.team_update.connect(_on_team_update)
 	Network.team_selected.connect(_on_team_selected)
@@ -501,9 +502,10 @@ func _update_game_entities():
 		var id = int(key)
 		var data = Network.players[key]
 		
-		# ✅ NO ACTUALIZAR POSICIÓN DURANTE RESPawN
+		# ✅ NO ACTUALIZAR POSICIÓN DURANTE RESPAWN
 		if id in respawn_timers and respawn_timers[id] > 0:
-			continue  # Saltar actualización de posición durante respawn
+			continue
+			
 		if id in players:
 			var player_node = players[id]
 			
@@ -531,54 +533,29 @@ func _update_game_entities():
 			print("👤 SPAWNEANDO JUGADOR - ID:", id, " Username:", data.username, " Clase:", data.get("classe", "warrior"))
 			_spawn_player(id, data.username, Vector2(data.x, data.y), data.hp, data.get("classe", "warrior"))
 
-	# --- Actualizar enemigos y bosses ---
-	print("🔄 ACTUALIZANDO ENEMIGOS - Total en Network:", Network.enemies.size())
+	# --- Actualizar enemigos PISTOLERA ---
+	print("🔄 ACTUALIZANDO ENEMIGOS PISTOLERA - Total en Network:", Network.enemies.size())
 	for key in Network.enemies.keys():
 		var id = int(key)
 		var data = Network.enemies[key]
 		
-		# ✅ DETECCIÓN MEJORADA DE BOSSES
-		var is_boss = (
-			data.get("type") == "final_boss" or
-			data.get("is_permanent") == true or
-			data.get("type") == "boss_wave" or
-			str(id) == "999" # ID específico del boss permanente
-		)
-		
-		print("   Enemigo ID:", id, " Tipo:", data.get("type"), " Es boss?", is_boss, " Razón: type=", data.get("type"), ", is_permanent=", data.get("is_permanent"))
-		
-		if is_boss:
-			print("🎯 ENEMIGO ES BOSS - ID:", id, " Datos:", data)
-			if bosses.has(id):
-				# Actualizar boss existente
-				if data.has("x") and data.has("y"):
-					bosses[id].position = Vector2(data.x, data.y)
-				if data.has("hp") and bosses[id].has_method("update_hp"):
-					bosses[id].update_hp(data.hp)
-				
-				# Sincronizar animación si está disponible
-				if data.has("animation_state") and bosses[id].has_method("play_animation"):
-					bosses[id].play_animation(data.animation_state)
-				elif bosses[id].has_method("play_animation"):
-					# Si no hay animación específica, usar una por defecto
-					bosses[id].play_animation("idle")
+		if id in enemies:
+			# ✅ CORREGIDO: Actualizar team de enemigos existentes
+			if data.has("team") and enemies[id].has_method("set_team"):
+				var current_team = enemies[id].team if "team" in enemies[id] else -1
+				var new_team = data.team
+				if current_team != new_team:
+					enemies[id].set_team(new_team)
+					print("🔄 ACTUALIZANDO EQUIPO ENEMIGO - ID:", id, " Nuevo team:", new_team)
+			
+			# Actualizar posición y HP
+			enemies[id].position = Vector2(data.x, data.y)
+			if data.has("hp") and enemies[id].has_method("update_hp"):
+				enemies[id].update_hp(data.hp)
 		else:
-			# Enemigos normales
-			if id in enemies:
-				enemies[id].position = Vector2(data.x, data.y)
-				if data.has("hp") and enemies[id].has_method("update_hp"):
-						enemies[id].update_hp(data.hp)
-				# ✅ NUEVO: Actualizar equipo si es necesario
-				if data.has("team") and enemies[id].has_method("set_team"):
-					enemies[id].set_team(data.team)
-			else:
-				 #✅ Pasar el equipo si está disponible en los datos
-				var enemy_team = data.get("team", 0)
-				if enemy_team == 0:
-					# Si no viene team en los datos, asignar basado en ID
-					enemy_team = 1 if id <= 3 else 2
-					print("⚠️ ENEMIGO SIN TEAM - Asignando por ID:", id, " -> Team:", enemy_team)
-				_spawn_enemy(id, data.type, Vector2(data.x, data.y), enemy_team)
+			# ✅ SPAWN NUEVO ENEMIGO PISTOLERA
+			var enemy_team = data.get("team", 0)
+			_spawn_enemy(id, "pistolera", Vector2(data.x, data.y), enemy_team)
 	# --- Verificar enemigos eliminados ---
 	_check_enemy_deaths()
 
@@ -640,21 +617,22 @@ func _spawn_enemy(id: int, type: String, pos: Vector2, team: int = 0):
 		print("❌ ENEMIGO DUPLICADO - ID:", id, " Ya existe!")
 		return
 	
-	print("✅ SPAWNEANDO ENEMIGO - ID:", id, " Tipo:", type, " Equipo:", team)
+	print("✅ SPAWNEANDO ENEMIGO PISTOLERA - ID:", id, " Equipo:", team)
 	
 	var instance = EnemyScene.instantiate()
 	instance.position = pos
 	instance.name = str(id)
+	
 	# ✅ ASIGNAR EQUIPO INMEDIATAMENTE - INCLUYENDO NEUTRALES (0)
 	if instance.has_method("set_team"):
 		instance.set_team(team)
 		print("🎨 COLOR ASIGNADO INMEDIATAMENTE - Enemigo:", id, " Equipo:", team)
 	
-	# ✅ ASIGNAR ID Y TIPO DESPUÉS DEL EQUIPO
+	# ✅ ASIGNAR ID Y TIPO PISTOLERA
 	if instance.has_method("set_enemy_id"):
 		instance.set_enemy_id(id)
 	if instance.has_method("set_enemy_type"):
-		instance.set_enemy_type(type)
+		instance.set_enemy_type("pistolera")  # Forzar tipo pistolera
 	
 	enemy_container.add_child(instance)
 	enemies[id] = instance
@@ -667,10 +645,7 @@ func _on_enemy_spawned_immediate(enemy_data: Dictionary):
 	print("⚡ SPAWN INMEDIATO - Enemigo ID:", id, " Tipo:", type, " Equipo:", team)
 	
 	# Usar la función _spawn_enemy existente pero con el equipo
-	#_spawn_enemy(id, type, pos, team)
-
-
-
+	_spawn_enemy(id, type, pos, team)
 # -------------------------------
 # --- SALA DE ESPERA MEJORADA
 # -------------------------------
@@ -985,12 +960,20 @@ func _spawn_player(id: int, username: String, pos: Vector2, hp: int = 100, class
 	# Configurar barra de vida
 	_update_player_hp(instance, hp, id)
 
+# -------------------------------
+# --- SISTEMA DE PROYECTILES (ACTUALIZADO)
+# -------------------------------
 func _spawn_projectile(id: int, data: Dictionary):
 	var projectile_scene: PackedScene
 	
 	# Determinar qué proyectil instanciar basado en la clase
 	var classe = data.get("classe", "warrior")
-	if class_projectiles.has(classe):
+	
+	# ✅ PROYECTILES ESPECIALES PARA PISTOLERA
+	if classe == "pistolera":
+		projectile_scene = preload("res://projectiles/PistoleraProjectile.tscn")
+		print("🎯 Usando proyectil PISTOLERA para enemigo")
+	elif class_projectiles.has(classe):
 		projectile_scene = class_projectiles[classe]
 		print("🎯 Usando proyectil específico para clase:", classe)
 	else:
@@ -1017,7 +1000,17 @@ func _spawn_projectile(id: int, data: Dictionary):
 	# Configuración según el tipo de proyectil
 	if projectile.has_method("initialize"):
 		var is_remote = (data.owner_id != Network.player_id)
-		projectile.initialize(id, direction, data.damage, data.owner_id, is_remote)
+		# Para proyectiles pistolera, obtener team del enemigo
+		var enemy_team = 0
+		if classe == "pistolera" and data.owner_id < 0:
+			var enemy_id = -data.owner_id
+			if enemies.has(enemy_id):
+				var enemy = enemies[enemy_id]
+				if enemy.has_method("get_team"):
+					enemy_team = enemy.get_team()
+			projectile.initialize(id, direction, data.damage, data.owner_id, is_remote, enemy_team)
+		else:
+			projectile.initialize(id, direction, data.damage, data.owner_id, is_remote)
 	else:
 		# Configuración estándar para proyectiles simples
 		projectile.set("projectile_id", id)
@@ -2019,3 +2012,68 @@ func show_enemy_buff_notification(card_name: String, player_name: String):
 	tween.parallel().tween_property(notification, "position:y", notification.position.y - 50, 2.0)
 	tween.parallel().tween_property(notification, "modulate", Color(1, 1, 1, 0), 2.0)
 	tween.tween_callback(notification.queue_free)
+func _on_enemy_ranged_attack(enemy_id: int, target_type: String, target_id: int, damage: int, direction_x: float, direction_y: float):
+	print("🔫 ATAQUE RANGED ENEMIGO PROCESADO - Enemigo:", enemy_id, " Target:", target_type, target_id)
+	
+	# Verificar que el enemigo existe
+	if not enemies.has(enemy_id):
+		print("❌ ENEMIGO NO ENCONTRADO PARA ATAQUE RANGED:", enemy_id)
+		return
+	
+	var enemy = enemies[enemy_id]
+	var direction = Vector2(direction_x, direction_y)
+	
+	# Crear proyectil visual del enemigo
+	_create_enemy_projectile(enemy_id, enemy.position, direction, damage)
+	
+	# Actualizar animación del enemigo a "attacking"
+	if enemy.has_method("play_attack_animation"):
+		enemy.play_attack_animation(direction)
+
+func _on_enemy_animation_update(enemy_id: int, animation_name: String):
+	print("🎭 ACTUALIZANDO ANIMACIÓN ENEMIGO - ID:", enemy_id, " Animación:", animation_name)
+	
+	if enemies.has(enemy_id):
+		var enemy = enemies[enemy_id]
+		if enemy and enemy.has_method("play_animation"):
+			enemy.play_animation(animation_name)
+
+func _create_enemy_projectile(enemy_id: int, position: Vector2, direction: Vector2, damage: int):
+	print("🎯 CREANDO PROYECTIL ENEMIGO EN CLIENTE - Enemy:", enemy_id, " Pos:", position)
+	
+	# Cargar escena del proyectil pistolera
+	var pistolera_projectile_scene = preload("res://projectiles/PistoleraProjectile.tscn")
+	if not pistolera_projectile_scene:
+		print("❌ ERROR: No se pudo cargar PistoleraProjectile.tscn")
+		return
+	
+	var projectile = pistolera_projectile_scene.instantiate()
+	
+	if not projectile:
+		print("❌ ERROR: No se pudo instanciar PistoleraProjectile")
+		return
+	
+	# Posicionar proyectil
+	projectile.position = position
+	
+	# Obtener team del enemigo para configurar el proyectil
+	var enemy_team = 0
+	if enemies.has(enemy_id):
+		var enemy = enemies[enemy_id]
+		if enemy.has_method("get_team"):
+			enemy_team = enemy.get_team()
+	
+	# Configurar como proyectil remoto (no manejado por este cliente)
+	if projectile.has_method("initialize"):
+		projectile.initialize(-1, direction, damage, -enemy_id, true, enemy_team)
+	else:
+		projectile.set("projectile_direction", direction)
+		projectile.set("projectile_damage", damage)
+		projectile.set("projectile_owner_id", -enemy_id)
+		projectile.set("is_remote", true)
+		projectile.set("enemy_team", enemy_team)
+	
+	# Agregar a la escena
+	enemy_container.add_child(projectile)
+	
+	print("✅ PROYECTIL ENEMIGO CREADO - Team:", enemy_team, " Dirección:", direction)

@@ -29,6 +29,8 @@ var ws_ready := false
 # -------------------------------
 # --- SEÑALES (AGREGAR ESTA)
 # -------------------------------
+signal enemy_ranged_attack(enemy_id, target_type, target_id, damage, direction_x, direction_y)
+signal enemy_animation_update(enemy_id, animation_name)
 signal enemy_buff_applied(card_name, applied_by, buff_type)
 signal enemy_spawned_immediate(enemy_data)
 signal login_successful
@@ -139,25 +141,33 @@ func _receive_messages():
 		print("📥 MENSAJE RECIBIDO - Tipo:", data.type)
 
 		match data.type:
+			
+			"enemy_ranged_attack":
+				print("🔫 ATAQUE RANGED ENEMIGO - Enemigo:", data.enemy_id, " Target:", data.target_type, data.target_id)
+				emit_signal("enemy_ranged_attack", data.enemy_id, data.target_type, data.target_id, data.damage, data.direction_x, data.direction_y)
+			
+			"enemy_animation_update":
+				print("🎭 ANIMACIÓN ENEMIGO ACTUALIZADA - ID:", data.enemy_id, " Animación:", data.animation_name)
+				emit_signal("enemy_animation_update", data.enemy_id, data.animation_name)
 			"enemy_dead":
 				enemies.erase(str(data.id))
 				print("💀 Enemigo muerto - ID:", data.id, " Por:", data.killer_id)
 				if get_tree().current_scene.has_method("_on_enemy_killed"):
 					get_tree().current_scene._on_enemy_killed(data.id, data.killer_id, data.enemy_type)
 			"enemy_spawned":
-				print("👹 ENEMIGO SPAWNEADO INMEDIATAMENTE - ID:", data.enemy.id, " Equipo:", data.enemy.team)
+				print("👹 ENEMIGO PISTOLERA SPAWNEADO - ID:", data.enemy.id, " Equipo:", data.enemy.team)
 				enemies[str(data.enemy.id)] = {
 					"x": data.enemy.x,
 					"y": data.enemy.y,
 					"type": data.enemy.type,
 					"hp": data.enemy.hp,
 					"max_hp": data.enemy.max_hp,
-					"team": data.enemy.team, # ✅ EQUIPO INCLUIDO INMEDIATAMENTE
+					"team": data.enemy.team,
 					"attack_damage": data.enemy.attack_damage,
-					"move_speed": data.enemy.move_speed
-					}
+					"move_speed": data.enemy.move_speed,
+					"attack_range": data.enemy.attack_range
+				}
 				emit_signal("enemy_spawned_immediate", data.enemy)
-				print("✅ SEÑAL enemy_spawned_immediate EMITIDA")
 			"rogue_area_attack_effect":
 				print("💥 EFECTO DE ATAQUE DE ÁREA ROGUE RECIBIDO - Posición:", data.x, data.y, " Jugador:", data.player_id)
 				emit_signal("rogue_area_attack_effect", data.x, data.y, data.player_id)
