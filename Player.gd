@@ -466,7 +466,7 @@ func _setup_card_ui(card_ui: Control, card_data: Dictionary):
 	var desc_label = card_ui.get_node_or_null("CardDescription")
 	var cost_label = card_ui.get_node_or_null("CardCost")
 	var buy_button = card_ui.get_node_or_null("BuyButton")
-    
+	
 	if name_label:
 		name_label.text = card_data.get("name", "Carta Sin Nombre")
 	if desc_label:
@@ -618,7 +618,7 @@ func _display_available_cards():
 			var card_data = available_cards[i]
 			_setup_card_ui(card_ui, card_data)
 			card_ui.visible = true
-            
+			
 			# Cambiar color según el target de la carta
 			var panel = card_ui.get_node_or_null("Panel")
 			if panel:
@@ -668,7 +668,7 @@ func _apply_card_effect(card_data: Dictionary):
 	var card_type = card_data.get("type", "")
 	var card_value = card_data.get("value", 0)
 	var card_target = card_data.get("target", "player")
-    
+	
 	if card_target == "player":
 		# Cartas para el jugador
 		match card_type:
@@ -691,7 +691,7 @@ func _apply_card_effect(card_data: Dictionary):
 			"critical":
 				critical_chance += card_value
 				print("🎯 PROB. CRÍTICO: %d%%" % critical_chance)
-    
+	
 	else:
 		# Cartas para enemigos
 		match card_type:
@@ -707,7 +707,7 @@ func _apply_card_effect(card_data: Dictionary):
 				print("🎭 ENEMIGOS DE ÉLITE: %d%% chance" % card_value)
 			"enemy_boss":
 				print("👹 JEFE MEJORADO: +HP y daño")
-        
+		
 		_show_enemy_buff_notification(card_data.get("name", "Mejora Enemigos"))
 
 func _show_enemy_buff_notification(card_name: String):
@@ -717,7 +717,7 @@ func _show_enemy_buff_notification(card_name: String):
 	floating_text.add_theme_font_size_override("font_size", 16)
 	floating_text.position = Vector2(-30, -50)
 	add_child(floating_text)
-    
+	
 	var tween = create_tween()
 	tween.parallel().tween_property(floating_text, "position", Vector2(-30, -100), 1.5)
 	tween.parallel().tween_property(floating_text, "modulate", Color(1, 1, 1, 0), 1.5)
