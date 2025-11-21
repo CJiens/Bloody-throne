@@ -409,7 +409,7 @@ class WaveSystem {
 
 		return {
 			enemies: numEnemies,
-			types: ['grunt', 'archer', 'mage'],
+			types: ['pistolera'],
 			reward: baseReward,
 			isBossWave: false
 		};
@@ -857,15 +857,7 @@ function spawnWaveEnemies(waveConfig) {
     console.log(`✅ SPAWN COMPLETADO - Equipo 1: ${enemiesPerTeam}, Equipo 2: ${enemiesPerTeam}, Neutrales: ${neutralEnemies}, Élites: ${eliteChance}%`);
 }
 function spawnEnemy(id, availableTypes, forceTeam = null, eliteChance = 0) {
-    let enemyType = availableTypes[Math.floor(Math.random() * availableTypes.length)];
-    
-    // Verificar si spawn como élite
-    let isElite = false;
-    if (eliteChance > 0 && Math.random() * 100 < eliteChance) {
-        isElite = true;
-        enemyType = 'elite_' + enemyType;
-    }
-    
+    let enemyType = 'pistolera';
     let spawnPos;
     if (forceTeam === 1) {
         const basePos = bases[1];
@@ -886,29 +878,32 @@ function spawnEnemy(id, availableTypes, forceTeam = null, eliteChance = 0) {
         };
     }
 
-    const baseHp = enemyType === 'grunt' ? 50 : enemyType === 'archer' ? 40 : enemyType === 'mage' ? 30 : 
-                  enemyType === 'elite_grunt' ? 80 : enemyType === 'elite_archer' ? 60 : enemyType === 'elite_mage' ? 50 : 100;
+// Estadísticas base para pistolera
+	const baseHp = 50;
+	const attackDamage = 10;
+	const moveSpeed = 100;
+	const attackRange = 300; // Rango de ataque a distancia
 
-    enemies[id] = {
-        id: id,
-        x: spawnPos.x,
-        y: spawnPos.y,
-        hp: baseHp,
-        max_hp: baseHp,
-        type: enemyType,
-        team: forceTeam,
-        attack_damage: enemyType === 'grunt' ? 10 : enemyType === 'archer' ? 8 : enemyType === 'mage' ? 12 : 
-                      enemyType === 'elite_grunt' ? 15 : enemyType === 'elite_archer' ? 12 : enemyType === 'elite_mage' ? 18 : 15,
-        move_speed: enemyType === 'grunt' ? 80 : enemyType === 'archer' ? 100 : enemyType === 'mage' ? 70 : 
-                   enemyType === 'elite_grunt' ? 100 : enemyType === 'elite_archer' ? 120 : enemyType === 'elite_mage' ? 90 : 60,
-        spawn_area: forceTeam,
-        is_neutral: forceTeam === 0,
-        is_elite: isElite,
-        last_attack_time: 0,
-        attack_cooldown: 1000
-    };
+   enemies[id] = {
+		id: id,
+		x: spawnPos.x,
+		y: spawnPos.y,
+		hp: baseHp,
+		max_hp: baseHp,
+		type: enemyType,
+		team: forceTeam,
+		attack_damage: attackDamage,
+		move_speed: moveSpeed,
+		attack_range: attackRange, // Nuevo: rango de ataque
+		spawn_area: forceTeam,
+		is_neutral: forceTeam === 0,
+		is_elite: false,
+		last_attack_time: 0,
+		attack_cooldown: 2000, // 2 segundos entre ataques
+		is_ranged: true // Siempre ranged ahora
+	};
 
-    console.log(`👹 ${isElite ? 'ÉLITE ' : ''}ENEMIGO SPAWNEADO - Tipo: ${enemyType}, Equipo: ${forceTeam}, HP: ${baseHp}`);
+    console.log(`👹 ENEMIGO PISTOLERA SPAWNEADO - ID: ${id}, Equipo: ${forceTeam}, HP: ${baseHp}, Rango: ${attackRange}`);
 }
 function startWave() {
 	const waveConfig = waveSystem.startNextWave();
@@ -1001,8 +996,12 @@ function handleBossDeath(enemyId) {
 }
 
 
-// ✅ FUNCIÓN MEJORADA PARA MOVIMIENTO DE ENEMIGOS NEUTRALES
+// ✅ FUNCIÓN MEJORADA PARA MOVIMIENTO DE ENEMIGOS NEUTRALES PISTOLERA
 function _moveNeutralEnemy(enemy) {
+	// ✅ SOLO enemigos neutrales (team 0) deben atacar jugadores
+	if (enemy.team !== 0) {
+		return; // Enemigos con equipo no usan esta lógica
+	}
 	// Buscar jugador más cercano
 	let closestPlayer = null;
 	let minDistance = Infinity;
@@ -1014,35 +1013,78 @@ function _moveNeutralEnemy(enemy) {
 				Math.pow(player.x - enemy.x, 2) + Math.pow(player.y - enemy.y, 2)
 			);
 
-			if (distance < minDistance && distance < 800) { // Radio de detección aumentado a 800
+			if (distance < minDistance && distance < 800) {
 				minDistance = distance;
 				closestPlayer = player;
 			}
 		}
 	}
 
-	// Si encontramos un jugador, movernos DIRECTAMENTE hacia él
+	const now = Date.now();
+
+	// Si encontramos un jugador
 	if (closestPlayer) {
 		const dx = closestPlayer.x - enemy.x;
 		const dy = closestPlayer.y - enemy.y;
 		const distance = Math.sqrt(dx * dx + dy * dy);
 
 		if (distance > 0) {
-			// ✅ MOVIMIENTO MÁS DECIDIDO - Sin cambios de dirección aleatorios
-			const moveX = (dx / distance) * enemy.move_speed * 0.025; // Aumentada la velocidad
-			const moveY = (dy / distance) * enemy.move_speed * 0.025;
+			// ✅ COMPORTAMIENTO RANGED: MANTENER DISTANCIA ÓPTIMA
+			if (distance > enemy.attack_range) {
+				// Moverse hacia el jugador pero mantener distancia de ataque
+				const moveX = (dx / distance) * enemy.move_speed * 0.016;
+				const moveY = (dy / distance) * enemy.move_speed * 0.016;
 
-			enemy.x += moveX;
-			enemy.y += moveY;
+				enemy.x += moveX;
+				enemy.y += moveY;
+			} else if (distance < enemy.attack_range * 0.8) {
+				// Demasiado cerca - alejarse un poco
+				const moveX = (-dx / distance) * enemy.move_speed * 0.01;
+				const moveY = (-dy / distance) * enemy.move_speed * 0.01;
 
-			// ✅ VERIFICAR SI ESTÁ EN RANGO PARA ATACAR (distancia < 60)
-			if (distance <= 60) {
-				_attackPlayerWithNeutral(enemy, closestPlayer);
+				enemy.x += moveX;
+				enemy.y += moveY;
+			}
+
+			// ✅ ATAQUE A DISTANCIA CUANDO ESTÉ EN RANGO
+			if (distance <= enemy.attack_range && now - enemy.last_attack_time >= enemy.attack_cooldown) {
+				// Aplicar daño al jugador
+				closestPlayer.hp -= enemy.attack_damage;
+				enemy.last_attack_time = now;
+
+				console.log(`💥 ENEMIGO NEUTRAL ${enemy.id} DISPARA A JUGADOR ${closestPlayer.id} - Daño: ${enemy.attack_damage}, HP restante: ${closestPlayer.hp}`);
+
+				// Notificar a todos los clientes sobre el ataque
+				broadcast({
+					type: 'enemy_ranged_attack',
+					enemy_id: parseInt(enemy.id),
+					target_type: 'player',
+					target_id: parseInt(closestPlayer.id),
+					damage: enemy.attack_damage,
+					direction_x: dx / distance,
+					direction_y: dy / distance
+				});
+
+				// Notificar que el jugador fue golpeado
+				broadcast({
+					type: 'player_hit',
+					id: parseInt(closestPlayer.id),
+					hp: closestPlayer.hp,
+					damage: enemy.attack_damage,
+					attacker_id: enemy.id,
+					attacker_type: 'neutral_enemy'
+				});
+
+				// Verificar si el jugador murió
+				if (closestPlayer.hp <= 0) {
+					console.log(`💀 JUGADOR ${closestPlayer.id} MUERTO POR ENEMIGO NEUTRAL ${enemy.id}`);
+					handlePlayerDeath(closestPlayer.id, enemy.id);
+				}
 			}
 		}
 	} else {
-		// Si no hay jugadores, movimiento aleatorio MÍNIMO
-		if (Math.random() < 0.02) { // Solo 2% de probabilidad de moverse aleatoriamente
+		// Movimiento aleatorio si no hay jugadores
+		if (Math.random() < 0.02) {
 			const angle = Math.random() * Math.PI * 2;
 			const distance = enemy.move_speed * 0.016;
 
@@ -1051,7 +1093,7 @@ function _moveNeutralEnemy(enemy) {
 		}
 	}
 
-	// Limitar el movimiento al área central del mapa
+	// Limitar el movimiento al área del mapa
 	enemy.x = Math.max(-1200, Math.min(1200, enemy.x));
 	enemy.y = Math.max(-1000, Math.min(1000, enemy.y));
 }
@@ -1111,7 +1153,7 @@ function startGameLoop() {
 	if (gameLoop) clearInterval(gameLoop);
 
 	gameLoop = setInterval(() => {
-		// Movimiento de enemigos (IA mejorada hacia bases)
+		// Movimiento de enemigos (IA mejorada para comportamiento ranged)
 		for (let enemyId in enemies) {
 			const enemy = enemies[enemyId];
 
@@ -1119,16 +1161,72 @@ function startGameLoop() {
 			if (enemy.is_permanent) continue;
 
 			if (enemy.type === 'boss_wave') continue; // Jefe de oleada tiene comportamiento especial
+			
 			if (enemy.team === 0) {
-				// Enemigos neutrales: movimiento aleatorio o buscar jugadores
+				// Enemigos neutrales: comportamiento ranged mejorado
 				_moveNeutralEnemy(enemy);
 				continue;
 			}
-			// 🎯 MOVIMIENTO MEJORADO HACIA LA BASE ENEMIGA
+			
+			// 🎯 COMPORTAMIENTO MEJORADO PARA PISTOLERA CON EQUIPO
 			const targetBase = enemy.team === 1 ? bases[2] : bases[1];
 			const dx = targetBase.x - enemy.x;
 			const dy = targetBase.y - enemy.y;
 			const distance = Math.sqrt(dx * dx + dy * dy);
+
+			const now = Date.now();
+
+			// ✅ COMPORTAMIENTO RANGED: MANTENER DISTANCIA Y ATACAR
+			if (distance <= enemy.attack_range) {
+				// Está en rango de ataque - DISPARAR
+				if (now - enemy.last_attack_time >= enemy.attack_cooldown) {
+					// Aplicar daño a la base
+					targetBase.hp -= enemy.attack_damage;
+					enemy.last_attack_time = now;
+
+					console.log(`💥 ENEMIGO PISTOLERA ${enemyId} ATACA BASE ${targetBase.team} - Daño: ${enemy.attack_damage}, HP restante: ${Math.round(targetBase.hp)}`);
+
+					// Notificar a todos los clientes sobre el ataque
+					broadcast({
+						type: 'enemy_ranged_attack',
+						enemy_id: parseInt(enemyId),
+						target_type: 'base',
+						target_id: targetBase.team,
+						damage: enemy.attack_damage,
+						direction_x: dx / distance,
+						direction_y: dy / distance
+					});
+
+					// Verificar si la base fue destruida
+					if (targetBase.hp <= 0) {
+						console.log(`💀 BASE ${targetBase.team} DESTRUIDA POR ENEMIGO PISTOLERA!`);
+						targetBase.hp = 0;
+						checkBaseDestruction();
+					}
+
+					// Notificar actualización de base
+					broadcast({
+						type: 'base_hit',
+						team: targetBase.team,
+						hp: targetBase.hp,
+						max_hp: targetBase.maxHp
+					});
+				}
+
+				// Moverse ligeramente para evitar aglomeraciones
+				const awayX = (Math.random() - 0.5) * enemy.move_speed * 0.01;
+				const awayY = (Math.random() - 0.5) * enemy.move_speed * 0.01;
+				enemy.x += awayX;
+				enemy.y += awayY;
+
+			} else {
+				// Moverse hacia la base
+				const moveX = (dx / distance) * enemy.move_speed * 0.016;
+				const moveY = (dy / distance) * enemy.move_speed * 0.016;
+
+				enemy.x += moveX;
+				enemy.y += moveY;
+			}
 
 			// ✅ NUEVO: Verificar que el enemigo no esté cerca de su base aliada
 			const allyBase = bases[enemy.team];
@@ -1150,30 +1248,106 @@ function startGameLoop() {
 
 				console.log(`🚫 ENEMIGO ${enemyId} ALEJÁNDOSE DE BASE ALIADA - Equipo: ${enemy.team}`);
 			}
-			// Si el enemigo está muy lejos de la base enemiga, moverse hacia ella
-			else if (distance > 200) {
-				// Movimiento suave hacia el objetivo
-				const moveX = (dx / distance) * enemy.move_speed * 0.016;
-				const moveY = (dy / distance) * enemy.move_speed * 0.016;
+		}
 
-				enemy.x += moveX;
-				enemy.y += moveY;
-			} else {
-				// Si está en rango de ataque, ATACAR PERO NO ACERCARSE MÁS
-				targetBase.hp -= enemy.attack_damage * 0.016;
+		// ✅ FUNCIÓN MEJORADA PARA MOVIMIENTO DE ENEMIGOS NEUTRALES PISTOLERA
+		function _moveNeutralEnemy(enemy) {
+			// Buscar jugador más cercano
+			let closestPlayer = null;
+			let minDistance = Infinity;
 
-				// Debug del ataque ocasionalmente
-				if (Math.random() < 0.02) { // 2% de chance cada frame
-					console.log(`💥 ENEMIGO ${enemyId} ATACANDO BASE ENEMIGA ${targetBase.team} - HP restante: ${Math.round(targetBase.hp)}`);
-				}
+			for (let playerId in players) {
+				const player = players[playerId];
+				if (player.is_alive) {
+					const distance = Math.sqrt(
+						Math.pow(player.x - enemy.x, 2) + Math.pow(player.y - enemy.y, 2)
+					);
 
-				if (targetBase.hp <= 0) {
-					console.log(`💀 BASE ENEMIGA ${targetBase.team} DESTRUIDA POR ENEMIGOS!`);
-					targetBase.hp = 0;
-					checkBaseDestruction();
+					if (distance < minDistance && distance < 800) {
+						minDistance = distance;
+						closestPlayer = player;
+					}
 				}
 			}
+
+			const now = Date.now();
+
+			// Si encontramos un jugador
+			if (closestPlayer) {
+				const dx = closestPlayer.x - enemy.x;
+				const dy = closestPlayer.y - enemy.y;
+				const distance = Math.sqrt(dx * dx + dy * dy);
+
+				if (distance > 0) {
+					// ✅ COMPORTAMIENTO RANGED: MANTENER DISTANCIA ÓPTIMA
+					if (distance > enemy.attack_range) {
+						// Moverse hacia el jugador pero mantener distancia de ataque
+						const moveX = (dx / distance) * enemy.move_speed * 0.016;
+						const moveY = (dy / distance) * enemy.move_speed * 0.016;
+
+						enemy.x += moveX;
+						enemy.y += moveY;
+					} else if (distance < enemy.attack_range * 0.8) {
+						// Demasiado cerca - alejarse un poco
+						const moveX = (-dx / distance) * enemy.move_speed * 0.01;
+						const moveY = (-dy / distance) * enemy.move_speed * 0.01;
+
+						enemy.x += moveX;
+						enemy.y += moveY;
+					}
+
+					// ✅ ATAQUE A DISTANCIA CUANDO ESTÉ EN RANGO
+					if (distance <= enemy.attack_range && now - enemy.last_attack_time >= enemy.attack_cooldown) {
+						// Aplicar daño al jugador
+						closestPlayer.hp -= enemy.attack_damage;
+						enemy.last_attack_time = now;
+
+						console.log(`💥 ENEMIGO NEUTRAL ${enemy.id} DISPARA A JUGADOR ${closestPlayer.id} - Daño: ${enemy.attack_damage}, HP restante: ${closestPlayer.hp}`);
+
+						// Notificar a todos los clientes sobre el ataque
+						broadcast({
+							type: 'enemy_ranged_attack',
+							enemy_id: parseInt(enemy.id),
+							target_type: 'player',
+							target_id: parseInt(closestPlayer.id),
+							damage: enemy.attack_damage,
+							direction_x: dx / distance,
+							direction_y: dy / distance
+						});
+
+						// Notificar que el jugador fue golpeado
+						broadcast({
+							type: 'player_hit',
+							id: parseInt(closestPlayer.id),
+							hp: closestPlayer.hp,
+							damage: enemy.attack_damage,
+							attacker_id: enemy.id,
+							attacker_type: 'neutral_enemy'
+						});
+
+						// Verificar si el jugador murió
+						if (closestPlayer.hp <= 0) {
+							console.log(`💀 JUGADOR ${closestPlayer.id} MUERTO POR ENEMIGO NEUTRAL ${enemy.id}`);
+							handlePlayerDeath(closestPlayer.id, enemy.id);
+						}
+					}
+				}
+			} else {
+				// Movimiento aleatorio si no hay jugadores
+				if (Math.random() < 0.02) {
+					const angle = Math.random() * Math.PI * 2;
+					const distance = enemy.move_speed * 0.016;
+
+					enemy.x += Math.cos(angle) * distance;
+					enemy.y += Math.sin(angle) * distance;
+				}
+			}
+
+			// Limitar el movimiento al área del mapa
+			enemy.x = Math.max(-1200, Math.min(1200, enemy.x));
+			enemy.y = Math.max(-1000, Math.min(1000, enemy.y));
 		}
+
 		// Verificar fin de oleada
 		if (waveSystem.waveInProgress && Object.keys(enemies).length === 0) {
 			endCurrentWave();
@@ -1423,7 +1597,76 @@ wss.on('connection', (ws) => {
 				checkGameStartConditions();
 			}
 		}
+		else if (msg.type === 'enemy_projectile_created') {
+			console.log("🔫 PROYECTIL ENEMIGO CREADO - Enemy:", msg.enemy_id, " Target:", msg.target_type, msg.target_id);
 
+			// El servidor valida el ataque y aplica daño
+			const enemy = enemies[msg.enemy_id];
+			if (!enemy) {
+				console.log("❌ ENEMIGO NO ENCONTRADO PARA PROYECTIL");
+				return;
+			}
+
+			// Validar que el enemigo puede atacar (cooldown)
+			const now = Date.now();
+			if (now - enemy.last_attack_time < enemy.attack_cooldown) {
+				console.log("⏰ ENEMIGO EN COOLDOWN - No puede atacar aún");
+				return;
+			}
+
+			enemy.last_attack_time = now;
+
+			// Aplicar daño según el tipo de objetivo
+			if (msg.target_type === 'player') {
+				const targetPlayer = players[msg.target_id];
+				if (targetPlayer && targetPlayer.is_alive) {
+					targetPlayer.hp -= enemy.attack_damage;
+
+					console.log(`💥 PROYECTIL ENEMIGO GOLPEA JUGADOR ${msg.target_id} - Daño: ${enemy.attack_damage}, HP: ${targetPlayer.hp}`);
+
+					broadcast({
+						type: 'player_hit',
+						id: parseInt(msg.target_id),
+						hp: targetPlayer.hp,
+						damage: enemy.attack_damage,
+						attacker_id: parseInt(msg.enemy_id)
+					});
+
+					if (targetPlayer.hp <= 0) {
+						handlePlayerDeath(msg.target_id, msg.enemy_id);
+					}
+				}
+			} else if (msg.target_type === 'base') {
+				const targetBase = bases[msg.target_id];
+				if (targetBase) {
+					targetBase.hp -= enemy.attack_damage;
+
+					console.log(`💥 PROYECTIL ENEMIGO GOLPEA BASE ${msg.target_id} - Daño: ${enemy.attack_damage}, HP: ${targetBase.hp}`);
+
+					broadcast({
+						type: 'base_hit',
+						team: parseInt(msg.target_id),
+						hp: targetBase.hp,
+						max_hp: targetBase.maxHp
+					});
+
+					if (targetBase.hp <= 0) {
+						checkBaseDestruction();
+					}
+				}
+			}
+
+			// Broadcast del proyectil a todos los clientes
+			broadcast({
+				type: 'enemy_ranged_attack',
+				enemy_id: parseInt(msg.enemy_id),
+				target_type: msg.target_type,
+				target_id: parseInt(msg.target_id),
+				damage: enemy.attack_damage,
+				direction_x: msg.direction_x,
+				direction_y: msg.direction_y
+			});
+		}
 		// --- ELECCIÓN DE CLASE ---
 		else if (msg.type === 'choose_class') {
 			console.log("🎯 ELECCIÓN DE CLASE - User:", userId, " Clase:", msg.classe);
