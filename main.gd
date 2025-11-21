@@ -2012,13 +2012,10 @@ func show_enemy_buff_notification(card_name: String, player_name: String):
 	notification.add_theme_font_size_override("font_size", 18)
 	notification.add_theme_color_override("font_color", Color.RED)
 	notification.position = Vector2(get_viewport().size.x / 2 - 150, 200)
-    
+	
 	canvas_layer.add_child(notification)
-    
+	
 	var tween = create_tween()
 	tween.parallel().tween_property(notification, "position:y", notification.position.y - 50, 2.0)
 	tween.parallel().tween_property(notification, "modulate", Color(1, 1, 1, 0), 2.0)
 	tween.tween_callback(notification.queue_free)
-
-
-
