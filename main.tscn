@@ -7,13 +7,13 @@
 [ext_resource type="PackedScene" uid="uid://m5llmhoblgp6" path="res://projectiles/MageProjectile.tscn" id="4_2cqfq"]
 [ext_resource type="Theme" uid="uid://qkkblp6cijnh" path="res://Temas/Botones segunda parte.tres" id="6_kek77"]
 [ext_resource type="Theme" uid="uid://bc0ftxndqriis" path="res://Temas/main_menu.tres" id="7_5vw27"]
-[ext_resource type="PackedScene" uid="uid://cog04o3t2cbln" path="res://base.tscn" id="7_cegan"]
+[ext_resource type="PackedScene" path="res://base.tscn" id="7_cegan"]
 [ext_resource type="PackedScene" uid="uid://c50dg0rerb3ol" path="res://enities/boss/boss.tscn" id="7_getpj"]
 [ext_resource type="Theme" uid="uid://p6lafxv8viug" path="res://Temas/Input.tres" id="9_kek77"]
 [ext_resource type="AudioStream" uid="uid://kv8nhocsergj" path="res://Musica/Bloody-Throne-Preferida.ogg" id="10_4c57u"]
-[ext_resource type="Texture2D" uid="uid://c58gwrsavtmrf" path="res://Presentacion2/Captura de pantalla 2025-11-18 035039.png" id="10_cegan"]
 [ext_resource type="Texture2D" uid="uid://deeic4wanlsa0" path="res://Ui_Select_player/Fondo Select.png" id="10_vivmo"]
 [ext_resource type="Texture2D" uid="uid://cpnf78fww7aou" path="res://Ui_Select_player/Mago v1.png" id="11_2cqfq"]
+[ext_resource type="VideoStream" uid="uid://dwlxflo75axy3" path="res://Portada para el menu principal/Fondo-animado.ogv" id="11_cegan"]
 [ext_resource type="Texture2D" uid="uid://yd7ed5yfldm" path="res://Ui_Select_player/Arquera estatuilla.png" id="12_yaehf"]
 [ext_resource type="Texture2D" uid="uid://csyo6qyx8vktx" path="res://Ui_Select_player/Assasin.png" id="13_074og"]
 [ext_resource type="Texture2D" uid="uid://bjnljqymy58am" path="res://Ui_Select_player/Caballero.png" id="14_cegan"]
@@ -281,27 +281,27 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/Pantalla_Inicial/Label2"]
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="CanvasLayer/Pantalla_Inicial/Label2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("10_cegan")
-expand_mode = 1
+stream = ExtResource("11_cegan")
+autoplay = true
+loop = true
 
 [node name="Label" type="Label" parent="CanvasLayer/Pantalla_Inicial/Label2"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.70000005
-anchor_top = 0.185
-anchor_right = 0.70000005
-anchor_bottom = 0.185
-offset_left = -299.00012
-offset_top = -97.8
-offset_right = 460.99988
-offset_bottom = 247.2
+anchor_left = 0.768
+anchor_right = 1.0
+anchor_bottom = 0.18400002
+offset_left = -300.56006
+offset_top = 100.00001
+offset_right = 14.0
+offset_bottom = 251.3755
 grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(0.7893457, 0.5696862)
@@ -314,14 +314,14 @@ vertical_alignment = 3
 [node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Pantalla_Inicial"]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.698
-anchor_top = 0.56100005
-anchor_right = 0.698
-anchor_bottom = 0.56100005
-offset_left = -212.7132
-offset_top = -147.61934
-offset_right = 597.52826
-offset_bottom = 470.38065
+anchor_left = 0.767
+anchor_top = 0.53000003
+anchor_right = 0.767
+anchor_bottom = 0.53000003
+offset_left = -213.64001
+offset_top = -147.40005
+offset_right = 596.60144
+offset_bottom = 470.59998
 grow_horizontal = 0
 grow_vertical = 2
 scale = Vector2(0.52646655, 0.47865254)
