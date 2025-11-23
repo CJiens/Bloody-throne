@@ -12,47 +12,15 @@ var team: int = 1 # 1 o 2 para equipos, 0 para neutral (jefe)
 
 # Estadísticas por tipo
 var stats := {
-	"grunt": {
-		"hp": 50,
-		"speed": 300,
-		"attack_damage": 200,
-		"attack_range": 40,
-		"attack_cooldown": 1.5,
-		"is_ranged": false,
-		"aggro_range": 150,
-		"chase_range": 200
-	},
-	"archer": {
-		"hp": 40,
-		"speed": 100,
-		"attack_damage": 8,
-		"attack_range": 120,
-		"attack_cooldown": 2.0,
-		"is_ranged": true,
-		"aggro_range": 180,
-		"chase_range": 250
-	},
-	"mage": {
-		"hp": 30,
-		"speed": 70,
-		"attack_damage": 12,
-		"attack_range": 100,
-		"attack_cooldown": 3.0,
-		"is_ranged": true,
-		"aggro_range": 160,
-		"chase_range": 220
-	},
-	"boss": {
-		"hp": 500,
-		"speed": 50,
-		"attack_damage": 25,
-		"attack_range": 80,
-		"attack_cooldown": 2.0,
+	"Zorro": {
+		"hp": 70,
+		"speed": 200,
+		"attack_damage": 15,
+		"attack_range": 60,
+		"attack_cooldown": 1.2,
 		"is_ranged": false,
 		"aggro_range": 200,
-		"chase_range": 300,
-		"phases": 2,
-		"current_phase": 1
+		"chase_range": 300
 	}
 }
 
@@ -101,7 +69,8 @@ func _ready():
 	# ✅ APLICAR COLOR INMEDIATAMENTE SI EL EQUIPO YA ESTÁ ASIGNADO
 	if team != -1:
 		_apply_team_color_immediately()
-	
+	if sprite:
+		sprite.animation_finished.connect(_on_animation_finished)
 	print("👹 ENEMIGO CREADO - ID:", enemy_id, " Tipo:", enemy_type, " HP:", hp, " Equipo:", team)
 
 func setup_collisions():
@@ -135,7 +104,7 @@ func set_enemy_id(id: int):
 
 func set_enemy_type(type: String):
 	enemy_type = type
-	var config = stats.get(type, stats["grunt"])
+	var config = stats["Zorro"] 
 	
 	# Aplicar configuración
 	hp = config.hp
@@ -151,7 +120,7 @@ func set_enemy_type(type: String):
 		hp_bar.max_value = max_hp
 		hp_bar.value = hp
 
-	#label de vida
+	# Label de vida
 	if vida_label:
 		vida_label.text = str(hp) + "/" + str(max_hp)
 	
@@ -161,19 +130,10 @@ func setup_animations():
 	if not sprite:
 		return
 	
-	# Configurar animaciones según el tipo
-	match enemy_type:
-		"grunt":
-			sprite.sprite_frames = load("res://assets/animations/enemies/grunt.tres")
-		"archer":
-			sprite.sprite_frames = load("res://assets/animations/enemies/archer.tres")
-		"mage":
-			sprite.sprite_frames = load("res://assets/animations/enemies/mage.tres")
-		"boss":
-			sprite.sprite_frames = load("res://assets/animations/enemies/boss.tres")
-	
-	sprite.animation = "idle"
+	sprite.sprite_frames = load("res://assets/animations/enemies/Zorro.tres")
+	sprite.animation = "Idle"
 	sprite.play()
+	
 
 # -------------------------------
 # --- PROCESO PRINCIPAL
@@ -375,15 +335,21 @@ func _melee_attack():
 	var bodies = attack_area.get_overlapping_bodies()
 	for body in bodies:
 		if body.is_in_group("players"):
+			# Calcular dirección hacia el objetivo
+			var direction_to_target = (body.global_position - global_position).normalized()
+			var attack_dir = _get_direction_string(direction_to_target)
+			var attack_anim = "Attack_" + attack_dir
+			
+			# Reproducir animación de ataque en la dirección correcta
+			if sprite:
+				sprite.animation = attack_anim
+				sprite.play()
+			
 			# Aplicar daño al jugador
 			if body.has_method("take_damage"):
 				body.take_damage(attack_damage)
 			
-			# Reproducir animación de ataque
-			if sprite:
-				sprite.animation = "attack"
-				sprite.play()
-			
+			print("💥 ZORRO ATACA - Dirección:", attack_dir, " Daño:", attack_damage)
 			break
 
 func _ranged_attack():
@@ -490,29 +456,45 @@ func _update_animation(direction: Vector2):
 	if not sprite or state == "attacking":
 		return
 	
-	var anim_name = "idle"
+	var anim_name = "Idle"
 	
 	if velocity.length() > 0:
-		anim_name = "walk"
-		
-		# Determinar dirección para el sprite
-		if abs(direction.x) > abs(direction.y):
-			if direction.x > 0:
-				sprite.flip_h = false
-			else:
-				sprite.flip_h = true
-		else:
-			if direction.y > 0:
-				# Hacia abajo
-				pass
-			else:
-				# Hacia arriba
-				pass
+		var dir_string = _get_direction_string(direction)
+		anim_name = "Run_" + dir_string
 	
 	if sprite.animation != anim_name:
 		sprite.animation = anim_name
 		sprite.play()
-
+func _get_direction_string(direction: Vector2) -> String:
+	var angle = direction.angle()
+	var angle_deg = rad_to_deg(angle)
+	
+	# Ajustar ángulo para que esté entre 0 y 360
+	if angle_deg < 0:
+		angle_deg += 360
+	
+	# Dividir en 8 direcciones de 45 grados cada una
+	if angle_deg >= 22.5 and angle_deg < 67.5:
+		return "SE"
+	elif angle_deg >= 67.5 and angle_deg < 112.5:
+		return "S"
+	elif angle_deg >= 112.5 and angle_deg < 157.5:
+		return "SW"
+	elif angle_deg >= 157.5 and angle_deg < 202.5:
+		return "W"
+	elif angle_deg >= 202.5 and angle_deg < 247.5:
+		return "NW"
+	elif angle_deg >= 247.5 and angle_deg < 292.5:
+		return "N"
+	elif angle_deg >= 292.5 and angle_deg < 337.5:
+		return "NE"
+	else:
+		return "E"
+func _on_animation_finished():
+	# Si la animación que terminó es de ataque, volver a idle
+	if sprite.animation.begins_with("Attack_"):
+		sprite.animation = "Idle"
+		sprite.play()
 # -------------------------------
 # --- COOLDOWNS
 # -------------------------------

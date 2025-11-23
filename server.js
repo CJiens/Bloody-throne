@@ -409,7 +409,7 @@ class WaveSystem {
 
 		return {
 			enemies: numEnemies,
-			types: ['grunt', 'archer', 'mage'],
+			types: ['Zorro'],
 			reward: baseReward,
 			isBossWave: false
 		};
@@ -465,12 +465,9 @@ function getEnemyKillReward(enemy) {
 	let reward = 0;
 
 	switch (enemyType) {
-		case 'grunt': reward = 5; break;
-		case 'archer': reward = 8; break;
-		case 'mage': reward = 10; break;
-		case 'boss_wave': reward = 30; break;
-		case 'final_boss': reward = 50; break;
-		default: reward = 5; break;
+		case 'Zorro': reward = 10; break;
+		case 'elite_Zorro': reward = 15; break;
+		default: reward = 10; break;
 	}
 
 	// Jefe permanente: prioridad sobre el tipo
@@ -857,13 +854,13 @@ function spawnWaveEnemies(waveConfig) {
     console.log(`✅ SPAWN COMPLETADO - Equipo 1: ${enemiesPerTeam}, Equipo 2: ${enemiesPerTeam}, Neutrales: ${neutralEnemies}, Élites: ${eliteChance}%`);
 }
 function spawnEnemy(id, availableTypes, forceTeam = null, eliteChance = 0) {
-    let enemyType = availableTypes[Math.floor(Math.random() * availableTypes.length)];
+    let enemyType = 'Zorro';
     
     // Verificar si spawn como élite
     let isElite = false;
     if (eliteChance > 0 && Math.random() * 100 < eliteChance) {
         isElite = true;
-        enemyType = 'elite_' + enemyType;
+        enemyType = 'elite_Zorro';
     }
     
     let spawnPos;
@@ -886,10 +883,12 @@ function spawnEnemy(id, availableTypes, forceTeam = null, eliteChance = 0) {
         };
     }
 
-    const baseHp = enemyType === 'grunt' ? 50 : enemyType === 'archer' ? 40 : enemyType === 'mage' ? 30 : 
-                  enemyType === 'elite_grunt' ? 80 : enemyType === 'elite_archer' ? 60 : enemyType === 'elite_mage' ? 50 : 100;
+    // ✅ ESTADÍSTICAS DEL ZORRO
+    const baseHp = isElite ? 90 : 60; // 60 base, 90 élite
+    const baseDamage = isElite ? 22 : 15; // 15 base, 22 élite
+    const baseSpeed = isElite ? 400 : 350; // 350 base, 400 élite
 
-    enemies[id] = {
+     enemies[id] = {
         id: id,
         x: spawnPos.x,
         y: spawnPos.y,
@@ -897,10 +896,8 @@ function spawnEnemy(id, availableTypes, forceTeam = null, eliteChance = 0) {
         max_hp: baseHp,
         type: enemyType,
         team: forceTeam,
-        attack_damage: enemyType === 'grunt' ? 10 : enemyType === 'archer' ? 8 : enemyType === 'mage' ? 12 : 
-                      enemyType === 'elite_grunt' ? 15 : enemyType === 'elite_archer' ? 12 : enemyType === 'elite_mage' ? 18 : 15,
-        move_speed: enemyType === 'grunt' ? 80 : enemyType === 'archer' ? 100 : enemyType === 'mage' ? 70 : 
-                   enemyType === 'elite_grunt' ? 100 : enemyType === 'elite_archer' ? 120 : enemyType === 'elite_mage' ? 90 : 60,
+        attack_damage: baseDamage,
+        move_speed: baseSpeed,
         spawn_area: forceTeam,
         is_neutral: forceTeam === 0,
         is_elite: isElite,

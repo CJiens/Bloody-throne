@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ctkncisqt3gv6" path="res://Enemy.gd" id="1_7k104"]
 [ext_resource type="Theme" uid="uid://bri7bopivwxvd" path="res://bars.tres" id="2_2hac7"]
-[ext_resource type="SpriteFrames" uid="uid://p1oxkqfwowoh" path="res://Enemy.tres" id="2_s7bn3"]
+[ext_resource type="SpriteFrames" uid="uid://duxow1tlbvd3i" path="res://assets/animations/enemies/Zorro.tres" id="5_6do27"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_s7bn3"]
 
@@ -63,6 +63,7 @@ shape = SubResource("RectangleShape2D_qp131")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 light_mask = 2
 visibility_layer = 4
-scale = Vector2(1.0068027, 1)
-sprite_frames = ExtResource("2_s7bn3")
-animation = &"walk"
+scale = Vector2(0.4411538, 0.46191406)
+sprite_frames = ExtResource("5_6do27")
+animation = &"Run_W"
+frame_progress = 0.7515995
