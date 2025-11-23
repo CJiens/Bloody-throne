@@ -1,0 +1,1597 @@
+[gd_resource type="SpriteFrames" load_steps=377 format=3 uid="uid://duxow1tlbvd3i"]
+
+[ext_resource type="Texture2D" uid="uid://da0ah77g4dpi1" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0001.png" id="1_kyoti"]
+[ext_resource type="Texture2D" uid="uid://dw0bi4rxcocv6" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0002.png" id="2_jnyom"]
+[ext_resource type="Texture2D" uid="uid://c46f6wkce8q7q" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0003.png" id="3_1j7xc"]
+[ext_resource type="Texture2D" uid="uid://dhhbc6do4cwds" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0004.png" id="4_vt125"]
+[ext_resource type="Texture2D" uid="uid://ce3m3mxdo0570" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0005.png" id="5_62h5y"]
+[ext_resource type="Texture2D" uid="uid://ppse37e0vj7d" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0006.png" id="6_gvdra"]
+[ext_resource type="Texture2D" uid="uid://cdbpi5eeeldnu" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0007.png" id="7_fxsfy"]
+[ext_resource type="Texture2D" uid="uid://8qlfood6cebl" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0008.png" id="8_s75l4"]
+[ext_resource type="Texture2D" uid="uid://dubgega6fihhg" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0009.png" id="9_ivtor"]
+[ext_resource type="Texture2D" uid="uid://c7gug7shvsb4e" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0010.png" id="10_nr0ne"]
+[ext_resource type="Texture2D" uid="uid://bavywnss8j53o" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0011.png" id="11_2mqx1"]
+[ext_resource type="Texture2D" uid="uid://eqxi3scewdj" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0012.png" id="12_unuhn"]
+[ext_resource type="Texture2D" uid="uid://bgb0ihhp5q2hn" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0013.png" id="13_6d4mx"]
+[ext_resource type="Texture2D" uid="uid://dn6ns6r0jxcq8" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0014.png" id="14_u3fvs"]
+[ext_resource type="Texture2D" uid="uid://ceog3agfcddy8" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0015.png" id="15_ddmq7"]
+[ext_resource type="Texture2D" uid="uid://bjvraa7mste2g" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0016.png" id="16_j63tf"]
+[ext_resource type="Texture2D" uid="uid://du174djh1i7nv" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0001.png" id="17_rcw38"]
+[ext_resource type="Texture2D" uid="uid://dkif0foll2hec" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0002.png" id="18_ym4ys"]
+[ext_resource type="Texture2D" uid="uid://c6wu0oxmwb7p0" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0003.png" id="19_kgm8o"]
+[ext_resource type="Texture2D" uid="uid://c30c5fyb7tpl7" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0004.png" id="20_hpcr1"]
+[ext_resource type="Texture2D" uid="uid://c45vmupkpotbq" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0005.png" id="21_yvj1i"]
+[ext_resource type="Texture2D" uid="uid://byplru3mjigxd" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0006.png" id="22_k32tt"]
+[ext_resource type="Texture2D" uid="uid://wdjqbo3su8lq" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0007.png" id="23_e05rn"]
+[ext_resource type="Texture2D" uid="uid://b5ikmoejmj1r6" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0008.png" id="24_y8mdn"]
+[ext_resource type="Texture2D" uid="uid://dxmnpwji23a44" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0009.png" id="25_gx0tt"]
+[ext_resource type="Texture2D" uid="uid://ba4kyc1e8y0sm" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0010.png" id="26_u2kie"]
+[ext_resource type="Texture2D" uid="uid://k4toyiceqvq6" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0011.png" id="27_2k2w2"]
+[ext_resource type="Texture2D" uid="uid://dktx5b1ws6j4i" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0012.png" id="28_hqlum"]
+[ext_resource type="Texture2D" uid="uid://mmfn4w3gf52e" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0013.png" id="29_22tiv"]
+[ext_resource type="Texture2D" uid="uid://d3joiqhkyk3jy" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0014.png" id="30_gv3oi"]
+[ext_resource type="Texture2D" uid="uid://cqeufoif6ucb1" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0015.png" id="31_jk4tv"]
+[ext_resource type="Texture2D" uid="uid://dgmm1ryvfdrei" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0016.png" id="32_chfst"]
+[ext_resource type="Texture2D" uid="uid://cc1f6kbhd0nc0" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0001.png" id="33_cauj0"]
+[ext_resource type="Texture2D" uid="uid://coh58dytbvls6" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0002.png" id="34_gckfq"]
+[ext_resource type="Texture2D" uid="uid://jc73mcgy8eqf" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0003.png" id="35_24qiq"]
+[ext_resource type="Texture2D" uid="uid://le18e7mwx1xs" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0004.png" id="36_28lde"]
+[ext_resource type="Texture2D" uid="uid://mr62la68ybwm" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0005.png" id="37_yi4u2"]
+[ext_resource type="Texture2D" uid="uid://coinjs3c6k3a6" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0006.png" id="38_2u0p5"]
+[ext_resource type="Texture2D" uid="uid://05wyph24j6p2" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0007.png" id="39_6cokk"]
+[ext_resource type="Texture2D" uid="uid://d0pwte0y81uff" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0008.png" id="40_mlple"]
+[ext_resource type="Texture2D" uid="uid://53fexho3idjg" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0009.png" id="41_dj4io"]
+[ext_resource type="Texture2D" uid="uid://cpfh0jyfch7re" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0010.png" id="42_2q8yl"]
+[ext_resource type="Texture2D" uid="uid://y5ei7pcpy36v" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0011.png" id="43_4k3fy"]
+[ext_resource type="Texture2D" uid="uid://chgofovgrwjqo" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0012.png" id="44_l5wyw"]
+[ext_resource type="Texture2D" uid="uid://oqys6dypwyj5" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0013.png" id="45_kw827"]
+[ext_resource type="Texture2D" uid="uid://dfalinsjkqy8p" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0014.png" id="46_scnm3"]
+[ext_resource type="Texture2D" uid="uid://dutbrh2gyyait" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0015.png" id="47_uewvc"]
+[ext_resource type="Texture2D" uid="uid://djbm7wc8ht32l" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0016.png" id="48_cmlqt"]
+[ext_resource type="Texture2D" uid="uid://damymglyye1jk" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0001.png" id="49_hnob0"]
+[ext_resource type="Texture2D" uid="uid://dmyw2aakkrvml" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0002.png" id="50_rv54b"]
+[ext_resource type="Texture2D" uid="uid://isrk1r2e74eu" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0003.png" id="51_mgppx"]
+[ext_resource type="Texture2D" uid="uid://wmbgfqqcgios" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0004.png" id="52_5bktg"]
+[ext_resource type="Texture2D" uid="uid://dc1hprxnsu7v7" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0005.png" id="53_73u20"]
+[ext_resource type="Texture2D" uid="uid://8hm6tnru67rs" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0006.png" id="54_ou66s"]
+[ext_resource type="Texture2D" uid="uid://gp3elpifyv0j" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0007.png" id="55_4m5yg"]
+[ext_resource type="Texture2D" uid="uid://bi72drgsu76xe" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0008.png" id="56_252fs"]
+[ext_resource type="Texture2D" uid="uid://dygbavlw0e7dt" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0009.png" id="57_j07xv"]
+[ext_resource type="Texture2D" uid="uid://c18o2ii67ixis" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0010.png" id="58_30485"]
+[ext_resource type="Texture2D" uid="uid://ct5muqtm44t7k" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0011.png" id="59_5nqxc"]
+[ext_resource type="Texture2D" uid="uid://mmdp3xsi1uqi" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0012.png" id="60_egx77"]
+[ext_resource type="Texture2D" uid="uid://b8646lwg7r080" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0013.png" id="61_boi5u"]
+[ext_resource type="Texture2D" uid="uid://ob6nwudm647e" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0014.png" id="62_xjthk"]
+[ext_resource type="Texture2D" uid="uid://dirtomeabvm7q" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0015.png" id="63_fqsn3"]
+[ext_resource type="Texture2D" uid="uid://dwr6vrd7dby3d" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0016.png" id="64_x3aao"]
+[ext_resource type="Texture2D" uid="uid://bcuxnpboide8w" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0001.png" id="65_ondji"]
+[ext_resource type="Texture2D" uid="uid://ejtxvyqcena4" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0002.png" id="66_tnsor"]
+[ext_resource type="Texture2D" uid="uid://buaqolpxoenw5" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0003.png" id="67_7s0j1"]
+[ext_resource type="Texture2D" uid="uid://cjx3dd1njldyc" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0004.png" id="68_422hf"]
+[ext_resource type="Texture2D" uid="uid://wy06rtxv04vn" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0005.png" id="69_ai2t2"]
+[ext_resource type="Texture2D" uid="uid://busis1itqh88s" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0006.png" id="70_h2bgb"]
+[ext_resource type="Texture2D" uid="uid://b4a5dece6mt6y" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0007.png" id="71_m57db"]
+[ext_resource type="Texture2D" uid="uid://87fgxfrmejgn" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0008.png" id="72_2k8rt"]
+[ext_resource type="Texture2D" uid="uid://biipvd2ncyys6" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0009.png" id="73_eqgdq"]
+[ext_resource type="Texture2D" uid="uid://w3344nbla27e" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0010.png" id="74_lo2op"]
+[ext_resource type="Texture2D" uid="uid://cadhlyb04x7nf" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0011.png" id="75_th602"]
+[ext_resource type="Texture2D" uid="uid://d0kf66aeo14id" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0012.png" id="76_5sc6p"]
+[ext_resource type="Texture2D" uid="uid://dkpaaqg3umoe8" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0013.png" id="77_hhrcc"]
+[ext_resource type="Texture2D" uid="uid://c62eyw2pt5nej" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0014.png" id="78_afyur"]
+[ext_resource type="Texture2D" uid="uid://bmix82vtp8ub4" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0015.png" id="79_r7s6r"]
+[ext_resource type="Texture2D" uid="uid://owpl6ndnva4y" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0016.png" id="80_2rdmf"]
+[ext_resource type="Texture2D" uid="uid://dmpbdo3xlauv3" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0001.png" id="81_4xdwi"]
+[ext_resource type="Texture2D" uid="uid://ds7o614pad1f2" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0002.png" id="82_1ohfh"]
+[ext_resource type="Texture2D" uid="uid://c7iicek2pgci7" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0003.png" id="83_jbmmu"]
+[ext_resource type="Texture2D" uid="uid://dasthdbbp256f" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0004.png" id="84_iklom"]
+[ext_resource type="Texture2D" uid="uid://bvqxikn7owo13" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0005.png" id="85_32p15"]
+[ext_resource type="Texture2D" uid="uid://cpo1io3g3ei5s" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0006.png" id="86_525xp"]
+[ext_resource type="Texture2D" uid="uid://54nm68ycpns5" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0007.png" id="87_qwhk6"]
+[ext_resource type="Texture2D" uid="uid://dp053hrh3f1sk" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0008.png" id="88_noqn3"]
+[ext_resource type="Texture2D" uid="uid://dyav4enlvijj" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0009.png" id="89_7sxyu"]
+[ext_resource type="Texture2D" uid="uid://ba5its6soprqu" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0010.png" id="90_uwu0c"]
+[ext_resource type="Texture2D" uid="uid://csxmex5ywgitm" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0011.png" id="91_lmpad"]
+[ext_resource type="Texture2D" uid="uid://dccbqsnbfsfxn" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0012.png" id="92_2ib7p"]
+[ext_resource type="Texture2D" uid="uid://b2002icxbeig" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0013.png" id="93_or47p"]
+[ext_resource type="Texture2D" uid="uid://b7jbdc5gtn7ut" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0014.png" id="94_jrjh4"]
+[ext_resource type="Texture2D" uid="uid://d1yg4xrrxy3qb" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0015.png" id="95_evrlu"]
+[ext_resource type="Texture2D" uid="uid://dd1xybrlwmo2o" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0016.png" id="96_mx65s"]
+[ext_resource type="Texture2D" uid="uid://duskl22dyx8dd" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0001.png" id="97_qyvgl"]
+[ext_resource type="Texture2D" uid="uid://cfyvw5l8baj0" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0002.png" id="98_tkftc"]
+[ext_resource type="Texture2D" uid="uid://dhxlqnnlwsrv0" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0003.png" id="99_exs1r"]
+[ext_resource type="Texture2D" uid="uid://dqyhryylmgqq5" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0004.png" id="100_l4i2y"]
+[ext_resource type="Texture2D" uid="uid://civj1hkyuqlu1" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0005.png" id="101_7d5bg"]
+[ext_resource type="Texture2D" uid="uid://b2bsht3qg1mxv" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0006.png" id="102_l8rfi"]
+[ext_resource type="Texture2D" uid="uid://bvw48w3m4dfyf" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0007.png" id="103_5wvth"]
+[ext_resource type="Texture2D" uid="uid://d1737puoplmhv" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0008.png" id="104_3pr2h"]
+[ext_resource type="Texture2D" uid="uid://bcllc5pese1n" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0009.png" id="105_da4g2"]
+[ext_resource type="Texture2D" uid="uid://37uwduj5yp4f" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0010.png" id="106_ia0eo"]
+[ext_resource type="Texture2D" uid="uid://i2bd8fl40mij" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0011.png" id="107_7we2v"]
+[ext_resource type="Texture2D" uid="uid://km5it4ws0t4l" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0012.png" id="108_u0luk"]
+[ext_resource type="Texture2D" uid="uid://c4l1mtefpsef4" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0013.png" id="109_jbo8c"]
+[ext_resource type="Texture2D" uid="uid://cjhq1q62qtb3l" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0014.png" id="110_8s7jk"]
+[ext_resource type="Texture2D" uid="uid://d3vjng8joc6md" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0015.png" id="111_nlsrf"]
+[ext_resource type="Texture2D" uid="uid://dwagtcbmloody" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0016.png" id="112_awmrv"]
+[ext_resource type="Texture2D" uid="uid://dmevdftyfyqfk" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0001.png" id="113_u6t67"]
+[ext_resource type="Texture2D" uid="uid://ebahqk037sfk" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0002.png" id="114_v4jox"]
+[ext_resource type="Texture2D" uid="uid://dgq7r7bl4k2yq" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0003.png" id="115_edhyi"]
+[ext_resource type="Texture2D" uid="uid://bt4xi6rnqc8mt" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0004.png" id="116_ttp24"]
+[ext_resource type="Texture2D" uid="uid://iekvvhfc2vbv" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0005.png" id="117_40esg"]
+[ext_resource type="Texture2D" uid="uid://d030fmrac7id1" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0006.png" id="118_j80oq"]
+[ext_resource type="Texture2D" uid="uid://be2wdbje4u2l" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0007.png" id="119_wnfko"]
+[ext_resource type="Texture2D" uid="uid://birc32ds45ywj" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0008.png" id="120_yy0gh"]
+[ext_resource type="Texture2D" uid="uid://bl1utbshh0m6n" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0009.png" id="121_a6vre"]
+[ext_resource type="Texture2D" uid="uid://dox5e8qcomjmw" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0010.png" id="122_fvx56"]
+[ext_resource type="Texture2D" uid="uid://b44jb5xvoyhkh" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0011.png" id="123_xdh47"]
+[ext_resource type="Texture2D" uid="uid://ws26cm7h7j42" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0012.png" id="124_1dno4"]
+[ext_resource type="Texture2D" uid="uid://bacgqoobkict5" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0013.png" id="125_qbsqv"]
+[ext_resource type="Texture2D" uid="uid://du88q1on6tm4b" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0014.png" id="126_55ewt"]
+[ext_resource type="Texture2D" uid="uid://domnjgoe01nyr" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0015.png" id="127_8o0kw"]
+[ext_resource type="Texture2D" uid="uid://37jm1arj7fat" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0016.png" id="128_1ek32"]
+[ext_resource type="Texture2D" uid="uid://csf01edjnl070" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0001.png" id="129_h2nmi"]
+[ext_resource type="Texture2D" uid="uid://dagbatbdljqou" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0001.png" id="130_e0omi"]
+[ext_resource type="Texture2D" uid="uid://dmtifu5g341iq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0002.png" id="131_8m8gn"]
+[ext_resource type="Texture2D" uid="uid://dglak4my7o0kf" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0003.png" id="132_h1ngm"]
+[ext_resource type="Texture2D" uid="uid://ct2sj85ti3rc3" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0004.png" id="133_w6idy"]
+[ext_resource type="Texture2D" uid="uid://yigtjgfq8u6f" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0005.png" id="134_s384k"]
+[ext_resource type="Texture2D" uid="uid://dfjhwmbq361dn" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0006.png" id="135_s55mh"]
+[ext_resource type="Texture2D" uid="uid://d32m0k6dwyvhi" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0007.png" id="136_k43iu"]
+[ext_resource type="Texture2D" uid="uid://dkkunvmchs082" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0008.png" id="137_gic3p"]
+[ext_resource type="Texture2D" uid="uid://d3scl8ir8ff" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0009.png" id="138_ytrgt"]
+[ext_resource type="Texture2D" uid="uid://3eya7qng7flm" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0010.png" id="139_s0asr"]
+[ext_resource type="Texture2D" uid="uid://bndwras81i5p5" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0011.png" id="140_rbck1"]
+[ext_resource type="Texture2D" uid="uid://bn1chgx0hhrr0" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0012.png" id="141_ieqkf"]
+[ext_resource type="Texture2D" uid="uid://c74kisg01b7cw" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0013.png" id="142_hx6ks"]
+[ext_resource type="Texture2D" uid="uid://by6lpjaenpd1m" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0014.png" id="143_1t0wf"]
+[ext_resource type="Texture2D" uid="uid://upcepa8uwn2s" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0015.png" id="144_6w7nq"]
+[ext_resource type="Texture2D" uid="uid://c30h2x2jmgo57" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0016.png" id="145_d8jbe"]
+[ext_resource type="Texture2D" uid="uid://dibg71ldyv56q" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0017.png" id="146_em3d8"]
+[ext_resource type="Texture2D" uid="uid://dknonwmxqm005" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0018.png" id="147_keaju"]
+[ext_resource type="Texture2D" uid="uid://51aa4gkorthr" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0019.png" id="148_qc2l1"]
+[ext_resource type="Texture2D" uid="uid://bnjy8hch7m7q2" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0020.png" id="149_tp7pb"]
+[ext_resource type="Texture2D" uid="uid://bjb7nt1qnc5cn" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0021.png" id="150_7vetf"]
+[ext_resource type="Texture2D" uid="uid://bj4076idhtbcg" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0022.png" id="151_o4vae"]
+[ext_resource type="Texture2D" uid="uid://denbkreknf8vt" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0023.png" id="152_w5lqc"]
+[ext_resource type="Texture2D" uid="uid://cb7tjvnicc0nq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0024.png" id="153_lgswh"]
+[ext_resource type="Texture2D" uid="uid://gprw25pstd14" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0025.png" id="154_1gh2x"]
+[ext_resource type="Texture2D" uid="uid://i4rdy2d0gri8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0026.png" id="155_8ysmx"]
+[ext_resource type="Texture2D" uid="uid://ddqkkkr8qxx7o" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0027.png" id="156_quofv"]
+[ext_resource type="Texture2D" uid="uid://cbe4e6tkexcbi" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0028.png" id="157_dpsr3"]
+[ext_resource type="Texture2D" uid="uid://i107ed0x0kyt" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0029.png" id="158_6m5vp"]
+[ext_resource type="Texture2D" uid="uid://8u8oxmqy3gcq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0030.png" id="159_4rbaq"]
+[ext_resource type="Texture2D" uid="uid://qdbbnhcyo6yj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0031.png" id="160_5xhcp"]
+[ext_resource type="Texture2D" uid="uid://doxls8op1jjs1" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0001.png" id="161_ilfip"]
+[ext_resource type="Texture2D" uid="uid://dy231nqj4mkvv" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0002.png" id="162_p1ol4"]
+[ext_resource type="Texture2D" uid="uid://s57nmopyngo0" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0003.png" id="163_ti7ae"]
+[ext_resource type="Texture2D" uid="uid://dqbdffg8m4gnk" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0004.png" id="164_s6jdc"]
+[ext_resource type="Texture2D" uid="uid://1mo1np3jjgel" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0005.png" id="165_hkp71"]
+[ext_resource type="Texture2D" uid="uid://ccgc6ol6po1j8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0006.png" id="166_ormjc"]
+[ext_resource type="Texture2D" uid="uid://ch7bm8ji81aow" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0007.png" id="167_ky6g4"]
+[ext_resource type="Texture2D" uid="uid://mpwh3rnwvh1" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0008.png" id="168_1iohl"]
+[ext_resource type="Texture2D" uid="uid://d1an4lex73sfq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0009.png" id="169_ukylp"]
+[ext_resource type="Texture2D" uid="uid://dfkyncjntngmq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0010.png" id="170_8ootf"]
+[ext_resource type="Texture2D" uid="uid://85wgxx0sc33v" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0011.png" id="171_y0ya6"]
+[ext_resource type="Texture2D" uid="uid://b7dcj00r32oe3" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0012.png" id="172_i0w03"]
+[ext_resource type="Texture2D" uid="uid://ryxij25q7u3y" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0013.png" id="173_s6p8o"]
+[ext_resource type="Texture2D" uid="uid://chybhrto8cqvk" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0014.png" id="174_uns6j"]
+[ext_resource type="Texture2D" uid="uid://cma7ak4rhenx0" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0015.png" id="175_a6niw"]
+[ext_resource type="Texture2D" uid="uid://dfyrceymvw2sx" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0016.png" id="176_u6qj5"]
+[ext_resource type="Texture2D" uid="uid://dllwvi03ojrx5" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0017.png" id="177_an8ij"]
+[ext_resource type="Texture2D" uid="uid://f10fs85rs3lc" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0018.png" id="178_jydso"]
+[ext_resource type="Texture2D" uid="uid://cwtwvnr5mtqrw" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0019.png" id="179_7263e"]
+[ext_resource type="Texture2D" uid="uid://pncruoqipegd" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0020.png" id="180_5mmef"]
+[ext_resource type="Texture2D" uid="uid://uaoatxgb7ia7" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0021.png" id="181_k5b13"]
+[ext_resource type="Texture2D" uid="uid://d4bsmhj51e8qh" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0022.png" id="182_tvdij"]
+[ext_resource type="Texture2D" uid="uid://cfl4sfev0jxt" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0023.png" id="183_8q2xx"]
+[ext_resource type="Texture2D" uid="uid://cli3h7a1qojdx" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0024.png" id="184_y16n1"]
+[ext_resource type="Texture2D" uid="uid://crm1qugw2cied" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0025.png" id="185_o0ne0"]
+[ext_resource type="Texture2D" uid="uid://ellmfjrggv3w" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0026.png" id="186_mepd7"]
+[ext_resource type="Texture2D" uid="uid://dkrllevqyddv" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0027.png" id="187_op6tk"]
+[ext_resource type="Texture2D" uid="uid://5gk5gxtva5r8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0028.png" id="188_81h0g"]
+[ext_resource type="Texture2D" uid="uid://dsfu73jycmsh0" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0029.png" id="189_6meuy"]
+[ext_resource type="Texture2D" uid="uid://c8dhh3q8ifupt" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0030.png" id="190_6am7b"]
+[ext_resource type="Texture2D" uid="uid://bapnrfeylg631" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0031.png" id="191_5ltxq"]
+[ext_resource type="Texture2D" uid="uid://0srwattdtrm8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0001.png" id="192_i4e70"]
+[ext_resource type="Texture2D" uid="uid://btwv3pcuvefhw" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0002.png" id="193_8ms8x"]
+[ext_resource type="Texture2D" uid="uid://6qgjs2tg0pct" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0003.png" id="194_bsyn7"]
+[ext_resource type="Texture2D" uid="uid://tqmth77joanp" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0004.png" id="195_13nqn"]
+[ext_resource type="Texture2D" uid="uid://7l3i2mwfy15y" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0005.png" id="196_1ur23"]
+[ext_resource type="Texture2D" uid="uid://ce0kfoo37h6td" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0006.png" id="197_8nrq1"]
+[ext_resource type="Texture2D" uid="uid://unqqo5jd735k" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0007.png" id="198_ab8ay"]
+[ext_resource type="Texture2D" uid="uid://cshs0qih8ahla" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0008.png" id="199_im05w"]
+[ext_resource type="Texture2D" uid="uid://bijarkg17lqxs" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0009.png" id="200_2l3d4"]
+[ext_resource type="Texture2D" uid="uid://bb075ydso3xbp" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0010.png" id="201_brhiq"]
+[ext_resource type="Texture2D" uid="uid://hre2obbj4rou" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0011.png" id="202_lrf4u"]
+[ext_resource type="Texture2D" uid="uid://drrvjgyq5vivu" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0012.png" id="203_pohjk"]
+[ext_resource type="Texture2D" uid="uid://m1fgh1eg6y5q" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0013.png" id="204_dbbuo"]
+[ext_resource type="Texture2D" uid="uid://dnw0dcd4psi6x" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0014.png" id="205_6un6m"]
+[ext_resource type="Texture2D" uid="uid://dcpg25j2nwnf5" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0015.png" id="206_fcloe"]
+[ext_resource type="Texture2D" uid="uid://cowt1qy3x8lso" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0016.png" id="207_qb4u0"]
+[ext_resource type="Texture2D" uid="uid://dskfk007j4jpb" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0017.png" id="208_5sb2a"]
+[ext_resource type="Texture2D" uid="uid://dvc6xu4cw4epf" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0018.png" id="209_hxgq3"]
+[ext_resource type="Texture2D" uid="uid://mo3tp5ua7m8d" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0019.png" id="210_ki221"]
+[ext_resource type="Texture2D" uid="uid://hfvbps46p07" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0020.png" id="211_blspv"]
+[ext_resource type="Texture2D" uid="uid://catac1w5bvydt" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0021.png" id="212_rcheh"]
+[ext_resource type="Texture2D" uid="uid://47f0fct54vs" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0022.png" id="213_kmd2o"]
+[ext_resource type="Texture2D" uid="uid://7bu6wasqjm21" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0023.png" id="214_463lh"]
+[ext_resource type="Texture2D" uid="uid://jrrbmj0lgikd" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0024.png" id="215_f1k6s"]
+[ext_resource type="Texture2D" uid="uid://ur6edvul48kb" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0025.png" id="216_obia8"]
+[ext_resource type="Texture2D" uid="uid://dq661wayeiiu8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0026.png" id="217_bfynv"]
+[ext_resource type="Texture2D" uid="uid://b6hjpx0plewgx" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0027.png" id="218_g3wy2"]
+[ext_resource type="Texture2D" uid="uid://de80oqqyy5vu2" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0028.png" id="219_twd36"]
+[ext_resource type="Texture2D" uid="uid://cm3jydcxm35qv" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0029.png" id="220_gxod8"]
+[ext_resource type="Texture2D" uid="uid://hse3dx1v1a8w" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0030.png" id="221_ihe4c"]
+[ext_resource type="Texture2D" uid="uid://cdam66akmibvc" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0031.png" id="222_2j62y"]
+[ext_resource type="Texture2D" uid="uid://d2ld5b81aokot" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0001.png" id="223_3r17f"]
+[ext_resource type="Texture2D" uid="uid://dx4ur0tptve3t" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0002.png" id="224_l1gek"]
+[ext_resource type="Texture2D" uid="uid://78si0doyx3xy" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0003.png" id="225_o6t0n"]
+[ext_resource type="Texture2D" uid="uid://d3drc7du5yhuv" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0004.png" id="226_j6hu0"]
+[ext_resource type="Texture2D" uid="uid://b5fvcqnmumsgx" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0005.png" id="227_cgr5g"]
+[ext_resource type="Texture2D" uid="uid://cvdu3gp57732y" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0006.png" id="228_3oyhf"]
+[ext_resource type="Texture2D" uid="uid://bej8fxdu70gfd" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0007.png" id="229_2ag1f"]
+[ext_resource type="Texture2D" uid="uid://k5uon8vj6d2u" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0008.png" id="230_1pht4"]
+[ext_resource type="Texture2D" uid="uid://ndv746ji5lon" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0009.png" id="231_g7dnv"]
+[ext_resource type="Texture2D" uid="uid://c0kxapwl1lgum" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0010.png" id="232_rlq8w"]
+[ext_resource type="Texture2D" uid="uid://cm1678pm8v5f0" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0011.png" id="233_6qic7"]
+[ext_resource type="Texture2D" uid="uid://cgcape0kf6fk7" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0012.png" id="234_jjnij"]
+[ext_resource type="Texture2D" uid="uid://cr1xgixo26xr6" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0013.png" id="235_u2wnc"]
+[ext_resource type="Texture2D" uid="uid://vfx1akkvbnxq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0014.png" id="236_qy47j"]
+[ext_resource type="Texture2D" uid="uid://clps2oqs0mhpc" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0015.png" id="237_nq5au"]
+[ext_resource type="Texture2D" uid="uid://dxv30uqkhkiuy" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0016.png" id="238_w61q5"]
+[ext_resource type="Texture2D" uid="uid://brh76xuwkl6b1" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0017.png" id="239_67wfp"]
+[ext_resource type="Texture2D" uid="uid://dnnp5mk50fp33" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0018.png" id="240_hvup1"]
+[ext_resource type="Texture2D" uid="uid://dlf03y46x5885" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0019.png" id="241_fe02v"]
+[ext_resource type="Texture2D" uid="uid://bp1roccuhhv2q" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0020.png" id="242_s0npb"]
+[ext_resource type="Texture2D" uid="uid://5x4ieujblgmo" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0021.png" id="243_ni8un"]
+[ext_resource type="Texture2D" uid="uid://bbvtkqcir2xwy" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0022.png" id="244_8farp"]
+[ext_resource type="Texture2D" uid="uid://brkcbduny6vjy" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0023.png" id="245_rmrua"]
+[ext_resource type="Texture2D" uid="uid://blxcq71k0cbfj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0024.png" id="246_u3m51"]
+[ext_resource type="Texture2D" uid="uid://djsxlql8ditrd" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0025.png" id="247_v7xg6"]
+[ext_resource type="Texture2D" uid="uid://cobe6gpfg5c1g" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0026.png" id="248_siwvf"]
+[ext_resource type="Texture2D" uid="uid://8h0y25bs7tne" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0027.png" id="249_71ioh"]
+[ext_resource type="Texture2D" uid="uid://br5m6mpbdd1v" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0028.png" id="250_xxqdj"]
+[ext_resource type="Texture2D" uid="uid://c07uwibpmwadx" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0029.png" id="251_edw0m"]
+[ext_resource type="Texture2D" uid="uid://bkb3up86nvfmo" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0030.png" id="252_jl68c"]
+[ext_resource type="Texture2D" uid="uid://c4lhr60g5iiue" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0031.png" id="253_8yldx"]
+[ext_resource type="Texture2D" uid="uid://m516rfrnje7y" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0002.png" id="254_pqf5i"]
+[ext_resource type="Texture2D" uid="uid://r4wl1mvxdj8v" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0003.png" id="255_yvcu2"]
+[ext_resource type="Texture2D" uid="uid://d28nyh641myap" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0004.png" id="256_bpkl8"]
+[ext_resource type="Texture2D" uid="uid://ni4h60ox4nb6" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0005.png" id="257_h0p2i"]
+[ext_resource type="Texture2D" uid="uid://5g8ejce2okyb" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0006.png" id="258_yo8po"]
+[ext_resource type="Texture2D" uid="uid://darpra2mx6e7u" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0007.png" id="259_ypidt"]
+[ext_resource type="Texture2D" uid="uid://b5qce3xccdg05" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0008.png" id="260_awd1i"]
+[ext_resource type="Texture2D" uid="uid://c5ouisqutpnxl" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0009.png" id="261_h0g5p"]
+[ext_resource type="Texture2D" uid="uid://qk3upa33tw54" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0010.png" id="262_l5ga4"]
+[ext_resource type="Texture2D" uid="uid://rp6f5567kwd2" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0011.png" id="263_oi4qi"]
+[ext_resource type="Texture2D" uid="uid://os4tev6bvx0h" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0012.png" id="264_gndi0"]
+[ext_resource type="Texture2D" uid="uid://dou5dypxqx81j" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0013.png" id="265_oerr5"]
+[ext_resource type="Texture2D" uid="uid://btuacupj5qd6m" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0014.png" id="266_p5cfd"]
+[ext_resource type="Texture2D" uid="uid://dc0ea23cedye8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0015.png" id="267_d4t6o"]
+[ext_resource type="Texture2D" uid="uid://6j64mhnavqpv" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0016.png" id="268_djq20"]
+[ext_resource type="Texture2D" uid="uid://2cpruc0h1ixb" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0017.png" id="269_8r131"]
+[ext_resource type="Texture2D" uid="uid://dlglle1t2gjks" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0018.png" id="270_c12l1"]
+[ext_resource type="Texture2D" uid="uid://0smyngu6wmx5" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0019.png" id="271_tqs4w"]
+[ext_resource type="Texture2D" uid="uid://hcrapg880xye" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0020.png" id="272_oyla6"]
+[ext_resource type="Texture2D" uid="uid://pdraryrps370" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0021.png" id="273_nv2b2"]
+[ext_resource type="Texture2D" uid="uid://b0u8t4v3kfeci" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0022.png" id="274_1gi0x"]
+[ext_resource type="Texture2D" uid="uid://csecqs3mksg30" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0023.png" id="275_j41qn"]
+[ext_resource type="Texture2D" uid="uid://jexyyp7p4urj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0024.png" id="276_ea8sl"]
+[ext_resource type="Texture2D" uid="uid://b3bkelyeuwk46" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0025.png" id="277_k7255"]
+[ext_resource type="Texture2D" uid="uid://herme2bc2v1y" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0026.png" id="278_8pltk"]
+[ext_resource type="Texture2D" uid="uid://cstiuv4k2m8j7" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0027.png" id="279_0ebdh"]
+[ext_resource type="Texture2D" uid="uid://ck4dn4u4gcrci" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0028.png" id="280_48k1i"]
+[ext_resource type="Texture2D" uid="uid://dfqx06ku8rgfq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0029.png" id="281_s0rav"]
+[ext_resource type="Texture2D" uid="uid://d2xmm7a6x2skr" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0030.png" id="282_m5436"]
+[ext_resource type="Texture2D" uid="uid://dss2hlxqktsru" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0031.png" id="283_y4sek"]
+[ext_resource type="Texture2D" uid="uid://bjf3ufevc44m0" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0001.png" id="284_3wujx"]
+[ext_resource type="Texture2D" uid="uid://kmgxbw1qxq6h" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0002.png" id="285_gp31m"]
+[ext_resource type="Texture2D" uid="uid://c31pknfiy1haw" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0003.png" id="286_pb1g5"]
+[ext_resource type="Texture2D" uid="uid://2utbh10wdhgl" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0004.png" id="287_lmv3u"]
+[ext_resource type="Texture2D" uid="uid://yl3dkejf0xx8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0005.png" id="288_qspfj"]
+[ext_resource type="Texture2D" uid="uid://dvxhdyoy1oyto" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0006.png" id="289_addox"]
+[ext_resource type="Texture2D" uid="uid://dqxj5vpjc54yb" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0007.png" id="290_lcpu4"]
+[ext_resource type="Texture2D" uid="uid://b8wb7uv6v04mn" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0008.png" id="291_flqk4"]
+[ext_resource type="Texture2D" uid="uid://un02nr3s45nr" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0009.png" id="292_2vvm1"]
+[ext_resource type="Texture2D" uid="uid://feruc4cpi6wp" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0010.png" id="293_any0a"]
+[ext_resource type="Texture2D" uid="uid://c1vqauxcjuuir" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0011.png" id="294_0kkcr"]
+[ext_resource type="Texture2D" uid="uid://c1jvosm51bstf" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0012.png" id="295_xjsm2"]
+[ext_resource type="Texture2D" uid="uid://cpasb33hd2h1a" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0013.png" id="296_5duws"]
+[ext_resource type="Texture2D" uid="uid://ykpki7ro4h1u" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0014.png" id="297_s80uq"]
+[ext_resource type="Texture2D" uid="uid://dcnnloe0s2544" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0015.png" id="298_grr4d"]
+[ext_resource type="Texture2D" uid="uid://c88thmb4s0i1o" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0016.png" id="299_5uupw"]
+[ext_resource type="Texture2D" uid="uid://bej1yodcl4wqj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0017.png" id="300_hmurq"]
+[ext_resource type="Texture2D" uid="uid://v2o8dgvykr4u" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0018.png" id="301_johwi"]
+[ext_resource type="Texture2D" uid="uid://cyqcalvms42ew" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0019.png" id="302_stgs6"]
+[ext_resource type="Texture2D" uid="uid://fsye0nffl5hq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0020.png" id="303_gx6ir"]
+[ext_resource type="Texture2D" uid="uid://cnsnsgdbwxcu1" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0021.png" id="304_5pgq5"]
+[ext_resource type="Texture2D" uid="uid://ch70ouy0gw4ev" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0022.png" id="305_my0nt"]
+[ext_resource type="Texture2D" uid="uid://bx13vvrcuugso" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0023.png" id="306_pkshr"]
+[ext_resource type="Texture2D" uid="uid://bwycepynxahsm" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0024.png" id="307_qqia7"]
+[ext_resource type="Texture2D" uid="uid://qbodiclxjem8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0025.png" id="308_1ndk4"]
+[ext_resource type="Texture2D" uid="uid://dlfg1shvs6l7u" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0026.png" id="309_tjopg"]
+[ext_resource type="Texture2D" uid="uid://b2i1tlyrunf4q" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0027.png" id="310_26tc2"]
+[ext_resource type="Texture2D" uid="uid://b0ykjd7mld5hq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0028.png" id="311_1t6t8"]
+[ext_resource type="Texture2D" uid="uid://dv1nfakx1c2e3" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0029.png" id="312_ybg2r"]
+[ext_resource type="Texture2D" uid="uid://niy1hhuvl6gp" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0030.png" id="313_mwnei"]
+[ext_resource type="Texture2D" uid="uid://dktmwysn0mo5f" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0031.png" id="314_36ph2"]
+[ext_resource type="Texture2D" uid="uid://crnkc52qgbeg6" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0001.png" id="315_ko8gw"]
+[ext_resource type="Texture2D" uid="uid://bghccr8g48van" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0002.png" id="316_6ft7g"]
+[ext_resource type="Texture2D" uid="uid://d3xa34hx1rl3k" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0003.png" id="317_vxexu"]
+[ext_resource type="Texture2D" uid="uid://bgp4d1n8a62t4" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0004.png" id="318_j7g38"]
+[ext_resource type="Texture2D" uid="uid://di18m8yw2o4s3" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0005.png" id="319_ujms8"]
+[ext_resource type="Texture2D" uid="uid://djjrf83r72w82" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0006.png" id="320_20nsn"]
+[ext_resource type="Texture2D" uid="uid://bnxis5ullq1vo" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0007.png" id="321_f2oji"]
+[ext_resource type="Texture2D" uid="uid://d3kirdtebxknq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0008.png" id="322_xx2rs"]
+[ext_resource type="Texture2D" uid="uid://c1nwcsb5xvau5" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0009.png" id="323_yfw3f"]
+[ext_resource type="Texture2D" uid="uid://celewq13r1tk1" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0010.png" id="324_8fflq"]
+[ext_resource type="Texture2D" uid="uid://dd870ra4gbaon" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0011.png" id="325_psguq"]
+[ext_resource type="Texture2D" uid="uid://cicdypputsa72" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0012.png" id="326_s7u0o"]
+[ext_resource type="Texture2D" uid="uid://brwpwe31w3tq7" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0013.png" id="327_itg56"]
+[ext_resource type="Texture2D" uid="uid://tr72tgohrjy6" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0014.png" id="328_fhl6a"]
+[ext_resource type="Texture2D" uid="uid://dqvq4s7xmfbg4" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0015.png" id="329_djwlk"]
+[ext_resource type="Texture2D" uid="uid://lbm8li4gmml" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0016.png" id="330_udbf5"]
+[ext_resource type="Texture2D" uid="uid://cu0i5sndyyt6y" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0017.png" id="331_0l5f7"]
+[ext_resource type="Texture2D" uid="uid://bb4lbcetn4bu1" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0018.png" id="332_gyh60"]
+[ext_resource type="Texture2D" uid="uid://b7rceiitufhbh" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0019.png" id="333_opl11"]
+[ext_resource type="Texture2D" uid="uid://ywjdtiyblmlr" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0020.png" id="334_fsvex"]
+[ext_resource type="Texture2D" uid="uid://8qwprndfk7kk" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0021.png" id="335_e1vm5"]
+[ext_resource type="Texture2D" uid="uid://bxrw4dv51f3uu" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0022.png" id="336_nigvq"]
+[ext_resource type="Texture2D" uid="uid://t5nw80s35y2j" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0023.png" id="337_mo48t"]
+[ext_resource type="Texture2D" uid="uid://bx7g6f81f2g27" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0024.png" id="338_cll85"]
+[ext_resource type="Texture2D" uid="uid://bm1iyocuyhxfc" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0025.png" id="339_qtppr"]
+[ext_resource type="Texture2D" uid="uid://dlcp8aqpsw4bh" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0026.png" id="340_esy8u"]
+[ext_resource type="Texture2D" uid="uid://ddednxo3ih22i" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0027.png" id="341_rhuul"]
+[ext_resource type="Texture2D" uid="uid://dccik63jcum1a" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0028.png" id="342_vgffk"]
+[ext_resource type="Texture2D" uid="uid://bhb40ernghe74" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0029.png" id="343_cg8gc"]
+[ext_resource type="Texture2D" uid="uid://cjhgs4swfgtqr" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0030.png" id="344_12qea"]
+[ext_resource type="Texture2D" uid="uid://bgu60bxuf3glt" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0031.png" id="345_j0ltf"]
+[ext_resource type="Texture2D" uid="uid://cmxvhwfnjnona" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0001.png" id="346_t2u5f"]
+[ext_resource type="Texture2D" uid="uid://dw10tlcf5vpgx" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0002.png" id="347_d5ivb"]
+[ext_resource type="Texture2D" uid="uid://of40pc1yov8n" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0003.png" id="348_fhh4q"]
+[ext_resource type="Texture2D" uid="uid://bd0tjf8gul521" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0004.png" id="349_sd3ah"]
+[ext_resource type="Texture2D" uid="uid://c5v5f213dj0dn" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0005.png" id="350_wdc3g"]
+[ext_resource type="Texture2D" uid="uid://did5k4nlugfmv" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0006.png" id="351_ip71p"]
+[ext_resource type="Texture2D" uid="uid://gat2gregffty" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0007.png" id="352_qr47n"]
+[ext_resource type="Texture2D" uid="uid://mtb2qyhvvq1i" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0008.png" id="353_d1f0e"]
+[ext_resource type="Texture2D" uid="uid://0tb0q3k5ly70" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0009.png" id="354_3vywn"]
+[ext_resource type="Texture2D" uid="uid://bius0yjm7xe4v" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0010.png" id="355_vsrxo"]
+[ext_resource type="Texture2D" uid="uid://bnnh45up8xpu8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0011.png" id="356_bfndm"]
+[ext_resource type="Texture2D" uid="uid://cn3rkyiv2euyl" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0012.png" id="357_ovqm0"]
+[ext_resource type="Texture2D" uid="uid://ddgkli22a4w3i" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0013.png" id="358_2gwmk"]
+[ext_resource type="Texture2D" uid="uid://cbci1rp0674le" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0014.png" id="359_h0vv7"]
+[ext_resource type="Texture2D" uid="uid://cyhsvo1d1lyy4" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0015.png" id="360_bmpmb"]
+[ext_resource type="Texture2D" uid="uid://c6u1ssc4a4uem" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0016.png" id="361_j35cn"]
+[ext_resource type="Texture2D" uid="uid://2e4b7i3bioem" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0017.png" id="362_fss0j"]
+[ext_resource type="Texture2D" uid="uid://dx15345cyirxj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0018.png" id="363_5avgn"]
+[ext_resource type="Texture2D" uid="uid://c2qht5m7h00vj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0019.png" id="364_5t63c"]
+[ext_resource type="Texture2D" uid="uid://dlyuducm6pbq5" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0020.png" id="365_ilne6"]
+[ext_resource type="Texture2D" uid="uid://ydjapf0xst0d" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0021.png" id="366_f2s8p"]
+[ext_resource type="Texture2D" uid="uid://kb4wuhouv6oy" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0022.png" id="367_3u4gt"]
+[ext_resource type="Texture2D" uid="uid://02qo5aovt01n" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0023.png" id="368_ph3cg"]
+[ext_resource type="Texture2D" uid="uid://dqtg4hfjawhhq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0024.png" id="369_mf5t2"]
+[ext_resource type="Texture2D" uid="uid://da32di1v23e14" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0025.png" id="370_bh64p"]
+[ext_resource type="Texture2D" uid="uid://du0sp37hvejyt" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0026.png" id="371_l3ip1"]
+[ext_resource type="Texture2D" uid="uid://cpudjq0tgbh0t" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0027.png" id="372_i3864"]
+[ext_resource type="Texture2D" uid="uid://bcdjjc642gv8f" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0028.png" id="373_i6f50"]
+[ext_resource type="Texture2D" uid="uid://f6i1qnhw7weh" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0029.png" id="374_cecvx"]
+[ext_resource type="Texture2D" uid="uid://ddxg51sqo0heh" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0030.png" id="375_bx2im"]
+[ext_resource type="Texture2D" uid="uid://bfnqkaglguugl" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0031.png" id="376_04ljx"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_kyoti")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_jnyom")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_1j7xc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_vt125")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_62h5y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_gvdra")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_fxsfy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_s75l4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ivtor")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_nr0ne")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_2mqx1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_unuhn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_6d4mx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_u3fvs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_ddmq7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_j63tf")
+}],
+"loop": false,
+"name": &"Attack_E",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("17_rcw38")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_ym4ys")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_kgm8o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_hpcr1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_yvj1i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_k32tt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_e05rn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_y8mdn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_gx0tt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_u2kie")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_2k2w2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_hqlum")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_22tiv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_gv3oi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_jk4tv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_chfst")
+}],
+"loop": false,
+"name": &"Attack_N",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("33_cauj0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("34_gckfq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_24qiq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_28lde")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_yi4u2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_2u0p5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_6cokk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_mlple")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_dj4io")
+}, {
+"duration": 1.0,
+"texture": ExtResource("42_2q8yl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("43_4k3fy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("44_l5wyw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("45_kw827")
+}, {
+"duration": 1.0,
+"texture": ExtResource("46_scnm3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("47_uewvc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("48_cmlqt")
+}],
+"loop": false,
+"name": &"Attack_NE",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("49_hnob0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("50_rv54b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("51_mgppx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("52_5bktg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("53_73u20")
+}, {
+"duration": 1.0,
+"texture": ExtResource("54_ou66s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("55_4m5yg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("56_252fs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("57_j07xv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("58_30485")
+}, {
+"duration": 1.0,
+"texture": ExtResource("59_5nqxc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("60_egx77")
+}, {
+"duration": 1.0,
+"texture": ExtResource("61_boi5u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("62_xjthk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("63_fqsn3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("64_x3aao")
+}],
+"loop": false,
+"name": &"Attack_NW",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("65_ondji")
+}, {
+"duration": 1.0,
+"texture": ExtResource("66_tnsor")
+}, {
+"duration": 1.0,
+"texture": ExtResource("67_7s0j1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("68_422hf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("69_ai2t2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("70_h2bgb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("71_m57db")
+}, {
+"duration": 1.0,
+"texture": ExtResource("72_2k8rt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("73_eqgdq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("74_lo2op")
+}, {
+"duration": 1.0,
+"texture": ExtResource("75_th602")
+}, {
+"duration": 1.0,
+"texture": ExtResource("76_5sc6p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("77_hhrcc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("78_afyur")
+}, {
+"duration": 1.0,
+"texture": ExtResource("79_r7s6r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("80_2rdmf")
+}],
+"loop": false,
+"name": &"Attack_S",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("81_4xdwi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("82_1ohfh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("83_jbmmu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("84_iklom")
+}, {
+"duration": 1.0,
+"texture": ExtResource("85_32p15")
+}, {
+"duration": 1.0,
+"texture": ExtResource("86_525xp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("87_qwhk6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("88_noqn3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("89_7sxyu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("90_uwu0c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("91_lmpad")
+}, {
+"duration": 1.0,
+"texture": ExtResource("92_2ib7p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("93_or47p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("94_jrjh4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("95_evrlu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("96_mx65s")
+}],
+"loop": false,
+"name": &"Attack_SE",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("97_qyvgl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("98_tkftc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("99_exs1r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("100_l4i2y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("101_7d5bg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("102_l8rfi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("103_5wvth")
+}, {
+"duration": 1.0,
+"texture": ExtResource("104_3pr2h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("105_da4g2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("106_ia0eo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("107_7we2v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("108_u0luk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("109_jbo8c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("110_8s7jk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("111_nlsrf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("112_awmrv")
+}],
+"loop": false,
+"name": &"Attack_SW",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("113_u6t67")
+}, {
+"duration": 1.0,
+"texture": ExtResource("114_v4jox")
+}, {
+"duration": 1.0,
+"texture": ExtResource("115_edhyi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("116_ttp24")
+}, {
+"duration": 1.0,
+"texture": ExtResource("117_40esg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("118_j80oq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("119_wnfko")
+}, {
+"duration": 1.0,
+"texture": ExtResource("120_yy0gh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("121_a6vre")
+}, {
+"duration": 1.0,
+"texture": ExtResource("122_fvx56")
+}, {
+"duration": 1.0,
+"texture": ExtResource("123_xdh47")
+}, {
+"duration": 1.0,
+"texture": ExtResource("124_1dno4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("125_qbsqv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("126_55ewt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("127_8o0kw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("128_1ek32")
+}],
+"loop": false,
+"name": &"Attack_W",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("129_h2nmi")
+}],
+"loop": false,
+"name": &"Idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("130_e0omi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("131_8m8gn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("132_h1ngm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("133_w6idy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("134_s384k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("135_s55mh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("136_k43iu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("137_gic3p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("138_ytrgt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("139_s0asr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("140_rbck1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("141_ieqkf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("142_hx6ks")
+}, {
+"duration": 1.0,
+"texture": ExtResource("143_1t0wf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("144_6w7nq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("145_d8jbe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("146_em3d8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("147_keaju")
+}, {
+"duration": 1.0,
+"texture": ExtResource("148_qc2l1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("149_tp7pb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("150_7vetf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("151_o4vae")
+}, {
+"duration": 1.0,
+"texture": ExtResource("152_w5lqc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("153_lgswh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("154_1gh2x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("155_8ysmx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("156_quofv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("157_dpsr3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("158_6m5vp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("159_4rbaq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("160_5xhcp")
+}],
+"loop": true,
+"name": &"Run_E",
+"speed": 25.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("161_ilfip")
+}, {
+"duration": 1.0,
+"texture": ExtResource("162_p1ol4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("163_ti7ae")
+}, {
+"duration": 1.0,
+"texture": ExtResource("164_s6jdc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("165_hkp71")
+}, {
+"duration": 1.0,
+"texture": ExtResource("166_ormjc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("167_ky6g4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("168_1iohl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("169_ukylp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("170_8ootf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("171_y0ya6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("172_i0w03")
+}, {
+"duration": 1.0,
+"texture": ExtResource("173_s6p8o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("174_uns6j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("175_a6niw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("176_u6qj5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("177_an8ij")
+}, {
+"duration": 1.0,
+"texture": ExtResource("178_jydso")
+}, {
+"duration": 1.0,
+"texture": ExtResource("179_7263e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("180_5mmef")
+}, {
+"duration": 1.0,
+"texture": ExtResource("181_k5b13")
+}, {
+"duration": 1.0,
+"texture": ExtResource("182_tvdij")
+}, {
+"duration": 1.0,
+"texture": ExtResource("183_8q2xx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("184_y16n1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("185_o0ne0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("186_mepd7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("187_op6tk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("188_81h0g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("189_6meuy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("190_6am7b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("191_5ltxq")
+}],
+"loop": true,
+"name": &"Run_N",
+"speed": 25.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("192_i4e70")
+}, {
+"duration": 1.0,
+"texture": ExtResource("193_8ms8x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("194_bsyn7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("195_13nqn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("196_1ur23")
+}, {
+"duration": 1.0,
+"texture": ExtResource("197_8nrq1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("198_ab8ay")
+}, {
+"duration": 1.0,
+"texture": ExtResource("199_im05w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("200_2l3d4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("201_brhiq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("202_lrf4u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("203_pohjk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("204_dbbuo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("205_6un6m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("206_fcloe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("207_qb4u0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("208_5sb2a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("209_hxgq3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("210_ki221")
+}, {
+"duration": 1.0,
+"texture": ExtResource("211_blspv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("212_rcheh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("213_kmd2o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("214_463lh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("215_f1k6s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("216_obia8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("217_bfynv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("218_g3wy2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("219_twd36")
+}, {
+"duration": 1.0,
+"texture": ExtResource("220_gxod8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("221_ihe4c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("222_2j62y")
+}],
+"loop": true,
+"name": &"Run_NE",
+"speed": 25.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("223_3r17f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("224_l1gek")
+}, {
+"duration": 1.0,
+"texture": ExtResource("225_o6t0n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("226_j6hu0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("227_cgr5g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("228_3oyhf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("229_2ag1f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("230_1pht4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("231_g7dnv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("232_rlq8w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("233_6qic7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("234_jjnij")
+}, {
+"duration": 1.0,
+"texture": ExtResource("235_u2wnc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("236_qy47j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("237_nq5au")
+}, {
+"duration": 1.0,
+"texture": ExtResource("238_w61q5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("239_67wfp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("240_hvup1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("241_fe02v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("242_s0npb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("243_ni8un")
+}, {
+"duration": 1.0,
+"texture": ExtResource("244_8farp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("245_rmrua")
+}, {
+"duration": 1.0,
+"texture": ExtResource("246_u3m51")
+}, {
+"duration": 1.0,
+"texture": ExtResource("247_v7xg6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("248_siwvf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("249_71ioh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("250_xxqdj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("251_edw0m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("252_jl68c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("253_8yldx")
+}],
+"loop": true,
+"name": &"Run_NW",
+"speed": 25.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("129_h2nmi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("254_pqf5i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("255_yvcu2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("256_bpkl8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("257_h0p2i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("258_yo8po")
+}, {
+"duration": 1.0,
+"texture": ExtResource("259_ypidt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("260_awd1i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("261_h0g5p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("262_l5ga4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("263_oi4qi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("264_gndi0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("265_oerr5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("266_p5cfd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("267_d4t6o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("268_djq20")
+}, {
+"duration": 1.0,
+"texture": ExtResource("269_8r131")
+}, {
+"duration": 1.0,
+"texture": ExtResource("270_c12l1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("271_tqs4w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("272_oyla6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("273_nv2b2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("274_1gi0x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("275_j41qn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("276_ea8sl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("277_k7255")
+}, {
+"duration": 1.0,
+"texture": ExtResource("278_8pltk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("279_0ebdh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("280_48k1i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("281_s0rav")
+}, {
+"duration": 1.0,
+"texture": ExtResource("282_m5436")
+}, {
+"duration": 1.0,
+"texture": ExtResource("283_y4sek")
+}],
+"loop": true,
+"name": &"Run_S",
+"speed": 25.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("284_3wujx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("285_gp31m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("286_pb1g5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("287_lmv3u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("288_qspfj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("289_addox")
+}, {
+"duration": 1.0,
+"texture": ExtResource("290_lcpu4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("291_flqk4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("292_2vvm1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("293_any0a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("294_0kkcr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("295_xjsm2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("296_5duws")
+}, {
+"duration": 1.0,
+"texture": ExtResource("297_s80uq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("298_grr4d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("299_5uupw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("300_hmurq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("301_johwi")
+}, {
+"duration": 1.0,
+"texture": ExtResource("302_stgs6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("303_gx6ir")
+}, {
+"duration": 1.0,
+"texture": ExtResource("304_5pgq5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("305_my0nt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("306_pkshr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("307_qqia7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("308_1ndk4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("309_tjopg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("310_26tc2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("311_1t6t8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("312_ybg2r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("313_mwnei")
+}, {
+"duration": 1.0,
+"texture": ExtResource("314_36ph2")
+}],
+"loop": true,
+"name": &"Run_SE",
+"speed": 25.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("315_ko8gw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("316_6ft7g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("317_vxexu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("318_j7g38")
+}, {
+"duration": 1.0,
+"texture": ExtResource("319_ujms8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("320_20nsn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("321_f2oji")
+}, {
+"duration": 1.0,
+"texture": ExtResource("322_xx2rs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("323_yfw3f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("324_8fflq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("325_psguq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("326_s7u0o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("327_itg56")
+}, {
+"duration": 1.0,
+"texture": ExtResource("328_fhl6a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("329_djwlk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("330_udbf5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("331_0l5f7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("332_gyh60")
+}, {
+"duration": 1.0,
+"texture": ExtResource("333_opl11")
+}, {
+"duration": 1.0,
+"texture": ExtResource("334_fsvex")
+}, {
+"duration": 1.0,
+"texture": ExtResource("335_e1vm5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("336_nigvq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("337_mo48t")
+}, {
+"duration": 1.0,
+"texture": ExtResource("338_cll85")
+}, {
+"duration": 1.0,
+"texture": ExtResource("339_qtppr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("340_esy8u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("341_rhuul")
+}, {
+"duration": 1.0,
+"texture": ExtResource("342_vgffk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("343_cg8gc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("344_12qea")
+}, {
+"duration": 1.0,
+"texture": ExtResource("345_j0ltf")
+}],
+"loop": true,
+"name": &"Run_SW",
+"speed": 25.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("346_t2u5f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("347_d5ivb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("348_fhh4q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("349_sd3ah")
+}, {
+"duration": 1.0,
+"texture": ExtResource("350_wdc3g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("351_ip71p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("352_qr47n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("353_d1f0e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("354_3vywn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("355_vsrxo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("356_bfndm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("357_ovqm0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("358_2gwmk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("359_h0vv7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("360_bmpmb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("361_j35cn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("362_fss0j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("363_5avgn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("364_5t63c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("365_ilne6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("366_f2s8p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("367_3u4gt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("368_ph3cg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("369_mf5t2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("370_bh64p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("371_l3ip1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("372_i3864")
+}, {
+"duration": 1.0,
+"texture": ExtResource("373_i6f50")
+}, {
+"duration": 1.0,
+"texture": ExtResource("374_cecvx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("375_bx2im")
+}, {
+"duration": 1.0,
+"texture": ExtResource("376_04ljx")
+}],
+"loop": true,
+"name": &"Run_W",
+"speed": 25.0
+}]

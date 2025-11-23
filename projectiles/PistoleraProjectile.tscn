@@ -1,0 +1,46 @@
+[gd_scene load_steps=4 format=3 uid="uid://cxaqe4q6im2ks"]
+
+[ext_resource type="Script" uid="uid://ddrg3l27hewcs" path="res://projectiles/projectile.gd" id="1_7o2q5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3bbdk"]
+size = Vector2(11.327013, 148.94191)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3bbdk"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Area2D" type="Area2D"]
+script = ExtResource("1_7o2q5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1.000001, -2.9802322e-08)
+scale = Vector2(1.5891215, 0.20813483)
+shape = SubResource("RectangleShape2D_3bbdk")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-10, 32)
+scale = Vector2(0.76171875, 0.6621094)
+sprite_frames = SubResource("SpriteFrames_3bbdk")
+frame_progress = 0.19211887
