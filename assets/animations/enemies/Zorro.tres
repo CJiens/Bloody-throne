@@ -1,381 +1,341 @@
-[gd_resource type="SpriteFrames" load_steps=377 format=3 uid="uid://duxow1tlbvd3i"]
+[gd_resource type="SpriteFrames" load_steps=337 format=3 uid="uid://duxow1tlbvd3i"]
 
-[ext_resource type="Texture2D" uid="uid://da0ah77g4dpi1" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0001.png" id="1_kyoti"]
-[ext_resource type="Texture2D" uid="uid://dw0bi4rxcocv6" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0002.png" id="2_jnyom"]
-[ext_resource type="Texture2D" uid="uid://c46f6wkce8q7q" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0003.png" id="3_1j7xc"]
-[ext_resource type="Texture2D" uid="uid://dhhbc6do4cwds" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0004.png" id="4_vt125"]
-[ext_resource type="Texture2D" uid="uid://ce3m3mxdo0570" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0005.png" id="5_62h5y"]
-[ext_resource type="Texture2D" uid="uid://ppse37e0vj7d" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0006.png" id="6_gvdra"]
-[ext_resource type="Texture2D" uid="uid://cdbpi5eeeldnu" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0007.png" id="7_fxsfy"]
-[ext_resource type="Texture2D" uid="uid://8qlfood6cebl" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0008.png" id="8_s75l4"]
-[ext_resource type="Texture2D" uid="uid://dubgega6fihhg" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0009.png" id="9_ivtor"]
-[ext_resource type="Texture2D" uid="uid://c7gug7shvsb4e" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0010.png" id="10_nr0ne"]
-[ext_resource type="Texture2D" uid="uid://bavywnss8j53o" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0011.png" id="11_2mqx1"]
-[ext_resource type="Texture2D" uid="uid://eqxi3scewdj" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0012.png" id="12_unuhn"]
-[ext_resource type="Texture2D" uid="uid://bgb0ihhp5q2hn" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0013.png" id="13_6d4mx"]
-[ext_resource type="Texture2D" uid="uid://dn6ns6r0jxcq8" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0014.png" id="14_u3fvs"]
-[ext_resource type="Texture2D" uid="uid://ceog3agfcddy8" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0015.png" id="15_ddmq7"]
-[ext_resource type="Texture2D" uid="uid://bjvraa7mste2g" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0016.png" id="16_j63tf"]
-[ext_resource type="Texture2D" uid="uid://du174djh1i7nv" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0001.png" id="17_rcw38"]
-[ext_resource type="Texture2D" uid="uid://dkif0foll2hec" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0002.png" id="18_ym4ys"]
-[ext_resource type="Texture2D" uid="uid://c6wu0oxmwb7p0" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0003.png" id="19_kgm8o"]
-[ext_resource type="Texture2D" uid="uid://c30c5fyb7tpl7" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0004.png" id="20_hpcr1"]
-[ext_resource type="Texture2D" uid="uid://c45vmupkpotbq" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0005.png" id="21_yvj1i"]
-[ext_resource type="Texture2D" uid="uid://byplru3mjigxd" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0006.png" id="22_k32tt"]
-[ext_resource type="Texture2D" uid="uid://wdjqbo3su8lq" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0007.png" id="23_e05rn"]
-[ext_resource type="Texture2D" uid="uid://b5ikmoejmj1r6" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0008.png" id="24_y8mdn"]
-[ext_resource type="Texture2D" uid="uid://dxmnpwji23a44" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0009.png" id="25_gx0tt"]
-[ext_resource type="Texture2D" uid="uid://ba4kyc1e8y0sm" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0010.png" id="26_u2kie"]
-[ext_resource type="Texture2D" uid="uid://k4toyiceqvq6" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0011.png" id="27_2k2w2"]
-[ext_resource type="Texture2D" uid="uid://dktx5b1ws6j4i" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0012.png" id="28_hqlum"]
-[ext_resource type="Texture2D" uid="uid://mmfn4w3gf52e" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0013.png" id="29_22tiv"]
-[ext_resource type="Texture2D" uid="uid://d3joiqhkyk3jy" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0014.png" id="30_gv3oi"]
-[ext_resource type="Texture2D" uid="uid://cqeufoif6ucb1" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0015.png" id="31_jk4tv"]
-[ext_resource type="Texture2D" uid="uid://dgmm1ryvfdrei" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0016.png" id="32_chfst"]
-[ext_resource type="Texture2D" uid="uid://cc1f6kbhd0nc0" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0001.png" id="33_cauj0"]
-[ext_resource type="Texture2D" uid="uid://coh58dytbvls6" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0002.png" id="34_gckfq"]
-[ext_resource type="Texture2D" uid="uid://jc73mcgy8eqf" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0003.png" id="35_24qiq"]
-[ext_resource type="Texture2D" uid="uid://le18e7mwx1xs" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0004.png" id="36_28lde"]
-[ext_resource type="Texture2D" uid="uid://mr62la68ybwm" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0005.png" id="37_yi4u2"]
-[ext_resource type="Texture2D" uid="uid://coinjs3c6k3a6" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0006.png" id="38_2u0p5"]
-[ext_resource type="Texture2D" uid="uid://05wyph24j6p2" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0007.png" id="39_6cokk"]
-[ext_resource type="Texture2D" uid="uid://d0pwte0y81uff" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0008.png" id="40_mlple"]
-[ext_resource type="Texture2D" uid="uid://53fexho3idjg" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0009.png" id="41_dj4io"]
-[ext_resource type="Texture2D" uid="uid://cpfh0jyfch7re" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0010.png" id="42_2q8yl"]
-[ext_resource type="Texture2D" uid="uid://y5ei7pcpy36v" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0011.png" id="43_4k3fy"]
-[ext_resource type="Texture2D" uid="uid://chgofovgrwjqo" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0012.png" id="44_l5wyw"]
-[ext_resource type="Texture2D" uid="uid://oqys6dypwyj5" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0013.png" id="45_kw827"]
-[ext_resource type="Texture2D" uid="uid://dfalinsjkqy8p" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0014.png" id="46_scnm3"]
-[ext_resource type="Texture2D" uid="uid://dutbrh2gyyait" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0015.png" id="47_uewvc"]
-[ext_resource type="Texture2D" uid="uid://djbm7wc8ht32l" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0016.png" id="48_cmlqt"]
-[ext_resource type="Texture2D" uid="uid://damymglyye1jk" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0001.png" id="49_hnob0"]
-[ext_resource type="Texture2D" uid="uid://dmyw2aakkrvml" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0002.png" id="50_rv54b"]
-[ext_resource type="Texture2D" uid="uid://isrk1r2e74eu" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0003.png" id="51_mgppx"]
-[ext_resource type="Texture2D" uid="uid://wmbgfqqcgios" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0004.png" id="52_5bktg"]
-[ext_resource type="Texture2D" uid="uid://dc1hprxnsu7v7" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0005.png" id="53_73u20"]
-[ext_resource type="Texture2D" uid="uid://8hm6tnru67rs" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0006.png" id="54_ou66s"]
-[ext_resource type="Texture2D" uid="uid://gp3elpifyv0j" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0007.png" id="55_4m5yg"]
-[ext_resource type="Texture2D" uid="uid://bi72drgsu76xe" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0008.png" id="56_252fs"]
-[ext_resource type="Texture2D" uid="uid://dygbavlw0e7dt" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0009.png" id="57_j07xv"]
-[ext_resource type="Texture2D" uid="uid://c18o2ii67ixis" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0010.png" id="58_30485"]
-[ext_resource type="Texture2D" uid="uid://ct5muqtm44t7k" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0011.png" id="59_5nqxc"]
-[ext_resource type="Texture2D" uid="uid://mmdp3xsi1uqi" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0012.png" id="60_egx77"]
-[ext_resource type="Texture2D" uid="uid://b8646lwg7r080" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0013.png" id="61_boi5u"]
-[ext_resource type="Texture2D" uid="uid://ob6nwudm647e" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0014.png" id="62_xjthk"]
-[ext_resource type="Texture2D" uid="uid://dirtomeabvm7q" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0015.png" id="63_fqsn3"]
-[ext_resource type="Texture2D" uid="uid://dwr6vrd7dby3d" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0016.png" id="64_x3aao"]
-[ext_resource type="Texture2D" uid="uid://bcuxnpboide8w" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0001.png" id="65_ondji"]
-[ext_resource type="Texture2D" uid="uid://ejtxvyqcena4" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0002.png" id="66_tnsor"]
-[ext_resource type="Texture2D" uid="uid://buaqolpxoenw5" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0003.png" id="67_7s0j1"]
-[ext_resource type="Texture2D" uid="uid://cjx3dd1njldyc" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0004.png" id="68_422hf"]
-[ext_resource type="Texture2D" uid="uid://wy06rtxv04vn" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0005.png" id="69_ai2t2"]
-[ext_resource type="Texture2D" uid="uid://busis1itqh88s" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0006.png" id="70_h2bgb"]
-[ext_resource type="Texture2D" uid="uid://b4a5dece6mt6y" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0007.png" id="71_m57db"]
-[ext_resource type="Texture2D" uid="uid://87fgxfrmejgn" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0008.png" id="72_2k8rt"]
-[ext_resource type="Texture2D" uid="uid://biipvd2ncyys6" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0009.png" id="73_eqgdq"]
-[ext_resource type="Texture2D" uid="uid://w3344nbla27e" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0010.png" id="74_lo2op"]
-[ext_resource type="Texture2D" uid="uid://cadhlyb04x7nf" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0011.png" id="75_th602"]
-[ext_resource type="Texture2D" uid="uid://d0kf66aeo14id" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0012.png" id="76_5sc6p"]
-[ext_resource type="Texture2D" uid="uid://dkpaaqg3umoe8" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0013.png" id="77_hhrcc"]
-[ext_resource type="Texture2D" uid="uid://c62eyw2pt5nej" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0014.png" id="78_afyur"]
-[ext_resource type="Texture2D" uid="uid://bmix82vtp8ub4" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0015.png" id="79_r7s6r"]
-[ext_resource type="Texture2D" uid="uid://owpl6ndnva4y" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0016.png" id="80_2rdmf"]
-[ext_resource type="Texture2D" uid="uid://dmpbdo3xlauv3" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0001.png" id="81_4xdwi"]
-[ext_resource type="Texture2D" uid="uid://ds7o614pad1f2" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0002.png" id="82_1ohfh"]
-[ext_resource type="Texture2D" uid="uid://c7iicek2pgci7" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0003.png" id="83_jbmmu"]
-[ext_resource type="Texture2D" uid="uid://dasthdbbp256f" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0004.png" id="84_iklom"]
-[ext_resource type="Texture2D" uid="uid://bvqxikn7owo13" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0005.png" id="85_32p15"]
-[ext_resource type="Texture2D" uid="uid://cpo1io3g3ei5s" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0006.png" id="86_525xp"]
-[ext_resource type="Texture2D" uid="uid://54nm68ycpns5" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0007.png" id="87_qwhk6"]
-[ext_resource type="Texture2D" uid="uid://dp053hrh3f1sk" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0008.png" id="88_noqn3"]
-[ext_resource type="Texture2D" uid="uid://dyav4enlvijj" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0009.png" id="89_7sxyu"]
-[ext_resource type="Texture2D" uid="uid://ba5its6soprqu" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0010.png" id="90_uwu0c"]
-[ext_resource type="Texture2D" uid="uid://csxmex5ywgitm" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0011.png" id="91_lmpad"]
-[ext_resource type="Texture2D" uid="uid://dccbqsnbfsfxn" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0012.png" id="92_2ib7p"]
-[ext_resource type="Texture2D" uid="uid://b2002icxbeig" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0013.png" id="93_or47p"]
-[ext_resource type="Texture2D" uid="uid://b7jbdc5gtn7ut" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0014.png" id="94_jrjh4"]
-[ext_resource type="Texture2D" uid="uid://d1yg4xrrxy3qb" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0015.png" id="95_evrlu"]
-[ext_resource type="Texture2D" uid="uid://dd1xybrlwmo2o" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0016.png" id="96_mx65s"]
-[ext_resource type="Texture2D" uid="uid://duskl22dyx8dd" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0001.png" id="97_qyvgl"]
-[ext_resource type="Texture2D" uid="uid://cfyvw5l8baj0" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0002.png" id="98_tkftc"]
-[ext_resource type="Texture2D" uid="uid://dhxlqnnlwsrv0" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0003.png" id="99_exs1r"]
-[ext_resource type="Texture2D" uid="uid://dqyhryylmgqq5" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0004.png" id="100_l4i2y"]
-[ext_resource type="Texture2D" uid="uid://civj1hkyuqlu1" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0005.png" id="101_7d5bg"]
-[ext_resource type="Texture2D" uid="uid://b2bsht3qg1mxv" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0006.png" id="102_l8rfi"]
-[ext_resource type="Texture2D" uid="uid://bvw48w3m4dfyf" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0007.png" id="103_5wvth"]
-[ext_resource type="Texture2D" uid="uid://d1737puoplmhv" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0008.png" id="104_3pr2h"]
-[ext_resource type="Texture2D" uid="uid://bcllc5pese1n" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0009.png" id="105_da4g2"]
-[ext_resource type="Texture2D" uid="uid://37uwduj5yp4f" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0010.png" id="106_ia0eo"]
-[ext_resource type="Texture2D" uid="uid://i2bd8fl40mij" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0011.png" id="107_7we2v"]
-[ext_resource type="Texture2D" uid="uid://km5it4ws0t4l" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0012.png" id="108_u0luk"]
-[ext_resource type="Texture2D" uid="uid://c4l1mtefpsef4" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0013.png" id="109_jbo8c"]
-[ext_resource type="Texture2D" uid="uid://cjhq1q62qtb3l" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0014.png" id="110_8s7jk"]
-[ext_resource type="Texture2D" uid="uid://d3vjng8joc6md" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0015.png" id="111_nlsrf"]
-[ext_resource type="Texture2D" uid="uid://dwagtcbmloody" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0016.png" id="112_awmrv"]
-[ext_resource type="Texture2D" uid="uid://dmevdftyfyqfk" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0001.png" id="113_u6t67"]
-[ext_resource type="Texture2D" uid="uid://ebahqk037sfk" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0002.png" id="114_v4jox"]
-[ext_resource type="Texture2D" uid="uid://dgq7r7bl4k2yq" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0003.png" id="115_edhyi"]
-[ext_resource type="Texture2D" uid="uid://bt4xi6rnqc8mt" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0004.png" id="116_ttp24"]
-[ext_resource type="Texture2D" uid="uid://iekvvhfc2vbv" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0005.png" id="117_40esg"]
-[ext_resource type="Texture2D" uid="uid://d030fmrac7id1" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0006.png" id="118_j80oq"]
-[ext_resource type="Texture2D" uid="uid://be2wdbje4u2l" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0007.png" id="119_wnfko"]
-[ext_resource type="Texture2D" uid="uid://birc32ds45ywj" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0008.png" id="120_yy0gh"]
-[ext_resource type="Texture2D" uid="uid://bl1utbshh0m6n" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0009.png" id="121_a6vre"]
-[ext_resource type="Texture2D" uid="uid://dox5e8qcomjmw" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0010.png" id="122_fvx56"]
-[ext_resource type="Texture2D" uid="uid://b44jb5xvoyhkh" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0011.png" id="123_xdh47"]
-[ext_resource type="Texture2D" uid="uid://ws26cm7h7j42" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0012.png" id="124_1dno4"]
-[ext_resource type="Texture2D" uid="uid://bacgqoobkict5" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0013.png" id="125_qbsqv"]
-[ext_resource type="Texture2D" uid="uid://du88q1on6tm4b" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0014.png" id="126_55ewt"]
-[ext_resource type="Texture2D" uid="uid://domnjgoe01nyr" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0015.png" id="127_8o0kw"]
-[ext_resource type="Texture2D" uid="uid://37jm1arj7fat" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0016.png" id="128_1ek32"]
-[ext_resource type="Texture2D" uid="uid://csf01edjnl070" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0001.png" id="129_h2nmi"]
-[ext_resource type="Texture2D" uid="uid://dagbatbdljqou" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0001.png" id="130_e0omi"]
-[ext_resource type="Texture2D" uid="uid://dmtifu5g341iq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0002.png" id="131_8m8gn"]
-[ext_resource type="Texture2D" uid="uid://dglak4my7o0kf" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0003.png" id="132_h1ngm"]
-[ext_resource type="Texture2D" uid="uid://ct2sj85ti3rc3" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0004.png" id="133_w6idy"]
-[ext_resource type="Texture2D" uid="uid://yigtjgfq8u6f" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0005.png" id="134_s384k"]
-[ext_resource type="Texture2D" uid="uid://dfjhwmbq361dn" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0006.png" id="135_s55mh"]
-[ext_resource type="Texture2D" uid="uid://d32m0k6dwyvhi" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0007.png" id="136_k43iu"]
-[ext_resource type="Texture2D" uid="uid://dkkunvmchs082" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0008.png" id="137_gic3p"]
-[ext_resource type="Texture2D" uid="uid://d3scl8ir8ff" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0009.png" id="138_ytrgt"]
-[ext_resource type="Texture2D" uid="uid://3eya7qng7flm" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0010.png" id="139_s0asr"]
-[ext_resource type="Texture2D" uid="uid://bndwras81i5p5" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0011.png" id="140_rbck1"]
-[ext_resource type="Texture2D" uid="uid://bn1chgx0hhrr0" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0012.png" id="141_ieqkf"]
-[ext_resource type="Texture2D" uid="uid://c74kisg01b7cw" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0013.png" id="142_hx6ks"]
-[ext_resource type="Texture2D" uid="uid://by6lpjaenpd1m" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0014.png" id="143_1t0wf"]
-[ext_resource type="Texture2D" uid="uid://upcepa8uwn2s" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0015.png" id="144_6w7nq"]
-[ext_resource type="Texture2D" uid="uid://c30h2x2jmgo57" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0016.png" id="145_d8jbe"]
-[ext_resource type="Texture2D" uid="uid://dibg71ldyv56q" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0017.png" id="146_em3d8"]
-[ext_resource type="Texture2D" uid="uid://dknonwmxqm005" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0018.png" id="147_keaju"]
-[ext_resource type="Texture2D" uid="uid://51aa4gkorthr" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0019.png" id="148_qc2l1"]
-[ext_resource type="Texture2D" uid="uid://bnjy8hch7m7q2" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0020.png" id="149_tp7pb"]
-[ext_resource type="Texture2D" uid="uid://bjb7nt1qnc5cn" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0021.png" id="150_7vetf"]
-[ext_resource type="Texture2D" uid="uid://bj4076idhtbcg" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0022.png" id="151_o4vae"]
-[ext_resource type="Texture2D" uid="uid://denbkreknf8vt" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0023.png" id="152_w5lqc"]
-[ext_resource type="Texture2D" uid="uid://cb7tjvnicc0nq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0024.png" id="153_lgswh"]
-[ext_resource type="Texture2D" uid="uid://gprw25pstd14" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0025.png" id="154_1gh2x"]
-[ext_resource type="Texture2D" uid="uid://i4rdy2d0gri8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0026.png" id="155_8ysmx"]
-[ext_resource type="Texture2D" uid="uid://ddqkkkr8qxx7o" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0027.png" id="156_quofv"]
-[ext_resource type="Texture2D" uid="uid://cbe4e6tkexcbi" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0028.png" id="157_dpsr3"]
-[ext_resource type="Texture2D" uid="uid://i107ed0x0kyt" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0029.png" id="158_6m5vp"]
-[ext_resource type="Texture2D" uid="uid://8u8oxmqy3gcq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0030.png" id="159_4rbaq"]
-[ext_resource type="Texture2D" uid="uid://qdbbnhcyo6yj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0031.png" id="160_5xhcp"]
-[ext_resource type="Texture2D" uid="uid://doxls8op1jjs1" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0001.png" id="161_ilfip"]
-[ext_resource type="Texture2D" uid="uid://dy231nqj4mkvv" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0002.png" id="162_p1ol4"]
-[ext_resource type="Texture2D" uid="uid://s57nmopyngo0" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0003.png" id="163_ti7ae"]
-[ext_resource type="Texture2D" uid="uid://dqbdffg8m4gnk" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0004.png" id="164_s6jdc"]
-[ext_resource type="Texture2D" uid="uid://1mo1np3jjgel" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0005.png" id="165_hkp71"]
-[ext_resource type="Texture2D" uid="uid://ccgc6ol6po1j8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0006.png" id="166_ormjc"]
-[ext_resource type="Texture2D" uid="uid://ch7bm8ji81aow" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0007.png" id="167_ky6g4"]
-[ext_resource type="Texture2D" uid="uid://mpwh3rnwvh1" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0008.png" id="168_1iohl"]
-[ext_resource type="Texture2D" uid="uid://d1an4lex73sfq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0009.png" id="169_ukylp"]
-[ext_resource type="Texture2D" uid="uid://dfkyncjntngmq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0010.png" id="170_8ootf"]
-[ext_resource type="Texture2D" uid="uid://85wgxx0sc33v" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0011.png" id="171_y0ya6"]
-[ext_resource type="Texture2D" uid="uid://b7dcj00r32oe3" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0012.png" id="172_i0w03"]
-[ext_resource type="Texture2D" uid="uid://ryxij25q7u3y" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0013.png" id="173_s6p8o"]
-[ext_resource type="Texture2D" uid="uid://chybhrto8cqvk" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0014.png" id="174_uns6j"]
-[ext_resource type="Texture2D" uid="uid://cma7ak4rhenx0" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0015.png" id="175_a6niw"]
-[ext_resource type="Texture2D" uid="uid://dfyrceymvw2sx" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0016.png" id="176_u6qj5"]
-[ext_resource type="Texture2D" uid="uid://dllwvi03ojrx5" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0017.png" id="177_an8ij"]
-[ext_resource type="Texture2D" uid="uid://f10fs85rs3lc" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0018.png" id="178_jydso"]
-[ext_resource type="Texture2D" uid="uid://cwtwvnr5mtqrw" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0019.png" id="179_7263e"]
-[ext_resource type="Texture2D" uid="uid://pncruoqipegd" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0020.png" id="180_5mmef"]
-[ext_resource type="Texture2D" uid="uid://uaoatxgb7ia7" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0021.png" id="181_k5b13"]
-[ext_resource type="Texture2D" uid="uid://d4bsmhj51e8qh" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0022.png" id="182_tvdij"]
-[ext_resource type="Texture2D" uid="uid://cfl4sfev0jxt" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0023.png" id="183_8q2xx"]
-[ext_resource type="Texture2D" uid="uid://cli3h7a1qojdx" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0024.png" id="184_y16n1"]
-[ext_resource type="Texture2D" uid="uid://crm1qugw2cied" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0025.png" id="185_o0ne0"]
-[ext_resource type="Texture2D" uid="uid://ellmfjrggv3w" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0026.png" id="186_mepd7"]
-[ext_resource type="Texture2D" uid="uid://dkrllevqyddv" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0027.png" id="187_op6tk"]
-[ext_resource type="Texture2D" uid="uid://5gk5gxtva5r8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0028.png" id="188_81h0g"]
-[ext_resource type="Texture2D" uid="uid://dsfu73jycmsh0" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0029.png" id="189_6meuy"]
-[ext_resource type="Texture2D" uid="uid://c8dhh3q8ifupt" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0030.png" id="190_6am7b"]
-[ext_resource type="Texture2D" uid="uid://bapnrfeylg631" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0031.png" id="191_5ltxq"]
-[ext_resource type="Texture2D" uid="uid://0srwattdtrm8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0001.png" id="192_i4e70"]
-[ext_resource type="Texture2D" uid="uid://btwv3pcuvefhw" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0002.png" id="193_8ms8x"]
-[ext_resource type="Texture2D" uid="uid://6qgjs2tg0pct" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0003.png" id="194_bsyn7"]
-[ext_resource type="Texture2D" uid="uid://tqmth77joanp" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0004.png" id="195_13nqn"]
-[ext_resource type="Texture2D" uid="uid://7l3i2mwfy15y" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0005.png" id="196_1ur23"]
-[ext_resource type="Texture2D" uid="uid://ce0kfoo37h6td" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0006.png" id="197_8nrq1"]
-[ext_resource type="Texture2D" uid="uid://unqqo5jd735k" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0007.png" id="198_ab8ay"]
-[ext_resource type="Texture2D" uid="uid://cshs0qih8ahla" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0008.png" id="199_im05w"]
-[ext_resource type="Texture2D" uid="uid://bijarkg17lqxs" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0009.png" id="200_2l3d4"]
-[ext_resource type="Texture2D" uid="uid://bb075ydso3xbp" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0010.png" id="201_brhiq"]
-[ext_resource type="Texture2D" uid="uid://hre2obbj4rou" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0011.png" id="202_lrf4u"]
-[ext_resource type="Texture2D" uid="uid://drrvjgyq5vivu" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0012.png" id="203_pohjk"]
-[ext_resource type="Texture2D" uid="uid://m1fgh1eg6y5q" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0013.png" id="204_dbbuo"]
-[ext_resource type="Texture2D" uid="uid://dnw0dcd4psi6x" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0014.png" id="205_6un6m"]
-[ext_resource type="Texture2D" uid="uid://dcpg25j2nwnf5" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0015.png" id="206_fcloe"]
-[ext_resource type="Texture2D" uid="uid://cowt1qy3x8lso" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0016.png" id="207_qb4u0"]
-[ext_resource type="Texture2D" uid="uid://dskfk007j4jpb" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0017.png" id="208_5sb2a"]
-[ext_resource type="Texture2D" uid="uid://dvc6xu4cw4epf" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0018.png" id="209_hxgq3"]
-[ext_resource type="Texture2D" uid="uid://mo3tp5ua7m8d" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0019.png" id="210_ki221"]
-[ext_resource type="Texture2D" uid="uid://hfvbps46p07" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0020.png" id="211_blspv"]
-[ext_resource type="Texture2D" uid="uid://catac1w5bvydt" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0021.png" id="212_rcheh"]
-[ext_resource type="Texture2D" uid="uid://47f0fct54vs" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0022.png" id="213_kmd2o"]
-[ext_resource type="Texture2D" uid="uid://7bu6wasqjm21" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0023.png" id="214_463lh"]
-[ext_resource type="Texture2D" uid="uid://jrrbmj0lgikd" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0024.png" id="215_f1k6s"]
-[ext_resource type="Texture2D" uid="uid://ur6edvul48kb" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0025.png" id="216_obia8"]
-[ext_resource type="Texture2D" uid="uid://dq661wayeiiu8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0026.png" id="217_bfynv"]
-[ext_resource type="Texture2D" uid="uid://b6hjpx0plewgx" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0027.png" id="218_g3wy2"]
-[ext_resource type="Texture2D" uid="uid://de80oqqyy5vu2" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0028.png" id="219_twd36"]
-[ext_resource type="Texture2D" uid="uid://cm3jydcxm35qv" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0029.png" id="220_gxod8"]
-[ext_resource type="Texture2D" uid="uid://hse3dx1v1a8w" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0030.png" id="221_ihe4c"]
-[ext_resource type="Texture2D" uid="uid://cdam66akmibvc" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0031.png" id="222_2j62y"]
-[ext_resource type="Texture2D" uid="uid://d2ld5b81aokot" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0001.png" id="223_3r17f"]
-[ext_resource type="Texture2D" uid="uid://dx4ur0tptve3t" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0002.png" id="224_l1gek"]
-[ext_resource type="Texture2D" uid="uid://78si0doyx3xy" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0003.png" id="225_o6t0n"]
-[ext_resource type="Texture2D" uid="uid://d3drc7du5yhuv" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0004.png" id="226_j6hu0"]
-[ext_resource type="Texture2D" uid="uid://b5fvcqnmumsgx" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0005.png" id="227_cgr5g"]
-[ext_resource type="Texture2D" uid="uid://cvdu3gp57732y" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0006.png" id="228_3oyhf"]
-[ext_resource type="Texture2D" uid="uid://bej8fxdu70gfd" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0007.png" id="229_2ag1f"]
-[ext_resource type="Texture2D" uid="uid://k5uon8vj6d2u" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0008.png" id="230_1pht4"]
-[ext_resource type="Texture2D" uid="uid://ndv746ji5lon" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0009.png" id="231_g7dnv"]
-[ext_resource type="Texture2D" uid="uid://c0kxapwl1lgum" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0010.png" id="232_rlq8w"]
-[ext_resource type="Texture2D" uid="uid://cm1678pm8v5f0" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0011.png" id="233_6qic7"]
-[ext_resource type="Texture2D" uid="uid://cgcape0kf6fk7" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0012.png" id="234_jjnij"]
-[ext_resource type="Texture2D" uid="uid://cr1xgixo26xr6" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0013.png" id="235_u2wnc"]
-[ext_resource type="Texture2D" uid="uid://vfx1akkvbnxq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0014.png" id="236_qy47j"]
-[ext_resource type="Texture2D" uid="uid://clps2oqs0mhpc" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0015.png" id="237_nq5au"]
-[ext_resource type="Texture2D" uid="uid://dxv30uqkhkiuy" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0016.png" id="238_w61q5"]
-[ext_resource type="Texture2D" uid="uid://brh76xuwkl6b1" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0017.png" id="239_67wfp"]
-[ext_resource type="Texture2D" uid="uid://dnnp5mk50fp33" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0018.png" id="240_hvup1"]
-[ext_resource type="Texture2D" uid="uid://dlf03y46x5885" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0019.png" id="241_fe02v"]
-[ext_resource type="Texture2D" uid="uid://bp1roccuhhv2q" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0020.png" id="242_s0npb"]
-[ext_resource type="Texture2D" uid="uid://5x4ieujblgmo" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0021.png" id="243_ni8un"]
-[ext_resource type="Texture2D" uid="uid://bbvtkqcir2xwy" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0022.png" id="244_8farp"]
-[ext_resource type="Texture2D" uid="uid://brkcbduny6vjy" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0023.png" id="245_rmrua"]
-[ext_resource type="Texture2D" uid="uid://blxcq71k0cbfj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0024.png" id="246_u3m51"]
-[ext_resource type="Texture2D" uid="uid://djsxlql8ditrd" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0025.png" id="247_v7xg6"]
-[ext_resource type="Texture2D" uid="uid://cobe6gpfg5c1g" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0026.png" id="248_siwvf"]
-[ext_resource type="Texture2D" uid="uid://8h0y25bs7tne" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0027.png" id="249_71ioh"]
-[ext_resource type="Texture2D" uid="uid://br5m6mpbdd1v" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0028.png" id="250_xxqdj"]
-[ext_resource type="Texture2D" uid="uid://c07uwibpmwadx" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0029.png" id="251_edw0m"]
-[ext_resource type="Texture2D" uid="uid://bkb3up86nvfmo" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0030.png" id="252_jl68c"]
-[ext_resource type="Texture2D" uid="uid://c4lhr60g5iiue" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0031.png" id="253_8yldx"]
-[ext_resource type="Texture2D" uid="uid://m516rfrnje7y" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0002.png" id="254_pqf5i"]
-[ext_resource type="Texture2D" uid="uid://r4wl1mvxdj8v" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0003.png" id="255_yvcu2"]
-[ext_resource type="Texture2D" uid="uid://d28nyh641myap" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0004.png" id="256_bpkl8"]
-[ext_resource type="Texture2D" uid="uid://ni4h60ox4nb6" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0005.png" id="257_h0p2i"]
-[ext_resource type="Texture2D" uid="uid://5g8ejce2okyb" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0006.png" id="258_yo8po"]
-[ext_resource type="Texture2D" uid="uid://darpra2mx6e7u" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0007.png" id="259_ypidt"]
-[ext_resource type="Texture2D" uid="uid://b5qce3xccdg05" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0008.png" id="260_awd1i"]
-[ext_resource type="Texture2D" uid="uid://c5ouisqutpnxl" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0009.png" id="261_h0g5p"]
-[ext_resource type="Texture2D" uid="uid://qk3upa33tw54" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0010.png" id="262_l5ga4"]
-[ext_resource type="Texture2D" uid="uid://rp6f5567kwd2" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0011.png" id="263_oi4qi"]
-[ext_resource type="Texture2D" uid="uid://os4tev6bvx0h" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0012.png" id="264_gndi0"]
-[ext_resource type="Texture2D" uid="uid://dou5dypxqx81j" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0013.png" id="265_oerr5"]
-[ext_resource type="Texture2D" uid="uid://btuacupj5qd6m" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0014.png" id="266_p5cfd"]
-[ext_resource type="Texture2D" uid="uid://dc0ea23cedye8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0015.png" id="267_d4t6o"]
-[ext_resource type="Texture2D" uid="uid://6j64mhnavqpv" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0016.png" id="268_djq20"]
-[ext_resource type="Texture2D" uid="uid://2cpruc0h1ixb" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0017.png" id="269_8r131"]
-[ext_resource type="Texture2D" uid="uid://dlglle1t2gjks" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0018.png" id="270_c12l1"]
-[ext_resource type="Texture2D" uid="uid://0smyngu6wmx5" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0019.png" id="271_tqs4w"]
-[ext_resource type="Texture2D" uid="uid://hcrapg880xye" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0020.png" id="272_oyla6"]
-[ext_resource type="Texture2D" uid="uid://pdraryrps370" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0021.png" id="273_nv2b2"]
-[ext_resource type="Texture2D" uid="uid://b0u8t4v3kfeci" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0022.png" id="274_1gi0x"]
-[ext_resource type="Texture2D" uid="uid://csecqs3mksg30" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0023.png" id="275_j41qn"]
-[ext_resource type="Texture2D" uid="uid://jexyyp7p4urj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0024.png" id="276_ea8sl"]
-[ext_resource type="Texture2D" uid="uid://b3bkelyeuwk46" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0025.png" id="277_k7255"]
-[ext_resource type="Texture2D" uid="uid://herme2bc2v1y" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0026.png" id="278_8pltk"]
-[ext_resource type="Texture2D" uid="uid://cstiuv4k2m8j7" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0027.png" id="279_0ebdh"]
-[ext_resource type="Texture2D" uid="uid://ck4dn4u4gcrci" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0028.png" id="280_48k1i"]
-[ext_resource type="Texture2D" uid="uid://dfqx06ku8rgfq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0029.png" id="281_s0rav"]
-[ext_resource type="Texture2D" uid="uid://d2xmm7a6x2skr" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0030.png" id="282_m5436"]
-[ext_resource type="Texture2D" uid="uid://dss2hlxqktsru" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0031.png" id="283_y4sek"]
-[ext_resource type="Texture2D" uid="uid://bjf3ufevc44m0" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0001.png" id="284_3wujx"]
-[ext_resource type="Texture2D" uid="uid://kmgxbw1qxq6h" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0002.png" id="285_gp31m"]
-[ext_resource type="Texture2D" uid="uid://c31pknfiy1haw" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0003.png" id="286_pb1g5"]
-[ext_resource type="Texture2D" uid="uid://2utbh10wdhgl" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0004.png" id="287_lmv3u"]
-[ext_resource type="Texture2D" uid="uid://yl3dkejf0xx8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0005.png" id="288_qspfj"]
-[ext_resource type="Texture2D" uid="uid://dvxhdyoy1oyto" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0006.png" id="289_addox"]
-[ext_resource type="Texture2D" uid="uid://dqxj5vpjc54yb" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0007.png" id="290_lcpu4"]
-[ext_resource type="Texture2D" uid="uid://b8wb7uv6v04mn" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0008.png" id="291_flqk4"]
-[ext_resource type="Texture2D" uid="uid://un02nr3s45nr" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0009.png" id="292_2vvm1"]
-[ext_resource type="Texture2D" uid="uid://feruc4cpi6wp" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0010.png" id="293_any0a"]
-[ext_resource type="Texture2D" uid="uid://c1vqauxcjuuir" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0011.png" id="294_0kkcr"]
-[ext_resource type="Texture2D" uid="uid://c1jvosm51bstf" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0012.png" id="295_xjsm2"]
-[ext_resource type="Texture2D" uid="uid://cpasb33hd2h1a" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0013.png" id="296_5duws"]
-[ext_resource type="Texture2D" uid="uid://ykpki7ro4h1u" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0014.png" id="297_s80uq"]
-[ext_resource type="Texture2D" uid="uid://dcnnloe0s2544" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0015.png" id="298_grr4d"]
-[ext_resource type="Texture2D" uid="uid://c88thmb4s0i1o" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0016.png" id="299_5uupw"]
-[ext_resource type="Texture2D" uid="uid://bej1yodcl4wqj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0017.png" id="300_hmurq"]
-[ext_resource type="Texture2D" uid="uid://v2o8dgvykr4u" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0018.png" id="301_johwi"]
-[ext_resource type="Texture2D" uid="uid://cyqcalvms42ew" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0019.png" id="302_stgs6"]
-[ext_resource type="Texture2D" uid="uid://fsye0nffl5hq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0020.png" id="303_gx6ir"]
-[ext_resource type="Texture2D" uid="uid://cnsnsgdbwxcu1" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0021.png" id="304_5pgq5"]
-[ext_resource type="Texture2D" uid="uid://ch70ouy0gw4ev" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0022.png" id="305_my0nt"]
-[ext_resource type="Texture2D" uid="uid://bx13vvrcuugso" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0023.png" id="306_pkshr"]
-[ext_resource type="Texture2D" uid="uid://bwycepynxahsm" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0024.png" id="307_qqia7"]
-[ext_resource type="Texture2D" uid="uid://qbodiclxjem8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0025.png" id="308_1ndk4"]
-[ext_resource type="Texture2D" uid="uid://dlfg1shvs6l7u" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0026.png" id="309_tjopg"]
-[ext_resource type="Texture2D" uid="uid://b2i1tlyrunf4q" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0027.png" id="310_26tc2"]
-[ext_resource type="Texture2D" uid="uid://b0ykjd7mld5hq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0028.png" id="311_1t6t8"]
-[ext_resource type="Texture2D" uid="uid://dv1nfakx1c2e3" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0029.png" id="312_ybg2r"]
-[ext_resource type="Texture2D" uid="uid://niy1hhuvl6gp" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0030.png" id="313_mwnei"]
-[ext_resource type="Texture2D" uid="uid://dktmwysn0mo5f" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0031.png" id="314_36ph2"]
-[ext_resource type="Texture2D" uid="uid://crnkc52qgbeg6" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0001.png" id="315_ko8gw"]
-[ext_resource type="Texture2D" uid="uid://bghccr8g48van" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0002.png" id="316_6ft7g"]
-[ext_resource type="Texture2D" uid="uid://d3xa34hx1rl3k" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0003.png" id="317_vxexu"]
-[ext_resource type="Texture2D" uid="uid://bgp4d1n8a62t4" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0004.png" id="318_j7g38"]
-[ext_resource type="Texture2D" uid="uid://di18m8yw2o4s3" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0005.png" id="319_ujms8"]
-[ext_resource type="Texture2D" uid="uid://djjrf83r72w82" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0006.png" id="320_20nsn"]
-[ext_resource type="Texture2D" uid="uid://bnxis5ullq1vo" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0007.png" id="321_f2oji"]
-[ext_resource type="Texture2D" uid="uid://d3kirdtebxknq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0008.png" id="322_xx2rs"]
-[ext_resource type="Texture2D" uid="uid://c1nwcsb5xvau5" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0009.png" id="323_yfw3f"]
-[ext_resource type="Texture2D" uid="uid://celewq13r1tk1" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0010.png" id="324_8fflq"]
-[ext_resource type="Texture2D" uid="uid://dd870ra4gbaon" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0011.png" id="325_psguq"]
-[ext_resource type="Texture2D" uid="uid://cicdypputsa72" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0012.png" id="326_s7u0o"]
-[ext_resource type="Texture2D" uid="uid://brwpwe31w3tq7" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0013.png" id="327_itg56"]
-[ext_resource type="Texture2D" uid="uid://tr72tgohrjy6" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0014.png" id="328_fhl6a"]
-[ext_resource type="Texture2D" uid="uid://dqvq4s7xmfbg4" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0015.png" id="329_djwlk"]
-[ext_resource type="Texture2D" uid="uid://lbm8li4gmml" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0016.png" id="330_udbf5"]
-[ext_resource type="Texture2D" uid="uid://cu0i5sndyyt6y" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0017.png" id="331_0l5f7"]
-[ext_resource type="Texture2D" uid="uid://bb4lbcetn4bu1" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0018.png" id="332_gyh60"]
-[ext_resource type="Texture2D" uid="uid://b7rceiitufhbh" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0019.png" id="333_opl11"]
-[ext_resource type="Texture2D" uid="uid://ywjdtiyblmlr" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0020.png" id="334_fsvex"]
-[ext_resource type="Texture2D" uid="uid://8qwprndfk7kk" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0021.png" id="335_e1vm5"]
-[ext_resource type="Texture2D" uid="uid://bxrw4dv51f3uu" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0022.png" id="336_nigvq"]
-[ext_resource type="Texture2D" uid="uid://t5nw80s35y2j" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0023.png" id="337_mo48t"]
-[ext_resource type="Texture2D" uid="uid://bx7g6f81f2g27" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0024.png" id="338_cll85"]
-[ext_resource type="Texture2D" uid="uid://bm1iyocuyhxfc" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0025.png" id="339_qtppr"]
-[ext_resource type="Texture2D" uid="uid://dlcp8aqpsw4bh" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0026.png" id="340_esy8u"]
-[ext_resource type="Texture2D" uid="uid://ddednxo3ih22i" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0027.png" id="341_rhuul"]
-[ext_resource type="Texture2D" uid="uid://dccik63jcum1a" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0028.png" id="342_vgffk"]
-[ext_resource type="Texture2D" uid="uid://bhb40ernghe74" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0029.png" id="343_cg8gc"]
-[ext_resource type="Texture2D" uid="uid://cjhgs4swfgtqr" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0030.png" id="344_12qea"]
-[ext_resource type="Texture2D" uid="uid://bgu60bxuf3glt" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0031.png" id="345_j0ltf"]
-[ext_resource type="Texture2D" uid="uid://cmxvhwfnjnona" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0001.png" id="346_t2u5f"]
-[ext_resource type="Texture2D" uid="uid://dw10tlcf5vpgx" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0002.png" id="347_d5ivb"]
-[ext_resource type="Texture2D" uid="uid://of40pc1yov8n" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0003.png" id="348_fhh4q"]
-[ext_resource type="Texture2D" uid="uid://bd0tjf8gul521" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0004.png" id="349_sd3ah"]
-[ext_resource type="Texture2D" uid="uid://c5v5f213dj0dn" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0005.png" id="350_wdc3g"]
-[ext_resource type="Texture2D" uid="uid://did5k4nlugfmv" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0006.png" id="351_ip71p"]
-[ext_resource type="Texture2D" uid="uid://gat2gregffty" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0007.png" id="352_qr47n"]
-[ext_resource type="Texture2D" uid="uid://mtb2qyhvvq1i" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0008.png" id="353_d1f0e"]
-[ext_resource type="Texture2D" uid="uid://0tb0q3k5ly70" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0009.png" id="354_3vywn"]
-[ext_resource type="Texture2D" uid="uid://bius0yjm7xe4v" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0010.png" id="355_vsrxo"]
-[ext_resource type="Texture2D" uid="uid://bnnh45up8xpu8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0011.png" id="356_bfndm"]
-[ext_resource type="Texture2D" uid="uid://cn3rkyiv2euyl" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0012.png" id="357_ovqm0"]
-[ext_resource type="Texture2D" uid="uid://ddgkli22a4w3i" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0013.png" id="358_2gwmk"]
-[ext_resource type="Texture2D" uid="uid://cbci1rp0674le" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0014.png" id="359_h0vv7"]
-[ext_resource type="Texture2D" uid="uid://cyhsvo1d1lyy4" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0015.png" id="360_bmpmb"]
-[ext_resource type="Texture2D" uid="uid://c6u1ssc4a4uem" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0016.png" id="361_j35cn"]
-[ext_resource type="Texture2D" uid="uid://2e4b7i3bioem" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0017.png" id="362_fss0j"]
-[ext_resource type="Texture2D" uid="uid://dx15345cyirxj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0018.png" id="363_5avgn"]
-[ext_resource type="Texture2D" uid="uid://c2qht5m7h00vj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0019.png" id="364_5t63c"]
-[ext_resource type="Texture2D" uid="uid://dlyuducm6pbq5" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0020.png" id="365_ilne6"]
-[ext_resource type="Texture2D" uid="uid://ydjapf0xst0d" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0021.png" id="366_f2s8p"]
-[ext_resource type="Texture2D" uid="uid://kb4wuhouv6oy" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0022.png" id="367_3u4gt"]
-[ext_resource type="Texture2D" uid="uid://02qo5aovt01n" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0023.png" id="368_ph3cg"]
-[ext_resource type="Texture2D" uid="uid://dqtg4hfjawhhq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0024.png" id="369_mf5t2"]
-[ext_resource type="Texture2D" uid="uid://da32di1v23e14" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0025.png" id="370_bh64p"]
-[ext_resource type="Texture2D" uid="uid://du0sp37hvejyt" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0026.png" id="371_l3ip1"]
-[ext_resource type="Texture2D" uid="uid://cpudjq0tgbh0t" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0027.png" id="372_i3864"]
-[ext_resource type="Texture2D" uid="uid://bcdjjc642gv8f" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0028.png" id="373_i6f50"]
-[ext_resource type="Texture2D" uid="uid://f6i1qnhw7weh" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0029.png" id="374_cecvx"]
-[ext_resource type="Texture2D" uid="uid://ddxg51sqo0heh" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0030.png" id="375_bx2im"]
-[ext_resource type="Texture2D" uid="uid://bfnqkaglguugl" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0031.png" id="376_04ljx"]
+[ext_resource type="Texture2D" uid="uid://seopoxdtwxim" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0001.png" id="1_kyoti"]
+[ext_resource type="Texture2D" uid="uid://d3qb0ldm3dexu" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0002.png" id="2_jnyom"]
+[ext_resource type="Texture2D" uid="uid://clffalnacasld" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0003.png" id="3_1j7xc"]
+[ext_resource type="Texture2D" uid="uid://0bqbatus44gs" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0004.png" id="4_vt125"]
+[ext_resource type="Texture2D" uid="uid://s5t6kn47df45" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0005.png" id="5_62h5y"]
+[ext_resource type="Texture2D" uid="uid://xoea0j1a5y27" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0006.png" id="6_gvdra"]
+[ext_resource type="Texture2D" uid="uid://cuwck2fcc5qx8" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0007.png" id="7_fxsfy"]
+[ext_resource type="Texture2D" uid="uid://cgpisd4j3ect" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0008.png" id="8_s75l4"]
+[ext_resource type="Texture2D" uid="uid://di35ryyntdotu" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0009.png" id="9_ivtor"]
+[ext_resource type="Texture2D" uid="uid://djfy71b2iqes7" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0010.png" id="10_nr0ne"]
+[ext_resource type="Texture2D" uid="uid://dj84l7ulq61fs" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0011.png" id="11_2mqx1"]
+[ext_resource type="Texture2D" uid="uid://7lj2buy51wvd" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_E/0012.png" id="12_unuhn"]
+[ext_resource type="Texture2D" uid="uid://bhk1jj45mvot" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0001.png" id="17_rcw38"]
+[ext_resource type="Texture2D" uid="uid://b633252exrry1" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0002.png" id="18_ym4ys"]
+[ext_resource type="Texture2D" uid="uid://f7h6k57w8rci" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0003.png" id="19_kgm8o"]
+[ext_resource type="Texture2D" uid="uid://bc0dg7sdntwmi" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0004.png" id="20_hpcr1"]
+[ext_resource type="Texture2D" uid="uid://h65v4sdb0q5h" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0005.png" id="21_yvj1i"]
+[ext_resource type="Texture2D" uid="uid://hgjfow8nxhmv" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0006.png" id="22_k32tt"]
+[ext_resource type="Texture2D" uid="uid://dvy4fupoutyo2" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0007.png" id="23_e05rn"]
+[ext_resource type="Texture2D" uid="uid://su5dwjsgggtu" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0008.png" id="24_y8mdn"]
+[ext_resource type="Texture2D" uid="uid://biq6i58rxwmlk" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0009.png" id="25_gx0tt"]
+[ext_resource type="Texture2D" uid="uid://cqbs1d0rmdvjo" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0010.png" id="26_u2kie"]
+[ext_resource type="Texture2D" uid="uid://d2hq8o6f1rqgx" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0011.png" id="27_2k2w2"]
+[ext_resource type="Texture2D" uid="uid://dfkkgelqeolpd" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_N/0012.png" id="28_hqlum"]
+[ext_resource type="Texture2D" uid="uid://b4uyenif4u0vt" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0001.png" id="33_cauj0"]
+[ext_resource type="Texture2D" uid="uid://dahvb4u375ks4" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0002.png" id="34_gckfq"]
+[ext_resource type="Texture2D" uid="uid://fagc0j6wky2x" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0003.png" id="35_24qiq"]
+[ext_resource type="Texture2D" uid="uid://dt2wgrmma53of" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0004.png" id="36_28lde"]
+[ext_resource type="Texture2D" uid="uid://hlllk7wf8ind" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0005.png" id="37_yi4u2"]
+[ext_resource type="Texture2D" uid="uid://dxotev5kx2xpb" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0006.png" id="38_2u0p5"]
+[ext_resource type="Texture2D" uid="uid://bjdp84nb7kvvt" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0007.png" id="39_6cokk"]
+[ext_resource type="Texture2D" uid="uid://b6wa0jexqs35g" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0008.png" id="40_mlple"]
+[ext_resource type="Texture2D" uid="uid://cx3k1wp36n3ug" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0009.png" id="41_dj4io"]
+[ext_resource type="Texture2D" uid="uid://b653tvvu2c1ym" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0010.png" id="42_2q8yl"]
+[ext_resource type="Texture2D" uid="uid://dftb15w0b1t01" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0011.png" id="43_4k3fy"]
+[ext_resource type="Texture2D" uid="uid://dhgnsj0a4c1ao" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NE/0012.png" id="44_l5wyw"]
+[ext_resource type="Texture2D" uid="uid://dfm575r5xt57v" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0001.png" id="49_hnob0"]
+[ext_resource type="Texture2D" uid="uid://cppwknfiqiw78" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0002.png" id="50_rv54b"]
+[ext_resource type="Texture2D" uid="uid://cjeu2ofluwme0" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0003.png" id="51_mgppx"]
+[ext_resource type="Texture2D" uid="uid://dc1frub3kr36t" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0004.png" id="52_5bktg"]
+[ext_resource type="Texture2D" uid="uid://domktax0ljlvd" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0005.png" id="53_73u20"]
+[ext_resource type="Texture2D" uid="uid://dbdm8wpu0ihfm" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0006.png" id="54_ou66s"]
+[ext_resource type="Texture2D" uid="uid://7nx5csuk5gbr" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0007.png" id="55_4m5yg"]
+[ext_resource type="Texture2D" uid="uid://c2gu2477t5fsn" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0008.png" id="56_252fs"]
+[ext_resource type="Texture2D" uid="uid://jerfsa5iy0yg" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0009.png" id="57_j07xv"]
+[ext_resource type="Texture2D" uid="uid://capn2116aq0k4" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0010.png" id="58_30485"]
+[ext_resource type="Texture2D" uid="uid://dmn4m0k7pvd7f" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0011.png" id="59_5nqxc"]
+[ext_resource type="Texture2D" uid="uid://dbw87ll86liv3" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_NW/0012.png" id="60_egx77"]
+[ext_resource type="Texture2D" uid="uid://bkgwb2od08wwv" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0001.png" id="65_ondji"]
+[ext_resource type="Texture2D" uid="uid://f4v0fv1bas8m" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0002.png" id="66_tnsor"]
+[ext_resource type="Texture2D" uid="uid://o6knp24d1pic" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0003.png" id="67_7s0j1"]
+[ext_resource type="Texture2D" uid="uid://xm037qop1s6u" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0004.png" id="68_422hf"]
+[ext_resource type="Texture2D" uid="uid://dky40038vkka0" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0005.png" id="69_ai2t2"]
+[ext_resource type="Texture2D" uid="uid://bbsff4pirq2od" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0006.png" id="70_h2bgb"]
+[ext_resource type="Texture2D" uid="uid://fvr5va080wn" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0007.png" id="71_m57db"]
+[ext_resource type="Texture2D" uid="uid://bbccjfg6o7d3r" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0008.png" id="72_2k8rt"]
+[ext_resource type="Texture2D" uid="uid://di1vscnuqqpsb" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0009.png" id="73_eqgdq"]
+[ext_resource type="Texture2D" uid="uid://di7xhrxsac4uo" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0010.png" id="74_lo2op"]
+[ext_resource type="Texture2D" uid="uid://01t73aen25us" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0011.png" id="75_th602"]
+[ext_resource type="Texture2D" uid="uid://ccvf0wr7xaarn" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_S/0012.png" id="76_5sc6p"]
+[ext_resource type="Texture2D" uid="uid://cmeyg02w0j5g4" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0001.png" id="81_4xdwi"]
+[ext_resource type="Texture2D" uid="uid://bryk57acpnbsy" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0002.png" id="82_1ohfh"]
+[ext_resource type="Texture2D" uid="uid://djw314lctluj4" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0003.png" id="83_jbmmu"]
+[ext_resource type="Texture2D" uid="uid://bsfelgt4ypshf" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0004.png" id="84_iklom"]
+[ext_resource type="Texture2D" uid="uid://cp6c7v5phwq3h" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0005.png" id="85_32p15"]
+[ext_resource type="Texture2D" uid="uid://dvqjk4sgiyj76" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0006.png" id="86_525xp"]
+[ext_resource type="Texture2D" uid="uid://ch1n0q4ag8xi8" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0007.png" id="87_qwhk6"]
+[ext_resource type="Texture2D" uid="uid://djr2u20fx33gl" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0008.png" id="88_noqn3"]
+[ext_resource type="Texture2D" uid="uid://c6nqbpyvqrwhe" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0009.png" id="89_7sxyu"]
+[ext_resource type="Texture2D" uid="uid://blwkjv8w34tpf" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0010.png" id="90_uwu0c"]
+[ext_resource type="Texture2D" uid="uid://cjaugwhq5l1ar" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0011.png" id="91_lmpad"]
+[ext_resource type="Texture2D" uid="uid://cibwu2t0cy6xj" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SE/0012.png" id="92_2ib7p"]
+[ext_resource type="Texture2D" uid="uid://cd852oaa15e6l" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0001.png" id="97_qyvgl"]
+[ext_resource type="Texture2D" uid="uid://ds4x6lanxhwl4" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0002.png" id="98_tkftc"]
+[ext_resource type="Texture2D" uid="uid://f4uapulw281n" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0003.png" id="99_exs1r"]
+[ext_resource type="Texture2D" uid="uid://cbt5i1ikhe2xk" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0004.png" id="100_l4i2y"]
+[ext_resource type="Texture2D" uid="uid://cvmrq3f73hph4" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0005.png" id="101_7d5bg"]
+[ext_resource type="Texture2D" uid="uid://dhtyb2uokeshr" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0006.png" id="102_l8rfi"]
+[ext_resource type="Texture2D" uid="uid://cwsyeabx0q8fs" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0007.png" id="103_5wvth"]
+[ext_resource type="Texture2D" uid="uid://b3oh5eaqiogl4" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0008.png" id="104_3pr2h"]
+[ext_resource type="Texture2D" uid="uid://ckmmnqdl8pb86" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0009.png" id="105_da4g2"]
+[ext_resource type="Texture2D" uid="uid://d3kvnsn1eg7k7" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0010.png" id="106_ia0eo"]
+[ext_resource type="Texture2D" uid="uid://cshcebye7u18q" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0011.png" id="107_7we2v"]
+[ext_resource type="Texture2D" uid="uid://couwvwlk0hhvp" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_SW/0012.png" id="108_u0luk"]
+[ext_resource type="Texture2D" uid="uid://c341xfjumnx0w" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0001.png" id="113_u6t67"]
+[ext_resource type="Texture2D" uid="uid://b1uo2g35ne64q" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0002.png" id="114_v4jox"]
+[ext_resource type="Texture2D" uid="uid://c5kk5ve8m7s8b" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0003.png" id="115_edhyi"]
+[ext_resource type="Texture2D" uid="uid://t8a4n453ospk" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0004.png" id="116_ttp24"]
+[ext_resource type="Texture2D" uid="uid://dfj2s4fhkvoer" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0005.png" id="117_40esg"]
+[ext_resource type="Texture2D" uid="uid://bcjbkyr8tpkd7" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0006.png" id="118_j80oq"]
+[ext_resource type="Texture2D" uid="uid://gs2w5x6f36id" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0007.png" id="119_wnfko"]
+[ext_resource type="Texture2D" uid="uid://blh4dhvpjl4nj" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0008.png" id="120_yy0gh"]
+[ext_resource type="Texture2D" uid="uid://dxcjxpvn8wnur" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0009.png" id="121_a6vre"]
+[ext_resource type="Texture2D" uid="uid://plssro3j61jb" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0010.png" id="122_fvx56"]
+[ext_resource type="Texture2D" uid="uid://cg234kf22m2r5" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0011.png" id="123_xdh47"]
+[ext_resource type="Texture2D" uid="uid://tgqbmbgy64lj" path="res://Sprites/Enemies/Zorro/f_attack_animation/f_attack_W/0012.png" id="124_1dno4"]
+[ext_resource type="Texture2D" uid="uid://b50yt3a4o368t" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0001.png" id="129_h2nmi"]
+[ext_resource type="Texture2D" uid="uid://b0roynh0erxmj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0001.png" id="130_e0omi"]
+[ext_resource type="Texture2D" uid="uid://b4ykn6t53jl8t" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0002.png" id="131_8m8gn"]
+[ext_resource type="Texture2D" uid="uid://btan8qnx2j3p1" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0003.png" id="132_h1ngm"]
+[ext_resource type="Texture2D" uid="uid://bfc2llnakk0wt" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0004.png" id="133_w6idy"]
+[ext_resource type="Texture2D" uid="uid://b4klv2hjoyrxs" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0005.png" id="134_s384k"]
+[ext_resource type="Texture2D" uid="uid://c53dlj756boew" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0006.png" id="135_s55mh"]
+[ext_resource type="Texture2D" uid="uid://t2fdps1k36e6" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0007.png" id="136_k43iu"]
+[ext_resource type="Texture2D" uid="uid://ci3e7rknrr8is" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0008.png" id="137_gic3p"]
+[ext_resource type="Texture2D" uid="uid://chewxvqecre8i" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0009.png" id="138_ytrgt"]
+[ext_resource type="Texture2D" uid="uid://bt601o7yidvtc" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0010.png" id="139_s0asr"]
+[ext_resource type="Texture2D" uid="uid://bc21r1pamf27u" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0011.png" id="140_rbck1"]
+[ext_resource type="Texture2D" uid="uid://obb0crp672a0" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0012.png" id="141_ieqkf"]
+[ext_resource type="Texture2D" uid="uid://csmscajwbwsyh" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0013.png" id="142_hx6ks"]
+[ext_resource type="Texture2D" uid="uid://dpbpyklxxi2n6" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0014.png" id="143_1t0wf"]
+[ext_resource type="Texture2D" uid="uid://cyxfy8qsoordt" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0015.png" id="144_6w7nq"]
+[ext_resource type="Texture2D" uid="uid://dcrr252heifdy" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0016.png" id="145_d8jbe"]
+[ext_resource type="Texture2D" uid="uid://b7bl482oitkqj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0017.png" id="146_em3d8"]
+[ext_resource type="Texture2D" uid="uid://cnbamiinclqef" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0018.png" id="147_keaju"]
+[ext_resource type="Texture2D" uid="uid://cuwd8hhhb4j8x" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0019.png" id="148_qc2l1"]
+[ext_resource type="Texture2D" uid="uid://j4umiboxtcil" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0020.png" id="149_tp7pb"]
+[ext_resource type="Texture2D" uid="uid://m6gxk6qs6v7b" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0021.png" id="150_7vetf"]
+[ext_resource type="Texture2D" uid="uid://nwmmiev82rnr" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0022.png" id="151_o4vae"]
+[ext_resource type="Texture2D" uid="uid://m6awtwi85alo" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0023.png" id="152_w5lqc"]
+[ext_resource type="Texture2D" uid="uid://cikc8if523rwd" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0024.png" id="153_lgswh"]
+[ext_resource type="Texture2D" uid="uid://1hn83sqtqwwp" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0025.png" id="154_1gh2x"]
+[ext_resource type="Texture2D" uid="uid://bb1frrhaf5gya" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0026.png" id="155_8ysmx"]
+[ext_resource type="Texture2D" uid="uid://ug7hhi0y2ddg" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0027.png" id="156_quofv"]
+[ext_resource type="Texture2D" uid="uid://dhkyhc5p81jiq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0028.png" id="157_dpsr3"]
+[ext_resource type="Texture2D" uid="uid://bjgvfn86118yw" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0029.png" id="158_6m5vp"]
+[ext_resource type="Texture2D" uid="uid://cfv3t147hos63" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_E/0030.png" id="159_4rbaq"]
+[ext_resource type="Texture2D" uid="uid://culm4mp077sis" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0001.png" id="161_ilfip"]
+[ext_resource type="Texture2D" uid="uid://tljf1hptvwpi" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0002.png" id="162_p1ol4"]
+[ext_resource type="Texture2D" uid="uid://0p6om6b5n02p" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0003.png" id="163_ti7ae"]
+[ext_resource type="Texture2D" uid="uid://1ycqt2tuf5xy" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0004.png" id="164_s6jdc"]
+[ext_resource type="Texture2D" uid="uid://c2cx7o81a3g6h" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0005.png" id="165_hkp71"]
+[ext_resource type="Texture2D" uid="uid://dqqr5e4r144eq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0006.png" id="166_ormjc"]
+[ext_resource type="Texture2D" uid="uid://bhwcmilhhn6d0" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0007.png" id="167_ky6g4"]
+[ext_resource type="Texture2D" uid="uid://dbok3mlr8cae3" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0008.png" id="168_1iohl"]
+[ext_resource type="Texture2D" uid="uid://cao5cmmqhnrq7" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0009.png" id="169_ukylp"]
+[ext_resource type="Texture2D" uid="uid://cuk5abcu7spom" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0010.png" id="170_8ootf"]
+[ext_resource type="Texture2D" uid="uid://cm6vbwiln31sy" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0011.png" id="171_y0ya6"]
+[ext_resource type="Texture2D" uid="uid://dxk15rteedj8g" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0012.png" id="172_i0w03"]
+[ext_resource type="Texture2D" uid="uid://btisedbpxh7si" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0013.png" id="173_s6p8o"]
+[ext_resource type="Texture2D" uid="uid://btaxm0uw0rc3i" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0014.png" id="174_uns6j"]
+[ext_resource type="Texture2D" uid="uid://b88leaxrafhct" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0015.png" id="175_a6niw"]
+[ext_resource type="Texture2D" uid="uid://ltredbh83bam" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0016.png" id="176_u6qj5"]
+[ext_resource type="Texture2D" uid="uid://cqmo3jocfrqxj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0017.png" id="177_an8ij"]
+[ext_resource type="Texture2D" uid="uid://barbjg2bwtvn8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0018.png" id="178_jydso"]
+[ext_resource type="Texture2D" uid="uid://cc1v4bs4ymktl" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0019.png" id="179_7263e"]
+[ext_resource type="Texture2D" uid="uid://bv2go5rwt21qu" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0020.png" id="180_5mmef"]
+[ext_resource type="Texture2D" uid="uid://cx803w6i17a27" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0021.png" id="181_k5b13"]
+[ext_resource type="Texture2D" uid="uid://c75ny3v8o6jug" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0022.png" id="182_tvdij"]
+[ext_resource type="Texture2D" uid="uid://c0h30x16j7bjs" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0023.png" id="183_8q2xx"]
+[ext_resource type="Texture2D" uid="uid://bkqhqkcm4pby7" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0024.png" id="184_y16n1"]
+[ext_resource type="Texture2D" uid="uid://cenaik2lan4j3" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0025.png" id="185_o0ne0"]
+[ext_resource type="Texture2D" uid="uid://15e8gwi8xxex" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0026.png" id="186_mepd7"]
+[ext_resource type="Texture2D" uid="uid://drsr6p782xv0o" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0027.png" id="187_op6tk"]
+[ext_resource type="Texture2D" uid="uid://dlcbh63hqptsp" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0028.png" id="188_81h0g"]
+[ext_resource type="Texture2D" uid="uid://cn2hxo5c7tfax" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0029.png" id="189_6meuy"]
+[ext_resource type="Texture2D" uid="uid://d1c047nx0bdxb" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_N/0030.png" id="190_6am7b"]
+[ext_resource type="Texture2D" uid="uid://cf721e2x02nqc" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0001.png" id="192_i4e70"]
+[ext_resource type="Texture2D" uid="uid://8mk71armoogd" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0002.png" id="193_8ms8x"]
+[ext_resource type="Texture2D" uid="uid://eyx0cx4xmjcj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0003.png" id="194_bsyn7"]
+[ext_resource type="Texture2D" uid="uid://d06cq5teigmi2" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0004.png" id="195_13nqn"]
+[ext_resource type="Texture2D" uid="uid://cjs4wvb37ifme" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0005.png" id="196_1ur23"]
+[ext_resource type="Texture2D" uid="uid://f1buhucsvph1" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0006.png" id="197_8nrq1"]
+[ext_resource type="Texture2D" uid="uid://bnq7qkmr3eltb" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0007.png" id="198_ab8ay"]
+[ext_resource type="Texture2D" uid="uid://d2bxf347oa728" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0008.png" id="199_im05w"]
+[ext_resource type="Texture2D" uid="uid://e5hrbsbx5yt6" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0009.png" id="200_2l3d4"]
+[ext_resource type="Texture2D" uid="uid://uvp4jxacc7ku" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0010.png" id="201_brhiq"]
+[ext_resource type="Texture2D" uid="uid://bsq377oxputgi" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0011.png" id="202_lrf4u"]
+[ext_resource type="Texture2D" uid="uid://dc48currn7yqe" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0012.png" id="203_pohjk"]
+[ext_resource type="Texture2D" uid="uid://c7t6tumrr6ef0" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0013.png" id="204_dbbuo"]
+[ext_resource type="Texture2D" uid="uid://0irq5enfb1ei" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0014.png" id="205_6un6m"]
+[ext_resource type="Texture2D" uid="uid://c0lgd80yj2imy" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0015.png" id="206_fcloe"]
+[ext_resource type="Texture2D" uid="uid://cvmbeqb4c8dss" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0016.png" id="207_qb4u0"]
+[ext_resource type="Texture2D" uid="uid://ch1au7rpktof" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0017.png" id="208_5sb2a"]
+[ext_resource type="Texture2D" uid="uid://dmulb5qobckfc" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0018.png" id="209_hxgq3"]
+[ext_resource type="Texture2D" uid="uid://bhkbm0owy6tp8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0019.png" id="210_ki221"]
+[ext_resource type="Texture2D" uid="uid://bo03ghu84ekks" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0020.png" id="211_blspv"]
+[ext_resource type="Texture2D" uid="uid://bnd5uiu3qxart" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0021.png" id="212_rcheh"]
+[ext_resource type="Texture2D" uid="uid://dexhl8m3fmod5" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0022.png" id="213_kmd2o"]
+[ext_resource type="Texture2D" uid="uid://daoqahhd1w61u" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0023.png" id="214_463lh"]
+[ext_resource type="Texture2D" uid="uid://buu4tuckhfl1x" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0024.png" id="215_f1k6s"]
+[ext_resource type="Texture2D" uid="uid://cwwicfr2vb088" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0025.png" id="216_obia8"]
+[ext_resource type="Texture2D" uid="uid://cy6byf53s4c0k" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0026.png" id="217_bfynv"]
+[ext_resource type="Texture2D" uid="uid://bicxx4ocbeceh" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0027.png" id="218_g3wy2"]
+[ext_resource type="Texture2D" uid="uid://cb1kcavmayme7" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0028.png" id="219_twd36"]
+[ext_resource type="Texture2D" uid="uid://cqefnhj3ut4co" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0029.png" id="220_gxod8"]
+[ext_resource type="Texture2D" uid="uid://d16ql8i4lpstv" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NE/0030.png" id="221_ihe4c"]
+[ext_resource type="Texture2D" uid="uid://depdfpml3pqtw" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0001.png" id="223_3r17f"]
+[ext_resource type="Texture2D" uid="uid://c5nqwkuofy5dj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0002.png" id="224_l1gek"]
+[ext_resource type="Texture2D" uid="uid://1nimokus4nsg" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0003.png" id="225_o6t0n"]
+[ext_resource type="Texture2D" uid="uid://bs6t7j1i0sqxq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0004.png" id="226_j6hu0"]
+[ext_resource type="Texture2D" uid="uid://blukupq4eu4hm" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0005.png" id="227_cgr5g"]
+[ext_resource type="Texture2D" uid="uid://dystb21q1ox7g" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0006.png" id="228_3oyhf"]
+[ext_resource type="Texture2D" uid="uid://dgktaugekahuy" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0007.png" id="229_2ag1f"]
+[ext_resource type="Texture2D" uid="uid://dg4l6we61lojd" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0008.png" id="230_1pht4"]
+[ext_resource type="Texture2D" uid="uid://c3orukureu0ln" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0009.png" id="231_g7dnv"]
+[ext_resource type="Texture2D" uid="uid://c2lhjk4b1c176" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0010.png" id="232_rlq8w"]
+[ext_resource type="Texture2D" uid="uid://cceblgija3hot" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0011.png" id="233_6qic7"]
+[ext_resource type="Texture2D" uid="uid://xvudvhgwty1q" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0012.png" id="234_jjnij"]
+[ext_resource type="Texture2D" uid="uid://drca3ia8saukq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0013.png" id="235_u2wnc"]
+[ext_resource type="Texture2D" uid="uid://d4d1dfx23rjyf" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0014.png" id="236_qy47j"]
+[ext_resource type="Texture2D" uid="uid://ckg73pcy1najw" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0015.png" id="237_nq5au"]
+[ext_resource type="Texture2D" uid="uid://bvyy5m4i1wv6c" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0016.png" id="238_w61q5"]
+[ext_resource type="Texture2D" uid="uid://cpo4ts5acmia1" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0017.png" id="239_67wfp"]
+[ext_resource type="Texture2D" uid="uid://ecdt8l3q376n" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0018.png" id="240_hvup1"]
+[ext_resource type="Texture2D" uid="uid://ctsqqasde607o" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0019.png" id="241_fe02v"]
+[ext_resource type="Texture2D" uid="uid://on4kmynoo2tc" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0020.png" id="242_s0npb"]
+[ext_resource type="Texture2D" uid="uid://brbanwxhitnsp" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0021.png" id="243_ni8un"]
+[ext_resource type="Texture2D" uid="uid://e5rapt7vmia2" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0022.png" id="244_8farp"]
+[ext_resource type="Texture2D" uid="uid://dpn5iqo58h6dv" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0023.png" id="245_rmrua"]
+[ext_resource type="Texture2D" uid="uid://tnqqhc7is8u7" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0024.png" id="246_u3m51"]
+[ext_resource type="Texture2D" uid="uid://bhwt1c8dyiwlp" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0025.png" id="247_v7xg6"]
+[ext_resource type="Texture2D" uid="uid://byjhahmhvhetf" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0026.png" id="248_siwvf"]
+[ext_resource type="Texture2D" uid="uid://c1413ubilnrkn" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0027.png" id="249_71ioh"]
+[ext_resource type="Texture2D" uid="uid://bqq3t71rx7kfi" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0028.png" id="250_xxqdj"]
+[ext_resource type="Texture2D" uid="uid://wuldqb2am4in" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0029.png" id="251_edw0m"]
+[ext_resource type="Texture2D" uid="uid://dcoqd7ssa8ik5" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_NW/0030.png" id="252_jl68c"]
+[ext_resource type="Texture2D" uid="uid://cju2t3i4mdb12" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0002.png" id="254_pqf5i"]
+[ext_resource type="Texture2D" uid="uid://pefxq70xwt2g" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0003.png" id="255_yvcu2"]
+[ext_resource type="Texture2D" uid="uid://b6xwah11bvc55" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0004.png" id="256_bpkl8"]
+[ext_resource type="Texture2D" uid="uid://cd4myrepwuvhx" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0005.png" id="257_h0p2i"]
+[ext_resource type="Texture2D" uid="uid://pd1wn4ndkmwa" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0006.png" id="258_yo8po"]
+[ext_resource type="Texture2D" uid="uid://cth707xi1aq6r" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0007.png" id="259_ypidt"]
+[ext_resource type="Texture2D" uid="uid://de6qqjkrbtgve" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0008.png" id="260_awd1i"]
+[ext_resource type="Texture2D" uid="uid://d4den7n661sau" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0009.png" id="261_h0g5p"]
+[ext_resource type="Texture2D" uid="uid://v1fpkxuryede" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0010.png" id="262_l5ga4"]
+[ext_resource type="Texture2D" uid="uid://dlv888bdajrpv" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0011.png" id="263_oi4qi"]
+[ext_resource type="Texture2D" uid="uid://bw1a0c7u7twnf" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0012.png" id="264_gndi0"]
+[ext_resource type="Texture2D" uid="uid://brd0b8ckfco41" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0013.png" id="265_oerr5"]
+[ext_resource type="Texture2D" uid="uid://ws8fstl1n1bw" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0014.png" id="266_p5cfd"]
+[ext_resource type="Texture2D" uid="uid://d06p10qk5ttb7" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0015.png" id="267_d4t6o"]
+[ext_resource type="Texture2D" uid="uid://x7rmhg5lmws8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0016.png" id="268_djq20"]
+[ext_resource type="Texture2D" uid="uid://cir1121xahdi5" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0017.png" id="269_8r131"]
+[ext_resource type="Texture2D" uid="uid://cd5tqkjk5enx" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0018.png" id="270_c12l1"]
+[ext_resource type="Texture2D" uid="uid://dj158rsdcfrd8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0019.png" id="271_tqs4w"]
+[ext_resource type="Texture2D" uid="uid://fw5qskt1xc2w" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0020.png" id="272_oyla6"]
+[ext_resource type="Texture2D" uid="uid://cv1a2a5pfqd5p" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0021.png" id="273_nv2b2"]
+[ext_resource type="Texture2D" uid="uid://dprd0vfkh0kwv" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0022.png" id="274_1gi0x"]
+[ext_resource type="Texture2D" uid="uid://dqpci35rywj8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0023.png" id="275_j41qn"]
+[ext_resource type="Texture2D" uid="uid://rncy7uunwrph" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0024.png" id="276_ea8sl"]
+[ext_resource type="Texture2D" uid="uid://dg6xkfhl0qljr" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0025.png" id="277_k7255"]
+[ext_resource type="Texture2D" uid="uid://ck2mx0ogs6g0" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0026.png" id="278_8pltk"]
+[ext_resource type="Texture2D" uid="uid://72j7guxufoo2" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0027.png" id="279_0ebdh"]
+[ext_resource type="Texture2D" uid="uid://q1uwrkk8v2df" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0028.png" id="280_48k1i"]
+[ext_resource type="Texture2D" uid="uid://s4qy368ub4i6" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0029.png" id="281_s0rav"]
+[ext_resource type="Texture2D" uid="uid://24vk1ybjd6ho" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_S/0030.png" id="282_m5436"]
+[ext_resource type="Texture2D" uid="uid://ce1630eljr7us" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0001.png" id="284_3wujx"]
+[ext_resource type="Texture2D" uid="uid://cmct4gmlks4dy" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0002.png" id="285_gp31m"]
+[ext_resource type="Texture2D" uid="uid://bv8rc8hhf1fi3" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0003.png" id="286_pb1g5"]
+[ext_resource type="Texture2D" uid="uid://igq5ma0aj21j" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0004.png" id="287_lmv3u"]
+[ext_resource type="Texture2D" uid="uid://b6frjeakkppjk" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0005.png" id="288_qspfj"]
+[ext_resource type="Texture2D" uid="uid://dipuwfct6onjh" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0006.png" id="289_addox"]
+[ext_resource type="Texture2D" uid="uid://bu0kxkgaqe4r2" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0007.png" id="290_lcpu4"]
+[ext_resource type="Texture2D" uid="uid://x2ql5nn2o6r3" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0008.png" id="291_flqk4"]
+[ext_resource type="Texture2D" uid="uid://74qn4ao3vldx" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0009.png" id="292_2vvm1"]
+[ext_resource type="Texture2D" uid="uid://de8rp4woqhwe3" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0010.png" id="293_any0a"]
+[ext_resource type="Texture2D" uid="uid://be21artrhut8n" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0011.png" id="294_0kkcr"]
+[ext_resource type="Texture2D" uid="uid://yr8j6u44ky8f" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0012.png" id="295_xjsm2"]
+[ext_resource type="Texture2D" uid="uid://dxpx1ymvaghwo" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0013.png" id="296_5duws"]
+[ext_resource type="Texture2D" uid="uid://bxpxrbjdt8cnd" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0014.png" id="297_s80uq"]
+[ext_resource type="Texture2D" uid="uid://d30q167ddsx0f" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0015.png" id="298_grr4d"]
+[ext_resource type="Texture2D" uid="uid://bcw1rvondos8u" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0016.png" id="299_5uupw"]
+[ext_resource type="Texture2D" uid="uid://bgst0fdon4h0t" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0017.png" id="300_hmurq"]
+[ext_resource type="Texture2D" uid="uid://drgjdvty3rovm" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0018.png" id="301_johwi"]
+[ext_resource type="Texture2D" uid="uid://dnncsd20tuoln" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0019.png" id="302_stgs6"]
+[ext_resource type="Texture2D" uid="uid://e0uu6suc0fxm" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0020.png" id="303_gx6ir"]
+[ext_resource type="Texture2D" uid="uid://q454dcq2k74p" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0021.png" id="304_5pgq5"]
+[ext_resource type="Texture2D" uid="uid://b3bw4j2wi3pbw" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0022.png" id="305_my0nt"]
+[ext_resource type="Texture2D" uid="uid://dcho5ii2n4c7e" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0023.png" id="306_pkshr"]
+[ext_resource type="Texture2D" uid="uid://bderm0o8u1lef" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0024.png" id="307_qqia7"]
+[ext_resource type="Texture2D" uid="uid://cvtkn12whk74p" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0025.png" id="308_1ndk4"]
+[ext_resource type="Texture2D" uid="uid://dspkt7w08ayra" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0026.png" id="309_tjopg"]
+[ext_resource type="Texture2D" uid="uid://btos1wmmcit4m" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0027.png" id="310_26tc2"]
+[ext_resource type="Texture2D" uid="uid://bs4khin0l6lkp" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0028.png" id="311_1t6t8"]
+[ext_resource type="Texture2D" uid="uid://idwywtgluex1" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0029.png" id="312_ybg2r"]
+[ext_resource type="Texture2D" uid="uid://t8gwt7mk82wb" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SE/0030.png" id="313_mwnei"]
+[ext_resource type="Texture2D" uid="uid://8jbm50e7bxdn" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0001.png" id="315_ko8gw"]
+[ext_resource type="Texture2D" uid="uid://dyguuykmldky6" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0002.png" id="316_6ft7g"]
+[ext_resource type="Texture2D" uid="uid://2djmnb248wmb" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0003.png" id="317_vxexu"]
+[ext_resource type="Texture2D" uid="uid://bwbaj8cvgfs0o" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0004.png" id="318_j7g38"]
+[ext_resource type="Texture2D" uid="uid://bstd734qg7bql" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0005.png" id="319_ujms8"]
+[ext_resource type="Texture2D" uid="uid://bnkwyeqoyl52m" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0006.png" id="320_20nsn"]
+[ext_resource type="Texture2D" uid="uid://b2ll17v3tr02v" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0007.png" id="321_f2oji"]
+[ext_resource type="Texture2D" uid="uid://f5fhwo5od7up" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0008.png" id="322_xx2rs"]
+[ext_resource type="Texture2D" uid="uid://cv5iei2ootav7" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0009.png" id="323_yfw3f"]
+[ext_resource type="Texture2D" uid="uid://bpqd8klakv7br" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0010.png" id="324_8fflq"]
+[ext_resource type="Texture2D" uid="uid://lw80guh4iiav" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0011.png" id="325_psguq"]
+[ext_resource type="Texture2D" uid="uid://m48lyyx3yfe3" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0012.png" id="326_s7u0o"]
+[ext_resource type="Texture2D" uid="uid://dbkg4538c8n3o" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0013.png" id="327_itg56"]
+[ext_resource type="Texture2D" uid="uid://v37ar0l58hd3" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0014.png" id="328_fhl6a"]
+[ext_resource type="Texture2D" uid="uid://dtwd3e4lyvttl" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0015.png" id="329_djwlk"]
+[ext_resource type="Texture2D" uid="uid://q0b1dgks7mjm" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0016.png" id="330_udbf5"]
+[ext_resource type="Texture2D" uid="uid://j8srldeqb0et" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0017.png" id="331_0l5f7"]
+[ext_resource type="Texture2D" uid="uid://ddmr8rnlyvr3t" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0018.png" id="332_gyh60"]
+[ext_resource type="Texture2D" uid="uid://gnelkaxntp7t" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0019.png" id="333_opl11"]
+[ext_resource type="Texture2D" uid="uid://cubuqsl5yq8vr" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0020.png" id="334_fsvex"]
+[ext_resource type="Texture2D" uid="uid://bdhqgk87ad47d" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0021.png" id="335_e1vm5"]
+[ext_resource type="Texture2D" uid="uid://83evb0ijug5j" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0022.png" id="336_nigvq"]
+[ext_resource type="Texture2D" uid="uid://byn8ukhas3e1y" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0023.png" id="337_mo48t"]
+[ext_resource type="Texture2D" uid="uid://dvgsgq47bm8j7" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0024.png" id="338_cll85"]
+[ext_resource type="Texture2D" uid="uid://c0ditqstxwkri" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0025.png" id="339_qtppr"]
+[ext_resource type="Texture2D" uid="uid://8usj17v0r3p4" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0026.png" id="340_esy8u"]
+[ext_resource type="Texture2D" uid="uid://42yi80ewogcn" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0027.png" id="341_rhuul"]
+[ext_resource type="Texture2D" uid="uid://drs2bf2ld6pqq" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0028.png" id="342_vgffk"]
+[ext_resource type="Texture2D" uid="uid://d0w4pddia2s6q" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0029.png" id="343_cg8gc"]
+[ext_resource type="Texture2D" uid="uid://b4b13dctms2aw" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_SW/0030.png" id="344_12qea"]
+[ext_resource type="Texture2D" uid="uid://djb6t6vdway8k" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0001.png" id="346_t2u5f"]
+[ext_resource type="Texture2D" uid="uid://b4hax58qc7qe4" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0002.png" id="347_d5ivb"]
+[ext_resource type="Texture2D" uid="uid://bry7egqoai02d" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0003.png" id="348_fhh4q"]
+[ext_resource type="Texture2D" uid="uid://omq4ajnbiiqu" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0004.png" id="349_sd3ah"]
+[ext_resource type="Texture2D" uid="uid://cyci7u5764tq1" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0005.png" id="350_wdc3g"]
+[ext_resource type="Texture2D" uid="uid://bq082pyaq5bvm" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0006.png" id="351_ip71p"]
+[ext_resource type="Texture2D" uid="uid://dp3rbpgeblj1r" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0007.png" id="352_qr47n"]
+[ext_resource type="Texture2D" uid="uid://dg8m2noglk8w5" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0008.png" id="353_d1f0e"]
+[ext_resource type="Texture2D" uid="uid://d4fvp7r2ywy5f" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0009.png" id="354_3vywn"]
+[ext_resource type="Texture2D" uid="uid://bq0soe7y50m7j" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0010.png" id="355_vsrxo"]
+[ext_resource type="Texture2D" uid="uid://d2eknirp1beie" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0011.png" id="356_bfndm"]
+[ext_resource type="Texture2D" uid="uid://cps3eptqsuqkx" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0012.png" id="357_ovqm0"]
+[ext_resource type="Texture2D" uid="uid://ccw78r06s01n8" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0013.png" id="358_2gwmk"]
+[ext_resource type="Texture2D" uid="uid://bjd6ikei4a4gg" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0014.png" id="359_h0vv7"]
+[ext_resource type="Texture2D" uid="uid://ct3plwml7p05u" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0015.png" id="360_bmpmb"]
+[ext_resource type="Texture2D" uid="uid://cssnfasd1gxdx" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0016.png" id="361_j35cn"]
+[ext_resource type="Texture2D" uid="uid://4f47rvlc4xnp" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0017.png" id="362_fss0j"]
+[ext_resource type="Texture2D" uid="uid://crdcu5yy8o5o2" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0018.png" id="363_5avgn"]
+[ext_resource type="Texture2D" uid="uid://cq80rcwa7ggej" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0019.png" id="364_5t63c"]
+[ext_resource type="Texture2D" uid="uid://6cn0kfbfm5cj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0020.png" id="365_ilne6"]
+[ext_resource type="Texture2D" uid="uid://tvjf5ocjy40n" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0021.png" id="366_f2s8p"]
+[ext_resource type="Texture2D" uid="uid://myp276mh1wtj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0022.png" id="367_3u4gt"]
+[ext_resource type="Texture2D" uid="uid://j70rn50t36wj" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0023.png" id="368_ph3cg"]
+[ext_resource type="Texture2D" uid="uid://cu0rcjmgjuj3d" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0024.png" id="369_mf5t2"]
+[ext_resource type="Texture2D" uid="uid://00crh0s7jk44" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0025.png" id="370_bh64p"]
+[ext_resource type="Texture2D" uid="uid://dxvfnqvrjhq7a" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0026.png" id="371_l3ip1"]
+[ext_resource type="Texture2D" uid="uid://mix4n2kx0ubd" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0027.png" id="372_i3864"]
+[ext_resource type="Texture2D" uid="uid://dfp15hr0sm7la" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0028.png" id="373_i6f50"]
+[ext_resource type="Texture2D" uid="uid://c2w6chspdyqyb" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0029.png" id="374_cecvx"]
+[ext_resource type="Texture2D" uid="uid://ds8pscyjmeag4" path="res://Sprites/Enemies/Zorro/f_run_animation/f_run_W/0030.png" id="375_bx2im"]
 
 [resource]
 animations = [{
@@ -415,18 +375,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("12_unuhn")
-}, {
-"duration": 1.0,
-"texture": ExtResource("13_6d4mx")
-}, {
-"duration": 1.0,
-"texture": ExtResource("14_u3fvs")
-}, {
-"duration": 1.0,
-"texture": ExtResource("15_ddmq7")
-}, {
-"duration": 1.0,
-"texture": ExtResource("16_j63tf")
 }],
 "loop": false,
 "name": &"Attack_E",
@@ -468,18 +416,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("28_hqlum")
-}, {
-"duration": 1.0,
-"texture": ExtResource("29_22tiv")
-}, {
-"duration": 1.0,
-"texture": ExtResource("30_gv3oi")
-}, {
-"duration": 1.0,
-"texture": ExtResource("31_jk4tv")
-}, {
-"duration": 1.0,
-"texture": ExtResource("32_chfst")
 }],
 "loop": false,
 "name": &"Attack_N",
@@ -521,18 +457,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("44_l5wyw")
-}, {
-"duration": 1.0,
-"texture": ExtResource("45_kw827")
-}, {
-"duration": 1.0,
-"texture": ExtResource("46_scnm3")
-}, {
-"duration": 1.0,
-"texture": ExtResource("47_uewvc")
-}, {
-"duration": 1.0,
-"texture": ExtResource("48_cmlqt")
 }],
 "loop": false,
 "name": &"Attack_NE",
@@ -574,18 +498,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("60_egx77")
-}, {
-"duration": 1.0,
-"texture": ExtResource("61_boi5u")
-}, {
-"duration": 1.0,
-"texture": ExtResource("62_xjthk")
-}, {
-"duration": 1.0,
-"texture": ExtResource("63_fqsn3")
-}, {
-"duration": 1.0,
-"texture": ExtResource("64_x3aao")
 }],
 "loop": false,
 "name": &"Attack_NW",
@@ -627,18 +539,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("76_5sc6p")
-}, {
-"duration": 1.0,
-"texture": ExtResource("77_hhrcc")
-}, {
-"duration": 1.0,
-"texture": ExtResource("78_afyur")
-}, {
-"duration": 1.0,
-"texture": ExtResource("79_r7s6r")
-}, {
-"duration": 1.0,
-"texture": ExtResource("80_2rdmf")
 }],
 "loop": false,
 "name": &"Attack_S",
@@ -680,18 +580,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("92_2ib7p")
-}, {
-"duration": 1.0,
-"texture": ExtResource("93_or47p")
-}, {
-"duration": 1.0,
-"texture": ExtResource("94_jrjh4")
-}, {
-"duration": 1.0,
-"texture": ExtResource("95_evrlu")
-}, {
-"duration": 1.0,
-"texture": ExtResource("96_mx65s")
 }],
 "loop": false,
 "name": &"Attack_SE",
@@ -733,18 +621,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("108_u0luk")
-}, {
-"duration": 1.0,
-"texture": ExtResource("109_jbo8c")
-}, {
-"duration": 1.0,
-"texture": ExtResource("110_8s7jk")
-}, {
-"duration": 1.0,
-"texture": ExtResource("111_nlsrf")
-}, {
-"duration": 1.0,
-"texture": ExtResource("112_awmrv")
 }],
 "loop": false,
 "name": &"Attack_SW",
@@ -786,18 +662,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": ExtResource("124_1dno4")
-}, {
-"duration": 1.0,
-"texture": ExtResource("125_qbsqv")
-}, {
-"duration": 1.0,
-"texture": ExtResource("126_55ewt")
-}, {
-"duration": 1.0,
-"texture": ExtResource("127_8o0kw")
-}, {
-"duration": 1.0,
-"texture": ExtResource("128_1ek32")
 }],
 "loop": false,
 "name": &"Attack_W",
@@ -903,7 +767,7 @@ animations = [{
 "texture": ExtResource("159_4rbaq")
 }, {
 "duration": 1.0,
-"texture": ExtResource("160_5xhcp")
+"texture": null
 }],
 "loop": true,
 "name": &"Run_E",
@@ -1001,7 +865,7 @@ animations = [{
 "texture": ExtResource("190_6am7b")
 }, {
 "duration": 1.0,
-"texture": ExtResource("191_5ltxq")
+"texture": null
 }],
 "loop": true,
 "name": &"Run_N",
@@ -1099,7 +963,7 @@ animations = [{
 "texture": ExtResource("221_ihe4c")
 }, {
 "duration": 1.0,
-"texture": ExtResource("222_2j62y")
+"texture": null
 }],
 "loop": true,
 "name": &"Run_NE",
@@ -1197,7 +1061,7 @@ animations = [{
 "texture": ExtResource("252_jl68c")
 }, {
 "duration": 1.0,
-"texture": ExtResource("253_8yldx")
+"texture": null
 }],
 "loop": true,
 "name": &"Run_NW",
@@ -1295,7 +1159,7 @@ animations = [{
 "texture": ExtResource("282_m5436")
 }, {
 "duration": 1.0,
-"texture": ExtResource("283_y4sek")
+"texture": null
 }],
 "loop": true,
 "name": &"Run_S",
@@ -1393,7 +1257,7 @@ animations = [{
 "texture": ExtResource("313_mwnei")
 }, {
 "duration": 1.0,
-"texture": ExtResource("314_36ph2")
+"texture": null
 }],
 "loop": true,
 "name": &"Run_SE",
@@ -1491,7 +1355,7 @@ animations = [{
 "texture": ExtResource("344_12qea")
 }, {
 "duration": 1.0,
-"texture": ExtResource("345_j0ltf")
+"texture": null
 }],
 "loop": true,
 "name": &"Run_SW",
@@ -1589,7 +1453,7 @@ animations = [{
 "texture": ExtResource("375_bx2im")
 }, {
 "duration": 1.0,
-"texture": ExtResource("376_04ljx")
+"texture": null
 }],
 "loop": true,
 "name": &"Run_W",

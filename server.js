@@ -884,9 +884,9 @@ function spawnEnemy(id, availableTypes, forceTeam = null, eliteChance = 0) {
     }
 
     // ✅ ESTADÍSTICAS DEL ZORRO
-    const baseHp = isElite ? 90 : 60; // 60 base, 90 élite
-    const baseDamage = isElite ? 22 : 15; // 15 base, 22 élite
-    const baseSpeed = isElite ? 400 : 350; // 350 base, 400 élite
+    const baseHp = isElite ? 90 : 70; // 60 base, 90 élite
+    const baseDamage = isElite ? 10 : 5; // 15 base, 22 élite
+    const baseSpeed = isElite ? 200 : 150; // 350 base, 400 élite
 
      enemies[id] = {
         id: id,
