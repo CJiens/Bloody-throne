@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://m5llmhoblgp6" path="res://projectiles/MageProjectile.tscn" id="4_2cqfq"]
 [ext_resource type="Theme" uid="uid://qkkblp6cijnh" path="res://Temas/Botones segunda parte.tres" id="6_kek77"]
 [ext_resource type="Theme" uid="uid://bc0ftxndqriis" path="res://Temas/main_menu.tres" id="7_5vw27"]
-[ext_resource type="PackedScene" uid="uid://cog04o3t2cbln" path="res://base.tscn" id="7_cegan"]
+[ext_resource type="PackedScene" path="res://base.tscn" id="7_cegan"]
 [ext_resource type="PackedScene" uid="uid://c50dg0rerb3ol" path="res://enities/boss/boss.tscn" id="7_getpj"]
 [ext_resource type="Theme" uid="uid://p6lafxv8viug" path="res://Temas/Input.tres" id="9_kek77"]
 [ext_resource type="AudioStream" uid="uid://kv8nhocsergj" path="res://Musica/Bloody-Throne-Preferida.ogg" id="10_4c57u"]
@@ -461,7 +461,6 @@ offset_bottom = 69.799995
 theme = SubResource("Theme_82xsv")
 
 [node name="contrl" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -495,8 +494,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 768.0
-offset_bottom = 432.0
+offset_right = 1275.7644
+offset_bottom = 732.7545
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(0.6036114, 0.6018465)
@@ -700,7 +699,6 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="ChatUI" type="Control" parent="CanvasLayer"]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_left = -8059.0
